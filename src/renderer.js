@@ -18,6 +18,8 @@ let cards = []; // all card objects
 let queue = [];  // current session queue
 let currentCard = null;
 let reviewedToday = 0;
+let translationCache = {}; // word -> promise of translation result
+
 
 // --- Persistence ---
 
@@ -126,6 +128,21 @@ function updateStats() {
   statLearned.textContent = `Learned: ${learnedCount}`;
 }
 
+// --- Translation Preloading ---
+
+function prefetchTranslation(word) {
+  if (!translationCache[word]) {
+    translationCache[word] = window.api.translate(word);
+  }
+  return translationCache[word];
+}
+
+function prefetchNext() {
+  if (queue.length > 0) {
+    prefetchTranslation(queue[0].word);
+  }
+}
+
 // --- UI ---
 
 function showCard() {
@@ -145,16 +162,26 @@ function showCard() {
   showContainer.classList.remove('hidden');
   ratingContainer.classList.add('hidden');
 
+  // Prefetch current card (if not already cached) and next card
+  prefetchTranslation(currentCard.word);
+  prefetchNext();
+
   updateStats();
 }
 
-function revealCard() {
-  // Show interval info
-  if (currentCard.repetition > 0) {
-    cardInfoEl.textContent = `Interval: ${currentCard.interval}d | Reviews: ${currentCard.repetition}`;
-  } else {
-    cardInfoEl.textContent = 'New card';
+async function revealCard() {
+  btnShow.textContent = 'Loading...';
+  btnShow.disabled = true;
+
+  try {
+    const result = await prefetchTranslation(currentCard.word);
+    cardInfoEl.innerHTML = `<div class="translation">${result.translation}</div><div class="example">${result.example}</div>`;
+  } catch (err) {
+    cardInfoEl.textContent = 'Translation unavailable';
   }
+
+  btnShow.textContent = 'Show';
+  btnShow.disabled = false;
   cardInfoEl.classList.remove('hidden');
   showContainer.classList.add('hidden');
   ratingContainer.classList.remove('hidden');

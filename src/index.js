@@ -10,15 +10,31 @@ if (require('electron-squirrel-startup')) {
 }
 
 ipcMain.handle('translate', async (_event, word) => {
-  const response = await openai.chat.completions.create({
+  const response = await openai.responses.create({
     model: 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: 'You are a German-English dictionary. Given a German word, return a brief English translation (1-5 words). No extra text.' },
+    input: [
+      { role: 'system', content: 'You are a German-English dictionary. Given a German word, return a JSON object with "word" (the German word), "translation" (brief English translation, 1-5 words), and "example" (a short German example sentence using the word).' },
       { role: 'user', content: word },
     ],
-    max_tokens: 30,
+    text: {
+      format: {
+        type: 'json_schema',
+        name: 'translation',
+        schema: {
+          type: 'object',
+          properties: {
+            word: { type: 'string' },
+            translation: { type: 'string' },
+            example: { type: 'string' },
+          },
+          required: ['word', 'translation', 'example'],
+          additionalProperties: false,
+        },
+        strict: true,
+      },
+    },
   });
-  return response.choices[0].message.content.trim();
+  return JSON.parse(response.output_text);
 });
 
 ipcMain.handle('speak', async (_event, text) => {

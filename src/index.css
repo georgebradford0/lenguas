@@ -69,9 +69,21 @@ body {
 }
 
 #card-info {
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  color: #5a6080;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+#card-info .translation {
+  font-size: 1.4rem;
+  color: #e0e0e0;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+#card-info .example {
+  font-size: 1rem;
+  color: #8892b0;
+  font-style: italic;
 }
 
 #show-container {
