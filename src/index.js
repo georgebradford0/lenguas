@@ -40,7 +40,7 @@ ipcMain.handle('translate', async (_event, word) => {
 ipcMain.handle('speak', async (_event, text) => {
   const response = await openai.audio.speech.create({
     model: 'tts-1',
-    voice: 'onyx',
+    voice: 'nova',
     input: text,
   });
   const buffer = Buffer.from(await response.arrayBuffer());

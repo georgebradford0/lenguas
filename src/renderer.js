@@ -19,6 +19,7 @@ let queue = [];  // current session queue
 let currentCard = null;
 let reviewedToday = 0;
 let translationCache = {}; // word -> promise of translation result
+let audioCache = {}; // word -> promise of base64 audio
 
 
 // --- Persistence ---
@@ -128,7 +129,7 @@ function updateStats() {
   statLearned.textContent = `Learned: ${learnedCount}`;
 }
 
-// --- Translation Preloading ---
+// --- Preloading (Translation + Audio) ---
 
 function prefetchTranslation(word) {
   if (!translationCache[word]) {
@@ -137,9 +138,28 @@ function prefetchTranslation(word) {
   return translationCache[word];
 }
 
+function prefetchAudio(word) {
+  if (!audioCache[word]) {
+    audioCache[word] = window.api.speak(word);
+  }
+  return audioCache[word];
+}
+
+async function playAudio(word) {
+  try {
+    const base64 = await prefetchAudio(word);
+    const audio = new Audio(`data:audio/mp3;base64,${base64}`);
+    audio.play();
+  } catch (err) {
+    console.error('Audio playback failed:', err);
+  }
+}
+
 function prefetchNext() {
   if (queue.length > 0) {
-    prefetchTranslation(queue[0].word);
+    const nextWord = queue[0].word;
+    prefetchTranslation(nextWord);
+    prefetchAudio(nextWord);
   }
 }
 
@@ -162,9 +182,17 @@ function showCard() {
   showContainer.classList.remove('hidden');
   ratingContainer.classList.add('hidden');
 
+  // Show speaker button
+  const btnSpeak = document.getElementById('btn-speak');
+  btnSpeak.classList.remove('hidden');
+
   // Prefetch current card (if not already cached) and next card
   prefetchTranslation(currentCard.word);
+  prefetchAudio(currentCard.word);
   prefetchNext();
+
+  // Auto-play audio on first show of word
+  playAudio(currentCard.word);
 
   updateStats();
 }
@@ -205,6 +233,10 @@ function rateCard(rating) {
 // --- Event Listeners ---
 
 btnShow.addEventListener('click', revealCard);
+
+document.getElementById('btn-speak').addEventListener('click', () => {
+  if (currentCard) playAudio(currentCard.word);
+});
 
 document.querySelectorAll('.rate-btn').forEach(btn => {
   btn.addEventListener('click', () => {
