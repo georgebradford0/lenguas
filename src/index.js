@@ -1,10 +1,35 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
+const OpenAI = require('openai');
+
+const openai = new OpenAI({ apiKey: 'YOUR_OPENAI_API_KEY'});
 
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+ipcMain.handle('translate', async (_event, word) => {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      { role: 'system', content: 'You are a German-English dictionary. Given a German word, return a brief English translation (1-5 words). No extra text.' },
+      { role: 'user', content: word },
+    ],
+    max_tokens: 30,
+  });
+  return response.choices[0].message.content.trim();
+});
+
+ipcMain.handle('speak', async (_event, text) => {
+  const response = await openai.audio.speech.create({
+    model: 'tts-1',
+    voice: 'onyx',
+    input: text,
+  });
+  const buffer = Buffer.from(await response.arrayBuffer());
+  return buffer.toString('base64');
+});
 
 ipcMain.handle('load-words', async () => {
   const csvPath = path.join(__dirname, '..', 'german_words.csv');
