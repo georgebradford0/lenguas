@@ -1,11 +1,11 @@
 const STORAGE_KEY = 'srs-german-progress';
 const NEW_CARDS_PER_SESSION = 10;
+const BASE_GAP = 1;
+const ADVANCE_DELAY = 1200; // ms after answer before next card
 
 // DOM elements
 const wordEl = document.getElementById('word');
-const cardInfoEl = document.getElementById('card-info');
-const btnShow = document.getElementById('btn-show');
-const btnNext = document.getElementById('btn-next');
+const choicesEl = document.getElementById('choices');
 const cardContainer = document.getElementById('card-container');
 const doneMessage = document.getElementById('done-message');
 const statDue = document.getElementById('stat-due');
@@ -13,13 +13,13 @@ const statNew = document.getElementById('stat-new');
 const statReviewed = document.getElementById('stat-reviewed');
 const statLearned = document.getElementById('stat-learned');
 
-let cards = []; // all card objects
-let queue = [];  // current session queue
+let cards = [];
 let currentCard = null;
-let reviewedToday = 0;
-let translationCache = {}; // word -> promise of translation result
-let audioCache = {}; // word -> promise of base64 audio
-
+let sessionCounter = 0;
+let reviewedCount = 0;
+let answering = false; // prevent double-clicks during delay
+let translationCache = {};
+let audioCache = {};
 
 // --- Persistence ---
 
@@ -36,64 +36,62 @@ function saveProgress() {
   const data = {};
   for (const c of cards) {
     data[c.word] = {
-      interval: c.interval,
-      repetition: c.repetition,
-      easeFactor: c.easeFactor,
-      dueDate: c.dueDate,
+      correctStreak: c.correctStreak,
+      totalReviews: c.totalReviews,
+      nextShowAfter: c.nextShowAfter,
     };
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-// --- SM-2 Algorithm (auto "Good" rating) ---
+// --- Adaptive Frequency ---
 
-function nowDay() {
-  return Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+function getNextCard() {
+  // Find due cards (nextShowAfter <= sessionCounter)
+  const due = cards.filter(c => c.totalReviews > 0 && c.nextShowAfter <= sessionCounter);
+
+  if (due.length > 0) {
+    // Pick the one with lowest nextShowAfter (most overdue)
+    due.sort((a, b) => a.nextShowAfter - b.nextShowAfter);
+    return due[0];
+  }
+
+  // No due cards — introduce a new card
+  const newCards = cards.filter(c => c.totalReviews === 0);
+  if (newCards.length > 0) {
+    return newCards[0];
+  }
+
+  return null; // all done
 }
 
-function processCard(card) {
-  const today = nowDay();
-  card.repetition += 1;
-  if (card.repetition === 1) {
-    card.interval = 1;
-  } else if (card.repetition === 2) {
-    card.interval = 6;
+function processAnswer(card, correct) {
+  card.totalReviews++;
+  sessionCounter++;
+
+  if (correct) {
+    card.correctStreak++;
+    card.nextShowAfter = sessionCounter + BASE_GAP * Math.pow(2, card.correctStreak);
   } else {
-    card.interval = Math.round(card.interval * card.easeFactor);
+    card.correctStreak = 0;
+    card.nextShowAfter = sessionCounter + 1;
   }
-  card.dueDate = today + card.interval;
 }
 
-// --- Queue Management ---
-
-function buildQueue() {
-  const today = nowDay();
-
-  const due = cards.filter(c => c.repetition > 0 && c.dueDate <= today);
-  for (let i = due.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [due[i], due[j]] = [due[j], due[i]];
-  }
-
-  const newCards = cards.filter(c => c.repetition === 0 && c.dueDate === 0);
-  const newBatch = newCards.slice(0, NEW_CARDS_PER_SESSION);
-
-  queue = [...due, ...newBatch];
-}
+// --- Stats ---
 
 function updateStats() {
-  const today = nowDay();
-  const dueCount = cards.filter(c => c.repetition > 0 && c.dueDate <= today).length;
-  const newCount = cards.filter(c => c.repetition === 0 && c.dueDate === 0).length;
-  const learnedCount = cards.filter(c => c.repetition > 0).length;
+  const dueCount = cards.filter(c => c.totalReviews > 0 && c.nextShowAfter <= sessionCounter).length;
+  const newCount = cards.filter(c => c.totalReviews === 0).length;
+  const learnedCount = cards.filter(c => c.totalReviews > 0).length;
 
   statDue.textContent = `Due: ${dueCount}`;
   statNew.textContent = `New: ${newCount}`;
-  statReviewed.textContent = `Reviewed: ${reviewedToday}`;
+  statReviewed.textContent = `Reviewed: ${reviewedCount}`;
   statLearned.textContent = `Learned: ${learnedCount}`;
 }
 
-// --- Preloading (Translation + Audio) ---
+// --- Preloading ---
 
 function prefetchTranslation(word) {
   if (!translationCache[word]) {
@@ -119,18 +117,31 @@ async function playAudio(word) {
   }
 }
 
-function prefetchNext() {
-  if (queue.length > 0) {
-    const nextWord = queue[0].word;
-    prefetchTranslation(nextWord);
-    prefetchAudio(nextWord);
+function prefetchNextCard() {
+  const next = getNextCard();
+  if (next) {
+    prefetchTranslation(next.word);
+    prefetchAudio(next.word);
   }
+}
+
+// --- Shuffle utility ---
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 // --- UI ---
 
-function showCard() {
-  if (queue.length === 0) {
+async function showCard() {
+  currentCard = getNextCard();
+
+  if (!currentCard) {
     cardContainer.classList.add('hidden');
     doneMessage.classList.remove('hidden');
     updateStats();
@@ -139,67 +150,100 @@ function showCard() {
 
   cardContainer.classList.remove('hidden');
   doneMessage.classList.add('hidden');
+  answering = false;
 
-  currentCard = queue.shift();
   wordEl.textContent = currentCard.word;
-  cardInfoEl.classList.add('hidden');
 
   // Show speaker button
-  const btnSpeak = document.getElementById('btn-speak');
-  btnSpeak.classList.remove('hidden');
+  document.getElementById('btn-speak').classList.remove('hidden');
 
-  // Prefetch current card (if not already cached) and next card
-  prefetchTranslation(currentCard.word);
+  // Clear choices and show loading
+  choicesEl.innerHTML = '<div style="color:#5a6080;text-align:center;padding:1rem;">Loading...</div>';
+
+  // Prefetch audio and play
   prefetchAudio(currentCard.word);
-  prefetchNext();
-
-  // Auto-play audio on first show of word
   playAudio(currentCard.word);
 
+  // Load translation with choices
+  try {
+    const result = await prefetchTranslation(currentCard.word);
+    const options = shuffle([
+      { text: result.translation, correct: true },
+      { text: result.wrong[0], correct: false },
+      { text: result.wrong[1], correct: false },
+      { text: result.wrong[2], correct: false },
+    ]);
+
+    choicesEl.innerHTML = '';
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="key-hint">${i + 1}</span>${opt.text}`;
+      btn.dataset.correct = opt.correct;
+      btn.dataset.text = opt.text;
+      btn.addEventListener('click', () => handleChoice(btn, opt.correct));
+      choicesEl.appendChild(btn);
+    });
+  } catch (err) {
+    choicesEl.innerHTML = '<div style="color:#e74c3c;text-align:center;padding:1rem;">Failed to load choices</div>';
+  }
+
+  // Prefetch next card
+  prefetchNextCard();
   updateStats();
 }
 
-async function revealCard() {
-  btnShow.textContent = 'Loading...';
-  btnShow.disabled = true;
+function handleChoice(clickedBtn, correct) {
+  if (answering) return;
+  answering = true;
 
-  try {
-    const result = await prefetchTranslation(currentCard.word);
-    cardInfoEl.innerHTML = `<div class="translation">${result.translation}</div>`;
-  } catch (err) {
-    cardInfoEl.textContent = 'Translation unavailable';
+  const allBtns = choicesEl.querySelectorAll('.choice-btn');
+
+  if (correct) {
+    clickedBtn.classList.add('correct');
+  } else {
+    clickedBtn.classList.add('wrong');
+    // Reveal the correct answer
+    allBtns.forEach(btn => {
+      if (btn.dataset.correct === 'true') {
+        btn.classList.add('reveal');
+      }
+    });
   }
 
-  btnShow.textContent = 'Show';
-  btnShow.disabled = false;
-  cardInfoEl.classList.remove('hidden');
-}
+  // Disable all buttons
+  allBtns.forEach(btn => btn.classList.add('disabled'));
 
-function nextCard() {
-  processCard(currentCard);
-  reviewedToday++;
+  // Update card state
+  processAnswer(currentCard, correct);
+  reviewedCount++;
   saveProgress();
-  showCard();
+
+  // Prefetch next during delay
+  prefetchNextCard();
+
+  // Auto-advance
+  setTimeout(() => {
+    showCard();
+  }, ADVANCE_DELAY);
 }
 
 // --- Event Listeners ---
-
-btnShow.addEventListener('click', revealCard);
-btnNext.addEventListener('click', nextCard);
 
 document.getElementById('btn-speak').addEventListener('click', () => {
   if (currentCard) playAudio(currentCard.word);
 });
 
-// Keyboard shortcuts
+// Keyboard shortcuts: 1-4 to select choice
 document.addEventListener('keydown', (e) => {
-  if (!currentCard) return;
+  if (!currentCard || answering) return;
 
-  if (e.key === ' ' || e.key === 'Enter') {
-    e.preventDefault();
-    nextCard();
-  } else if (e.key === 's') {
-    revealCard();
+  const num = parseInt(e.key, 10);
+  if (num >= 1 && num <= 4) {
+    const btns = choicesEl.querySelectorAll('.choice-btn');
+    if (btns[num - 1]) {
+      btns[num - 1].click();
+    }
   }
 });
 
@@ -209,21 +253,27 @@ async function init() {
   const words = await window.api.loadWords();
   const progress = loadProgress();
 
+  // Restore sessionCounter from saved state
+  let maxNextShow = 0;
+
   cards = words.map(word => {
     const saved = progress[word];
-    if (saved) {
+    // Only restore if it has the new schema fields
+    if (saved && typeof saved.totalReviews === 'number') {
+      if (saved.nextShowAfter > maxNextShow) maxNextShow = saved.nextShowAfter;
       return { word, ...saved };
     }
     return {
       word,
-      interval: 0,
-      repetition: 0,
-      easeFactor: 2.5,
-      dueDate: 0,
+      correctStreak: 0,
+      totalReviews: 0,
+      nextShowAfter: 0,
     };
   });
 
-  buildQueue();
+  // Resume sessionCounter so saved nextShowAfter values make sense
+  sessionCounter = maxNextShow;
+
   updateStats();
   showCard();
 }
