@@ -1,4 +1,3 @@
-const BASE_GAP = 1;
 const ADVANCE_DELAY = 1200; // ms after answer before next card
 
 // DOM elements
@@ -13,7 +12,6 @@ const statLearned = document.getElementById('stat-learned');
 
 let cards = [];
 let currentCard = null;
-let sessionCounter = 0;
 let reviewedCount = 0;
 let answering = false; // prevent double-clicks during delay
 let translationCache = {};
@@ -27,57 +25,56 @@ async function loadProgress() {
 
 function saveCardProgress(card) {
   window.api.saveProgress(card.word, {
-    correctStreak: card.correctStreak,
-    totalReviews: card.totalReviews,
-    nextShowAfter: card.nextShowAfter,
+    timesShown: card.timesShown,
+    correctCount: card.correctCount,
   });
 }
 
-// --- Adaptive Frequency ---
+// --- Weighted Random Selection ---
+
+function getWeight(card) {
+  // Weight = 1 / (1 + timesShown) / (1 + correctCount)
+  // Unseen cards: weight = 1. High correct count → very low weight.
+  return 1 / (1 + card.timesShown) / (1 + card.correctCount);
+}
 
 function getNextCard() {
-  // Find due cards (nextShowAfter <= sessionCounter)
-  const due = cards.filter(c => c.totalReviews > 0 && c.nextShowAfter <= sessionCounter);
+  if (cards.length === 0) return null;
 
-  if (due.length > 0) {
-    // Pick the one with lowest nextShowAfter (most overdue)
-    due.sort((a, b) => a.nextShowAfter - b.nextShowAfter);
-    return due[0];
+  // Exclude the current card so we don't repeat immediately
+  const pool = currentCard ? cards.filter(c => c !== currentCard) : cards;
+  if (pool.length === 0) return cards[0];
+
+  const weights = pool.map(getWeight);
+  const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+
+  let r = Math.random() * totalWeight;
+  for (let i = 0; i < pool.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return pool[i];
   }
-
-  // No due cards — introduce a new card
-  const newCards = cards.filter(c => c.totalReviews === 0);
-  if (newCards.length > 0) {
-    return newCards[0];
-  }
-
-  return null; // all done
+  return pool[pool.length - 1];
 }
 
 function processAnswer(card, correct) {
-  card.totalReviews++;
-  sessionCounter++;
-
+  card.timesShown++;
   if (correct) {
-    card.correctStreak++;
-    card.nextShowAfter = sessionCounter + BASE_GAP * Math.pow(2, card.correctStreak);
-  } else {
-    card.correctStreak = 0;
-    card.nextShowAfter = sessionCounter + 1;
+    card.correctCount++;
   }
 }
 
 // --- Stats ---
 
 function updateStats() {
-  const dueCount = cards.filter(c => c.totalReviews > 0 && c.nextShowAfter <= sessionCounter).length;
-  const newCount = cards.filter(c => c.totalReviews === 0).length;
-  const learnedCount = cards.filter(c => c.totalReviews > 0).length;
+  const newCount = cards.filter(c => c.timesShown === 0).length;
+  const seenCount = cards.filter(c => c.timesShown > 0).length;
+  const accuracy = cards.reduce((s, c) => s + c.correctCount, 0);
+  const total = cards.reduce((s, c) => s + c.timesShown, 0);
 
-  statDue.textContent = `Due: ${dueCount}`;
-  statNew.textContent = `New: ${newCount}`;
+  statDue.textContent = `Total: ${cards.length}`;
+  statNew.textContent = `Unseen: ${newCount}`;
   statReviewed.textContent = `Reviewed: ${reviewedCount}`;
-  statLearned.textContent = `Learned: ${learnedCount}`;
+  statLearned.textContent = `Accuracy: ${total > 0 ? Math.round(100 * accuracy / total) : 0}%`;
 }
 
 // --- Preloading ---
@@ -242,26 +239,13 @@ async function init() {
   const words = await window.api.loadWords();
   const progress = await loadProgress();
 
-  // Restore sessionCounter from saved state
-  let maxNextShow = 0;
-
   cards = words.map(word => {
     const saved = progress[word];
-    // Only restore if it has the new schema fields
-    if (saved && typeof saved.totalReviews === 'number') {
-      if (saved.nextShowAfter > maxNextShow) maxNextShow = saved.nextShowAfter;
+    if (saved && typeof saved.timesShown === 'number') {
       return { word, ...saved };
     }
-    return {
-      word,
-      correctStreak: 0,
-      totalReviews: 0,
-      nextShowAfter: 0,
-    };
+    return { word, timesShown: 0, correctCount: 0 };
   });
-
-  // Resume sessionCounter so saved nextShowAfter values make sense
-  sessionCounter = maxNextShow;
 
   updateStats();
   showCard();

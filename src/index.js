@@ -91,9 +91,8 @@ ipcMain.handle('load-progress', async () => {
     const progress = {};
     for (const r of records) {
       progress[r.word] = {
-        correctStreak: r.correctStreak,
-        totalReviews: r.totalReviews,
-        nextShowAfter: r.nextShowAfter,
+        timesShown: r.timesShown,
+        correctCount: r.correctCount,
       };
     }
     return progress;

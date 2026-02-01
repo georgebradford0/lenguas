@@ -28,10 +28,10 @@ router.get('/:word', async (req, res) => {
 // PUT /progress/:word - upsert progress for a word
 router.put('/:word', async (req, res) => {
   try {
-    const { correctStreak, totalReviews, nextShowAfter } = req.body;
+    const { timesShown, correctCount } = req.body;
     const record = await Progress.findOneAndUpdate(
       { word: req.params.word },
-      { correctStreak, totalReviews, nextShowAfter },
+      { timesShown, correctCount },
       { upsert: true, new: true, runValidators: true },
     );
     res.json(record);
