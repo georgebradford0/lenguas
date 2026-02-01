@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, net } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 const OpenAI = require('openai');
-
 const API_BASE = 'http://localhost:3000';
 
 const openai = new OpenAI({ apiKey: 'YOUR_OPENAI_API_KEY'});
@@ -40,13 +39,20 @@ ipcMain.handle('translate', async (_event, word) => {
 });
 
 ipcMain.handle('speak', async (_event, text) => {
-  const response = await openai.audio.speech.create({
-    model: 'tts-1',
-    voice: 'nova',
-    input: text,
+  return new Promise((resolve, reject) => {
+    const url = `${API_BASE}/speak/${encodeURIComponent(text)}`;
+    const request = net.request(url);
+    const chunks = [];
+    request.on('response', (response) => {
+      response.on('data', (chunk) => {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      });
+      response.on('end', () => resolve(Buffer.concat(chunks).toString('base64')));
+      response.on('error', reject);
+    });
+    request.on('error', reject);
+    request.end();
   });
-  const buffer = Buffer.from(await response.arrayBuffer());
-  return buffer.toString('base64');
 });
 
 ipcMain.handle('load-words', async () => {

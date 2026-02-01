@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-polly": "^3.980.0",
     "electron-squirrel-startup": "^1.0.1",
     "openai": "^6.17.0"
   },

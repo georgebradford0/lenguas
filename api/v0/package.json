@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-polly": "^3.980.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "mongoose": "^9.1.5"
