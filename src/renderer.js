@@ -1,5 +1,3 @@
-const STORAGE_KEY = 'srs-german-progress';
-const NEW_CARDS_PER_SESSION = 10;
 const BASE_GAP = 1;
 const ADVANCE_DELAY = 1200; // ms after answer before next card
 
@@ -21,27 +19,18 @@ let answering = false; // prevent double-clicks during delay
 let translationCache = {};
 let audioCache = {};
 
-// --- Persistence ---
+// --- Persistence (via API) ---
 
-function loadProgress() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
+async function loadProgress() {
+  return window.api.loadProgress();
 }
 
-function saveProgress() {
-  const data = {};
-  for (const c of cards) {
-    data[c.word] = {
-      correctStreak: c.correctStreak,
-      totalReviews: c.totalReviews,
-      nextShowAfter: c.nextShowAfter,
-    };
-  }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function saveCardProgress(card) {
+  window.api.saveProgress(card.word, {
+    correctStreak: card.correctStreak,
+    totalReviews: card.totalReviews,
+    nextShowAfter: card.nextShowAfter,
+  });
 }
 
 // --- Adaptive Frequency ---
@@ -217,7 +206,7 @@ function handleChoice(clickedBtn, correct) {
   // Update card state
   processAnswer(currentCard, correct);
   reviewedCount++;
-  saveProgress();
+  saveCardProgress(currentCard);
 
   // Prefetch next during delay
   prefetchNextCard();
@@ -251,7 +240,7 @@ document.addEventListener('keydown', (e) => {
 
 async function init() {
   const words = await window.api.loadWords();
-  const progress = loadProgress();
+  const progress = await loadProgress();
 
   // Restore sessionCounter from saved state
   let maxNextShow = 0;

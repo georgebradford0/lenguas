@@ -1,7 +1,9 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, net } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 const OpenAI = require('openai');
+
+const API_BASE = 'http://localhost:3000';
 
 const openai = new OpenAI({ apiKey: 'YOUR_OPENAI_API_KEY'});
 
@@ -53,6 +55,63 @@ ipcMain.handle('load-words', async () => {
   const lines = content.split('\n').map(l => l.trim()).filter(Boolean);
   // Skip header
   return lines.slice(1);
+});
+
+// --- API proxy handlers ---
+
+function fetchJSON(urlPath, options = {}) {
+  return new Promise((resolve, reject) => {
+    const url = `${API_BASE}${urlPath}`;
+    const request = net.request({
+      url,
+      method: options.method || 'GET',
+    });
+    if (options.body) {
+      request.setHeader('Content-Type', 'application/json');
+    }
+    let body = '';
+    request.on('response', (response) => {
+      response.on('data', (chunk) => { body += chunk.toString(); });
+      response.on('end', () => {
+        try { resolve(JSON.parse(body)); }
+        catch { resolve(body); }
+      });
+    });
+    request.on('error', reject);
+    if (options.body) {
+      request.write(JSON.stringify(options.body));
+    }
+    request.end();
+  });
+}
+
+ipcMain.handle('load-progress', async () => {
+  try {
+    const records = await fetchJSON('/progress');
+    const progress = {};
+    for (const r of records) {
+      progress[r.word] = {
+        correctStreak: r.correctStreak,
+        totalReviews: r.totalReviews,
+        nextShowAfter: r.nextShowAfter,
+      };
+    }
+    return progress;
+  } catch (err) {
+    console.error('Failed to load progress from API:', err);
+    return {};
+  }
+});
+
+ipcMain.handle('save-progress', async (_event, word, data) => {
+  try {
+    await fetchJSON(`/progress/${encodeURIComponent(word)}`, {
+      method: 'PUT',
+      body: data,
+    });
+  } catch (err) {
+    console.error('Failed to save progress:', err);
+  }
 });
 
 const createWindow = () => {
