@@ -99,82 +99,40 @@ body {
   font-size: 1.4rem;
   color: #e0e0e0;
   font-weight: 600;
-  margin-bottom: 0.5rem;
 }
 
-#card-info .example {
-  font-size: 1rem;
-  color: #8892b0;
-  font-style: italic;
-}
-
-#show-container {
+#button-row {
+  display: flex;
+  gap: 0.75rem;
   width: 100%;
 }
 
-#btn-show {
-  width: 100%;
+#btn-show, #btn-next {
+  flex: 1;
   padding: 1rem;
   font-size: 1.1rem;
-  background: #0f3460;
-  color: #e0e0e0;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s;
 }
 
+#btn-show {
+  background: #0f3460;
+  color: #e0e0e0;
+}
+
 #btn-show:hover {
   background: #1a4f8a;
 }
 
-#rating-container {
-  display: flex;
-  gap: 0.75rem;
-  width: 100%;
-}
-
-.rate-btn {
-  flex: 1;
-  padding: 1rem 0.5rem;
-  font-size: 0.95rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+#btn-next {
+  background: #27ae60;
   color: #fff;
 }
 
-.rate-btn:active {
-  transform: scale(0.96);
-}
-
-.rate-btn[data-rating="0"] {
-  background: #e74c3c;
-}
-.rate-btn[data-rating="0"]:hover {
-  background: #c0392b;
-}
-
-.rate-btn[data-rating="1"] {
-  background: #e67e22;
-}
-.rate-btn[data-rating="1"]:hover {
-  background: #d35400;
-}
-
-.rate-btn[data-rating="2"] {
-  background: #27ae60;
-}
-.rate-btn[data-rating="2"]:hover {
+#btn-next:hover {
   background: #1e8449;
-}
-
-.rate-btn[data-rating="3"] {
-  background: #2980b9;
-}
-.rate-btn[data-rating="3"]:hover {
-  background: #1f6da0;
 }
 
 #done-message {

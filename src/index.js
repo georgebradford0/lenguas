@@ -13,7 +13,7 @@ ipcMain.handle('translate', async (_event, word) => {
   const response = await openai.responses.create({
     model: 'gpt-4o-mini',
     input: [
-      { role: 'system', content: 'You are a German-English dictionary. Given a German word, return a JSON object with "word" (the German word), "translation" (brief English translation, 1-5 words), and "example" (a short German example sentence using the word).' },
+      { role: 'system', content: 'You are a German-English dictionary. Given a German word, return a JSON object with "word" (the German word) and "translation" (brief English translation, 1-5 words).' },
       { role: 'user', content: word },
     ],
     text: {
@@ -25,9 +25,8 @@ ipcMain.handle('translate', async (_event, word) => {
           properties: {
             word: { type: 'string' },
             translation: { type: 'string' },
-            example: { type: 'string' },
           },
-          required: ['word', 'translation', 'example'],
+          required: ['word', 'translation'],
           additionalProperties: false,
         },
         strict: true,
