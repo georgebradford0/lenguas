@@ -10,6 +10,8 @@ services:
     build: ./api/v0
     ports:
       - "3000:3000"
+    volumes:
+      - ./german_words.csv:/german_words.csv:ro
     environment:
       - MONGO_URI=mongodb://mongo:27017/language-app
       - PORT=3000
