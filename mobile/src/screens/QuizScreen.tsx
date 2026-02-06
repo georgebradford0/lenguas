@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     width: '100%',
-    maxWidth: 500,
+    maxWidth: 900,
     padding: spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',

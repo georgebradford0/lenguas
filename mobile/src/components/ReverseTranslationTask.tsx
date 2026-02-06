@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { Card, Choice } from '../types';
-import { colors, spacing } from '../styles/theme';
+import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
 import { useTranslation } from '../hooks/useTranslation';
 import { useAudio } from '../hooks/useAudio';
@@ -136,15 +136,24 @@ const styles = StyleSheet.create({
   promptContainer: {
     alignItems: 'center',
     marginBottom: spacing.xxl,
+    backgroundColor: colors.cardBackground,
+    borderRadius: borderRadius.lg,
+    paddingVertical: spacing.xxl,
+    paddingHorizontal: spacing.xl,
+    width: '100%',
+    minHeight: 240,
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   promptLabel: {
-    fontSize: 16,
+    fontSize: fontSize.md,
     color: colors.muted,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
     textAlign: 'center',
   },
   englishWord: {
-    fontSize: 48,
+    fontSize: fontSize.word,
     fontWeight: 'bold',
     color: colors.text,
     textAlign: 'center',

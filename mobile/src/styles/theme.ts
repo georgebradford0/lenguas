@@ -20,26 +20,26 @@ export const colors = {
 };
 
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
+  xs: 6,
+  sm: 12,
+  md: 20,
+  lg: 32,
+  xl: 48,
+  xxl: 64,
 };
 
 export const fontSize = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 24,
-  xxl: 32,
-  word: 48,
+  xs: 16,
+  sm: 18,
+  md: 22,
+  lg: 26,
+  xl: 32,
+  xxl: 42,
+  word: 64,
 };
 
 export const borderRadius = {
-  sm: 4,
-  md: 10,
-  lg: 16,
+  sm: 6,
+  md: 12,
+  lg: 20,
 };

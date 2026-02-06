@@ -26,18 +26,20 @@ export function ChoiceButton({ text, state, onPress }: ChoiceButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    padding: spacing.md,
+    padding: spacing.lg,
     backgroundColor: colors.cardBackground,
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: colors.border,
     borderRadius: borderRadius.md,
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: 80,
   },
   text: {
-    fontSize: fontSize.md,
+    fontSize: fontSize.lg,
     color: colors.text,
     textAlign: 'center',
+    fontWeight: '500',
   },
 });
 
