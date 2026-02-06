@@ -78,6 +78,23 @@ export function useCards() {
     });
   }, [cards]);
 
+  // Calculate tier-specific stats
+  const tierStats = [1, 2, 3, 4].map((tier) => {
+    const tierCards = cards.filter((c) => c.tier === tier);
+    const totalInTier = tierCards.length;
+    const masteredInTier = tierCards.filter((c) => {
+      const accuracy = c.timesShown > 0 ? c.correctCount / c.timesShown : 0;
+      return c.timesShown >= 7 && accuracy >= 0.75; // Known level (mastery 3+)
+    }).length;
+
+    return {
+      tier,
+      total: totalInTier,
+      mastered: masteredInTier,
+      percentage: totalInTier > 0 ? Math.round((masteredInTier / totalInTier) * 100) : 0,
+    };
+  }).filter((t) => t.total > 0); // Only include tiers with words
+
   const stats = {
     total: cards.length,
     unseen: cards.filter((c) => c.timesShown === 0).length,
@@ -89,6 +106,7 @@ export function useCards() {
               cards.reduce((s, c) => s + c.timesShown, 0)
           )
         : 0,
+    tierStats,
   };
 
   return {

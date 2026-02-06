@@ -1,15 +1,22 @@
 export const colors = {
-  background: '#1a1a2e',
-  cardBackground: '#16213e',
-  text: '#e0e0e0',
-  muted: '#8892b0',
-  correct: '#27ae60',
-  correctBackground: '#1e8449',
-  wrong: '#e74c3c',
-  wrongBackground: '#922b21',
-  border: '#2a2f4e',
-  borderHover: '#3a4f7a',
-  loadingText: '#5a6080',
+  background: '#f8f9fa',
+  cardBackground: '#ffffff',
+  text: '#2c3e50',
+  muted: '#6c757d',
+  correct: '#28a745',
+  correctBackground: '#d4edda',
+  wrong: '#dc3545',
+  wrongBackground: '#f8d7da',
+  border: '#dee2e6',
+  borderHover: '#adb5bd',
+  loadingText: '#adb5bd',
+  // Tier colors
+  tier1: '#3498db',
+  tier2: '#9b59b6',
+  tier3: '#e67e22',
+  tier4: '#e74c3c',
+  progressBar: '#e9ecef',
+  progressFill: '#3498db',
 };
 
 export const spacing = {
