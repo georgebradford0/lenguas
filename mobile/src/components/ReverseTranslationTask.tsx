@@ -88,10 +88,9 @@ export function ReverseTranslationTask({
       setAnswered(true);
 
       const correct = choices[index].correct;
-      const selectedWord = choices[index].text;
 
-      // Play audio of the selected word and wait for it to finish
-      await playAudio(selectedWord);
+      // Always play audio of the correct word (card.word) for learning
+      await playAudio(card.word);
 
       // Short pause after audio finishes
       await new Promise(resolve => setTimeout(resolve, PAUSE_AFTER_AUDIO));
@@ -100,7 +99,7 @@ export function ReverseTranslationTask({
       loadedWordRef.current = null; // Allow loading next card
       onAnswer(correct);
     },
-    [answered, choices, onAnswer, playAudio]
+    [answered, choices, onAnswer, playAudio, card.word]
   );
 
   if (!englishWord || !choices) {
