@@ -14,7 +14,7 @@ interface ReverseTranslationTaskProps {
   onCardReady?: () => void;
 }
 
-const ADVANCE_DELAY = 1200;
+const PAUSE_AFTER_AUDIO = 500; // Short pause after audio finishes
 
 export function ReverseTranslationTask({
   card,
@@ -81,7 +81,7 @@ export function ReverseTranslationTask({
   }, [card, allWords, getTranslation, onCardReady]);
 
   const handleSelect = useCallback(
-    (index: number) => {
+    async (index: number) => {
       if (answered || !choices) return;
 
       setSelectedIndex(index);
@@ -90,14 +90,15 @@ export function ReverseTranslationTask({
       const correct = choices[index].correct;
       const selectedWord = choices[index].text;
 
-      // Play audio of the selected word
-      playAudio(selectedWord);
+      // Play audio of the selected word and wait for it to finish
+      await playAudio(selectedWord);
 
-      // Auto-advance after delay
-      setTimeout(() => {
-        loadedWordRef.current = null; // Allow loading next card
-        onAnswer(correct);
-      }, ADVANCE_DELAY);
+      // Short pause after audio finishes
+      await new Promise(resolve => setTimeout(resolve, PAUSE_AFTER_AUDIO));
+
+      // Advance to next card
+      loadedWordRef.current = null; // Allow loading next card
+      onAnswer(correct);
     },
     [answered, choices, onAnswer, playAudio]
   );

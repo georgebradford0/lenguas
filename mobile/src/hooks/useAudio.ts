@@ -20,7 +20,7 @@ export function useAudio() {
   }, []);
 
   const playAudio = useCallback(
-    async (word: string) => {
+    async (word: string): Promise<void> => {
       try {
         const base64 = await prefetchAudio(word);
 
@@ -33,7 +33,13 @@ export function useAudio() {
 
           const audio = new Audio(`data:audio/mp3;base64,${base64}`);
           audioRef.current = audio;
-          await audio.play();
+
+          // Wait for audio to finish playing
+          await new Promise<void>((resolve, reject) => {
+            audio.onended = () => resolve();
+            audio.onerror = (err) => reject(err);
+            audio.play().catch(reject);
+          });
         } else {
           // Stop any currently playing sound
           if (soundRef.current) {
@@ -46,22 +52,30 @@ export function useAudio() {
           const tempPath = `${RNFS.CachesDirectoryPath}/audio_${word}.mp3`;
           await RNFS.writeFile(tempPath, base64, 'base64');
 
-          const sound = new Sound(tempPath, '', (error) => {
-            if (error) {
-              console.error('Failed to load sound:', error);
-              return;
-            }
-            soundRef.current = sound;
-            sound.play((success) => {
-              if (!success) {
-                console.error('Sound playback failed');
+          // Wait for sound to load and play
+          await new Promise<void>((resolve, reject) => {
+            const sound = new Sound(tempPath, '', (error) => {
+              if (error) {
+                console.error('Failed to load sound:', error);
+                reject(error);
+                return;
               }
-              sound.release();
+              soundRef.current = sound;
+              sound.play((success) => {
+                if (!success) {
+                  console.error('Sound playback failed');
+                  reject(new Error('Sound playback failed'));
+                } else {
+                  resolve();
+                }
+                sound.release();
+              });
             });
           });
         }
       } catch (err) {
         console.error('Audio playback failed:', err);
+        // Don't throw - just log and continue
       }
     },
     [prefetchAudio]
