@@ -1,6 +1,9 @@
 import type { TranslationResult, ProgressRecord } from '../types';
 
-const API_BASE = 'http://192.168.0.13:3000';
+// For iOS Simulator: Use your Mac's local IP (not localhost)
+// To find your IP: ipconfig getifaddr en0
+// For Docker: Make sure container exposes port with -p 3000:3000
+const API_BASE = 'http://localhost:3000';
 
 export async function loadWords(): Promise<string[]> {
   const response = await fetch(`${API_BASE}/words`);
