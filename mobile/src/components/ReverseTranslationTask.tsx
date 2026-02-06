@@ -4,6 +4,7 @@ import type { Card, Choice } from '../types';
 import { colors, spacing } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
 import { useTranslation } from '../hooks/useTranslation';
+import { useAudio } from '../hooks/useAudio';
 import { ChoiceGrid } from './ChoiceGrid';
 
 interface ReverseTranslationTaskProps {
@@ -22,6 +23,7 @@ export function ReverseTranslationTask({
   onCardReady
 }: ReverseTranslationTaskProps) {
   const { getTranslation } = useTranslation();
+  const { playAudio } = useAudio();
 
   const [englishWord, setEnglishWord] = useState<string | null>(null);
   const [choices, setChoices] = useState<Choice[] | null>(null);
@@ -86,6 +88,10 @@ export function ReverseTranslationTask({
       setAnswered(true);
 
       const correct = choices[index].correct;
+      const selectedWord = choices[index].text;
+
+      // Play audio of the selected word
+      playAudio(selectedWord);
 
       // Auto-advance after delay
       setTimeout(() => {
@@ -93,7 +99,7 @@ export function ReverseTranslationTask({
         onAnswer(correct);
       }, ADVANCE_DELAY);
     },
-    [answered, choices, onAnswer]
+    [answered, choices, onAnswer, playAudio]
   );
 
   if (!englishWord || !choices) {
