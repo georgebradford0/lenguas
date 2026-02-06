@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-// GET /words - return word list as JSON array
+// GET /words - return word list with tiers as JSON array of objects
 router.get('/', (req, res) => {
   try {
     const csvPath = path.join(__dirname, '..', '..', '..', 'german_words.csv');
@@ -12,8 +12,14 @@ router.get('/', (req, res) => {
       .split('\n')
       .map((l) => l.trim())
       .filter(Boolean);
-    // Skip header row
-    const words = lines.slice(1);
+
+    // Parse CSV: first line is header (word,tier)
+    // Return array of objects with word and tier
+    const words = lines.slice(1).map((line) => {
+      const [word, tier] = line.split(',');
+      return { word: word.trim(), tier: parseInt(tier, 10) || 1 };
+    });
+
     res.json(words);
   } catch (err) {
     res.status(500).json({ error: err.message });

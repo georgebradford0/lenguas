@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import type { Card } from '../types';
 import { loadWords, loadProgress, saveProgress } from '../api/client';
 import { getNextCard } from '../utils/weightedSelection';
+import { selectTaskType } from '../utils/taskSelection';
 
 export function useCards() {
   const [cards, setCards] = useState<Card[]>([]);
@@ -14,15 +15,23 @@ export function useCards() {
     async function init() {
       try {
         const [words, progress] = await Promise.all([loadWords(), loadProgress()]);
-        const initialCards = words.map((word) => {
-          const saved = progress[word];
-          if (saved && typeof saved.timesShown === 'number') {
-            return { word, ...saved };
-          }
-          return { word, timesShown: 0, correctCount: 0 };
+        const initialCards = words.map((wordData) => {
+          const saved = progress[wordData.word];
+          const card: Card = {
+            word: wordData.word,
+            tier: wordData.tier,
+            timesShown: saved?.timesShown || 0,
+            correctCount: saved?.correctCount || 0,
+            lastSeenTaskType: saved?.lastSeenTaskType || null,
+          };
+          return card;
         });
         setCards(initialCards);
-        setCurrentCard(getNextCard(initialCards, null));
+        const firstCard = getNextCard(initialCards, null);
+        if (firstCard) {
+          firstCard.taskType = selectTaskType(firstCard);
+        }
+        setCurrentCard(firstCard);
         setLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to initialize');
@@ -36,10 +45,11 @@ export function useCards() {
     (correct: boolean) => {
       if (!currentCard) return;
 
-      const updatedCard = {
+      const updatedCard: Card = {
         ...currentCard,
         timesShown: currentCard.timesShown + 1,
         correctCount: currentCard.correctCount + (correct ? 1 : 0),
+        lastSeenTaskType: currentCard.taskType || null,
       };
 
       setCards((prev) => prev.map((c) => (c.word === currentCard.word ? updatedCard : c)));
@@ -49,6 +59,8 @@ export function useCards() {
       saveProgress(currentCard.word, {
         timesShown: updatedCard.timesShown,
         correctCount: updatedCard.correctCount,
+        tier: updatedCard.tier,
+        lastSeenTaskType: updatedCard.lastSeenTaskType || undefined,
       }).catch(console.error);
 
       return updatedCard;
@@ -57,7 +69,13 @@ export function useCards() {
   );
 
   const nextCard = useCallback(() => {
-    setCurrentCard((prev) => getNextCard(cards, prev));
+    setCurrentCard((prev) => {
+      const next = getNextCard(cards, prev);
+      if (next) {
+        next.taskType = selectTaskType(next);
+      }
+      return next;
+    });
   }, [cards]);
 
   const stats = {

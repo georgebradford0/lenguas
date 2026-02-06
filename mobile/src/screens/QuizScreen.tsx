@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing } from '../styles/theme';
 import { getNextCard } from '../utils/weightedSelection';
@@ -7,6 +7,7 @@ import { useAudio } from '../hooks/useAudio';
 import { useTranslation } from '../hooks/useTranslation';
 import { StatsBar } from '../components/StatsBar';
 import { MultipleChoiceTask } from '../components/MultipleChoiceTask';
+import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
 import { DoneMessage } from '../components/DoneMessage';
 
 export function QuizScreen() {
@@ -15,6 +16,9 @@ export function QuizScreen() {
   const { prefetchTranslation } = useTranslation();
   const cardsRef = useRef(cards);
   cardsRef.current = cards;
+
+  // Extract all words for reverse translation task
+  const allWords = useMemo(() => cards.map((c) => c.word), [cards]);
 
   const handleAnswer = useCallback(
     (correct: boolean) => {
@@ -60,16 +64,36 @@ export function QuizScreen() {
     );
   }
 
+  // Render appropriate task based on task type
+  const renderTask = () => {
+    if (!currentCard) return null;
+
+    switch (currentCard.taskType) {
+      case 'reverseTranslation':
+        return (
+          <ReverseTranslationTask
+            card={currentCard}
+            allWords={allWords}
+            onAnswer={handleAnswer}
+            onCardReady={handleCardReady}
+          />
+        );
+      case 'multipleChoice':
+      default:
+        return (
+          <MultipleChoiceTask
+            card={currentCard}
+            onAnswer={handleAnswer}
+            onCardReady={handleCardReady}
+          />
+        );
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatsBar {...stats} />
-      <View style={styles.content}>
-        <MultipleChoiceTask
-          card={currentCard}
-          onAnswer={handleAnswer}
-          onCardReady={handleCardReady}
-        />
-      </View>
+      <View style={styles.content}>{renderTask()}</View>
     </View>
   );
 }

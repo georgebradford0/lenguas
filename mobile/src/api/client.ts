@@ -1,11 +1,11 @@
-import type { TranslationResult, ProgressRecord } from '../types';
+import type { TranslationResult, ProgressRecord, WordData } from '../types';
 
 // For iOS Simulator: Use your Mac's local IP (not localhost)
 // To find your IP: ipconfig getifaddr en0
 // For Docker: Make sure container exposes port with -p 3000:3000
 const API_BASE = 'http://localhost:3000';
 
-export async function loadWords(): Promise<string[]> {
+export async function loadWords(): Promise<WordData[]> {
   const response = await fetch(`${API_BASE}/words`);
   if (!response.ok) {
     throw new Error('Failed to load words');
@@ -35,17 +35,20 @@ export async function speak(text: string): Promise<string> {
   return btoa(binary);
 }
 
-export async function loadProgress(): Promise<Record<string, { timesShown: number; correctCount: number }>> {
+export async function loadProgress(): Promise<Record<string, ProgressRecord>> {
   const response = await fetch(`${API_BASE}/progress`);
   if (!response.ok) {
     throw new Error('Failed to load progress');
   }
   const records: ProgressRecord[] = await response.json();
-  const progress: Record<string, { timesShown: number; correctCount: number }> = {};
+  const progress: Record<string, ProgressRecord> = {};
   for (const r of records) {
     progress[r.word] = {
+      word: r.word,
       timesShown: r.timesShown,
       correctCount: r.correctCount,
+      tier: r.tier,
+      lastSeenTaskType: r.lastSeenTaskType,
     };
   }
   return progress;
@@ -53,7 +56,7 @@ export async function loadProgress(): Promise<Record<string, { timesShown: numbe
 
 export async function saveProgress(
   word: string,
-  data: { timesShown: number; correctCount: number }
+  data: { timesShown: number; correctCount: number; tier?: number; lastSeenTaskType?: string }
 ): Promise<void> {
   await fetch(`${API_BASE}/progress/${encodeURIComponent(word)}`, {
     method: 'PUT',
