@@ -1,84 +1,62 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import type { Card, Choice } from '../types';
+import type { ReverseTranslationTaskData, Choice } from '../types';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
-import { useTranslation } from '../hooks/useTranslation';
 import { useAudio } from '../hooks/useAudio';
 import { ChoiceGrid } from './ChoiceGrid';
 
 interface ReverseTranslationTaskProps {
-  card: Card;
-  allWords: string[]; // All available German words for wrong choices
-  onAnswer: (correct: boolean) => void;
-  onCardReady?: () => void;
+  taskData: ReverseTranslationTaskData;
+  onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
+  onTaskReady?: () => void;
 }
 
-const PAUSE_AFTER_AUDIO = 500; // Short pause after audio finishes
+const PAUSE_AFTER_AUDIO = 500;
 
+/**
+ * Reverse translation task with dynamically generated content
+ * Shows English text, user selects German translation
+ */
 export function ReverseTranslationTask({
-  card,
-  allWords,
+  taskData,
   onAnswer,
-  onCardReady
+  onTaskReady,
 }: ReverseTranslationTaskProps) {
-  const { getTranslation } = useTranslation();
   const { playAudio } = useAudio();
 
-  const [englishWord, setEnglishWord] = useState<string | null>(null);
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
-  const loadedWordRef = useRef<string | null>(null);
+  const taskIdRef = useRef<string | null>(null);
 
-  // Load translation and create choices when card changes
+  // Create unique ID for this task
+  const taskId = `${taskData.english}-${taskData.correctGerman}`;
+
+  // Load choices when task changes
   useEffect(() => {
-    if (!card) {
-      setChoices(null);
-      setEnglishWord(null);
-      loadedWordRef.current = null;
+    // Skip if we already loaded this task
+    if (taskIdRef.current === taskId) {
       return;
     }
 
-    // Skip if we already loaded this word
-    if (loadedWordRef.current === card.word) {
-      return;
-    }
+    // Create shuffled choices with German words
+    const options = shuffle([
+      { text: taskData.correctGerman, correct: true },
+      { text: taskData.wrongOptions[0], correct: false },
+      { text: taskData.wrongOptions[1], correct: false },
+      { text: taskData.wrongOptions[2], correct: false },
+    ]);
 
-    // Load translation
-    getTranslation(card.word)
-      .then((result) => {
-        // Pick 3 random other German words as wrong choices
-        const otherWords = allWords.filter((w) => w !== card.word);
-        const wrongWords: string[] = [];
-        const shuffled = [...otherWords].sort(() => Math.random() - 0.5);
+    // Update state
+    setChoices(options);
+    setSelectedIndex(null);
+    setAnswered(false);
+    taskIdRef.current = taskId;
 
-        for (let i = 0; i < Math.min(3, shuffled.length); i++) {
-          wrongWords.push(shuffled[i]);
-        }
-
-        // Create choices with German words
-        const options = shuffle([
-          { text: card.word, correct: true },
-          { text: wrongWords[0] || 'Option1', correct: false },
-          { text: wrongWords[1] || 'Option2', correct: false },
-          { text: wrongWords[2] || 'Option3', correct: false },
-        ]);
-
-        // Update all state together to avoid flicker
-        setEnglishWord(result.translation);
-        setChoices(options);
-        setSelectedIndex(null);
-        setAnswered(false);
-        loadedWordRef.current = card.word;
-
-        // Notify parent that card is ready
-        onCardReady?.();
-      })
-      .catch((err) => {
-        console.error('Failed to load translation:', err);
-      });
-  }, [card, allWords, getTranslation, onCardReady]);
+    // Notify parent
+    onTaskReady?.();
+  }, [taskId, taskData, onTaskReady]);
 
   const handleSelect = useCallback(
     async (index: number) => {
@@ -87,22 +65,23 @@ export function ReverseTranslationTask({
       setSelectedIndex(index);
       setAnswered(true);
 
-      const correct = choices[index].correct;
+      const userAnswer = choices[index].text;
+      const correctAnswer = taskData.correctGerman;
 
-      // Always play audio of the correct word (card.word) for learning
-      await playAudio(card.word);
+      // Always play audio of the correct German word/phrase for learning
+      await playAudio(taskData.correctGerman);
 
       // Short pause after audio finishes
-      await new Promise(resolve => setTimeout(resolve, PAUSE_AFTER_AUDIO));
+      await new Promise((resolve) => setTimeout(resolve, PAUSE_AFTER_AUDIO));
 
-      // Advance to next card
-      loadedWordRef.current = null; // Allow loading next card
-      onAnswer(correct);
+      // Advance to next task
+      taskIdRef.current = null;
+      await onAnswer(userAnswer, correctAnswer);
     },
-    [answered, choices, onAnswer, playAudio, card.word]
+    [answered, choices, taskData.correctGerman, onAnswer, playAudio]
   );
 
-  if (!englishWord || !choices) {
+  if (!choices) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
@@ -113,8 +92,11 @@ export function ReverseTranslationTask({
   return (
     <View style={styles.container}>
       <View style={styles.promptContainer}>
-        <Text style={styles.promptLabel}>Select the German word for:</Text>
-        <Text style={styles.englishWord}>{englishWord}</Text>
+        <Text style={styles.promptLabel}>Select the German translation for:</Text>
+        <Text style={styles.englishWord}>{taskData.english}</Text>
+        {taskData.chunkPattern && (
+          <Text style={styles.patternHint}>Pattern: {taskData.chunkPattern}</Text>
+        )}
       </View>
       <ChoiceGrid
         choices={choices}
@@ -157,6 +139,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.text,
     textAlign: 'center',
+  },
+  patternHint: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+    marginTop: spacing.md,
+    fontStyle: 'italic',
   },
   loadingText: {
     fontSize: 16,

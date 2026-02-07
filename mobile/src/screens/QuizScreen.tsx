@@ -1,99 +1,143 @@
-import React, { useCallback, useRef, useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { colors, spacing } from '../styles/theme';
-import { getNextCard } from '../utils/weightedSelection';
 import { useCards } from '../hooks/useCards';
-import { useAudio } from '../hooks/useAudio';
-import { useTranslation } from '../hooks/useTranslation';
 import { StatsBar } from '../components/StatsBar';
 import { MultipleChoiceTask } from '../components/MultipleChoiceTask';
 import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
-import { DoneMessage } from '../components/DoneMessage';
+import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
+import type { MultipleChoiceTaskData, ReverseTranslationTaskData } from '../types';
 
+/**
+ * Main quiz screen with dynamic task generation
+ */
 export function QuizScreen() {
-  const { cards, currentCard, loading, error, stats, processAnswer, nextCard } = useCards();
-  const { prefetchAudio } = useAudio();
-  const { prefetchTranslation } = useTranslation();
-  const cardsRef = useRef(cards);
-  cardsRef.current = cards;
+  const {
+    progress,
+    currentTask,
+    loading,
+    error,
+    taskLoading,
+    submitting,
+    tasksCompletedThisSession,
+    tierJustUnlocked,
+    handleAnswer,
+    loadNextTask,
+    dismissTierUnlock,
+    tierStatsArray,
+    currentTier,
+    overallAccuracy,
+  } = useCards();
 
-  // Extract all words for reverse translation task
-  const allWords = useMemo(() => cards.map((c) => c.word), [cards]);
-
-  const handleAnswer = useCallback(
-    (correct: boolean) => {
-      processAnswer(correct);
-      nextCard();
+  // Handle answer submission
+  const onAnswerMultipleChoice = useCallback(
+    async (userAnswer: string, correctAnswer: string) => {
+      await handleAnswer(userAnswer, correctAnswer);
+      await loadNextTask();
     },
-    [processAnswer, nextCard]
+    [handleAnswer, loadNextTask]
   );
 
-  const handleCardReady = useCallback(() => {
-    // Prefetch next card
-    if (currentCard) {
-      const next = getNextCard(cardsRef.current, currentCard);
-      if (next) {
-        prefetchTranslation(next.word);
-        prefetchAudio(next.word);
-      }
-    }
-  }, [currentCard, prefetchTranslation, prefetchAudio]);
+  const onAnswerReverseTranslation = useCallback(
+    async (userAnswer: string, correctAnswer: string) => {
+      await handleAnswer(userAnswer, correctAnswer);
+      await loadNextTask();
+    },
+    [handleAnswer, loadNextTask]
+  );
 
+  // Initial loading
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <View style={styles.centerContent}>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={styles.loadingText}>Loading your learning progress...</Text>
+        </View>
       </View>
     );
   }
 
+  // Error state
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>{error}</Text>
+        <View style={styles.centerContent}>
+          <Text style={styles.errorText}>⚠️ {error}</Text>
+          <Text style={styles.errorHint}>Please check your API connection</Text>
+        </View>
       </View>
     );
   }
 
-  if (!currentCard) {
+  // Task loading
+  if (taskLoading || !currentTask) {
     return (
       <View style={styles.container}>
-        <StatsBar {...stats} />
-        <DoneMessage />
+        <StatsBar
+          total={0}
+          unseen={0}
+          reviewed={tasksCompletedThisSession}
+          accuracy={Math.round(overallAccuracy * 100)}
+          tierStats={tierStatsArray}
+        />
+        <View style={styles.centerContent}>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={styles.loadingText}>Generating your next task...</Text>
+          <Text style={styles.tierIndicator}>Tier {currentTier}</Text>
+        </View>
       </View>
     );
   }
 
-  // Render appropriate task based on task type
+  // Render appropriate task based on type
   const renderTask = () => {
-    if (!currentCard) return null;
+    if (!currentTask) return null;
 
-    switch (currentCard.taskType) {
+    switch (currentTask.taskType) {
+      case 'multipleChoice':
+        return (
+          <MultipleChoiceTask
+            taskData={currentTask.task as MultipleChoiceTaskData}
+            onAnswer={onAnswerMultipleChoice}
+          />
+        );
       case 'reverseTranslation':
         return (
           <ReverseTranslationTask
-            card={currentCard}
-            allWords={allWords}
-            onAnswer={handleAnswer}
-            onCardReady={handleCardReady}
+            taskData={currentTask.task as ReverseTranslationTaskData}
+            onAnswer={onAnswerReverseTranslation}
           />
         );
-      case 'multipleChoice':
       default:
-        return (
-          <MultipleChoiceTask
-            card={currentCard}
-            onAnswer={handleAnswer}
-            onCardReady={handleCardReady}
-          />
-        );
+        return <Text style={styles.errorText}>Unknown task type</Text>;
     }
   };
 
   return (
     <View style={styles.container}>
-      <StatsBar {...stats} />
-      <View style={styles.content}>{renderTask()}</View>
+      <StatsBar
+        total={0}
+        unseen={0}
+        reviewed={tasksCompletedThisSession}
+        accuracy={Math.round(overallAccuracy * 100)}
+        tierStats={tierStatsArray}
+      />
+      <View style={styles.content}>
+        {submitting ? (
+          <View style={styles.centerContent}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={styles.loadingText}>Checking answer...</Text>
+          </View>
+        ) : (
+          renderTask()
+        )}
+      </View>
+
+      {/* Tier unlock celebration overlay */}
+      {tierJustUnlocked && (
+        <TierUnlockCelebration tier={tierJustUnlocked} onDismiss={dismissTierUnlock} />
+      )}
     </View>
   );
 }
@@ -112,18 +156,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loadingText: {
+  centerContent: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.xl,
+  },
+  loadingText: {
     color: colors.muted,
     fontSize: 16,
     textAlign: 'center',
-    marginTop: spacing.xxl,
+    marginTop: spacing.lg,
+  },
+  tierIndicator: {
+    color: colors.primary,
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+    fontWeight: '600',
   },
   errorText: {
-    flex: 1,
     color: colors.wrong,
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
-    marginTop: spacing.xxl,
+    marginBottom: spacing.md,
+    fontWeight: '600',
+  },
+  errorHint: {
+    color: colors.muted,
+    fontSize: 14,
+    textAlign: 'center',
   },
 });

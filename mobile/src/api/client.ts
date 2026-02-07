@@ -1,4 +1,13 @@
-import type { TranslationResult, ProgressRecord, WordData } from '../types';
+import type {
+  TranslationResult,
+  ProgressRecord,
+  WordData,
+  GenerateTaskResponse,
+  SubmitAnswerRequest,
+  SubmitAnswerResponse,
+  TierProgress,
+  TaskType,
+} from '../types';
 
 // For iOS Simulator: Use your Mac's local IP (not localhost)
 // To find your IP: ipconfig getifaddr en0
@@ -65,4 +74,62 @@ export async function saveProgress(
     },
     body: JSON.stringify(data),
   });
+}
+
+// New LLM-based task generation API
+
+export async function generateTask(
+  tier: number,
+  taskType: TaskType,
+  focusArea?: string
+): Promise<GenerateTaskResponse> {
+  const response = await fetch(`${API_BASE}/generate-task`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tier,
+      taskType,
+      focusArea: focusArea || 'general',
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to generate task');
+  }
+
+  return response.json();
+}
+
+export async function submitAnswer(
+  request: SubmitAnswerRequest
+): Promise<SubmitAnswerResponse> {
+  const response = await fetch(`${API_BASE}/submit-answer`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to submit answer');
+  }
+
+  return response.json();
+}
+
+export async function getTierProgress(userId?: string): Promise<TierProgress> {
+  const url = userId
+    ? `${API_BASE}/tier-progress?userId=${encodeURIComponent(userId)}`
+    : `${API_BASE}/tier-progress`;
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error('Failed to load tier progress');
+  }
+
+  return response.json();
 }

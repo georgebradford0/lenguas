@@ -6,6 +6,7 @@ const progressRoutes = require('./routes/progress');
 const speakRoutes = require('./routes/speak');
 const translateRoutes = require('./routes/translate');
 const wordsRoutes = require('./routes/words');
+const generateTaskRoutes = require('./routes/generateTask');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use('/progress', progressRoutes);
 app.use('/speak', speakRoutes);
 app.use('/translate', translateRoutes);
 app.use('/words', wordsRoutes);
+app.use('/', generateTaskRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

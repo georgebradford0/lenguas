@@ -1,101 +1,94 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import type { Card, Choice } from '../types';
+import type { MultipleChoiceTaskData, Choice } from '../types';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
-import { useTranslation } from '../hooks/useTranslation';
 import { WordCard } from './WordCard';
 import { ChoiceGrid } from './ChoiceGrid';
 
 interface MultipleChoiceTaskProps {
-  card: Card;
-  onAnswer: (correct: boolean) => void;
-  onCardReady?: () => void;
+  taskData: MultipleChoiceTaskData;
+  onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
+  onTaskReady?: () => void;
 }
 
 const ADVANCE_DELAY = 1200;
 
-export function MultipleChoiceTask({ card, onAnswer, onCardReady }: MultipleChoiceTaskProps) {
+/**
+ * Multiple choice task with dynamically generated content
+ * Shows German text/phrase, user selects English translation
+ */
+export function MultipleChoiceTask({
+  taskData,
+  onAnswer,
+  onTaskReady,
+}: MultipleChoiceTaskProps) {
   const { playAudio, prefetchAudio } = useAudio();
-  const { getTranslation, prefetchTranslation } = useTranslation();
 
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
-  const [displayedWord, setDisplayedWord] = useState<string | null>(null);
-  const loadedWordRef = useRef<string | null>(null);
+  const taskIdRef = useRef<string | null>(null);
 
-  // Load choices when card changes
+  // Create unique ID for this task
+  const taskId = `${taskData.german}-${taskData.correctEnglish}`;
+
+  // Load choices when task changes
   useEffect(() => {
-    if (!card) {
-      setChoices(null);
-      setDisplayedWord(null);
-      loadedWordRef.current = null;
+    // Skip if we already loaded this task
+    if (taskIdRef.current === taskId) {
       return;
     }
 
-    // Skip if we already loaded this word
-    if (loadedWordRef.current === card.word) {
-      return;
-    }
+    // Prefetch audio for German text
+    prefetchAudio(taskData.german);
 
-    // Prefetch audio
-    prefetchAudio(card.word);
+    // Create shuffled choices
+    const options = shuffle([
+      { text: taskData.correctEnglish, correct: true },
+      { text: taskData.wrongOptions[0], correct: false },
+      { text: taskData.wrongOptions[1], correct: false },
+      { text: taskData.wrongOptions[2], correct: false },
+    ]);
 
-    // Load translation, then update UI all at once to avoid flicker
-    getTranslation(card.word)
-      .then((result) => {
-        const options = shuffle([
-          { text: result.translation, correct: true },
-          { text: result.wrong[0], correct: false },
-          { text: result.wrong[1], correct: false },
-          { text: result.wrong[2], correct: false },
-        ]);
+    // Update state
+    setChoices(options);
+    setSelectedIndex(null);
+    setAnswered(false);
+    taskIdRef.current = taskId;
 
-        // Update all state together to avoid flicker
-        setChoices(options);
-        setSelectedIndex(null);
-        setAnswered(false);
-        setDisplayedWord(card.word);
-        loadedWordRef.current = card.word;
+    // Auto-play audio
+    playAudio(taskData.german);
 
-        // Auto-play audio after card is fully loaded
-        playAudio(card.word);
-
-        // Notify parent that card is ready
-        onCardReady?.();
-      })
-      .catch((err) => {
-        console.error('Failed to load translation:', err);
-      });
-  }, [card, prefetchAudio, playAudio, getTranslation, onCardReady]);
+    // Notify parent
+    onTaskReady?.();
+  }, [taskId, taskData, prefetchAudio, playAudio, onTaskReady]);
 
   const handleSelect = useCallback(
-    (index: number) => {
+    async (index: number) => {
       if (answered || !choices) return;
 
       setSelectedIndex(index);
       setAnswered(true);
 
-      const correct = choices[index].correct;
+      const userAnswer = choices[index].text;
+      const correctAnswer = taskData.correctEnglish;
 
       // Auto-advance after delay
-      setTimeout(() => {
-        loadedWordRef.current = null; // Allow loading next card
-        onAnswer(correct);
+      setTimeout(async () => {
+        taskIdRef.current = null; // Allow loading next task
+        await onAnswer(userAnswer, correctAnswer);
       }, ADVANCE_DELAY);
     },
-    [answered, choices, onAnswer]
+    [answered, choices, taskData.correctEnglish, onAnswer]
   );
 
   const handleSpeak = useCallback(() => {
-    if (displayedWord) {
-      playAudio(displayedWord);
-    }
-  }, [displayedWord, playAudio]);
+    playAudio(taskData.german);
+  }, [taskData.german, playAudio]);
 
   return (
     <>
-      <WordCard word={displayedWord || card.word} onSpeak={handleSpeak} />
+      <WordCard word={taskData.german} onSpeak={handleSpeak} />
       <ChoiceGrid
         choices={choices}
         selectedIndex={selectedIndex}
