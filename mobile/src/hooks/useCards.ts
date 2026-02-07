@@ -2,38 +2,37 @@ import { useState, useCallback, useEffect } from 'react';
 import type {
   GenerateTaskResponse,
   SubmitAnswerResponse,
-  TierProgress,
+  TierStatsResponse,
   TaskType,
 } from '../types';
-import { generateTask, submitAnswer, getTierProgress } from '../api/client';
+import { generateTask, submitAnswer, getTierStats } from '../api/client';
 
 /**
  * Hook for tier-based learning with dynamic task generation
  */
 export function useCards(userId?: string) {
-  const [progress, setProgress] = useState<TierProgress | null>(null);
+  const [stats, setStats] = useState<TierStatsResponse | null>(null);
   const [currentTask, setCurrentTask] = useState<GenerateTaskResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [taskLoading, setTaskLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [tasksCompletedThisSession, setTasksCompletedThisSession] = useState(0);
-  const [tierJustUnlocked, setTierJustUnlocked] = useState<number | null>(null);
 
-  // Load initial tier progress
+  // Load initial tier stats
   useEffect(() => {
     async function init() {
       try {
-        const tierProgress = await getTierProgress(userId);
-        setProgress(tierProgress);
+        const tierStats = await getTierStats();
+        setStats(tierStats);
         setLoading(false);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load progress');
+        setError(err instanceof Error ? err.message : 'Failed to load stats');
         setLoading(false);
       }
     }
     init();
-  }, [userId]);
+  }, []);
 
   // Get task type based on tier (weighted selection)
   const selectTaskType = useCallback((tier: number): TaskType => {
@@ -50,28 +49,28 @@ export function useCards(userId?: string) {
 
   // Load next task
   const loadNextTask = useCallback(async () => {
-    if (!progress) return;
+    if (!stats) return;
 
     setTaskLoading(true);
     setError(null);
 
     try {
-      const taskType = selectTaskType(progress.currentTier);
-      const task = await generateTask(progress.currentTier, taskType);
+      const taskType = selectTaskType(stats.currentTier);
+      const task = await generateTask(stats.currentTier, taskType);
       setCurrentTask(task);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate task');
     } finally {
       setTaskLoading(false);
     }
-  }, [progress, selectTaskType]);
+  }, [stats, selectTaskType]);
 
-  // Load first task after progress is loaded
+  // Load first task after stats are loaded
   useEffect(() => {
-    if (progress && !currentTask && !taskLoading) {
+    if (stats && !currentTask && !taskLoading) {
       loadNextTask();
     }
-  }, [progress, currentTask, taskLoading, loadNextTask]);
+  }, [stats, currentTask, taskLoading, loadNextTask]);
 
   // Submit answer and load next task
   const handleAnswer = useCallback(
@@ -79,44 +78,19 @@ export function useCards(userId?: string) {
       if (!currentTask || submitting) return;
 
       setSubmitting(true);
-      setTierJustUnlocked(null);
 
       try {
         const result = await submitAnswer({
-          userId,
+          targetWord: currentTask.targetWord,
           tier: currentTask.tier,
           taskType: currentTask.taskType,
           userAnswer,
           correctAnswer,
-          taskData: currentTask.task,
         });
 
-        // Update local progress
-        setProgress((prev) => {
-          if (!prev) return null;
-
-          const tierKey = `tier${currentTask.tier}` as keyof typeof prev.tierStats;
-          const tierStats = { ...prev.tierStats[tierKey] };
-
-          tierStats.totalAttempts = result.stats.totalAttempts;
-          tierStats.correctAttempts = result.stats.correctAttempts;
-
-          return {
-            ...prev,
-            currentTier: result.currentTier,
-            tierStats: {
-              ...prev.tierStats,
-              [tierKey]: tierStats,
-            },
-            overallAccuracy: result.stats.overallAccuracy,
-            totalTasksCompleted: prev.totalTasksCompleted + 1,
-          };
-        });
-
-        // Track tier unlock
-        if (result.tierUnlocked) {
-          setTierJustUnlocked(result.currentTier);
-        }
+        // Reload stats after answer
+        const updatedStats = await getTierStats();
+        setStats(updatedStats);
 
         // Track session stats
         setTasksCompletedThisSession((prev) => prev + 1);
@@ -129,53 +103,26 @@ export function useCards(userId?: string) {
         setSubmitting(false);
       }
     },
-    [currentTask, submitting, userId]
+    [currentTask, submitting]
   );
-
-  // Dismiss tier unlock celebration
-  const dismissTierUnlock = useCallback(() => {
-    setTierJustUnlocked(null);
-  }, []);
-
-  // Calculate tier stats for display
-  const tierStatsArray = progress
-    ? ([1, 2, 3, 4] as const).map((tier) => {
-        const tierKey = `tier${tier}` as keyof typeof progress.tierStats;
-        const stats = progress.tierStats[tierKey];
-        const accuracy = stats.totalAttempts > 0 ? stats.correctAttempts / stats.totalAttempts : 0;
-
-        return {
-          tier,
-          unlocked: stats.unlocked,
-          totalAttempts: stats.totalAttempts,
-          accuracy: Math.round(accuracy * 100),
-          progressToUnlock:
-            tier === progress.currentTier
-              ? Math.min(100, Math.round((stats.totalAttempts / 20) * 100))
-              : 100,
-        };
-      })
-    : [];
 
   return {
     // State
-    progress,
+    stats,
     currentTask,
     loading,
     error,
     taskLoading,
     submitting,
     tasksCompletedThisSession,
-    tierJustUnlocked,
 
     // Actions
     handleAnswer,
     loadNextTask,
-    dismissTierUnlock,
 
     // Computed stats
-    tierStatsArray,
-    currentTier: progress?.currentTier || 1,
-    overallAccuracy: progress?.overallAccuracy || 0,
+    tierStatsArray: stats?.tierStats || [],
+    currentTier: stats?.currentTier || 1,
+    overallAccuracy: stats?.overallAccuracy || 0,
   };
 }

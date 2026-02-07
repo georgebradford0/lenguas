@@ -5,12 +5,11 @@ import type {
   GenerateTaskResponse,
   SubmitAnswerRequest,
   SubmitAnswerResponse,
-  TierProgress,
+  TierStatsResponse,
   TaskType,
 } from '../types';
 
-// For iOS Simulator: Use your Mac's local IP (not localhost)
-// To find your IP: ipconfig getifaddr en0
+// For iOS Simulator: Simulators can access localhost
 // For Docker: Make sure container exposes port with -p 3000:3000
 const API_BASE = 'http://localhost:3000';
 
@@ -120,15 +119,11 @@ export async function submitAnswer(
   return response.json();
 }
 
-export async function getTierProgress(userId?: string): Promise<TierProgress> {
-  const url = userId
-    ? `${API_BASE}/tier-progress?userId=${encodeURIComponent(userId)}`
-    : `${API_BASE}/tier-progress`;
-
-  const response = await fetch(url);
+export async function getTierStats(): Promise<TierStatsResponse> {
+  const response = await fetch(`${API_BASE}/tier-stats`);
 
   if (!response.ok) {
-    throw new Error('Failed to load tier progress');
+    throw new Error('Failed to load tier stats');
   }
 
   return response.json();

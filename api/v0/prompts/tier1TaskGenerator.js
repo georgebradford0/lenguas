@@ -61,7 +61,7 @@ gut, groß, klein, alt, neu
  * @returns {object} OpenAI chat completion messages
  */
 function generateTier1TaskPrompt(taskType = 'multipleChoice', options = {}) {
-  const { focusArea = 'general', difficulty = 'beginner' } = options;
+  const { focusArea = 'general', difficulty = 'beginner', targetWord = null } = options;
 
   const systemPrompt = `You are a German language teaching assistant specializing in beginner-level (Tier 1) instruction.
 
@@ -82,13 +82,17 @@ IMPORTANT GUIDELINES:
   let userPrompt = '';
 
   if (taskType === 'multipleChoice') {
-    userPrompt = `Generate a multiple choice task for Tier 1 German learners.
+    const wordInstruction = targetWord
+      ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the German text.`
+      : '';
 
+    userPrompt = `Generate a multiple choice task for Tier 1 German learners.
+${wordInstruction}
 TASK FORMAT: Show German text, student selects English translation
 
 REQUIREMENTS:
 - Use Tier 1 vocabulary and patterns only
-- German text can be: a single word with article, a chunk, or a simple sentence
+- German text can be: the target word alone, the word in a chunk, or in a simple sentence
 - Provide 1 correct English translation
 - Provide 3 wrong but plausible English options
 - Wrong options should test understanding (not random words)
@@ -107,14 +111,18 @@ Return your response as JSON:
   "focusGrammar": "optional: grammar element being reinforced (e.g., 'sein conjugation', 'articles')"
 }`;
   } else if (taskType === 'reverseTranslation') {
-    userPrompt = `Generate a reverse translation task for Tier 1 German learners.
+    const wordInstruction = targetWord
+      ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the correct German answer and ensure wrong options are variations of sentences/phrases using this word.`
+      : '';
 
+    userPrompt = `Generate a reverse translation task for Tier 1 German learners.
+${wordInstruction}
 TASK FORMAT: Show English text, student selects correct German translation
 
 REQUIREMENTS:
 - Use Tier 1 vocabulary and patterns only
-- English text should be a practical phrase or sentence
-- Provide 1 correct German translation
+- English text should match the German target word
+- Provide 1 correct German translation (must include the target word)
 - Provide 3 wrong but plausible German options
 - Wrong options should test grammar understanding (wrong article, wrong conjugation, word order, etc.)
 

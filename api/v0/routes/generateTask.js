@@ -1,12 +1,66 @@
 const express = require('express');
 const router = express.Router();
 const OpenAI = require('openai');
+const fs = require('fs');
+const path = require('path');
 const { generateTier1TaskPrompt } = require('../prompts/tier1TaskGenerator');
-const TierProgress = require('../models/TierProgress');
+const Progress = require('../models/Progress');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+// Load words from CSV based on tier
+function loadWordsForTier(tier) {
+  const tierFiles = {
+    1: path.join(__dirname, '..', 'tier1.csv'),
+    2: path.join(__dirname, '..', 'tier2.csv'),
+  };
+
+  const filePath = tierFiles[tier];
+  if (!filePath || !fs.existsSync(filePath)) {
+    throw new Error(`No word list found for tier ${tier}`);
+  }
+
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const lines = content.split('\n').filter(line => line.trim());
+  const words = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const [word, tierNum] = lines[i].split(',');
+    if (word && word.trim()) {
+      words.push({
+        word: word.trim(),
+        tier: parseInt(tierNum) || tier
+      });
+    }
+  }
+
+  return words;
+}
+
+// Weighted selection for spaced repetition
+function selectWord(words, progressRecords) {
+  const wordsWithWeights = words.map(w => {
+    const progress = progressRecords[w.word] || { timesShown: 0, correctCount: 0 };
+    // Lower weight = less likely to be selected
+    // Higher timesShown and correctCount = lower weight
+    const weight = 1 / (1 + progress.timesShown) / (1 + progress.correctCount);
+    return { ...w, weight };
+  });
+
+  const totalWeight = wordsWithWeights.reduce((sum, w) => sum + w.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const word of wordsWithWeights) {
+    random -= word.weight;
+    if (random <= 0) {
+      return word.word;
+    }
+  }
+
+  return wordsWithWeights[0].word;
+}
 
 /**
  * POST /generate-task
@@ -25,8 +79,8 @@ router.post('/generate-task', async (req, res) => {
     const { tier = 1, taskType = 'multipleChoice', focusArea = 'general' } = req.body;
 
     // Validate inputs
-    if (![1, 2, 3, 4].includes(tier)) {
-      return res.status(400).json({ error: 'Invalid tier. Must be 1-4.' });
+    if (![1, 2].includes(tier)) {
+      return res.status(400).json({ error: 'Invalid tier. Must be 1 or 2.' });
     }
 
     if (!['multipleChoice', 'reverseTranslation'].includes(taskType)) {
@@ -35,17 +89,28 @@ router.post('/generate-task', async (req, res) => {
       });
     }
 
-    // For now, only Tier 1 is implemented
-    if (tier !== 1) {
-      return res.status(501).json({
-        error: `Tier ${tier} task generation not yet implemented.`
-      });
-    }
+    // Load words for the tier
+    const words = loadWordsForTier(tier);
 
-    // Generate the prompt
-    const promptConfig = generateTier1TaskPrompt(taskType, { focusArea });
+    // Load progress for all words
+    const progressRecords = {};
+    const allProgress = await Progress.find({});
+    allProgress.forEach(p => {
+      progressRecords[p.word] = {
+        timesShown: p.timesShown,
+        correctCount: p.correctCount
+      };
+    });
 
-    console.log(`Generating ${taskType} task for Tier ${tier}...`);
+    // Select a word using weighted selection (spaced repetition)
+    const targetWord = selectWord(words, progressRecords);
+
+    console.log(`Selected word: "${targetWord}" for Tier ${tier}`);
+
+    // Generate the prompt with target word
+    const promptConfig = generateTier1TaskPrompt(taskType, { focusArea, targetWord });
+
+    console.log(`Generating ${taskType} task for Tier ${tier} with word "${targetWord}"...`);
 
     // Call OpenAI
     const completion = await openai.chat.completions.create({
@@ -75,11 +140,12 @@ router.post('/generate-task', async (req, res) => {
       }
     }
 
-    console.log('Task generated successfully:', taskData);
+    console.log('Task generated successfully for word:', targetWord);
 
-    // Return the task
+    // Return the task with target word
     res.json({
       task: taskData,
+      targetWord,
       tier,
       taskType,
       timestamp: new Date().toISOString()
@@ -99,90 +165,76 @@ router.post('/generate-task', async (req, res) => {
  * Submit answer and update progress tracking
  *
  * Body:
- * - userId: string (optional, defaults to 'default-user')
+ * - targetWord: string - the word being tested
  * - tier: number
  * - taskType: string
  * - userAnswer: string
  * - correctAnswer: string
- * - taskData: object (the original task for logging)
  *
  * Returns:
  * - correct: boolean
- * - stats: updated tier statistics
- * - tierUnlocked: boolean (true if next tier was just unlocked)
+ * - word: string
+ * - stats: updated word statistics
  */
 router.post('/submit-answer', async (req, res) => {
   try {
     const {
-      userId = 'default-user',
+      targetWord,
       tier,
       taskType,
       userAnswer,
-      correctAnswer,
-      taskData
+      correctAnswer
     } = req.body;
 
     // Validate inputs
-    if (!tier || !taskType || !userAnswer || !correctAnswer) {
+    if (!targetWord || !tier || !taskType || !userAnswer || !correctAnswer) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Check if answer is correct
     const isCorrect = userAnswer.trim() === correctAnswer.trim();
 
-    console.log(`Answer submitted: ${isCorrect ? 'CORRECT' : 'WRONG'}`);
+    console.log(`Answer for "${targetWord}": ${isCorrect ? 'CORRECT' : 'WRONG'}`);
     console.log(`  User: "${userAnswer}", Correct: "${correctAnswer}"`);
 
-    // Find or create user's progress
-    const progress = await TierProgress.findOrCreateForUser(userId);
+    // Find or create progress for this word
+    let progress = await Progress.findOne({ word: targetWord });
 
-    // Update tier statistics
-    const tierKey = `tier${tier}`;
-    const tierStats = progress.tierStats[tierKey];
+    if (!progress) {
+      progress = new Progress({
+        word: targetWord,
+        tier: tier,
+        timesShown: 0,
+        correctCount: 0,
+        lastSeenTaskType: null
+      });
+    }
 
-    tierStats.totalAttempts += 1;
+    // Update progress
+    progress.timesShown += 1;
     if (isCorrect) {
-      tierStats.correctAttempts += 1;
+      progress.correctCount += 1;
     }
-
-    // Update task-type-specific stats
-    if (taskType === 'multipleChoice') {
-      tierStats.multipleChoiceAttempts += 1;
-      if (isCorrect) {
-        tierStats.multipleChoiceCorrect += 1;
-      }
-    } else if (taskType === 'reverseTranslation') {
-      tierStats.reverseTranslationAttempts += 1;
-      if (isCorrect) {
-        tierStats.reverseTranslationCorrect += 1;
-      }
-    }
-
-    // Update overall stats
-    progress.totalTasksCompleted += 1;
-    progress.lastStudyDate = new Date();
-
-    // Check if next tier should be unlocked
-    let tierUnlocked = false;
-    if (progress.shouldUnlockNextTier()) {
-      tierUnlocked = progress.unlockNextTier();
-      console.log(`🎉 Tier ${progress.currentTier} unlocked for user ${userId}!`);
-    }
+    progress.lastSeenTaskType = taskType;
 
     await progress.save();
+
+    const accuracy = progress.timesShown > 0
+      ? progress.correctCount / progress.timesShown
+      : 0;
+
+    console.log(`  Progress: ${progress.correctCount}/${progress.timesShown} (${Math.round(accuracy * 100)}%)`);
 
     // Return updated stats
     res.json({
       correct: isCorrect,
+      word: targetWord,
       tier,
       taskType,
-      tierUnlocked,
-      currentTier: progress.currentTier,
       stats: {
-        accuracy: progress.getTierAccuracy(tier),
-        totalAttempts: tierStats.totalAttempts,
-        correctAttempts: tierStats.correctAttempts,
-        overallAccuracy: progress.overallAccuracy
+        timesShown: progress.timesShown,
+        correctCount: progress.correctCount,
+        accuracy: Math.round(accuracy * 100)
       },
       timestamp: new Date().toISOString()
     });
@@ -197,39 +249,83 @@ router.post('/submit-answer', async (req, res) => {
 });
 
 /**
- * GET /tier-progress
- * Get user's tier progress and statistics
- *
- * Query params:
- * - userId: string (optional, defaults to 'default-user')
+ * GET /tier-stats
+ * Get tier-based statistics from word progress
  *
  * Returns:
- * - currentTier: number
- * - tierStats: object with stats for each tier
+ * - currentTier: number (always 1 for now, can add tier unlocking logic later)
+ * - tierStats: array of tier statistics
  * - overallAccuracy: number
- * - totalTasksCompleted: number
+ * - totalWords: number
  */
-router.get('/tier-progress', async (req, res) => {
+router.get('/tier-stats', async (req, res) => {
   try {
-    const { userId = 'default-user' } = req.query;
+    // Load all progress
+    const allProgress = await Progress.find({});
 
-    const progress = await TierProgress.findOrCreateForUser(userId);
+    // Load tier words
+    const tier1Words = loadWordsForTier(1);
+    const tier2Words = loadWordsForTier(2);
+
+    // Calculate stats for each tier
+    const calculateTierStats = (tierWords, tierNum) => {
+      const progressMap = {};
+      allProgress.forEach(p => {
+        progressMap[p.word] = p;
+      });
+
+      let totalAttempts = 0;
+      let correctAttempts = 0;
+      let masteredCount = 0;
+
+      tierWords.forEach(w => {
+        const prog = progressMap[w.word];
+        if (prog) {
+          totalAttempts += prog.timesShown;
+          correctAttempts += prog.correctCount;
+
+          const accuracy = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
+          if (prog.timesShown >= 7 && accuracy >= 0.75) {
+            masteredCount++;
+          }
+        }
+      });
+
+      const accuracy = totalAttempts > 0 ? correctAttempts / totalAttempts : 0;
+
+      return {
+        tier: tierNum,
+        total: tierWords.length,
+        mastered: masteredCount,
+        percentage: Math.round((masteredCount / tierWords.length) * 100),
+        totalAttempts,
+        accuracy: Math.round(accuracy * 100),
+        unlocked: tierNum === 1 // Tier 1 always unlocked
+      };
+    };
+
+    const tierStatsArray = [
+      calculateTierStats(tier1Words, 1),
+      calculateTierStats(tier2Words, 2)
+    ];
+
+    // Calculate overall stats
+    const totalAttempts = allProgress.reduce((sum, p) => sum + p.timesShown, 0);
+    const totalCorrect = allProgress.reduce((sum, p) => sum + p.correctCount, 0);
+    const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
     res.json({
-      userId: progress.userId,
-      currentTier: progress.currentTier,
-      tierStats: progress.tierStats,
-      overallAccuracy: progress.overallAccuracy,
-      totalTasksCompleted: progress.totalTasksCompleted,
-      currentStreak: progress.currentStreak,
-      longestStreak: progress.longestStreak,
-      lastStudyDate: progress.lastStudyDate
+      currentTier: 1,
+      tierStats: tierStatsArray,
+      overallAccuracy,
+      totalWords: tier1Words.length + tier2Words.length,
+      totalAttempts
     });
 
   } catch (error) {
-    console.error('Error fetching tier progress:', error);
+    console.error('Error fetching tier stats:', error);
     res.status(500).json({
-      error: 'Failed to fetch tier progress',
+      error: 'Failed to fetch tier stats',
       details: error.message
     });
   }

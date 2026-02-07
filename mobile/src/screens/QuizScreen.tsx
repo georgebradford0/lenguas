@@ -5,7 +5,6 @@ import { useCards } from '../hooks/useCards';
 import { StatsBar } from '../components/StatsBar';
 import { MultipleChoiceTask } from '../components/MultipleChoiceTask';
 import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
-import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
 import type { MultipleChoiceTaskData, ReverseTranslationTaskData } from '../types';
 
 /**
@@ -13,17 +12,15 @@ import type { MultipleChoiceTaskData, ReverseTranslationTaskData } from '../type
  */
 export function QuizScreen() {
   const {
-    progress,
+    stats,
     currentTask,
     loading,
     error,
     taskLoading,
     submitting,
     tasksCompletedThisSession,
-    tierJustUnlocked,
     handleAnswer,
     loadNextTask,
-    dismissTierUnlock,
     tierStatsArray,
     currentTier,
     overallAccuracy,
@@ -117,10 +114,10 @@ export function QuizScreen() {
   return (
     <View style={styles.container}>
       <StatsBar
-        total={0}
+        total={stats?.totalWords || 0}
         unseen={0}
         reviewed={tasksCompletedThisSession}
-        accuracy={Math.round(overallAccuracy * 100)}
+        accuracy={overallAccuracy}
         tierStats={tierStatsArray}
       />
       <View style={styles.content}>
@@ -133,11 +130,6 @@ export function QuizScreen() {
           renderTask()
         )}
       </View>
-
-      {/* Tier unlock celebration overlay */}
-      {tierJustUnlocked && (
-        <TierUnlockCelebration tier={tierJustUnlocked} onDismiss={dismissTierUnlock} />
-      )}
     </View>
   );
 }

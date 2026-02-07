@@ -57,6 +57,7 @@ export type GeneratedTask = MultipleChoiceTaskData | ReverseTranslationTaskData;
 
 export interface GenerateTaskResponse {
   task: GeneratedTask;
+  targetWord: string;
   tier: number;
   taskType: TaskType;
   timestamp: string;
@@ -90,25 +91,38 @@ export interface TierProgress {
 }
 
 export interface SubmitAnswerRequest {
-  userId?: string;
+  targetWord: string;
   tier: number;
   taskType: TaskType;
   userAnswer: string;
   correctAnswer: string;
-  taskData?: any;
 }
 
 export interface SubmitAnswerResponse {
   correct: boolean;
+  word: string;
   tier: number;
   taskType: TaskType;
-  tierUnlocked: boolean;
-  currentTier: number;
   stats: {
+    timesShown: number;
+    correctCount: number;
     accuracy: number;
-    totalAttempts: number;
-    correctAttempts: number;
-    overallAccuracy: number;
   };
   timestamp: string;
+}
+
+export interface TierStatsResponse {
+  currentTier: number;
+  tierStats: Array<{
+    tier: number;
+    total: number;
+    mastered: number;
+    percentage: number;
+    totalAttempts: number;
+    accuracy: number;
+    unlocked: boolean;
+  }>;
+  overallAccuracy: number;
+  totalWords: number;
+  totalAttempts: number;
 }
