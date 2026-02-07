@@ -77,7 +77,8 @@ IMPORTANT GUIDELINES:
 5. Use simple conjugations of sein and haben
 6. Keep sentences in Subject-Verb-Object order
 7. No explicit grammar explanations - teach through examples
-8. Ensure all wrong answer choices are plausible but clearly incorrect`;
+8. Ensure all wrong answer choices are plausible but clearly incorrect
+9. When teaching verbs, include tasks that test ALL present tense conjugations (ich, du, er/sie/es, wir, ihr, sie/Sie) to ensure students learn complete conjugation patterns`;
 
   let userPrompt = '';
 
@@ -91,7 +92,8 @@ IMPORTANT GUIDELINES:
       'Just the word with article (e.g., "der Hund" → "the dog")',
       'A simple statement (e.g., "Ich bin müde" → "I am tired")',
       'A simple question (e.g., "Wo ist das Brot?" → "Where is the bread?")',
-      'The word in a short phrase (e.g., "ein großer Hund" → "a big dog")'
+      'The word in a short phrase (e.g., "ein großer Hund" → "a big dog")',
+      'A verb conjugation (e.g., "du hast" → "you have", "wir gehen" → "we go")'
     ];
     const styleHint = styles[Math.floor(Math.random() * styles.length)];
 
@@ -116,6 +118,8 @@ EXAMPLES SHOWING VARIETY:
 - Question: "Wo ist das Brot?" → correct: "Where is the bread?", wrong: ["Where is the water?", "What is the bread?", "Who is the bread?"]
 - Verb alone: "gehen" → correct: "to go", wrong: ["to come", "to walk", "to run"]
 - With adjective: "ein großer Hund" → correct: "a big dog", wrong: ["a small dog", "the big dog", "big dogs"]
+- Verb conjugation: "du hast" → correct: "you have", wrong: ["you are", "I have", "you had"]
+- Verb conjugation: "wir gehen" → correct: "we go", wrong: ["we come", "you go", "we are going"]
 
 Return your response as JSON:
 {
@@ -135,7 +139,8 @@ Return your response as JSON:
       'Just the word with article (e.g., "the dog" → "der Hund")',
       'A simple statement (e.g., "I am tired" → "Ich bin müde")',
       'A simple question (e.g., "Where is the bread?" → "Wo ist das Brot?")',
-      'The word in a short phrase (e.g., "a big dog" → "ein großer Hund")'
+      'The word in a short phrase (e.g., "a big dog" → "ein großer Hund")',
+      'A verb conjugation (e.g., "you have" → "du hast", "we go" → "wir gehen")'
     ];
     const styleHint = styles[Math.floor(Math.random() * styles.length)];
 
@@ -160,6 +165,8 @@ EXAMPLES SHOWING VARIETY:
 - Question: "Where is the bread?" → correct: "Wo ist das Brot?", wrong: ["Wo das Brot ist?", "Was ist das Brot?", "Wo ist der Brot?"]
 - Verb infinitive: "to go" → correct: "gehen", wrong: ["geht", "gegangen", "ging"]
 - With adjective: "a big dog" → correct: "ein großer Hund", wrong: ["ein große Hund", "der großer Hund", "ein groß Hund"]
+- Verb conjugation: "you have" → correct: "du hast", wrong: ["du bist", "du hat", "du haben"]
+- Verb conjugation: "we go" → correct: "wir gehen", wrong: ["wir geht", "ihr geht", "wir sind gehen"]
 
 Return your response as JSON:
 {
