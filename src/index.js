@@ -1,10 +1,11 @@
+require('dotenv').config();
 const { app, BrowserWindow, ipcMain, net } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 const OpenAI = require('openai');
 const API_BASE = 'http://localhost:3000';
 
-const openai = new OpenAI({ apiKey: 'YOUR_OPENAI_API_KEY'});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 if (require('electron-squirrel-startup')) {
   app.quit();
