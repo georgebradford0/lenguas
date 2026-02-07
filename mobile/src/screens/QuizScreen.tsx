@@ -72,10 +72,7 @@ export function QuizScreen() {
     return (
       <View style={styles.container}>
         <StatsBar
-          total={0}
-          unseen={0}
-          reviewed={tasksCompletedThisSession}
-          accuracy={Math.round(overallAccuracy * 100)}
+          accuracy={overallAccuracy}
           tierStats={tierStatsArray}
         />
         <View style={styles.centerContent}>
@@ -114,9 +111,6 @@ export function QuizScreen() {
   return (
     <View style={styles.container}>
       <StatsBar
-        total={stats?.totalWords || 0}
-        unseen={0}
-        reviewed={tasksCompletedThisSession}
         accuracy={overallAccuracy}
         tierStats={tierStatsArray}
       />

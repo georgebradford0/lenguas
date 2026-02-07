@@ -10,9 +10,6 @@ interface TierStat {
 }
 
 interface StatsBarProps {
-  total: number;
-  unseen: number;
-  reviewed: number;
   accuracy: number;
   tierStats: TierStat[];
 }
@@ -20,7 +17,7 @@ interface StatsBarProps {
 const TIER_NAMES = ['Core', 'Functional', 'Structural', 'Refinement'];
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
 
-export function StatsBar({ total, unseen, reviewed, accuracy, tierStats }: StatsBarProps) {
+export function StatsBar({ accuracy, tierStats }: StatsBarProps) {
   return (
     <View style={styles.container}>
       {/* Tier Progress */}
@@ -50,22 +47,12 @@ export function StatsBar({ total, unseen, reviewed, accuracy, tierStats }: Stats
         ))}
       </View>
 
-      {/* Session Stats */}
-      <View style={styles.sessionStats}>
-        <View style={styles.sessionStat}>
-          <Text style={styles.sessionLabel}>Session</Text>
-          <Text style={styles.sessionValue}>{reviewed} reviewed</Text>
-        </View>
-        <View style={styles.sessionStat}>
-          <Text style={styles.sessionLabel}>Accuracy</Text>
-          <Text style={[styles.sessionValue, { color: accuracy >= 75 ? colors.correct : colors.wrong }]}>
-            {accuracy}%
-          </Text>
-        </View>
-        <View style={styles.sessionStat}>
-          <Text style={styles.sessionLabel}>Remaining</Text>
-          <Text style={styles.sessionValue}>{unseen} new</Text>
-        </View>
+      {/* Overall Accuracy */}
+      <View style={styles.accuracySection}>
+        <Text style={styles.accuracyLabel}>Overall Accuracy</Text>
+        <Text style={[styles.accuracyValue, { color: accuracy >= 75 ? colors.correct : colors.wrong }]}>
+          {accuracy}%
+        </Text>
       </View>
     </View>
   );
@@ -111,26 +98,21 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: borderRadius.sm,
   },
-  sessionStats: {
+  accuracySection: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: spacing.sm,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: spacing.md,
     borderTopWidth: 1,
     borderTopColor: colors.border,
   },
-  sessionStat: {
-    alignItems: 'center',
-  },
-  sessionLabel: {
-    fontSize: fontSize.xs,
-    color: colors.muted,
-    marginBottom: spacing.xs,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  sessionValue: {
+  accuracyLabel: {
     fontSize: fontSize.md,
-    color: colors.text,
+    color: colors.muted,
     fontWeight: '600',
+  },
+  accuracyValue: {
+    fontSize: fontSize.xl,
+    fontWeight: 'bold',
   },
 });

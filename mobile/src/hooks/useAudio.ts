@@ -49,14 +49,20 @@ export function useAudio() {
           }
 
           // Write base64 to temp file and play
-          const tempPath = `${RNFS.CachesDirectoryPath}/audio_${word}.mp3`;
+          // Sanitize filename to avoid special characters
+          const sanitizedWord = word.replace(/[^a-zA-Z0-9]/g, '_');
+          const fileName = `audio_${sanitizedWord}.mp3`;
+          const tempPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
           await RNFS.writeFile(tempPath, base64, 'base64');
 
           // Wait for sound to load and play
+          // On iOS, use just the filename when it's in the caches directory
           await new Promise<void>((resolve, reject) => {
-            const sound = new Sound(tempPath, '', (error) => {
+            const sound = new Sound(fileName, RNFS.CachesDirectoryPath, (error) => {
               if (error) {
                 console.error('Failed to load sound:', error);
+                console.error('Word:', word, 'Path:', tempPath);
                 reject(error);
                 return;
               }

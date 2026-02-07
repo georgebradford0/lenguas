@@ -86,21 +86,36 @@ IMPORTANT GUIDELINES:
       ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the German text.`
       : '';
 
+    // Randomly choose a task style to encourage variety
+    const styles = [
+      'Just the word with article (e.g., "der Hund" → "the dog")',
+      'A simple statement (e.g., "Ich bin müde" → "I am tired")',
+      'A simple question (e.g., "Wo ist das Brot?" → "Where is the bread?")',
+      'The word in a short phrase (e.g., "ein großer Hund" → "a big dog")'
+    ];
+    const styleHint = styles[Math.floor(Math.random() * styles.length)];
+
     userPrompt = `Generate a multiple choice task for Tier 1 German learners.
 ${wordInstruction}
+
+VARY YOUR APPROACH: Focus on this style: ${styleHint}
+
 TASK FORMAT: Show German text, student selects English translation
 
 REQUIREMENTS:
 - Use Tier 1 vocabulary and patterns only
-- German text can be: the target word alone, the word in a chunk, or in a simple sentence
+- VARY THE FORMAT: Sometimes just the word alone, sometimes in a sentence, sometimes in a question
+- Avoid repeating "Wo ist" and "Was ist" patterns too often
 - Provide 1 correct English translation
 - Provide 3 wrong but plausible English options
 - Wrong options should test understanding (not random words)
 
-EXAMPLES OF GOOD TASKS:
-- "der Hund" → correct: "the dog", wrong: ["the cat", "a dog", "the dogs"]
-- "Ich bin müde" → correct: "I am tired", wrong: ["I am hungry", "You are tired", "I have tired"]
-- "Wo ist das Brot?" → correct: "Where is the bread?", wrong: ["Where is the water?", "What is the bread?", "Who is the bread?"]
+EXAMPLES SHOWING VARIETY:
+- Simple noun: "der Hund" → correct: "the dog", wrong: ["the cat", "a dog", "the dogs"]
+- Statement: "Ich bin müde" → correct: "I am tired", wrong: ["I am hungry", "You are tired", "I have tired"]
+- Question: "Wo ist das Brot?" → correct: "Where is the bread?", wrong: ["Where is the water?", "What is the bread?", "Who is the bread?"]
+- Verb alone: "gehen" → correct: "to go", wrong: ["to come", "to walk", "to run"]
+- With adjective: "ein großer Hund" → correct: "a big dog", wrong: ["a small dog", "the big dog", "big dogs"]
 
 Return your response as JSON:
 {
@@ -115,21 +130,36 @@ Return your response as JSON:
       ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the correct German answer and ensure wrong options are variations of sentences/phrases using this word.`
       : '';
 
+    // Randomly choose a task style to encourage variety
+    const styles = [
+      'Just the word with article (e.g., "the dog" → "der Hund")',
+      'A simple statement (e.g., "I am tired" → "Ich bin müde")',
+      'A simple question (e.g., "Where is the bread?" → "Wo ist das Brot?")',
+      'The word in a short phrase (e.g., "a big dog" → "ein großer Hund")'
+    ];
+    const styleHint = styles[Math.floor(Math.random() * styles.length)];
+
     userPrompt = `Generate a reverse translation task for Tier 1 German learners.
 ${wordInstruction}
+
+VARY YOUR APPROACH: Focus on this style: ${styleHint}
+
 TASK FORMAT: Show English text, student selects correct German translation
 
 REQUIREMENTS:
 - Use Tier 1 vocabulary and patterns only
+- VARY THE FORMAT: Sometimes just the word alone, sometimes in a sentence, sometimes in a question
 - English text should match the German target word
 - Provide 1 correct German translation (must include the target word)
 - Provide 3 wrong but plausible German options
 - Wrong options should test grammar understanding (wrong article, wrong conjugation, word order, etc.)
 
-EXAMPLES OF GOOD TASKS:
-- "the dog" → correct: "der Hund", wrong: ["die Hund", "das Hund", "ein Hund"]
-- "I am tired" → correct: "Ich bin müde", wrong: ["Ich habe müde", "Du bist müde", "Ich müde bin"]
-- "Where is the bread?" → correct: "Wo ist das Brot?", wrong: ["Wo das Brot ist?", "Was ist das Brot?", "Wo ist der Brot?"]
+EXAMPLES SHOWING VARIETY:
+- Simple noun: "the dog" → correct: "der Hund", wrong: ["die Hund", "das Hund", "ein Hund"]
+- Statement: "I am tired" → correct: "Ich bin müde", wrong: ["Ich habe müde", "Du bist müde", "Ich müde bin"]
+- Question: "Where is the bread?" → correct: "Wo ist das Brot?", wrong: ["Wo das Brot ist?", "Was ist das Brot?", "Wo ist der Brot?"]
+- Verb infinitive: "to go" → correct: "gehen", wrong: ["geht", "gegangen", "ging"]
+- With adjective: "a big dog" → correct: "ein großer Hund", wrong: ["ein große Hund", "der großer Hund", "ein groß Hund"]
 
 Return your response as JSON:
 {
@@ -148,7 +178,7 @@ Return your response as JSON:
     ],
     model: 'gpt-4o-mini',
     response_format: { type: 'json_object' },
-    temperature: 0.8, // Slightly higher for variety in task generation
+    temperature: 1.0, // Higher for more variety in task generation
     max_tokens: 500
   };
 }
