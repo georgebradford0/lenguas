@@ -12,39 +12,43 @@ interface TierStat {
 interface StatsBarProps {
   accuracy: number;
   tierStats: TierStat[];
+  currentTier: number;
 }
 
 const TIER_NAMES = ['Core', 'Functional', 'Structural', 'Refinement'];
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
 
-export function StatsBar({ accuracy, tierStats }: StatsBarProps) {
+export function StatsBar({ accuracy, tierStats, currentTier }: StatsBarProps) {
+  // Find the current tier's stats
+  const currentTierStat = tierStats.find(t => t.tier === currentTier);
+
+  if (!currentTierStat) return null;
+
   return (
     <View style={styles.container}>
-      {/* Tier Progress */}
+      {/* Current Tier Progress */}
       <View style={styles.tierSection}>
-        {tierStats.map((tierStat) => (
-          <View key={tierStat.tier} style={styles.tierRow}>
-            <View style={styles.tierHeader}>
-              <Text style={[styles.tierLabel, { color: TIER_COLORS[tierStat.tier - 1] }]}>
-                Tier {tierStat.tier}: {TIER_NAMES[tierStat.tier - 1]}
-              </Text>
-              <Text style={styles.tierNumbers}>
-                {tierStat.mastered}/{tierStat.total} ({tierStat.percentage}%)
-              </Text>
-            </View>
-            <View style={styles.progressBarContainer}>
-              <View
-                style={[
-                  styles.progressBarFill,
-                  {
-                    width: `${tierStat.percentage}%`,
-                    backgroundColor: TIER_COLORS[tierStat.tier - 1],
-                  },
-                ]}
-              />
-            </View>
+        <View style={styles.tierRow}>
+          <View style={styles.tierHeader}>
+            <Text style={[styles.tierLabel, { color: TIER_COLORS[currentTierStat.tier - 1] }]}>
+              Tier {currentTierStat.tier}: {TIER_NAMES[currentTierStat.tier - 1]}
+            </Text>
+            <Text style={styles.tierNumbers}>
+              {currentTierStat.mastered}/{currentTierStat.total} ({currentTierStat.percentage}%)
+            </Text>
           </View>
-        ))}
+          <View style={styles.progressBarContainer}>
+            <View
+              style={[
+                styles.progressBarFill,
+                {
+                  width: `${currentTierStat.percentage}%`,
+                  backgroundColor: TIER_COLORS[currentTierStat.tier - 1],
+                },
+              ]}
+            />
+          </View>
+        </View>
       </View>
 
       {/* Overall Accuracy */}

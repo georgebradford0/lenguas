@@ -94,9 +94,6 @@ export function ReverseTranslationTask({
       <View style={styles.promptContainer}>
         <Text style={styles.promptLabel}>Select the German translation for:</Text>
         <Text style={styles.englishWord}>{taskData.english}</Text>
-        {taskData.chunkPattern && (
-          <Text style={styles.patternHint}>Pattern: {taskData.chunkPattern}</Text>
-        )}
       </View>
       <ChoiceGrid
         choices={choices}
@@ -120,8 +117,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xxl,
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
-    paddingVertical: spacing.xxl,
-    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xxl * 1.5,
+    paddingHorizontal: spacing.xxl,
     width: '100%',
     minHeight: 240,
     justifyContent: 'center',
@@ -139,12 +136,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.text,
     textAlign: 'center',
-  },
-  patternHint: {
-    fontSize: fontSize.sm,
-    color: colors.muted,
-    marginTop: spacing.md,
-    fontStyle: 'italic',
   },
   loadingText: {
     fontSize: 16,

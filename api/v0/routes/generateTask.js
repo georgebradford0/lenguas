@@ -170,11 +170,14 @@ router.post('/generate-task', async (req, res) => {
  * - taskType: string
  * - userAnswer: string
  * - correctAnswer: string
+ * - previousTier: number (optional) - to detect tier unlocks
  *
  * Returns:
  * - correct: boolean
  * - word: string
  * - stats: updated word statistics
+ * - tierUnlocked: boolean (true if a tier was just unlocked)
+ * - newTier: number (the newly unlocked tier, if any)
  */
 router.post('/submit-answer', async (req, res) => {
   try {
@@ -183,7 +186,8 @@ router.post('/submit-answer', async (req, res) => {
       tier,
       taskType,
       userAnswer,
-      correctAnswer
+      correctAnswer,
+      previousTier
     } = req.body;
 
     // Validate inputs
@@ -225,6 +229,42 @@ router.post('/submit-answer', async (req, res) => {
 
     console.log(`  Progress: ${progress.correctCount}/${progress.timesShown} (${Math.round(accuracy * 100)}%)`);
 
+    // Check if this answer caused a tier unlock
+    let tierUnlocked = false;
+    let newTier = null;
+
+    // Only check if we have a previousTier to compare against
+    if (previousTier) {
+      // Load tier 1 words and check mastery
+      const tier1Words = loadWordsForTier(1);
+      const allProgress = await Progress.find({});
+      const progressMap = {};
+      allProgress.forEach(p => {
+        progressMap[p.word] = p;
+      });
+
+      let tier1MasteredCount = 0;
+      tier1Words.forEach(w => {
+        const prog = progressMap[w.word];
+        if (prog) {
+          const acc = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
+          if (prog.timesShown >= 7 && acc >= 0.75) {
+            tier1MasteredCount++;
+          }
+        }
+      });
+
+      const tier2ShouldBeUnlocked = tier1MasteredCount >= Math.ceil(tier1Words.length * 0.75);
+      const currentTier = tier2ShouldBeUnlocked ? 2 : 1;
+
+      // Tier unlock detected
+      if (currentTier > previousTier) {
+        tierUnlocked = true;
+        newTier = currentTier;
+        console.log(`🎉 Tier ${newTier} unlocked! ${tier1MasteredCount}/${tier1Words.length} Tier 1 words mastered`);
+      }
+    }
+
     // Return updated stats
     res.json({
       correct: isCorrect,
@@ -236,6 +276,8 @@ router.post('/submit-answer', async (req, res) => {
         correctCount: progress.correctCount,
         accuracy: Math.round(accuracy * 100)
       },
+      tierUnlocked,
+      newTier,
       timestamp: new Date().toISOString()
     });
 
@@ -253,8 +295,8 @@ router.post('/submit-answer', async (req, res) => {
  * Get tier-based statistics from word progress
  *
  * Returns:
- * - currentTier: number (always 1 for now, can add tier unlocking logic later)
- * - tierStats: array of tier statistics
+ * - currentTier: number (determined by mastery)
+ * - tierStats: array of tier statistics with unlock status
  * - overallAccuracy: number
  * - totalWords: number
  */
@@ -284,6 +326,7 @@ router.get('/tier-stats', async (req, res) => {
           totalAttempts += prog.timesShown;
           correctAttempts += prog.correctCount;
 
+          // Mastery criteria: 7+ attempts AND 75%+ accuracy
           const accuracy = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
           if (prog.timesShown >= 7 && accuracy >= 0.75) {
             masteredCount++;
@@ -292,30 +335,45 @@ router.get('/tier-stats', async (req, res) => {
       });
 
       const accuracy = totalAttempts > 0 ? correctAttempts / totalAttempts : 0;
+      const masteryPercentage = Math.round((masteredCount / tierWords.length) * 100);
 
       return {
         tier: tierNum,
         total: tierWords.length,
         mastered: masteredCount,
-        percentage: Math.round((masteredCount / tierWords.length) * 100),
+        percentage: masteryPercentage,
         totalAttempts,
         accuracy: Math.round(accuracy * 100),
-        unlocked: tierNum === 1 // Tier 1 always unlocked
+        unlocked: false, // Will be set below
+        masteryPercentage // For unlock logic
       };
     };
 
-    const tierStatsArray = [
-      calculateTierStats(tier1Words, 1),
-      calculateTierStats(tier2Words, 2)
-    ];
+    const tier1Stats = calculateTierStats(tier1Words, 1);
+    const tier2Stats = calculateTierStats(tier2Words, 2);
+
+    // Determine tier unlocking
+    // Tier 1 is always unlocked
+    tier1Stats.unlocked = true;
+
+    // Tier 2 unlocks when 75% of Tier 1 words are mastered
+    const tier2Unlocked = tier1Stats.mastered >= Math.ceil(tier1Words.length * 0.75);
+    tier2Stats.unlocked = tier2Unlocked;
+
+    // Current tier is the highest unlocked tier
+    const currentTier = tier2Unlocked ? 2 : 1;
+
+    const tierStatsArray = [tier1Stats, tier2Stats];
 
     // Calculate overall stats
     const totalAttempts = allProgress.reduce((sum, p) => sum + p.timesShown, 0);
     const totalCorrect = allProgress.reduce((sum, p) => sum + p.correctCount, 0);
     const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
+    console.log(`Tier progression: Tier 1 mastered ${tier1Stats.mastered}/${tier1Words.length} (${tier1Stats.percentage}%), Tier 2 ${tier2Unlocked ? 'UNLOCKED' : 'locked'}`);
+
     res.json({
-      currentTier: 1,
+      currentTier,
       tierStats: tierStatsArray,
       overallAccuracy,
       totalWords: tier1Words.length + tier2Words.length,

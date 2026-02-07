@@ -18,6 +18,7 @@ export function useCards(userId?: string) {
   const [taskLoading, setTaskLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [tasksCompletedThisSession, setTasksCompletedThisSession] = useState(0);
+  const [tierJustUnlocked, setTierJustUnlocked] = useState<number | null>(null);
 
   // Load initial tier stats
   useEffect(() => {
@@ -75,7 +76,7 @@ export function useCards(userId?: string) {
   // Submit answer and load next task
   const handleAnswer = useCallback(
     async (userAnswer: string, correctAnswer: string) => {
-      if (!currentTask || submitting) return;
+      if (!currentTask || submitting || !stats) return;
 
       setSubmitting(true);
 
@@ -86,7 +87,13 @@ export function useCards(userId?: string) {
           taskType: currentTask.taskType,
           userAnswer,
           correctAnswer,
+          previousTier: stats.currentTier,
         });
+
+        // Check for tier unlock
+        if (result.tierUnlocked && result.newTier) {
+          setTierJustUnlocked(result.newTier);
+        }
 
         // Reload stats after answer
         const updatedStats = await getTierStats();
@@ -103,8 +110,13 @@ export function useCards(userId?: string) {
         setSubmitting(false);
       }
     },
-    [currentTask, submitting]
+    [currentTask, submitting, stats]
   );
+
+  // Dismiss tier unlock celebration
+  const dismissTierUnlock = useCallback(() => {
+    setTierJustUnlocked(null);
+  }, []);
 
   return {
     // State
@@ -115,10 +127,12 @@ export function useCards(userId?: string) {
     taskLoading,
     submitting,
     tasksCompletedThisSession,
+    tierJustUnlocked,
 
     // Actions
     handleAnswer,
     loadNextTask,
+    dismissTierUnlock,
 
     // Computed stats
     tierStatsArray: stats?.tierStats || [],

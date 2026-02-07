@@ -5,6 +5,7 @@ import { useCards } from '../hooks/useCards';
 import { StatsBar } from '../components/StatsBar';
 import { MultipleChoiceTask } from '../components/MultipleChoiceTask';
 import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
+import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
 import type { MultipleChoiceTaskData, ReverseTranslationTaskData } from '../types';
 
 /**
@@ -19,8 +20,10 @@ export function QuizScreen() {
     taskLoading,
     submitting,
     tasksCompletedThisSession,
+    tierJustUnlocked,
     handleAnswer,
     loadNextTask,
+    dismissTierUnlock,
     tierStatsArray,
     currentTier,
     overallAccuracy,
@@ -74,6 +77,7 @@ export function QuizScreen() {
         <StatsBar
           accuracy={overallAccuracy}
           tierStats={tierStatsArray}
+          currentTier={currentTier}
         />
         <View style={styles.centerContent}>
           <ActivityIndicator size="large" color={colors.primary} />
@@ -113,6 +117,7 @@ export function QuizScreen() {
       <StatsBar
         accuracy={overallAccuracy}
         tierStats={tierStatsArray}
+        currentTier={currentTier}
       />
       <View style={styles.content}>
         {submitting ? (
@@ -124,6 +129,11 @@ export function QuizScreen() {
           renderTask()
         )}
       </View>
+
+      {/* Tier unlock celebration overlay */}
+      {tierJustUnlocked && (
+        <TierUnlockCelebration tier={tierJustUnlocked} onDismiss={dismissTierUnlock} />
+      )}
     </View>
   );
 }

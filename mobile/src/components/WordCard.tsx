@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
-    paddingVertical: spacing.xxl,
-    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xxl * 1.5,
+    paddingHorizontal: spacing.xxl,
     width: '100%',
     minHeight: 240,
     alignItems: 'center',

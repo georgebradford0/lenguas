@@ -96,6 +96,7 @@ export interface SubmitAnswerRequest {
   taskType: TaskType;
   userAnswer: string;
   correctAnswer: string;
+  previousTier?: number;
 }
 
 export interface SubmitAnswerResponse {
@@ -108,6 +109,8 @@ export interface SubmitAnswerResponse {
     correctCount: number;
     accuracy: number;
   };
+  tierUnlocked: boolean;
+  newTier: number | null;
   timestamp: string;
 }
 
