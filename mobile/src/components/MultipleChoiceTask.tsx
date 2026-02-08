@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, Text } from 'react-native';
 import type { MultipleChoiceTaskData, Choice } from '../types';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
@@ -27,6 +28,7 @@ export function MultipleChoiceTask({
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const taskIdRef = useRef<string | null>(null);
 
   // Create unique ID for this task
@@ -38,6 +40,30 @@ export function MultipleChoiceTask({
     if (taskIdRef.current === taskId) {
       return;
     }
+
+    // Validate task data
+    if (!taskData.wrongOptions || taskData.wrongOptions.length < 3) {
+      console.error('Invalid task data: missing wrongOptions', taskData);
+      setChoices(null);
+      setValidationError('Task data is incomplete. Please try again.');
+      taskIdRef.current = taskId; // Mark as processed to avoid retry loops
+      return;
+    }
+
+    // Validate that all options have text
+    const hasValidOptions = taskData.correctEnglish &&
+                           taskData.wrongOptions.every(opt => opt && typeof opt === 'string');
+
+    if (!hasValidOptions) {
+      console.error('Invalid task data: empty or invalid options', taskData);
+      setChoices(null);
+      setValidationError('Task options are invalid. Please try again.');
+      taskIdRef.current = taskId;
+      return;
+    }
+
+    // Clear any previous validation errors
+    setValidationError(null);
 
     // Prefetch audio for German text
     prefetchAudio(taskData.german);
@@ -56,7 +82,7 @@ export function MultipleChoiceTask({
     setAnswered(false);
     taskIdRef.current = taskId;
 
-    // Auto-play audio
+    // Auto-play audio only after successful validation
     playAudio(taskData.german);
 
     // Notify parent
@@ -85,6 +111,20 @@ export function MultipleChoiceTask({
   const handleSpeak = useCallback(() => {
     playAudio(taskData.german);
   }, [taskData.german, playAudio]);
+
+  // Show error if validation failed
+  if (validationError) {
+    return (
+      <>
+        <WordCard word={taskData.german || 'Error'} onSpeak={handleSpeak} />
+        <View style={{ padding: 20, alignItems: 'center' }}>
+          <Text style={{ color: '#e74c3c', fontSize: 16, textAlign: 'center' }}>
+            {validationError}
+          </Text>
+        </View>
+      </>
+    );
+  }
 
   return (
     <>

@@ -28,6 +28,7 @@ export function ReverseTranslationTask({
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const taskIdRef = useRef<string | null>(null);
 
   // Create unique ID for this task
@@ -39,6 +40,30 @@ export function ReverseTranslationTask({
     if (taskIdRef.current === taskId) {
       return;
     }
+
+    // Validate task data
+    if (!taskData.wrongOptions || taskData.wrongOptions.length < 3) {
+      console.error('Invalid task data: missing wrongOptions', taskData);
+      setChoices(null);
+      setValidationError('Task data is incomplete. Please try again.');
+      taskIdRef.current = taskId; // Mark as processed to avoid retry loops
+      return;
+    }
+
+    // Validate that all options have text
+    const hasValidOptions = taskData.correctGerman &&
+                           taskData.wrongOptions.every(opt => opt && typeof opt === 'string');
+
+    if (!hasValidOptions) {
+      console.error('Invalid task data: empty or invalid options', taskData);
+      setChoices(null);
+      setValidationError('Task options are invalid. Please try again.');
+      taskIdRef.current = taskId;
+      return;
+    }
+
+    // Clear any previous validation errors
+    setValidationError(null);
 
     // Create shuffled choices with German words
     const options = shuffle([
@@ -80,6 +105,18 @@ export function ReverseTranslationTask({
     },
     [answered, choices, taskData.correctGerman, onAnswer, playAudio]
   );
+
+  // Show error if validation failed
+  if (validationError) {
+    return (
+      <>
+        <View style={styles.promptContainer}>
+          <Text style={styles.promptLabel}>Error</Text>
+          <Text style={[styles.englishWord, { color: colors.wrong }]}>{validationError}</Text>
+        </View>
+      </>
+    );
+  }
 
   if (!choices) {
     return (
