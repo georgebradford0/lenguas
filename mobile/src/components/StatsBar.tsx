@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { colors, spacing, fontSize } from '../styles/theme';
 import type { WordProgress } from '../types';
 
@@ -19,7 +19,8 @@ interface StatsBarProps {
 
 const TIER_NAMES = ['Core', 'Functional', 'Structural', 'Refinement'];
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
-const MAX_BAR_HEIGHT = 40; // Maximum height of histogram bars in pixels
+const MAX_BAR_HEIGHT = 80; // Maximum height of histogram bars in pixels
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: StatsBarProps) {
   // Find the current tier's stats
@@ -29,6 +30,11 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
 
   // Find max attempts for scaling
   const maxAttempts = Math.max(...wordProgress.map(w => w.attempts), 1);
+
+  // Calculate bar width to fill screen (minus padding)
+  const totalPadding = spacing.lg * 2; // Left and right padding
+  const availableWidth = SCREEN_WIDTH - totalPadding;
+  const barWidth = Math.floor(availableWidth / wordProgress.length);
 
   // Calculate bar heights (upside down, so height represents progress)
   const bars = wordProgress.map(w => {
@@ -47,7 +53,7 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
       barColor = colors.wrong;
     }
 
-    return { ...w, height, barColor };
+    return { ...w, height, barColor, barWidth };
   });
 
   return (
@@ -63,14 +69,9 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
       </View>
 
       {/* Upside-down Histogram */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.histogramScroll}
-        contentContainerStyle={styles.histogramContainer}
-      >
+      <View style={styles.histogramContainer}>
         {bars.map((bar, index) => (
-          <View key={index} style={styles.barWrapper}>
+          <View key={index} style={[styles.barWrapper, { width: bar.barWidth }]}>
             <View
               style={[
                 styles.bar,
@@ -82,7 +83,7 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
             />
           </View>
         ))}
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingTop: spacing.md,
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingBottom: spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
@@ -101,8 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.sm,
-    paddingHorizontal: spacing.xs,
+    marginBottom: spacing.md,
   },
   tierLabel: {
     fontSize: fontSize.md,
@@ -113,20 +113,16 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontWeight: '500',
   },
-  histogramScroll: {
-    width: '100%',
-  },
   histogramContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingHorizontal: spacing.xs,
-    paddingVertical: spacing.xs,
+    width: '100%',
+    height: MAX_BAR_HEIGHT,
   },
   barWrapper: {
-    width: 3,
     height: MAX_BAR_HEIGHT,
-    marginHorizontal: 0.5,
     justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   bar: {
     width: '100%',
