@@ -31,11 +31,6 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
   // Find max attempts for scaling
   const maxAttempts = Math.max(...wordProgress.map(w => w.attempts), 1);
 
-  // Calculate bar width to fill screen (minus padding)
-  const totalPadding = spacing.lg * 2; // Left and right padding
-  const availableWidth = SCREEN_WIDTH - totalPadding;
-  const barWidth = Math.floor(availableWidth / wordProgress.length);
-
   // Calculate mastery threshold line position (fixed at 7 attempts)
   const MASTERY_ATTEMPTS = 7;
   const masteryLineHeight = (MASTERY_ATTEMPTS / Math.max(maxAttempts, MASTERY_ATTEMPTS)) * MAX_BAR_HEIGHT;
@@ -65,7 +60,7 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
       barColor = colors.wrong;
     }
 
-    return { ...w, height, barColor, barWidth };
+    return { ...w, height, barColor };
   });
 
   return (
@@ -83,7 +78,7 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
       {/* Upside-down Histogram */}
       <View style={styles.histogramContainer}>
         {bars.map((bar, index) => (
-          <View key={index} style={[styles.barWrapper, { width: bar.barWidth }]}>
+          <View key={index} style={styles.barWrapper}>
             <View
               style={[
                 styles.bar,
@@ -132,6 +127,7 @@ const styles = StyleSheet.create({
     height: MAX_BAR_HEIGHT,
   },
   barWrapper: {
+    flex: 1,
     height: MAX_BAR_HEIGHT,
     justifyContent: 'flex-start',
     alignItems: 'center',
