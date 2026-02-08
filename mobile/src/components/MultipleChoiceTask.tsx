@@ -37,14 +37,18 @@ export function MultipleChoiceTask({
 
   // Load choices when task changes
   useEffect(() => {
+    console.log('[MultipleChoice] Loading task:', taskId);
+    console.log('[MultipleChoice] Task data:', JSON.stringify(taskData, null, 2));
+
     // Skip if we already loaded this task
     if (taskIdRef.current === taskId) {
+      console.log('[MultipleChoice] Task already loaded, skipping');
       return;
     }
 
     // Validate task data
     if (!taskData.wrongOptions || taskData.wrongOptions.length < 3) {
-      console.error('Invalid task data: missing wrongOptions', taskData);
+      console.error('[MultipleChoice] Invalid task data: missing wrongOptions', taskData);
       setChoices(null);
       setValidationError('Task data is incomplete. Please try again.');
       taskIdRef.current = taskId; // Mark as processed to avoid retry loops
@@ -56,13 +60,14 @@ export function MultipleChoiceTask({
                            taskData.wrongOptions.every(opt => opt && typeof opt === 'string');
 
     if (!hasValidOptions) {
-      console.error('Invalid task data: empty or invalid options', taskData);
+      console.error('[MultipleChoice] Invalid task data: empty or invalid options', taskData);
       setChoices(null);
       setValidationError('Task options are invalid. Please try again.');
       taskIdRef.current = taskId;
       return;
     }
 
+    console.log('[MultipleChoice] Validation passed, creating choices');
     // Clear any previous validation errors
     setValidationError(null);
 
@@ -113,8 +118,13 @@ export function MultipleChoiceTask({
     playAudio(taskData.german);
   }, [taskData.german, playAudio]);
 
+  console.log('[MultipleChoice] Render - validationError:', validationError);
+  console.log('[MultipleChoice] Render - choices:', choices ? 'exists' : 'null');
+  console.log('[MultipleChoice] Render - german word:', taskData.german);
+
   // Show error if validation failed
   if (validationError) {
+    console.log('[MultipleChoice] Rendering error state');
     return (
       <>
         <WordCard word={taskData.german || 'Error'} onSpeak={handleSpeak} />
@@ -127,6 +137,7 @@ export function MultipleChoiceTask({
     );
   }
 
+  console.log('[MultipleChoice] Rendering normal state');
   return (
     <>
       <WordCard word={taskData.german} onSpeak={handleSpeak} />

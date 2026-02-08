@@ -37,14 +37,18 @@ export function ReverseTranslationTask({
 
   // Load choices when task changes
   useEffect(() => {
+    console.log('[ReverseTranslation] Loading task:', taskId);
+    console.log('[ReverseTranslation] Task data:', JSON.stringify(taskData, null, 2));
+
     // Skip if we already loaded this task
     if (taskIdRef.current === taskId) {
+      console.log('[ReverseTranslation] Task already loaded, skipping');
       return;
     }
 
     // Validate task data
     if (!taskData.wrongOptions || taskData.wrongOptions.length < 3) {
-      console.error('Invalid task data: missing wrongOptions', taskData);
+      console.error('[ReverseTranslation] Invalid task data: missing wrongOptions', taskData);
       setChoices(null);
       setValidationError('Task data is incomplete. Please try again.');
       taskIdRef.current = taskId; // Mark as processed to avoid retry loops
@@ -56,13 +60,14 @@ export function ReverseTranslationTask({
                            taskData.wrongOptions.every(opt => opt && typeof opt === 'string');
 
     if (!hasValidOptions) {
-      console.error('Invalid task data: empty or invalid options', taskData);
+      console.error('[ReverseTranslation] Invalid task data: empty or invalid options', taskData);
       setChoices(null);
       setValidationError('Task options are invalid. Please try again.');
       taskIdRef.current = taskId;
       return;
     }
 
+    console.log('[ReverseTranslation] Validation passed, creating choices');
     // Clear any previous validation errors
     setValidationError(null);
 
@@ -107,8 +112,13 @@ export function ReverseTranslationTask({
     [answered, choices, taskData.correctGerman, onAnswer, playAudio]
   );
 
+  console.log('[ReverseTranslation] Render - validationError:', validationError);
+  console.log('[ReverseTranslation] Render - choices:', choices ? 'exists' : 'null');
+  console.log('[ReverseTranslation] Render - english:', taskData.english);
+
   // Show error if validation failed
   if (validationError) {
+    console.log('[ReverseTranslation] Rendering error state');
     return (
       <>
         <View style={styles.promptContainer}>
@@ -120,6 +130,7 @@ export function ReverseTranslationTask({
   }
 
   if (!choices) {
+    console.log('[ReverseTranslation] Rendering loading state');
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
@@ -127,6 +138,7 @@ export function ReverseTranslationTask({
     );
   }
 
+  console.log('[ReverseTranslation] Rendering normal state');
   return (
     <>
       <View style={styles.promptContainer}>
