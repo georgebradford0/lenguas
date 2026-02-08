@@ -90,15 +90,16 @@ gut, groß, klein, alt, neu
 
 ## Capabilities at 100 words
 - Can form basic sentences: "Ich bin müde" (I am tired)
-- Can ask simple questions: "Wo ist das Brot?" (Where is the bread?)
+- Can ask simple questions: "Was ist das?" (What is that?)
 - Can express possession: "Das ist mein Hund" (That is my dog)
 - Can introduce yourself: "Ich heiße Maria. Ich komme aus Spanien."
 
 ## Teaching Method
 **Implicit pattern learning** - NO explicit grammar rules yet
-- Teach chunks: "Ich bin...", "Das ist...", "Wo ist...?"
+- Teach chunks: "Ich bin...", "Das ist...", "Was ist...?", "Wie heißt...?"
 - Show patterns through examples
 - Focus on high-frequency combinations
+- Vary question types: was (what), wer (who), wie (how), wann (when), wo (where)
 `;
 
 /**
@@ -142,7 +143,8 @@ IMPORTANT GUIDELINES:
     const styles = [
       'Just the word with article (e.g., "der Hund" → "the dog")',
       'A simple statement (e.g., "Ich bin müde" → "I am tired")',
-      'A simple question (e.g., "Wo ist das Brot?" → "Where is the bread?")',
+      'A question with WAS (e.g., "Was ist das?" → "What is that?")',
+      'A question with WIE (e.g., "Wie heißt du?" → "What is your name?")',
       'The word in a short phrase (e.g., "ein großer Hund" → "a big dog")',
       'A verb conjugation (e.g., "du hast" → "you have", "wir gehen" → "we go")'
     ];
@@ -158,7 +160,7 @@ TASK FORMAT: Show German text, student selects English translation
 REQUIREMENTS:
 - Use Tier 1 vocabulary and patterns only
 - VARY THE FORMAT: Sometimes just the word alone, sometimes in a sentence, sometimes in a question
-- Avoid repeating "Wo ist" and "Was ist" patterns too often
+- VARY QUESTION TYPES: Use different question words (was, wer, wie, wann) - avoid overusing "wo"
 - Provide 1 correct English translation
 - Provide 3 wrong but plausible English options
 - Wrong options should test understanding (not random words)
@@ -166,7 +168,8 @@ REQUIREMENTS:
 EXAMPLES SHOWING VARIETY:
 - Simple noun: "der Hund" → correct: "the dog", wrong: ["the cat", "a dog", "the dogs"]
 - Statement: "Ich bin müde" → correct: "I am tired", wrong: ["I am hungry", "You are tired", "I have tired"]
-- Question: "Wo ist das Brot?" → correct: "Where is the bread?", wrong: ["Where is the water?", "What is the bread?", "Who is the bread?"]
+- Question (was): "Was ist das?" → correct: "What is that?", wrong: ["What is this?", "Who is that?", "Where is that?"]
+- Question (wie): "Wie heißt du?" → correct: "What is your name?", wrong: ["How are you?", "What do you have?", "Where are you?"]
 - Verb alone: "gehen" → correct: "to go", wrong: ["to come", "to walk", "to run"]
 - With adjective: "ein großer Hund" → correct: "a big dog", wrong: ["a small dog", "the big dog", "big dogs"]
 - Verb conjugation: "du hast" → correct: "you have", wrong: ["you are", "I have", "you had"]
@@ -193,7 +196,8 @@ Return your response as JSON:
     const styles = [
       'Just the word with article (e.g., "the dog" → "der Hund")',
       'A simple statement (e.g., "I am tired" → "Ich bin müde")',
-      'A simple question (e.g., "Where is the bread?" → "Wo ist das Brot?")',
+      'A question with WHAT (e.g., "What is that?" → "Was ist das?")',
+      'A question with HOW (e.g., "What is your name?" → "Wie heißt du?")',
       'The word in a short phrase (e.g., "a big dog" → "ein großer Hund")',
       'A verb conjugation (e.g., "you have" → "du hast", "we go" → "wir gehen")'
     ];
@@ -209,6 +213,7 @@ TASK FORMAT: Show English text, student selects correct German translation
 REQUIREMENTS:
 - Use Tier 1 vocabulary and patterns only
 - VARY THE FORMAT: Sometimes just the word alone, sometimes in a sentence, sometimes in a question
+- VARY QUESTION TYPES: Use different question words (what, who, how, when) - avoid overusing "where"
 - English text should match the German target word
 - Provide 1 correct German translation (must include the target word)
 - Provide 3 wrong but plausible German options
@@ -217,7 +222,8 @@ REQUIREMENTS:
 EXAMPLES SHOWING VARIETY:
 - Simple noun: "the dog" → correct: "der Hund", wrong: ["die Hund", "das Hund", "ein Hund"]
 - Statement: "I am tired" → correct: "Ich bin müde", wrong: ["Ich habe müde", "Du bist müde", "Ich müde bin"]
-- Question: "Where is the bread?" → correct: "Wo ist das Brot?", wrong: ["Wo das Brot ist?", "Was ist das Brot?", "Wo ist der Brot?"]
+- Question (what): "What is that?" → correct: "Was ist das?", wrong: ["Was das ist?", "Wer ist das?", "Was ist es?"]
+- Question (how): "What is your name?" → correct: "Wie heißt du?", wrong: ["Was heißt du?", "Wie heißen du?", "Wie bist du?"]
 - Verb infinitive: "to go" → correct: "gehen", wrong: ["geht", "gegangen", "ging"]
 - With adjective: "a big dog" → correct: "ein großer Hund", wrong: ["ein große Hund", "der großer Hund", "ein groß Hund"]
 - Verb conjugation: "you have" → correct: "du hast", wrong: ["du bist", "du hat", "du haben"]
