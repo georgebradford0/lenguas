@@ -163,18 +163,22 @@ REQUIREMENTS:
 - VARY QUESTION TYPES: Use different question words (was, wer, wie, wann) - avoid overusing "wo"
 - Provide 1 correct English translation
 - Provide 3 wrong but plausible English options
-- Wrong options should test understanding (not random words)
+- CRITICAL: Wrong options must challenge understanding of the TARGET WORD specifically
+  - If target is "Hund" (dog), wrong options should be similar animals or common confusions: "cat", "horse", "wolf"
+  - If target is "gehen" (to go), wrong options should be similar verbs: "to come", "to walk", "to run"
+  - If target is "müde" (tired), wrong options should be similar states: "hungry", "thirsty", "sleepy"
+  - Avoid testing only grammar/articles - the user must know what the word MEANS to answer correctly
 
-EXAMPLES SHOWING VARIETY:
-- Simple noun: "der Hund" → correct: "the dog", wrong: ["the cat", "a dog", "the dogs"]
-- Noun plural: "die Hunde" → correct: "the dogs", wrong: ["the dog", "a dog", "dogs"]
-- Statement: "Ich bin müde" → correct: "I am tired", wrong: ["I am hungry", "You are tired", "I have tired"]
+EXAMPLES SHOWING VARIETY (note how wrong options test word meaning):
+- Simple noun: "der Hund" → correct: "the dog", wrong: ["the cat", "the wolf", "the horse"]
+- Noun plural: "die Hunde" → correct: "the dogs", wrong: ["the cats", "the wolves", "the horses"]
+- Statement: "Ich bin müde" → correct: "I am tired", wrong: ["I am hungry", "I am thirsty", "I am cold"]
 - Question (was): "Was ist das?" → correct: "What is that?", wrong: ["What is this?", "Who is that?", "Where is that?"]
 - Question (wie): "Wie heißt du?" → correct: "What is your name?", wrong: ["How are you?", "What do you have?", "Where are you?"]
 - Verb alone: "gehen" → correct: "to go", wrong: ["to come", "to walk", "to run"]
-- With adjective: "ein großer Hund" → correct: "a big dog", wrong: ["a small dog", "the big dog", "big dogs"]
-- Verb conjugation: "du hast" → correct: "you have", wrong: ["you are", "I have", "you had"]
-- Verb conjugation: "wir gehen" → correct: "we go", wrong: ["we come", "you go", "we are going"]
+- With adjective: "ein großer Hund" → correct: "a big dog", wrong: ["a big cat", "a big horse", "a big wolf"]
+- Verb conjugation: "du hast" → correct: "you have", wrong: ["you are", "you need", "you want"]
+- Verb conjugation: "wir gehen" → correct: "we go", wrong: ["we come", "we walk", "we run"]
 
 Return your response as JSON:
 {
@@ -218,18 +222,22 @@ REQUIREMENTS:
 - English text should match the German target word
 - Provide 1 correct German translation (must include the target word)
 - Provide 3 wrong but plausible German options
-- Wrong options should test grammar understanding (wrong article, wrong conjugation, word order, etc.)
+- CRITICAL: Wrong options must challenge understanding of the TARGET WORD specifically
+  - If target is "Hund" (dog), wrong options should use similar animals: "die Katze", "das Pferd", "der Wolf"
+  - If target is "gehen" (to go), wrong options should use similar verbs: "kommen", "laufen", "fahren"
+  - If target is "müde" (tired), wrong options should use similar states: "hungrig", "durstig", "schläfrig"
+  - Grammar testing (articles, conjugations) is secondary - the user must know what the word MEANS
 
-EXAMPLES SHOWING VARIETY:
-- Simple noun: "the dog" → correct: "der Hund", wrong: ["die Hund", "das Hund", "ein Hund"]
-- Noun plural: "the dogs" → correct: "die Hunde", wrong: ["der Hunde", "das Hunde", "die Hund"]
-- Statement: "I am tired" → correct: "Ich bin müde", wrong: ["Ich habe müde", "Du bist müde", "Ich müde bin"]
+EXAMPLES SHOWING VARIETY (note how wrong options test word meaning):
+- Simple noun: "the dog" → correct: "der Hund", wrong: ["die Katze", "das Pferd", "der Wolf"]
+- Noun plural: "the dogs" → correct: "die Hunde", wrong: ["die Katzen", "die Pferde", "die Wölfe"]
+- Statement: "I am tired" → correct: "Ich bin müde", wrong: ["Ich bin hungrig", "Ich bin durstig", "Ich bin kalt"]
 - Question (what): "What is that?" → correct: "Was ist das?", wrong: ["Was das ist?", "Wer ist das?", "Was ist es?"]
 - Question (how): "What is your name?" → correct: "Wie heißt du?", wrong: ["Was heißt du?", "Wie heißen du?", "Wie bist du?"]
-- Verb infinitive: "to go" → correct: "gehen", wrong: ["geht", "gegangen", "ging"]
-- With adjective: "a big dog" → correct: "ein großer Hund", wrong: ["ein große Hund", "der großer Hund", "ein groß Hund"]
-- Verb conjugation: "you have" → correct: "du hast", wrong: ["du bist", "du hat", "du haben"]
-- Verb conjugation: "we go" → correct: "wir gehen", wrong: ["wir geht", "ihr geht", "wir sind gehen"]
+- Verb infinitive: "to go" → correct: "gehen", wrong: ["kommen", "laufen", "fahren"]
+- With adjective: "a big dog" → correct: "ein großer Hund", wrong: ["ein großer Wolf", "ein großes Pferd", "eine große Katze"]
+- Verb conjugation: "you have" → correct: "du hast", wrong: ["du brauchst", "du willst", "du möchtest"]
+- Verb conjugation: "we go" → correct: "wir gehen", wrong: ["wir kommen", "wir laufen", "wir fahren"]
 
 Return your response as JSON:
 {
