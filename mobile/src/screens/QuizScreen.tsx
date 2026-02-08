@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useCallback, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, Animated, Dimensions } from 'react-native';
 import { colors, spacing } from '../styles/theme';
 import { useCards } from '../hooks/useCards';
 import { StatsBar } from '../components/StatsBar';
@@ -7,6 +7,8 @@ import { MultipleChoiceTask } from '../components/MultipleChoiceTask';
 import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
 import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
 import type { MultipleChoiceTaskData, ReverseTranslationTaskData } from '../types';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 /**
  * Main quiz screen with dynamic task generation
@@ -27,23 +29,62 @@ export function QuizScreen() {
     tierStatsArray,
     currentTier,
     overallAccuracy,
+    hasPreloadedTask,
   } = useCards();
 
-  // Handle answer submission
+  // Animation value for slide transition
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const taskIdRef = useRef<string | null>(null);
+
+  // Animate in when task changes
+  useEffect(() => {
+    const currentTaskId = currentTask ? `${currentTask.targetWord}-${currentTask.tier}` : null;
+
+    if (currentTaskId && currentTaskId !== taskIdRef.current) {
+      taskIdRef.current = currentTaskId;
+
+      // Start from right side and slide in
+      slideAnim.setValue(SCREEN_WIDTH);
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        tension: 65,
+        friction: 10,
+      }).start();
+    }
+  }, [currentTask, slideAnim]);
+
+  // Handle answer submission with slide animation
   const onAnswerMultipleChoice = useCallback(
     async (userAnswer: string, correctAnswer: string) => {
+      // Slide out to the left
+      Animated.timing(slideAnim, {
+        toValue: -SCREEN_WIDTH,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+
+      // Submit answer and load next task
       await handleAnswer(userAnswer, correctAnswer);
       await loadNextTask();
     },
-    [handleAnswer, loadNextTask]
+    [handleAnswer, loadNextTask, slideAnim]
   );
 
   const onAnswerReverseTranslation = useCallback(
     async (userAnswer: string, correctAnswer: string) => {
+      // Slide out to the left
+      Animated.timing(slideAnim, {
+        toValue: -SCREEN_WIDTH,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+
+      // Submit answer and load next task
       await handleAnswer(userAnswer, correctAnswer);
       await loadNextTask();
     },
-    [handleAnswer, loadNextTask]
+    [handleAnswer, loadNextTask, slideAnim]
   );
 
   // Initial loading
@@ -120,13 +161,22 @@ export function QuizScreen() {
         currentTier={currentTier}
       />
       <View style={styles.content}>
-        {submitting ? (
+        {submitting && !hasPreloadedTask ? (
           <View style={styles.centerContent}>
             <ActivityIndicator size="large" color={colors.primary} />
             <Text style={styles.loadingText}>Checking answer...</Text>
           </View>
         ) : (
-          renderTask()
+          <Animated.View
+            style={[
+              styles.taskContainer,
+              {
+                transform: [{ translateX: slideAnim }],
+              },
+            ]}
+          >
+            {renderTask()}
+          </Animated.View>
         )}
       </View>
 
@@ -149,6 +199,12 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 900,
     padding: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  taskContainer: {
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },

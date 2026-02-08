@@ -13,12 +13,14 @@ import { generateTask, submitAnswer, getTierStats } from '../api/client';
 export function useCards(userId?: string) {
   const [stats, setStats] = useState<TierStatsResponse | null>(null);
   const [currentTask, setCurrentTask] = useState<GenerateTaskResponse | null>(null);
+  const [nextTask, setNextTask] = useState<GenerateTaskResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [taskLoading, setTaskLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [tasksCompletedThisSession, setTasksCompletedThisSession] = useState(0);
   const [tierJustUnlocked, setTierJustUnlocked] = useState<number | null>(null);
+  const [preloading, setPreloading] = useState(false);
 
   // Load initial tier stats
   useEffect(() => {
@@ -48,10 +50,36 @@ export function useCards(userId?: string) {
     return Math.random() < weights.multipleChoice ? 'multipleChoice' : 'reverseTranslation';
   }, []);
 
-  // Load next task
+  // Preload next task in background
+  const preloadNextTask = useCallback(async () => {
+    if (!stats || preloading) return;
+
+    setPreloading(true);
+    try {
+      const taskType = selectTaskType(stats.currentTier);
+      const task = await generateTask(stats.currentTier, taskType);
+      setNextTask(task);
+    } catch (err) {
+      console.warn('Failed to preload next task:', err);
+    } finally {
+      setPreloading(false);
+    }
+  }, [stats, selectTaskType, preloading]);
+
+  // Advance to preloaded task (or load if not preloaded)
   const loadNextTask = useCallback(async () => {
     if (!stats) return;
 
+    // If we have a preloaded task, use it immediately
+    if (nextTask) {
+      setCurrentTask(nextTask);
+      setNextTask(null);
+      // Start preloading the next one
+      setTimeout(() => preloadNextTask(), 100);
+      return;
+    }
+
+    // Otherwise load normally (fallback for initial load)
     setTaskLoading(true);
     setError(null);
 
@@ -59,12 +87,14 @@ export function useCards(userId?: string) {
       const taskType = selectTaskType(stats.currentTier);
       const task = await generateTask(stats.currentTier, taskType);
       setCurrentTask(task);
+      // Start preloading the next one
+      setTimeout(() => preloadNextTask(), 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate task');
     } finally {
       setTaskLoading(false);
     }
-  }, [stats, selectTaskType]);
+  }, [stats, selectTaskType, nextTask, preloadNextTask]);
 
   // Load first task after stats are loaded
   useEffect(() => {
@@ -122,6 +152,7 @@ export function useCards(userId?: string) {
     // State
     stats,
     currentTask,
+    nextTask,
     loading,
     error,
     taskLoading,
@@ -138,5 +169,6 @@ export function useCards(userId?: string) {
     tierStatsArray: stats?.tierStats || [],
     currentTier: stats?.currentTier || 1,
     overallAccuracy: stats?.overallAccuracy || 0,
+    hasPreloadedTask: nextTask !== null,
   };
 }
