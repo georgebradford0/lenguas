@@ -29,6 +29,7 @@ export function QuizScreen() {
     tierStatsArray,
     currentTier,
     overallAccuracy,
+    wordProgress,
     hasPreloadedTask,
   } = useCards();
 
@@ -159,6 +160,7 @@ export function QuizScreen() {
         accuracy={overallAccuracy}
         tierStats={tierStatsArray}
         currentTier={currentTier}
+        wordProgress={wordProgress}
       />
       <View style={styles.content}>
         {submitting && !hasPreloadedTask ? (

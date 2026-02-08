@@ -114,6 +114,12 @@ export interface SubmitAnswerResponse {
   timestamp: string;
 }
 
+export interface WordProgress {
+  word: string;
+  attempts: number;
+  accuracy: number;
+}
+
 export interface TierStatsResponse {
   currentTier: number;
   tierStats: Array<{
@@ -128,4 +134,5 @@ export interface TierStatsResponse {
   overallAccuracy: number;
   totalWords: number;
   totalAttempts: number;
+  wordProgress: WordProgress[];
 }

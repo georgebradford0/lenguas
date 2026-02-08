@@ -169,6 +169,7 @@ export function useCards(userId?: string) {
     tierStatsArray: stats?.tierStats || [],
     currentTier: stats?.currentTier || 1,
     overallAccuracy: stats?.overallAccuracy || 0,
+    wordProgress: stats?.wordProgress || [],
     hasPreloadedTask: nextTask !== null,
   };
 }

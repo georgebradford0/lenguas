@@ -394,6 +394,26 @@ router.get('/tier-stats', async (req, res) => {
     const totalCorrect = allProgress.reduce((sum, p) => sum + p.correctCount, 0);
     const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
+    // Get per-word progress for current tier
+    const currentTierWords = currentTier === 1 ? tier1Words : tier2Words;
+    const progressMap = {};
+    allProgress.forEach(p => {
+      progressMap[p.word] = p;
+    });
+
+    const wordProgress = currentTierWords.map(w => {
+      const prog = progressMap[w.word];
+      if (!prog) {
+        return { word: w.word, attempts: 0, accuracy: 0 };
+      }
+      const accuracy = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
+      return {
+        word: w.word,
+        attempts: prog.timesShown,
+        accuracy: Math.round(accuracy * 100)
+      };
+    });
+
     console.log(`Tier progression: Tier 1 mastered ${tier1Stats.mastered}/${tier1Words.length} (${tier1Stats.percentage}%), Tier 2 ${tier2Unlocked ? 'UNLOCKED' : 'locked'}`);
 
     res.json({
@@ -401,7 +421,8 @@ router.get('/tier-stats', async (req, res) => {
       tierStats: tierStatsArray,
       overallAccuracy,
       totalWords: tier1Words.length + tier2Words.length,
-      totalAttempts
+      totalAttempts,
+      wordProgress // Per-word progress for current tier
     });
 
   } catch (error) {

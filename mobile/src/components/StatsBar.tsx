@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { colors, spacing, fontSize } from '../styles/theme';
+import type { WordProgress } from '../types';
 
 interface TierStat {
   tier: number;
@@ -13,51 +14,75 @@ interface StatsBarProps {
   accuracy: number;
   tierStats: TierStat[];
   currentTier: number;
+  wordProgress: WordProgress[];
 }
 
 const TIER_NAMES = ['Core', 'Functional', 'Structural', 'Refinement'];
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
+const MAX_BAR_HEIGHT = 40; // Maximum height of histogram bars in pixels
 
-export function StatsBar({ accuracy, tierStats, currentTier }: StatsBarProps) {
+export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: StatsBarProps) {
   // Find the current tier's stats
   const currentTierStat = tierStats.find(t => t.tier === currentTier);
 
   if (!currentTierStat) return null;
 
+  // Find max attempts for scaling
+  const maxAttempts = Math.max(...wordProgress.map(w => w.attempts), 1);
+
+  // Calculate bar heights (upside down, so height represents progress)
+  const bars = wordProgress.map(w => {
+    const heightRatio = w.attempts / Math.max(maxAttempts, 7); // Scale to at least 7 for better visuals
+    const height = heightRatio * MAX_BAR_HEIGHT;
+
+    // Color based on accuracy
+    let barColor = colors.muted;
+    if (w.attempts === 0) {
+      barColor = colors.border;
+    } else if (w.accuracy >= 80) {
+      barColor = colors.correct;
+    } else if (w.accuracy >= 60) {
+      barColor = colors.primary;
+    } else {
+      barColor = colors.wrong;
+    }
+
+    return { ...w, height, barColor };
+  });
+
   return (
     <View style={styles.container}>
-      {/* Current Tier Progress */}
-      <View style={styles.tierSection}>
-        <View style={styles.tierRow}>
-          <View style={styles.tierHeader}>
-            <Text style={[styles.tierLabel, { color: TIER_COLORS[currentTierStat.tier - 1] }]}>
-              Tier {currentTierStat.tier}: {TIER_NAMES[currentTierStat.tier - 1]}
-            </Text>
-            <Text style={styles.tierNumbers}>
-              {currentTierStat.mastered}/{currentTierStat.total} ({currentTierStat.percentage}%)
-            </Text>
-          </View>
-          <View style={styles.progressBarContainer}>
+      {/* Tier Header */}
+      <View style={styles.tierHeader}>
+        <Text style={[styles.tierLabel, { color: TIER_COLORS[currentTierStat.tier - 1] }]}>
+          Tier {currentTierStat.tier}: {TIER_NAMES[currentTierStat.tier - 1]}
+        </Text>
+        <Text style={styles.tierNumbers}>
+          {currentTierStat.total} words • {currentTierStat.totalAttempts} attempts
+        </Text>
+      </View>
+
+      {/* Upside-down Histogram */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.histogramScroll}
+        contentContainerStyle={styles.histogramContainer}
+      >
+        {bars.map((bar, index) => (
+          <View key={index} style={styles.barWrapper}>
             <View
               style={[
-                styles.progressBarFill,
+                styles.bar,
                 {
-                  width: `${currentTierStat.percentage}%`,
-                  backgroundColor: TIER_COLORS[currentTierStat.tier - 1],
+                  height: bar.height,
+                  backgroundColor: bar.barColor,
                 },
               ]}
             />
           </View>
-        </View>
-      </View>
-
-      {/* Overall Accuracy */}
-      <View style={styles.accuracySection}>
-        <Text style={styles.accuracyLabel}>Overall Accuracy</Text>
-        <Text style={[styles.accuracyValue, { color: accuracy >= 75 ? colors.correct : colors.wrong }]}>
-          {accuracy}%
-        </Text>
-      </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -66,57 +91,45 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.cardBackground,
     width: '100%',
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-  },
-  tierSection: {
-    marginBottom: spacing.md,
-  },
-  tierRow: {
-    marginBottom: spacing.md,
   },
   tierHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
+    paddingHorizontal: spacing.xs,
   },
   tierLabel: {
-    fontSize: fontSize.sm,
-    fontWeight: '600',
+    fontSize: fontSize.md,
+    fontWeight: '700',
   },
   tierNumbers: {
-    fontSize: fontSize.sm,
+    fontSize: fontSize.xs,
     color: colors.muted,
     fontWeight: '500',
   },
-  progressBarContainer: {
-    height: 12,
-    backgroundColor: colors.progressBar,
-    borderRadius: borderRadius.sm,
-    overflow: 'hidden',
+  histogramScroll: {
+    width: '100%',
   },
-  progressBarFill: {
-    height: '100%',
-    borderRadius: borderRadius.sm,
-  },
-  accuracySection: {
+  histogramContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+    alignItems: 'flex-start',
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xs,
   },
-  accuracyLabel: {
-    fontSize: fontSize.md,
-    color: colors.muted,
-    fontWeight: '600',
+  barWrapper: {
+    width: 3,
+    height: MAX_BAR_HEIGHT,
+    marginHorizontal: 0.5,
+    justifyContent: 'flex-start',
   },
-  accuracyValue: {
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
+  bar: {
+    width: '100%',
+    borderRadius: 1,
   },
 });
