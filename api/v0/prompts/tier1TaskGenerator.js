@@ -132,7 +132,7 @@ IMPORTANT GUIDELINES:
 
   if (taskType === 'multipleChoice') {
     const wordInstruction = targetWord
-      ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the German text.`
+      ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the German text. If it's a noun, you MAY use the plural form (e.g., "der Hund" → "die Hunde") to teach plural usage.`
       : '';
 
     const pronounInstruction = preferredPronoun
@@ -167,6 +167,7 @@ REQUIREMENTS:
 
 EXAMPLES SHOWING VARIETY:
 - Simple noun: "der Hund" → correct: "the dog", wrong: ["the cat", "a dog", "the dogs"]
+- Noun plural: "die Hunde" → correct: "the dogs", wrong: ["the dog", "a dog", "dogs"]
 - Statement: "Ich bin müde" → correct: "I am tired", wrong: ["I am hungry", "You are tired", "I have tired"]
 - Question (was): "Was ist das?" → correct: "What is that?", wrong: ["What is this?", "Who is that?", "Where is that?"]
 - Question (wie): "Wie heißt du?" → correct: "What is your name?", wrong: ["How are you?", "What do you have?", "Where are you?"]
@@ -185,7 +186,7 @@ Return your response as JSON:
 }`;
   } else if (taskType === 'reverseTranslation') {
     const wordInstruction = targetWord
-      ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the correct German answer and ensure wrong options are variations of sentences/phrases using this word.`
+      ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the correct German answer and ensure wrong options are variations of sentences/phrases using this word. If it's a noun, you MAY use the plural form (e.g., "der Hund" → "die Hunde") to teach plural usage.`
       : '';
 
     const pronounInstruction = preferredPronoun
@@ -221,6 +222,7 @@ REQUIREMENTS:
 
 EXAMPLES SHOWING VARIETY:
 - Simple noun: "the dog" → correct: "der Hund", wrong: ["die Hund", "das Hund", "ein Hund"]
+- Noun plural: "the dogs" → correct: "die Hunde", wrong: ["der Hunde", "das Hunde", "die Hund"]
 - Statement: "I am tired" → correct: "Ich bin müde", wrong: ["Ich habe müde", "Du bist müde", "Ich müde bin"]
 - Question (what): "What is that?" → correct: "Was ist das?", wrong: ["Was das ist?", "Wer ist das?", "Was ist es?"]
 - Question (how): "What is your name?" → correct: "Wie heißt du?", wrong: ["Was heißt du?", "Wie heißen du?", "Wie bist du?"]
