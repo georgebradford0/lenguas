@@ -54,7 +54,28 @@ export function useAudio() {
           const fileName = `audio_${sanitizedWord}.mp3`;
           const tempPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
-          await RNFS.writeFile(tempPath, base64, 'base64');
+          // Validate base64 data
+          if (!base64 || base64.length === 0) {
+            console.error('Empty base64 audio data for word:', word);
+            return;
+          }
+
+          // Write file with error handling
+          try {
+            await RNFS.writeFile(tempPath, base64, 'base64');
+            console.log('Audio file written successfully:', fileName);
+          } catch (writeError) {
+            console.error('Failed to write audio file:', writeError);
+            console.error('Path:', tempPath);
+            return;
+          }
+
+          // Verify file exists before attempting playback
+          const fileExists = await RNFS.exists(tempPath);
+          if (!fileExists) {
+            console.error('Audio file does not exist after write:', tempPath);
+            return;
+          }
 
           // Wait for sound to load and play
           // On iOS, use just the filename when it's in the caches directory
@@ -62,14 +83,17 @@ export function useAudio() {
             const sound = new Sound(fileName, RNFS.CachesDirectoryPath, (error) => {
               if (error) {
                 console.error('Failed to load sound:', error);
-                console.error('Word:', word, 'Path:', tempPath);
+                console.error('Word:', word);
+                console.error('FileName:', fileName);
+                console.error('Full path:', tempPath);
+                console.error('Caches directory:', RNFS.CachesDirectoryPath);
                 reject(error);
                 return;
               }
               soundRef.current = sound;
               sound.play((success) => {
                 if (!success) {
-                  console.error('Sound playback failed');
+                  console.error('Sound playback failed for:', word);
                   reject(new Error('Sound playback failed'));
                 } else {
                   resolve();
