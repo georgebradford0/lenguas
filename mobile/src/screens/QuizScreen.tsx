@@ -41,7 +41,12 @@ export function QuizScreen() {
   useEffect(() => {
     const currentTaskId = currentTask ? `${currentTask.targetWord}-${currentTask.tier}` : null;
 
+    console.log('[QuizScreen] Animation effect - currentTaskId:', currentTaskId);
+    console.log('[QuizScreen] Animation effect - taskIdRef.current:', taskIdRef.current);
+    console.log('[QuizScreen] Animation effect - slideAnim._value:', slideAnim['_value']);
+
     if (currentTaskId && currentTaskId !== taskIdRef.current) {
+      console.log('[QuizScreen] Starting slide-in animation');
       taskIdRef.current = currentTaskId;
 
       // Start from right side and slide in
@@ -51,21 +56,32 @@ export function QuizScreen() {
         useNativeDriver: true,
         tension: 65,
         friction: 10,
-      }).start();
+      }).start(() => {
+        console.log('[QuizScreen] Slide-in animation complete');
+      });
+    } else {
+      console.log('[QuizScreen] Skipping animation - task ID unchanged');
     }
   }, [currentTask, slideAnim]);
 
   // Handle answer submission with slide animation
   const onAnswerMultipleChoice = useCallback(
     async (userAnswer: string, correctAnswer: string) => {
-      // Slide out to the left
-      Animated.timing(slideAnim, {
-        toValue: -SCREEN_WIDTH,
-        duration: 250,
-        useNativeDriver: true,
-      }).start();
+      console.log('[QuizScreen] Starting slide-out animation (MC)');
 
-      // Submit answer and load next task
+      // Wait for slide-out animation to complete
+      await new Promise<void>((resolve) => {
+        Animated.timing(slideAnim, {
+          toValue: -SCREEN_WIDTH,
+          duration: 250,
+          useNativeDriver: true,
+        }).start(() => {
+          console.log('[QuizScreen] Slide-out animation complete (MC)');
+          resolve();
+        });
+      });
+
+      // Submit answer and load next task AFTER animation completes
       await handleAnswer(userAnswer, correctAnswer);
       await loadNextTask();
     },
@@ -74,14 +90,21 @@ export function QuizScreen() {
 
   const onAnswerReverseTranslation = useCallback(
     async (userAnswer: string, correctAnswer: string) => {
-      // Slide out to the left
-      Animated.timing(slideAnim, {
-        toValue: -SCREEN_WIDTH,
-        duration: 250,
-        useNativeDriver: true,
-      }).start();
+      console.log('[QuizScreen] Starting slide-out animation (RT)');
 
-      // Submit answer and load next task
+      // Wait for slide-out animation to complete
+      await new Promise<void>((resolve) => {
+        Animated.timing(slideAnim, {
+          toValue: -SCREEN_WIDTH,
+          duration: 250,
+          useNativeDriver: true,
+        }).start(() => {
+          console.log('[QuizScreen] Slide-out animation complete (RT)');
+          resolve();
+        });
+      });
+
+      // Submit answer and load next task AFTER animation completes
       await handleAnswer(userAnswer, correctAnswer);
       await loadNextTask();
     },
