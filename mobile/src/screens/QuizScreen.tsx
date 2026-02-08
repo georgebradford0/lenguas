@@ -81,6 +81,10 @@ export function QuizScreen() {
         });
       });
 
+      // Reset task ID to allow slide-in animation for next task (even if same word)
+      taskIdRef.current = null;
+      console.log('[QuizScreen] Reset taskIdRef to allow next animation');
+
       // Submit answer and load next task AFTER animation completes
       await handleAnswer(userAnswer, correctAnswer);
       await loadNextTask();
@@ -103,6 +107,10 @@ export function QuizScreen() {
           resolve();
         });
       });
+
+      // Reset task ID to allow slide-in animation for next task (even if same word)
+      taskIdRef.current = null;
+      console.log('[QuizScreen] Reset taskIdRef to allow next animation');
 
       // Submit answer and load next task AFTER animation completes
       await handleAnswer(userAnswer, correctAnswer);
