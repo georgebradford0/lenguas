@@ -75,6 +75,9 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
         <Text style={[styles.tierLabel, { color: TIER_COLORS[currentTierStat.tier - 1] }]}>
           Tier {currentTierStat.tier}: {TIER_NAMES[currentTierStat.tier - 1]}
         </Text>
+        <Text style={styles.masteryPercentage}>
+          {masteryPercentage}%
+        </Text>
       </View>
 
       {/* Upside-down Histogram with Mastery Line */}
@@ -121,12 +124,17 @@ const styles = StyleSheet.create({
   },
   tierHeader: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
   tierLabel: {
     fontSize: fontSize.md,
+    fontWeight: '700',
+  },
+  masteryPercentage: {
+    fontSize: fontSize.lg,
+    color: colors.primary,
     fontWeight: '700',
   },
   histogramWrapper: {
