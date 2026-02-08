@@ -9,9 +9,8 @@ import type {
   TaskType,
 } from '../types';
 
-// For iOS Simulator: Simulators can access localhost
-// For Docker: Make sure container exposes port with -p 3000:3000
-const API_BASE = 'http://localhost:3000';
+// Remote API server on AWS EC2
+const API_BASE = 'http://35.88.113.219:3000';
 
 export async function loadWords(): Promise<WordData[]> {
   const response = await fetch(`${API_BASE}/words`);

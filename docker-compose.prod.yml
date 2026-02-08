@@ -1,0 +1,37 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: language-app-mongo
+    restart: unless-stopped
+    ports:
+      - "27018:27017"  # Map to external port 27018 to avoid conflicts
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - language-app-network
+
+  api:
+    build: ./api/v0
+    container_name: language-app-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/language-app
+      - PORT=3000
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+    depends_on:
+      - mongo
+    networks:
+      - language-app-network
+
+volumes:
+  mongo-data:
+    driver: local
+
+networks:
+  language-app-network:
+    driver: bridge
