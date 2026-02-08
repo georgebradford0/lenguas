@@ -29,6 +29,7 @@ export function ReverseTranslationTask({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+
   const taskIdRef = useRef<string | null>(null);
 
   // Create unique ID for this task
