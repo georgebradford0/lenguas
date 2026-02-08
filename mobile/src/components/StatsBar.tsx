@@ -36,13 +36,17 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
   const availableWidth = SCREEN_WIDTH - totalPadding;
   const barWidth = Math.floor(availableWidth / wordProgress.length);
 
-  // Calculate mastery threshold line position
+  // Calculate mastery threshold line position (fixed at 7 attempts)
   const MASTERY_ATTEMPTS = 7;
-  const masteryLineHeight = (MASTERY_ATTEMPTS / Math.max(maxAttempts, 7)) * MAX_BAR_HEIGHT;
+  const masteryLineHeight = (MASTERY_ATTEMPTS / Math.max(maxAttempts, MASTERY_ATTEMPTS)) * MAX_BAR_HEIGHT;
 
-  // Calculate mastery percentage
+  // Calculate progress percentage: (total correct attempts) / (total words × 7 required)
+  const totalCorrectAttempts = wordProgress.reduce((sum, w) => sum + Math.round(w.attempts * (w.accuracy / 100)), 0);
+  const requiredAttempts = wordProgress.length * MASTERY_ATTEMPTS;
+  const masteryPercentage = Math.min(100, Math.round((totalCorrectAttempts / requiredAttempts) * 100));
+
+  // Count of actually mastered words
   const masteredWords = wordProgress.filter(w => w.attempts >= 7 && w.accuracy >= 75).length;
-  const masteryPercentage = Math.round((masteredWords / wordProgress.length) * 100);
 
   // Calculate bar heights (upside down, so height represents progress)
   const bars = wordProgress.map(w => {
@@ -165,9 +169,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: 1.5,
-    backgroundColor: colors.primary,
-    opacity: 0.6,
+    height: 2,
+    backgroundColor: '#FFD700', // Gold color
+    opacity: 0.9,
+    zIndex: 10,
   },
   legend: {
     alignItems: 'center',
