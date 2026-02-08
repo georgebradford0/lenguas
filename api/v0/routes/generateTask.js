@@ -3,8 +3,9 @@ const router = express.Router();
 const OpenAI = require('openai');
 const fs = require('fs');
 const path = require('path');
-const { generateTier1TaskPrompt } = require('../prompts/tier1TaskGenerator');
+const { generateTier1TaskPrompt, selectPronounWeighted } = require('../prompts/tier1TaskGenerator');
 const Progress = require('../models/Progress');
+const PronounHistory = require('../models/PronounHistory');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -76,7 +77,7 @@ function selectWord(words, progressRecords) {
  */
 router.post('/generate-task', async (req, res) => {
   try {
-    const { tier = 1, taskType = 'multipleChoice', focusArea = 'general' } = req.body;
+    const { tier = 1, taskType = 'multipleChoice', focusArea = 'general', userId = 'default' } = req.body;
 
     // Validate inputs
     if (![1, 2].includes(tier)) {
@@ -107,8 +108,21 @@ router.post('/generate-task', async (req, res) => {
 
     console.log(`Selected word: "${targetWord}" for Tier ${tier}`);
 
-    // Generate the prompt with target word
-    const promptConfig = generateTier1TaskPrompt(taskType, { focusArea, targetWord });
+    // Get pronoun history and select pronoun with weighted distribution
+    let pronounHistory = await PronounHistory.findOne({ userId });
+    if (!pronounHistory) {
+      pronounHistory = new PronounHistory({ userId, recentPronouns: [] });
+    }
+
+    const selectedPronoun = selectPronounWeighted(pronounHistory.recentPronouns);
+    console.log(`Selected pronoun: "${selectedPronoun.german}" (${selectedPronoun.english})`);
+
+    // Generate the prompt with target word and preferred pronoun
+    const promptConfig = generateTier1TaskPrompt(taskType, {
+      focusArea,
+      targetWord,
+      preferredPronoun: selectedPronoun
+    });
 
     console.log(`Generating ${taskType} task for Tier ${tier} with word "${targetWord}"...`);
 
@@ -141,6 +155,16 @@ router.post('/generate-task', async (req, res) => {
     }
 
     console.log('Task generated successfully for word:', targetWord);
+
+    // Update pronoun history
+    pronounHistory.recentPronouns.unshift(selectedPronoun.key);
+    if (pronounHistory.recentPronouns.length > 12) {
+      pronounHistory.recentPronouns = pronounHistory.recentPronouns.slice(0, 12);
+    }
+    pronounHistory.lastUpdated = new Date();
+    await pronounHistory.save();
+
+    console.log(`Updated pronoun history: [${pronounHistory.recentPronouns.slice(0, 6).join(', ')}...]`);
 
     // Return the task with target word
     res.json({

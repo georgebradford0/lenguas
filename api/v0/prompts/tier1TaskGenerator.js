@@ -3,6 +3,53 @@
  * Generates dynamic German learning tasks based on Tier 1 curriculum
  */
 
+const PRONOUNS = [
+  { key: 'ich', german: 'ich', english: 'I' },
+  { key: 'du', german: 'du', english: 'you (informal)' },
+  { key: 'er_sie_es', german: 'er/sie/es', english: 'he/she/it' },
+  { key: 'wir', german: 'wir', english: 'we' },
+  { key: 'ihr', german: 'ihr', english: 'you (plural)' },
+  { key: 'sie', german: 'sie', english: 'they' }
+];
+
+/**
+ * Select pronoun using weighted distribution based on recent usage
+ * @param {Array<string>} recentPronouns - Last N pronouns used
+ * @returns {object} Selected pronoun object
+ */
+function selectPronounWeighted(recentPronouns = []) {
+  // Calculate weights: heavily penalize recent usage
+  const weights = PRONOUNS.map(p => {
+    let weight = 1.0;
+
+    // Check how recently this pronoun was used
+    for (let i = 0; i < recentPronouns.length; i++) {
+      if (recentPronouns[i] === p.key) {
+        // More recent = heavier penalty
+        // Last used (index 0) gets 0.1x weight
+        // 6 tasks ago gets ~0.5x weight
+        const recencyPenalty = Math.pow(0.3, 1 / (i + 1));
+        weight *= recencyPenalty;
+      }
+    }
+
+    return { pronoun: p, weight };
+  });
+
+  // Weighted random selection
+  const totalWeight = weights.reduce((sum, w) => sum + w.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const item of weights) {
+    random -= item.weight;
+    if (random <= 0) {
+      return item.pronoun;
+    }
+  }
+
+  return weights[0].pronoun; // Fallback
+}
+
 const TIER_1_CONTEXT = `
 # Tier 1: Core Grammar (0-100 words)
 **Learn WITH first nouns/verbs**
@@ -61,7 +108,7 @@ gut, groß, klein, alt, neu
  * @returns {object} OpenAI chat completion messages
  */
 function generateTier1TaskPrompt(taskType = 'multipleChoice', options = {}) {
-  const { focusArea = 'general', difficulty = 'beginner', targetWord = null } = options;
+  const { focusArea = 'general', difficulty = 'beginner', targetWord = null, preferredPronoun = null } = options;
 
   const systemPrompt = `You are a German language teaching assistant specializing in beginner-level (Tier 1) instruction.
 
@@ -87,6 +134,10 @@ IMPORTANT GUIDELINES:
       ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the German text.`
       : '';
 
+    const pronounInstruction = preferredPronoun
+      ? `\nPRONOUN PREFERENCE: Strongly prefer using "${preferredPronoun.german}" (${preferredPronoun.english}) as the subject in this task. This ensures variety across multiple tasks and helps students practice all pronoun forms equally.`
+      : '';
+
     // Randomly choose a task style to encourage variety
     const styles = [
       'Just the word with article (e.g., "der Hund" → "the dog")',
@@ -98,7 +149,7 @@ IMPORTANT GUIDELINES:
     const styleHint = styles[Math.floor(Math.random() * styles.length)];
 
     userPrompt = `Generate a multiple choice task for Tier 1 German learners.
-${wordInstruction}
+${wordInstruction}${pronounInstruction}
 
 VARY YOUR APPROACH: Focus on this style: ${styleHint}
 
@@ -134,6 +185,10 @@ Return your response as JSON:
       ? `\nIMPORTANT: You MUST create a task that features the word "${targetWord}". Use this word in the correct German answer and ensure wrong options are variations of sentences/phrases using this word.`
       : '';
 
+    const pronounInstruction = preferredPronoun
+      ? `\nPRONOUN PREFERENCE: Strongly prefer using "${preferredPronoun.german}" (${preferredPronoun.english}) as the subject in this task. This ensures variety across multiple tasks and helps students practice all pronoun forms equally.`
+      : '';
+
     // Randomly choose a task style to encourage variety
     const styles = [
       'Just the word with article (e.g., "the dog" → "der Hund")',
@@ -145,7 +200,7 @@ Return your response as JSON:
     const styleHint = styles[Math.floor(Math.random() * styles.length)];
 
     userPrompt = `Generate a reverse translation task for Tier 1 German learners.
-${wordInstruction}
+${wordInstruction}${pronounInstruction}
 
 VARY YOUR APPROACH: Focus on this style: ${styleHint}
 
@@ -192,5 +247,7 @@ Return your response as JSON:
 
 module.exports = {
   generateTier1TaskPrompt,
+  selectPronounWeighted,
+  PRONOUNS,
   TIER_1_CONTEXT
 };
