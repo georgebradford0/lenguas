@@ -90,7 +90,7 @@ export function ReverseTranslationTask({
   }
 
   return (
-    <View style={styles.container}>
+    <>
       <View style={styles.promptContainer}>
         <Text style={styles.promptLabel}>Select the German translation for:</Text>
         <Text style={styles.englishWord}>{taskData.english}</Text>
@@ -101,26 +101,24 @@ export function ReverseTranslationTask({
         answered={answered}
         onSelect={handleSelect}
       />
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   promptContainer: {
     alignItems: 'center',
     marginBottom: spacing.xxl,
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
-    paddingVertical: spacing.xxl * 1.5,
-    paddingHorizontal: spacing.xxl,
+    paddingVertical: spacing.xxl,
+    paddingHorizontal: spacing.xl,
     width: '100%',
-    minHeight: 240,
+    minHeight: 180,
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: colors.border,
