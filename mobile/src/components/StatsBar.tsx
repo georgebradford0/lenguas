@@ -25,7 +25,7 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
   // Find the current tier's stats
   const currentTierStat = tierStats.find(t => t.tier === currentTier);
 
-  if (!currentTierStat) return null;
+  if (!currentTierStat || !wordProgress || wordProgress.length === 0) return null;
 
   // Find max attempts for scaling
   const maxAttempts = Math.max(...wordProgress.map(w => w.attempts), 1);
