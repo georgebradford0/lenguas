@@ -19,7 +19,7 @@ interface StatsBarProps {
 
 const TIER_NAMES = ['Core', 'Functional', 'Structural', 'Refinement'];
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
-const MAX_BAR_HEIGHT = 80; // Maximum height of histogram bars in pixels
+const MAX_BAR_HEIGHT = 120; // Maximum height of histogram bars in pixels
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: StatsBarProps) {
