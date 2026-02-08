@@ -80,33 +80,21 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
         </Text>
       </View>
 
-      {/* Upside-down Histogram with Mastery Line */}
-      <View style={styles.histogramWrapper}>
-        <View style={styles.histogramContainer}>
-          {bars.map((bar, index) => (
-            <View key={index} style={[styles.barWrapper, { width: bar.barWidth }]}>
-              <View
-                style={[
-                  styles.bar,
-                  {
-                    height: bar.height,
-                    backgroundColor: bar.barColor,
-                  },
-                ]}
-              />
-            </View>
-          ))}
-        </View>
-
-        {/* Mastery threshold line */}
-        <View
-          style={[
-            styles.masteryLine,
-            {
-              top: masteryLineHeight,
-            },
-          ]}
-        />
+      {/* Upside-down Histogram */}
+      <View style={styles.histogramContainer}>
+        {bars.map((bar, index) => (
+          <View key={index} style={[styles.barWrapper, { width: bar.barWidth }]}>
+            <View
+              style={[
+                styles.bar,
+                {
+                  height: bar.height,
+                  backgroundColor: bar.barColor,
+                },
+              ]}
+            />
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -137,11 +125,6 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '700',
   },
-  histogramWrapper: {
-    position: 'relative',
-    width: '100%',
-    height: MAX_BAR_HEIGHT,
-  },
   histogramContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -156,14 +139,5 @@ const styles = StyleSheet.create({
   bar: {
     width: '100%',
     borderRadius: 1,
-  },
-  masteryLine: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 2,
-    backgroundColor: '#FFD700', // Gold color
-    opacity: 0.9,
-    zIndex: 10,
   },
 });
