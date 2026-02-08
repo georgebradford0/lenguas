@@ -75,9 +75,6 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
         <Text style={[styles.tierLabel, { color: TIER_COLORS[currentTierStat.tier - 1] }]}>
           Tier {currentTierStat.tier}: {TIER_NAMES[currentTierStat.tier - 1]}
         </Text>
-        <Text style={styles.masteryPercentage}>
-          {masteryPercentage}% mastered
-        </Text>
       </View>
 
       {/* Upside-down Histogram with Mastery Line */}
@@ -108,13 +105,6 @@ export function StatsBar({ accuracy, tierStats, currentTier, wordProgress }: Sta
           ]}
         />
       </View>
-
-      {/* Legend */}
-      <View style={styles.legend}>
-        <Text style={styles.legendText}>
-          {masteredWords}/{wordProgress.length} words at mastery (7+ attempts, 75%+ accuracy)
-        </Text>
-      </View>
     </View>
   );
 }
@@ -131,7 +121,7 @@ const styles = StyleSheet.create({
   },
   tierHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
@@ -139,16 +129,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     fontWeight: '700',
   },
-  masteryPercentage: {
-    fontSize: fontSize.lg,
-    color: colors.primary,
-    fontWeight: '700',
-  },
   histogramWrapper: {
     position: 'relative',
     width: '100%',
     height: MAX_BAR_HEIGHT,
-    marginBottom: spacing.xs,
   },
   histogramContainer: {
     flexDirection: 'row',
@@ -173,13 +157,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFD700', // Gold color
     opacity: 0.9,
     zIndex: 10,
-  },
-  legend: {
-    alignItems: 'center',
-  },
-  legendText: {
-    fontSize: fontSize.xs,
-    color: colors.muted,
-    fontWeight: '500',
   },
 });
