@@ -150,20 +150,24 @@ function parsePluralForm(fullEntry) {
 
 /**
  * Format word with singular and plural if available
+ * Returns object with display (with plural) and audio (singular only) versions
  */
 function formatWordWithPlural(fullEntry, pos) {
   // Only parse plurals for nouns
   if (pos !== 'noun') {
-    return fullEntry;
+    return { display: fullEntry, audio: fullEntry };
   }
 
   const { singular, plural } = parsePluralForm(fullEntry);
 
   if (plural) {
-    return `${singular} (pl: ${plural})`;
+    return {
+      display: `${singular} (pl: ${plural})`,
+      audio: singular
+    };
   }
 
-  return singular;
+  return { display: singular, audio: singular };
 }
 
 // Translate German word to English using OpenAI
@@ -241,22 +245,23 @@ router.post('/generate-task', async (req, res) => {
     console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level}`);
 
     // Format German word with plural (if noun)
-    const germanWordFormatted = formatWordWithPlural(targetWord.full_entry, targetWord.pos);
+    const targetFormatted = formatWordWithPlural(targetWord.full_entry, targetWord.pos);
 
     // Generate distractors (wrong answers) - these are German words/phrases
     const distractors = generateDistractors(targetWord, vocabulary, 3);
     const distractorsFormatted = distractors.map((d, idx) => {
       // Get the original vocab entry to know its POS
       const distWord = vocabulary.find(v => v.full_entry === d);
-      return distWord ? formatWordWithPlural(d, distWord.pos) : d;
+      return distWord ? formatWordWithPlural(d, distWord.pos) : { display: d, audio: d };
     });
 
-    // Translate to English
-    const correctEnglish = await translateWord(germanWordFormatted);
-    const wrongEnglishOptions = await translateWords(distractorsFormatted);
+    // Translate to English (use audio version without plural notation)
+    const correctEnglish = await translateWord(targetFormatted.audio);
+    const wrongEnglishOptions = await translateWords(distractorsFormatted.map(d => d.audio));
 
-    console.log(`Formatted: "${targetWord.full_entry}" → "${germanWordFormatted}"`);
-    console.log(`Translated: "${germanWordFormatted}" → "${correctEnglish}"`);
+    console.log(`Formatted: "${targetWord.full_entry}" → "${targetFormatted.display}"`);
+    console.log(`Audio: "${targetFormatted.audio}"`);
+    console.log(`Translated: "${targetFormatted.audio}" → "${correctEnglish}"`);
 
     // Build task based on type
     let taskData;
@@ -264,16 +269,20 @@ router.post('/generate-task', async (req, res) => {
     if (taskType === 'multipleChoice') {
       // Show German word, ask for English translation
       taskData = {
-        german: germanWordFormatted,
+        german: targetFormatted.display,
+        germanAudio: targetFormatted.audio,
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
       };
     } else {
       // Reverse: show English, ask for German
+      // Use singular forms (audio versions) for cleaner choice display
       taskData = {
         english: correctEnglish,
-        correctGerman: germanWordFormatted,
-        wrongOptions: distractorsFormatted, // Keep German for wrong options
+        correctGerman: targetFormatted.audio, // Singular only for clean UI
+        correctGermanAudio: targetFormatted.audio,
+        wrongOptions: distractorsFormatted.map(d => d.audio), // Singular only
+        wrongOptionsAudio: distractorsFormatted.map(d => d.audio),
       };
     }
 

@@ -49,6 +49,7 @@ export interface VocabWord {
 
 export interface MultipleChoiceTaskData {
   german: string;
+  germanAudio: string; // Singular form for audio (no plural notation)
   correctEnglish: string;
   wrongOptions: string[];
 }
@@ -56,7 +57,9 @@ export interface MultipleChoiceTaskData {
 export interface ReverseTranslationTaskData {
   english: string;
   correctGerman: string;
+  correctGermanAudio: string; // Singular form for audio (no plural notation)
   wrongOptions: string[];
+  wrongOptionsAudio: string[]; // Singular forms for audio
 }
 
 export type GeneratedTask = MultipleChoiceTaskData | ReverseTranslationTaskData;

@@ -99,8 +99,8 @@ export function ReverseTranslationTask({
       const userAnswer = choices[index].text;
       const correctAnswer = taskData.correctGerman;
 
-      // Always play audio of the correct German word/phrase for learning
-      await playAudio(taskData.correctGerman);
+      // Always play audio of the correct German word/phrase for learning (use audio version)
+      await playAudio(taskData.correctGermanAudio || taskData.correctGerman);
 
       // Short pause after audio finishes
       await new Promise((resolve) => setTimeout(resolve, PAUSE_AFTER_AUDIO));

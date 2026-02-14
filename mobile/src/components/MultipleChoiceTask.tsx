@@ -71,8 +71,8 @@ export function MultipleChoiceTask({
     // Clear any previous validation errors
     setValidationError(null);
 
-    // Prefetch audio for German text
-    prefetchAudio(taskData.german);
+    // Prefetch audio for German text (use audio version without plural)
+    prefetchAudio(taskData.germanAudio || taskData.german);
 
     // Create shuffled choices
     const options = shuffle([
@@ -88,8 +88,8 @@ export function MultipleChoiceTask({
     setAnswered(false);
     taskIdRef.current = taskId;
 
-    // Auto-play audio only after successful validation
-    playAudio(taskData.german);
+    // Auto-play audio only after successful validation (use audio version)
+    playAudio(taskData.germanAudio || taskData.german);
 
     // Notify parent
     onTaskReady?.();
@@ -115,8 +115,9 @@ export function MultipleChoiceTask({
   );
 
   const handleSpeak = useCallback(() => {
-    playAudio(taskData.german);
-  }, [taskData.german, playAudio]);
+    // Use audio version without plural notation
+    playAudio(taskData.germanAudio || taskData.german);
+  }, [taskData.germanAudio, taskData.german, playAudio]);
 
   console.log('[MultipleChoice] Render - validationError:', validationError);
   console.log('[MultipleChoice] Render - choices:', choices ? 'exists' : 'null');
