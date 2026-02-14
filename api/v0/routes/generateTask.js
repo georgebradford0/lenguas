@@ -68,6 +68,104 @@ function generateDistractors(targetWord, allWords, count = 3) {
   return distractors.map(w => w.full_entry);
 }
 
+/**
+ * Parse German plural markers and generate plural form
+ * Examples:
+ *   "die Adresse, -en" → { singular: "die Adresse", plural: "die Adressen" }
+ *   "der Apfel, -Ä" → { singular: "der Apfel", plural: "die Äpfel" }
+ *   "das Auto, -s" → { singular: "das Auto", plural: "die Autos" }
+ *   "der Ehemann, ä, er" → { singular: "der Ehemann", plural: "die Ehemänner" }
+ *   "das Haus, -ü, er" → { singular: "das Haus", plural: "die Häuser" }
+ */
+function parsePluralForm(fullEntry) {
+  // Match pattern: "article word, pluralMarker"
+  const match = fullEntry.match(/^(der|die|das)\s+([^,]+),\s*(.+)$/i);
+
+  if (!match) {
+    // No plural marker found
+    return { singular: fullEntry, plural: null };
+  }
+
+  const article = match[1];
+  const word = match[2].trim();
+  let pluralMarker = match[3].trim();
+
+  // Handle cases like "ä, er" or "-ü, e" where umlaut and ending are separate
+  // Normalize to "-äer" format
+  pluralMarker = pluralMarker.replace(/^([-]?[äöüÄÖÜ]),?\s*/, '-$1');
+
+  // All plurals use "die" as article
+  let pluralForm = 'die ';
+  let umlautedWord = word;
+
+  // Check for umlaut markers
+  const hasUmlautA = /[-]?[äÄ]/.test(pluralMarker);
+  const hasUmlautO = /[-]?[öÖ]/.test(pluralMarker);
+  const hasUmlautU = /[-]?[üÜ]/.test(pluralMarker);
+
+  // Apply umlaut if present (case-insensitive replacement)
+  if (hasUmlautA) {
+    // Replace last 'a' or 'A' with corresponding umlaut, preserving case
+    umlautedWord = word.replace(/a([^aA]*)$/i, (match, p1) => {
+      const wasUpper = /A/.test(match.charAt(0));
+      return (wasUpper ? 'Ä' : 'ä') + p1;
+    });
+    pluralMarker = pluralMarker.replace(/[-]?[äÄ]/, '');
+  } else if (hasUmlautO) {
+    umlautedWord = word.replace(/o([^oO]*)$/i, (match, p1) => {
+      const wasUpper = /O/.test(match.charAt(0));
+      return (wasUpper ? 'Ö' : 'ö') + p1;
+    });
+    pluralMarker = pluralMarker.replace(/[-]?[öÖ]/, '');
+  } else if (hasUmlautU) {
+    umlautedWord = word.replace(/u([^uU]*)$/i, (match, p1) => {
+      const wasUpper = /U/.test(match.charAt(0));
+      return (wasUpper ? 'Ü' : 'ü') + p1;
+    });
+    pluralMarker = pluralMarker.replace(/[-]?[üÜ]/, '');
+  }
+
+  // Clean up remaining marker (remove spaces, commas)
+  pluralMarker = pluralMarker.replace(/^[,\s-]+/, '').trim();
+
+  // Handle remaining ending markers
+  if (!pluralMarker || pluralMarker === '–' || pluralMarker === '-') {
+    // No ending change (just umlaut if applicable)
+    pluralForm += umlautedWord;
+  } else {
+    // Special case: if word ends in 'e' and marker is 'en', only add 'n'
+    if (umlautedWord.endsWith('e') && pluralMarker === 'en') {
+      pluralForm += umlautedWord + 'n';
+    } else {
+      // Add the ending
+      pluralForm += umlautedWord + pluralMarker;
+    }
+  }
+
+  return {
+    singular: `${article} ${word}`,
+    plural: pluralForm
+  };
+}
+
+/**
+ * Format word with singular and plural if available
+ */
+function formatWordWithPlural(fullEntry, pos) {
+  // Only parse plurals for nouns
+  if (pos !== 'noun') {
+    return fullEntry;
+  }
+
+  const { singular, plural } = parsePluralForm(fullEntry);
+
+  if (plural) {
+    return `${singular} (pl: ${plural})`;
+  }
+
+  return singular;
+}
+
 // Translate German word to English using OpenAI
 async function translateWord(germanWord) {
   try {
@@ -142,14 +240,23 @@ router.post('/generate-task', async (req, res) => {
 
     console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level}`);
 
+    // Format German word with plural (if noun)
+    const germanWordFormatted = formatWordWithPlural(targetWord.full_entry, targetWord.pos);
+
     // Generate distractors (wrong answers) - these are German words/phrases
     const distractors = generateDistractors(targetWord, vocabulary, 3);
+    const distractorsFormatted = distractors.map((d, idx) => {
+      // Get the original vocab entry to know its POS
+      const distWord = vocabulary.find(v => v.full_entry === d);
+      return distWord ? formatWordWithPlural(d, distWord.pos) : d;
+    });
 
     // Translate to English
-    const correctEnglish = await translateWord(targetWord.full_entry);
-    const wrongEnglishOptions = await translateWords(distractors);
+    const correctEnglish = await translateWord(germanWordFormatted);
+    const wrongEnglishOptions = await translateWords(distractorsFormatted);
 
-    console.log(`Translated: "${targetWord.full_entry}" → "${correctEnglish}"`);
+    console.log(`Formatted: "${targetWord.full_entry}" → "${germanWordFormatted}"`);
+    console.log(`Translated: "${germanWordFormatted}" → "${correctEnglish}"`);
 
     // Build task based on type
     let taskData;
@@ -157,7 +264,7 @@ router.post('/generate-task', async (req, res) => {
     if (taskType === 'multipleChoice') {
       // Show German word, ask for English translation
       taskData = {
-        german: targetWord.full_entry,
+        german: germanWordFormatted,
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
       };
@@ -165,8 +272,8 @@ router.post('/generate-task', async (req, res) => {
       // Reverse: show English, ask for German
       taskData = {
         english: correctEnglish,
-        correctGerman: targetWord.full_entry,
-        wrongOptions: distractors, // Keep German for wrong options
+        correctGerman: germanWordFormatted,
+        wrongOptions: distractorsFormatted, // Keep German for wrong options
       };
     }
 
