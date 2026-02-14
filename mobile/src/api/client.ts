@@ -6,6 +6,7 @@ import type {
   SubmitAnswerRequest,
   SubmitAnswerResponse,
   TierStatsResponse,
+  LevelStatsResponse,
   TaskType,
 } from '../types';
 
@@ -74,10 +75,10 @@ export async function saveProgress(
   });
 }
 
-// New LLM-based task generation API
+// New level-based task generation API
 
 export async function generateTask(
-  tier: number,
+  level: string, // A1, A2, or B1
   taskType: TaskType,
   focusArea?: string
 ): Promise<GenerateTaskResponse> {
@@ -87,7 +88,7 @@ export async function generateTask(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      tier,
+      level,
       taskType,
       focusArea: focusArea || 'general',
     }),
@@ -118,6 +119,18 @@ export async function submitAnswer(
   return response.json();
 }
 
+// Get level-based stats (new)
+export async function getLevelStats(): Promise<LevelStatsResponse> {
+  const response = await fetch(`${API_BASE}/level-stats`);
+
+  if (!response.ok) {
+    throw new Error('Failed to load level stats');
+  }
+
+  return response.json();
+}
+
+// Legacy tier stats (for backward compatibility)
 export async function getTierStats(): Promise<TierStatsResponse> {
   const response = await fetch(`${API_BASE}/tier-stats`);
 

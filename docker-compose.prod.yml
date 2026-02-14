@@ -16,6 +16,8 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    volumes:
+      - ./wordlists:/app/wordlists:ro  # Mount wordlists directory (read-only)
     environment:
       - MONGO_URI=mongodb://mongo:27017/language-app
       - PORT=3000

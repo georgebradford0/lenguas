@@ -1,0 +1,19 @@
+version = 1
+requires-python = ">=3.13"
+
+[[package]]
+name = "pdftotext"
+version = "3.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/99/b6c910344eb95f3dddf8e27cddcdebb51765174b0624632db4cd62d3f172/pdftotext-3.0.0.tar.gz", hash = "sha256:c3652b19154e145515a8bfa953fc6136338ed92337bdccbb53fe0d88013b1aaa", size = 113565 }
+
+[[package]]
+name = "sandbox"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "pdftotext" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "pdftotext", specifier = ">=3.0.0" }]

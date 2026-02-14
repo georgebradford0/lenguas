@@ -1,43 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const OpenAI = require('openai');
 const fs = require('fs');
 const path = require('path');
-const { generateTier1TaskPrompt, selectPronounWeighted } = require('../prompts/tier1TaskGenerator');
 const Progress = require('../models/Progress');
-const PronounHistory = require('../models/PronounHistory');
+const OpenAI = require('openai');
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Load words from CSV based on tier
-function loadWordsForTier(tier) {
-  const tierFiles = {
-    1: path.join(__dirname, '..', 'tier1.csv'),
-    2: path.join(__dirname, '..', 'tier2.csv'),
+// Load vocabulary from JSON files
+function loadVocabulary(level) {
+  const levelFiles = {
+    'A1': path.join(__dirname, '..', 'wordlists', 'a1_vocabulary.json'),
+    'A2': path.join(__dirname, '..', 'wordlists', 'a2_vocabulary.json'),
+    'B1': path.join(__dirname, '..', 'wordlists', 'b1_vocabulary.json'),
   };
 
-  const filePath = tierFiles[tier];
+  const filePath = levelFiles[level];
   if (!filePath || !fs.existsSync(filePath)) {
-    throw new Error(`No word list found for tier ${tier}`);
+    throw new Error(`No vocabulary found for level ${level}`);
   }
 
   const content = fs.readFileSync(filePath, 'utf-8');
-  const lines = content.split('\n').filter(line => line.trim());
-  const words = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const [word, tierNum] = lines[i].split(',');
-    if (word && word.trim()) {
-      words.push({
-        word: word.trim(),
-        tier: parseInt(tierNum) || tier
-      });
-    }
-  }
-
-  return words;
+  return JSON.parse(content);
 }
 
 // Weighted selection for spaced repetition
@@ -56,32 +40,82 @@ function selectWord(words, progressRecords) {
   for (const word of wordsWithWeights) {
     random -= word.weight;
     if (random <= 0) {
-      return word.word;
+      return word;
     }
   }
 
-  return wordsWithWeights[0].word;
+  return wordsWithWeights[0];
+}
+
+// Generate wrong answer choices that are similar but incorrect
+function generateDistractors(targetWord, allWords, count = 3) {
+  // Filter out the target word and shuffle
+  const candidates = allWords
+    .filter(w => w.word !== targetWord.word)
+    .sort(() => Math.random() - 0.5);
+
+  // Prefer words with same part of speech for better distractors
+  const samePOS = candidates.filter(w => w.pos === targetWord.pos);
+  const otherPOS = candidates.filter(w => w.pos !== targetWord.pos);
+
+  // Take 2 from same POS and 1 from other POS if possible
+  const distractors = [
+    ...samePOS.slice(0, 2),
+    ...otherPOS.slice(0, 1),
+    ...candidates.slice(0, count), // fallback to any words
+  ].slice(0, count);
+
+  return distractors.map(w => w.full_entry);
+}
+
+// Translate German word to English using OpenAI
+async function translateWord(germanWord) {
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a German-English translator. Translate the given German word or phrase to English. Give ONLY the English translation, nothing else. Keep it brief (1-5 words).',
+        },
+        { role: 'user', content: germanWord },
+      ],
+      temperature: 0.3,
+      max_tokens: 20,
+    });
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error('Translation error:', error);
+    return germanWord; // Fallback to German if translation fails
+  }
+}
+
+// Translate multiple words in parallel
+async function translateWords(germanWords) {
+  const translations = await Promise.all(
+    germanWords.map(word => translateWord(word))
+  );
+  return translations;
 }
 
 /**
  * POST /generate-task
- * Generate a dynamic learning task based on tier and task type
+ * Generate a simple word translation task
  *
  * Body:
- * - tier: number (1-4) - which tier curriculum to use
+ * - level: string ('A1' | 'A2' | 'B1') - which level to use
  * - taskType: 'multipleChoice' | 'reverseTranslation'
- * - focusArea: optional string (e.g., 'verbs', 'articles', 'questions')
  *
  * Returns:
- * - task: object with German/English text and answer choices
+ * - task: object with German/English word and answer choices
  */
 router.post('/generate-task', async (req, res) => {
   try {
-    const { tier = 1, taskType = 'multipleChoice', focusArea = 'general', userId = 'default' } = req.body;
+    const { level = 'A1', taskType = 'multipleChoice', userId = 'default' } = req.body;
 
     // Validate inputs
-    if (![1, 2].includes(tier)) {
-      return res.status(400).json({ error: 'Invalid tier. Must be 1 or 2.' });
+    if (!['A1', 'A2', 'B1'].includes(level)) {
+      return res.status(400).json({ error: 'Invalid level. Must be A1, A2, or B1.' });
     }
 
     if (!['multipleChoice', 'reverseTranslation'].includes(taskType)) {
@@ -90,8 +124,8 @@ router.post('/generate-task', async (req, res) => {
       });
     }
 
-    // Load words for the tier
-    const words = loadWordsForTier(tier);
+    // Load vocabulary for the level
+    const vocabulary = loadVocabulary(level);
 
     // Load progress for all words
     const progressRecords = {};
@@ -104,73 +138,45 @@ router.post('/generate-task', async (req, res) => {
     });
 
     // Select a word using weighted selection (spaced repetition)
-    const targetWord = selectWord(words, progressRecords);
+    const targetWord = selectWord(vocabulary, progressRecords);
 
-    console.log(`Selected word: "${targetWord}" for Tier ${tier}`);
+    console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level}`);
 
-    // Get pronoun history and select pronoun with weighted distribution
-    let pronounHistory = await PronounHistory.findOne({ userId });
-    if (!pronounHistory) {
-      pronounHistory = new PronounHistory({ userId, recentPronouns: [] });
-    }
+    // Generate distractors (wrong answers) - these are German words/phrases
+    const distractors = generateDistractors(targetWord, vocabulary, 3);
 
-    const selectedPronoun = selectPronounWeighted(pronounHistory.recentPronouns);
-    console.log(`Selected pronoun: "${selectedPronoun.german}" (${selectedPronoun.english})`);
+    // Translate to English
+    const correctEnglish = await translateWord(targetWord.full_entry);
+    const wrongEnglishOptions = await translateWords(distractors);
 
-    // Generate the prompt with target word and preferred pronoun
-    const promptConfig = generateTier1TaskPrompt(taskType, {
-      focusArea,
-      targetWord,
-      preferredPronoun: selectedPronoun
-    });
+    console.log(`Translated: "${targetWord.full_entry}" → "${correctEnglish}"`);
 
-    console.log(`Generating ${taskType} task for Tier ${tier} with word "${targetWord}"...`);
+    // Build task based on type
+    let taskData;
 
-    // Call OpenAI
-    const completion = await openai.chat.completions.create({
-      model: promptConfig.model,
-      messages: promptConfig.messages,
-      response_format: promptConfig.response_format,
-      temperature: promptConfig.temperature,
-      max_tokens: promptConfig.max_tokens,
-    });
-
-    const taskData = JSON.parse(completion.choices[0].message.content);
-
-    // Validate response structure
     if (taskType === 'multipleChoice') {
-      if (!taskData.german || !taskData.correctEnglish || !taskData.wrongOptions) {
-        throw new Error('Invalid task structure from LLM');
-      }
-      if (!Array.isArray(taskData.wrongOptions) || taskData.wrongOptions.length !== 3) {
-        throw new Error('Expected exactly 3 wrong options');
-      }
-    } else if (taskType === 'reverseTranslation') {
-      if (!taskData.english || !taskData.correctGerman || !taskData.wrongOptions) {
-        throw new Error('Invalid task structure from LLM');
-      }
-      if (!Array.isArray(taskData.wrongOptions) || taskData.wrongOptions.length !== 3) {
-        throw new Error('Expected exactly 3 wrong options');
-      }
+      // Show German word, ask for English translation
+      taskData = {
+        german: targetWord.full_entry,
+        correctEnglish: correctEnglish,
+        wrongOptions: wrongEnglishOptions,
+      };
+    } else {
+      // Reverse: show English, ask for German
+      taskData = {
+        english: correctEnglish,
+        correctGerman: targetWord.full_entry,
+        wrongOptions: distractors, // Keep German for wrong options
+      };
     }
 
-    console.log('Task generated successfully for word:', targetWord);
-
-    // Update pronoun history
-    pronounHistory.recentPronouns.unshift(selectedPronoun.key);
-    if (pronounHistory.recentPronouns.length > 12) {
-      pronounHistory.recentPronouns = pronounHistory.recentPronouns.slice(0, 12);
-    }
-    pronounHistory.lastUpdated = new Date();
-    await pronounHistory.save();
-
-    console.log(`Updated pronoun history: [${pronounHistory.recentPronouns.slice(0, 6).join(', ')}...]`);
+    console.log(`Task generated successfully for word: ${targetWord.word}`);
 
     // Return the task with target word
     res.json({
       task: taskData,
-      targetWord,
-      tier,
+      targetWord: targetWord.word,
+      level,
       taskType,
       timestamp: new Date().toISOString()
     });
@@ -190,37 +196,37 @@ router.post('/generate-task', async (req, res) => {
  *
  * Body:
  * - targetWord: string - the word being tested
- * - tier: number
+ * - level: string (A1/A2/B1)
  * - taskType: string
  * - userAnswer: string
  * - correctAnswer: string
- * - previousTier: number (optional) - to detect tier unlocks
+ * - previousLevel: string (optional) - to detect level unlocks
  *
  * Returns:
  * - correct: boolean
  * - word: string
  * - stats: updated word statistics
- * - tierUnlocked: boolean (true if a tier was just unlocked)
- * - newTier: number (the newly unlocked tier, if any)
+ * - levelUnlocked: boolean (true if a level was just unlocked)
+ * - newLevel: string (the newly unlocked level, if any)
  */
 router.post('/submit-answer', async (req, res) => {
   try {
     const {
       targetWord,
-      tier,
+      level,
       taskType,
       userAnswer,
       correctAnswer,
-      previousTier
+      previousLevel
     } = req.body;
 
     // Validate inputs
-    if (!targetWord || !tier || !taskType || !userAnswer || !correctAnswer) {
+    if (!targetWord || !level || !taskType || !userAnswer || !correctAnswer) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Check if answer is correct
-    const isCorrect = userAnswer.trim() === correctAnswer.trim();
+    // Check if answer is correct (case-insensitive, trimmed)
+    const isCorrect = userAnswer.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
 
     console.log(`Answer for "${targetWord}": ${isCorrect ? 'CORRECT' : 'WRONG'}`);
     console.log(`  User: "${userAnswer}", Correct: "${correctAnswer}"`);
@@ -231,7 +237,7 @@ router.post('/submit-answer', async (req, res) => {
     if (!progress) {
       progress = new Progress({
         word: targetWord,
-        tier: tier,
+        level: level,
         timesShown: 0,
         correctCount: 0,
         lastSeenTaskType: null
@@ -244,6 +250,7 @@ router.post('/submit-answer', async (req, res) => {
       progress.correctCount += 1;
     }
     progress.lastSeenTaskType = taskType;
+    progress.level = level; // Update level in case it changed
 
     await progress.save();
 
@@ -253,39 +260,19 @@ router.post('/submit-answer', async (req, res) => {
 
     console.log(`  Progress: ${progress.correctCount}/${progress.timesShown} (${Math.round(accuracy * 100)}%)`);
 
-    // Check if this answer caused a tier unlock
-    let tierUnlocked = false;
-    let newTier = null;
+    // Check if this answer caused a level unlock
+    let levelUnlocked = false;
+    let newLevel = null;
 
-    // Only check if we have a previousTier to compare against
-    if (previousTier) {
-      // Load tier 1 words and check mastery
-      const tier1Words = loadWordsForTier(1);
-      const allProgress = await Progress.find({});
-      const progressMap = {};
-      allProgress.forEach(p => {
-        progressMap[p.word] = p;
-      });
+    // Only check if we have a previousLevel to compare against
+    if (previousLevel) {
+      const currentLevel = await determineCurrentLevel();
 
-      let tier1MasteredCount = 0;
-      tier1Words.forEach(w => {
-        const prog = progressMap[w.word];
-        if (prog) {
-          const acc = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
-          if (prog.timesShown >= 7 && acc >= 0.75) {
-            tier1MasteredCount++;
-          }
-        }
-      });
-
-      const tier2ShouldBeUnlocked = tier1MasteredCount >= Math.ceil(tier1Words.length * 0.75);
-      const currentTier = tier2ShouldBeUnlocked ? 2 : 1;
-
-      // Tier unlock detected
-      if (currentTier > previousTier) {
-        tierUnlocked = true;
-        newTier = currentTier;
-        console.log(`🎉 Tier ${newTier} unlocked! ${tier1MasteredCount}/${tier1Words.length} Tier 1 words mastered`);
+      // Level unlock detected
+      if (currentLevel !== previousLevel) {
+        levelUnlocked = true;
+        newLevel = currentLevel;
+        console.log(`🎉 Level ${newLevel} unlocked!`);
       }
     }
 
@@ -293,15 +280,15 @@ router.post('/submit-answer', async (req, res) => {
     res.json({
       correct: isCorrect,
       word: targetWord,
-      tier,
+      level,
       taskType,
       stats: {
         timesShown: progress.timesShown,
         correctCount: progress.correctCount,
         accuracy: Math.round(accuracy * 100)
       },
-      tierUnlocked,
-      newTier,
+      levelUnlocked,
+      newLevel,
       timestamp: new Date().toISOString()
     });
 
@@ -315,26 +302,79 @@ router.post('/submit-answer', async (req, res) => {
 });
 
 /**
- * GET /tier-stats
- * Get tier-based statistics from word progress
+ * Determine current level based on mastery
+ * A1 is always available
+ * A2 unlocks when 75% of A1 words are mastered (7+ attempts, 75%+ accuracy)
+ * B1 unlocks when 75% of A2 words are mastered
+ */
+async function determineCurrentLevel() {
+  const allProgress = await Progress.find({});
+  const progressMap = {};
+  allProgress.forEach(p => {
+    progressMap[p.word] = p;
+  });
+
+  // Load vocabularies
+  const a1Vocab = loadVocabulary('A1');
+  const a2Vocab = loadVocabulary('A2');
+
+  // Calculate A1 mastery
+  let a1Mastered = 0;
+  a1Vocab.forEach(w => {
+    const prog = progressMap[w.word];
+    if (prog) {
+      const acc = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
+      if (prog.timesShown >= 7 && acc >= 0.75) {
+        a1Mastered++;
+      }
+    }
+  });
+
+  const a2Unlocked = a1Mastered >= Math.ceil(a1Vocab.length * 0.75);
+
+  if (!a2Unlocked) {
+    return 'A1';
+  }
+
+  // Calculate A2 mastery
+  let a2Mastered = 0;
+  a2Vocab.forEach(w => {
+    const prog = progressMap[w.word];
+    if (prog) {
+      const acc = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
+      if (prog.timesShown >= 7 && acc >= 0.75) {
+        a2Mastered++;
+      }
+    }
+  });
+
+  const b1Unlocked = a2Mastered >= Math.ceil(a2Vocab.length * 0.75);
+
+  return b1Unlocked ? 'B1' : 'A2';
+}
+
+/**
+ * GET /level-stats
+ * Get level-based statistics from word progress
  *
  * Returns:
- * - currentTier: number (determined by mastery)
- * - tierStats: array of tier statistics with unlock status
+ * - currentLevel: string (A1/A2/B1)
+ * - levelStats: array of level statistics with unlock status
  * - overallAccuracy: number
  * - totalWords: number
  */
-router.get('/tier-stats', async (req, res) => {
+router.get('/level-stats', async (req, res) => {
   try {
     // Load all progress
     const allProgress = await Progress.find({});
 
-    // Load tier words
-    const tier1Words = loadWordsForTier(1);
-    const tier2Words = loadWordsForTier(2);
+    // Load vocabularies
+    const a1Vocab = loadVocabulary('A1');
+    const a2Vocab = loadVocabulary('A2');
+    const b1Vocab = loadVocabulary('B1');
 
-    // Calculate stats for each tier
-    const calculateTierStats = (tierWords, tierNum) => {
+    // Calculate stats for each level
+    const calculateLevelStats = (vocab, levelName) => {
       const progressMap = {};
       allProgress.forEach(p => {
         progressMap[p.word] = p;
@@ -344,7 +384,7 @@ router.get('/tier-stats', async (req, res) => {
       let correctAttempts = 0;
       let masteredCount = 0;
 
-      tierWords.forEach(w => {
+      vocab.forEach(w => {
         const prog = progressMap[w.word];
         if (prog) {
           totalAttempts += prog.timesShown;
@@ -359,49 +399,55 @@ router.get('/tier-stats', async (req, res) => {
       });
 
       const accuracy = totalAttempts > 0 ? correctAttempts / totalAttempts : 0;
-      const masteryPercentage = Math.round((masteredCount / tierWords.length) * 100);
+      const masteryPercentage = Math.round((masteredCount / vocab.length) * 100);
 
       return {
-        tier: tierNum,
-        total: tierWords.length,
+        level: levelName,
+        total: vocab.length,
         mastered: masteredCount,
         percentage: masteryPercentage,
         totalAttempts,
         accuracy: Math.round(accuracy * 100),
         unlocked: false, // Will be set below
-        masteryPercentage // For unlock logic
       };
     };
 
-    const tier1Stats = calculateTierStats(tier1Words, 1);
-    const tier2Stats = calculateTierStats(tier2Words, 2);
+    const a1Stats = calculateLevelStats(a1Vocab, 'A1');
+    const a2Stats = calculateLevelStats(a2Vocab, 'A2');
+    const b1Stats = calculateLevelStats(b1Vocab, 'B1');
 
-    // Determine tier unlocking
-    // Tier 1 is always unlocked
-    tier1Stats.unlocked = true;
+    // Determine level unlocking
+    // A1 is always unlocked
+    a1Stats.unlocked = true;
 
-    // Tier 2 unlocks when 75% of Tier 1 words are mastered
-    const tier2Unlocked = tier1Stats.mastered >= Math.ceil(tier1Words.length * 0.75);
-    tier2Stats.unlocked = tier2Unlocked;
+    // A2 unlocks when 75% of A1 words are mastered
+    const a2Unlocked = a1Stats.mastered >= Math.ceil(a1Vocab.length * 0.75);
+    a2Stats.unlocked = a2Unlocked;
 
-    // Current tier is the highest unlocked tier
-    const currentTier = tier2Unlocked ? 2 : 1;
+    // B1 unlocks when 75% of A2 words are mastered
+    const b1Unlocked = a2Unlocked && a2Stats.mastered >= Math.ceil(a2Vocab.length * 0.75);
+    b1Stats.unlocked = b1Unlocked;
 
-    const tierStatsArray = [tier1Stats, tier2Stats];
+    // Current level is the highest unlocked level
+    let currentLevel = 'A1';
+    if (b1Unlocked) currentLevel = 'B1';
+    else if (a2Unlocked) currentLevel = 'A2';
+
+    const levelStatsArray = [a1Stats, a2Stats, b1Stats];
 
     // Calculate overall stats
     const totalAttempts = allProgress.reduce((sum, p) => sum + p.timesShown, 0);
     const totalCorrect = allProgress.reduce((sum, p) => sum + p.correctCount, 0);
     const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
-    // Get per-word progress for current tier
-    const currentTierWords = currentTier === 1 ? tier1Words : tier2Words;
+    // Get per-word progress for current level
+    const currentLevelVocab = currentLevel === 'A1' ? a1Vocab : currentLevel === 'A2' ? a2Vocab : b1Vocab;
     const progressMap = {};
     allProgress.forEach(p => {
       progressMap[p.word] = p;
     });
 
-    const wordProgress = currentTierWords.map(w => {
+    const wordProgress = currentLevelVocab.map(w => {
       const prog = progressMap[w.word];
       if (!prog) {
         return { word: w.word, attempts: 0, accuracy: 0 };
@@ -414,23 +460,38 @@ router.get('/tier-stats', async (req, res) => {
       };
     });
 
-    console.log(`Tier progression: Tier 1 mastered ${tier1Stats.mastered}/${tier1Words.length} (${tier1Stats.percentage}%), Tier 2 ${tier2Unlocked ? 'UNLOCKED' : 'locked'}`);
+    console.log(`Level progression: A1 ${a1Stats.mastered}/${a1Vocab.length}, A2 ${a2Unlocked ? 'UNLOCKED' : 'locked'}, B1 ${b1Unlocked ? 'UNLOCKED' : 'locked'}`);
 
     res.json({
-      currentTier,
-      tierStats: tierStatsArray,
+      currentLevel,
+      levelStats: levelStatsArray,
       overallAccuracy,
-      totalWords: tier1Words.length + tier2Words.length,
+      totalWords: a1Vocab.length + a2Vocab.length + b1Vocab.length,
       totalAttempts,
-      wordProgress // Per-word progress for current tier
+      wordProgress // Per-word progress for current level
     });
 
   } catch (error) {
-    console.error('Error fetching tier stats:', error);
+    console.error('Error fetching level stats:', error);
     res.status(500).json({
-      error: 'Failed to fetch tier stats',
+      error: 'Failed to fetch level stats',
       details: error.message
     });
+  }
+});
+
+// Legacy endpoint for backward compatibility
+router.get('/tier-stats', async (req, res) => {
+  try {
+    const levelStats = await router.handle({ method: 'GET', url: '/level-stats' }, res);
+    // Map level names to tier numbers for backward compatibility
+    if (levelStats && levelStats.currentLevel) {
+      const levelToTier = { 'A1': 1, 'A2': 2, 'B1': 3 };
+      levelStats.currentTier = levelToTier[levelStats.currentLevel] || 1;
+      levelStats.tierStats = levelStats.levelStats;
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch stats' });
   }
 });
 

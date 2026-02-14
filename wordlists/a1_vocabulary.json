@@ -1,0 +1,3848 @@
+[
+  {
+    "word": "ab",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "ab"
+  },
+  {
+    "word": "aber",
+    "article": "",
+    "pos": "conjunction",
+    "full_entry": "aber"
+  },
+  {
+    "word": "abfahren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "abfahren"
+  },
+  {
+    "word": "Abfahrt",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Abfahrt"
+  },
+  {
+    "word": "abgeben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "abgeben"
+  },
+  {
+    "word": "abholen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "abholen"
+  },
+  {
+    "word": "Absender",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Absender"
+  },
+  {
+    "word": "Adresse",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Adresse,-en"
+  },
+  {
+    "word": "allein",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "allein"
+  },
+  {
+    "word": "also",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "also"
+  },
+  {
+    "word": "alt",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "alt"
+  },
+  {
+    "word": "Alter",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Alter"
+  },
+  {
+    "word": "an",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "an"
+  },
+  {
+    "word": "anbieten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anbieten"
+  },
+  {
+    "word": "Angebot",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Angebot, -e"
+  },
+  {
+    "word": "anderanfangen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anderanfangen"
+  },
+  {
+    "word": "Anfang",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Anfang"
+  },
+  {
+    "word": "anklicken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anklicken"
+  },
+  {
+    "word": "ankommen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ankommen"
+  },
+  {
+    "word": "Ankunft",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Ankunft"
+  },
+  {
+    "word": "ankreuzen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ankreuzen"
+  },
+  {
+    "word": "anmachen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anmachen"
+  },
+  {
+    "word": "Anmeldung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Anmeldung"
+  },
+  {
+    "word": "Anrede",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Anrede"
+  },
+  {
+    "word": "anrufen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anrufen"
+  },
+  {
+    "word": "Anruf",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Anruf, -e"
+  },
+  {
+    "word": "Anrufbeantworter",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Anrufbeantworter"
+  },
+  {
+    "word": "an sein",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "an sein"
+  },
+  {
+    "word": "antworten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "antworten"
+  },
+  {
+    "word": "Antwort",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Antwort, -en"
+  },
+  {
+    "word": "Anzeige",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Anzeige, -n"
+  },
+  {
+    "word": "Apartment",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Apartment, -s"
+  },
+  {
+    "word": "Apfel",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Apfel, -Ä"
+  },
+  {
+    "word": "Appetit",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Appetit"
+  },
+  {
+    "word": "arbeiten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "arbeiten"
+  },
+  {
+    "word": "Arbeit",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Arbeit, -en"
+  },
+  {
+    "word": "arbeitslos",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "arbeitslos"
+  },
+  {
+    "word": "Arbeitsplatz",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Arbeitsplatz, -ä, e An meinem Arbeitsplatz fehlt ein Drucker."
+  },
+  {
+    "word": "Arm",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Arm, -e"
+  },
+  {
+    "word": "Arzt",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Arzt, -Ä, e"
+  },
+  {
+    "word": "auch",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "auch"
+  },
+  {
+    "word": "auf",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "auf"
+  },
+  {
+    "word": "Aufgabe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Aufgabe, -n"
+  },
+  {
+    "word": "aufhören",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aufhören"
+  },
+  {
+    "word": "auf sein",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "auf sein"
+  },
+  {
+    "word": "aufstehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aufstehen"
+  },
+  {
+    "word": "Aufzug",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Aufzug, -ü, e"
+  },
+  {
+    "word": "Auge",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Auge, -n"
+  },
+  {
+    "word": "aus",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "aus"
+  },
+  {
+    "word": "Ausflug",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Ausflug"
+  },
+  {
+    "word": "ausfüllen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ausfüllen"
+  },
+  {
+    "word": "Ausgang",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Ausgang"
+  },
+  {
+    "word": "Auskunft",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Auskunft, -ü, e"
+  },
+  {
+    "word": "Ausland",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Ausland"
+  },
+  {
+    "word": "ausländisch",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "ausländisch"
+  },
+  {
+    "word": "ausmachen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ausmachen"
+  },
+  {
+    "word": "Aussage",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Aussage, -n"
+  },
+  {
+    "word": "aussehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aussehen"
+  },
+  {
+    "word": "aus sein",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "aus sein"
+  },
+  {
+    "word": "aussteigen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aussteigen"
+  },
+  {
+    "word": "Ausweis",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Ausweis"
+  },
+  {
+    "word": "Auto",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Auto, -s"
+  },
+  {
+    "word": "Autobahn",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Autobahn, -en"
+  },
+  {
+    "word": "Automat",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Automat"
+  },
+  {
+    "word": "automatisch",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "automatisch"
+  },
+  {
+    "word": "Ansage",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Ansage, -n"
+  },
+  {
+    "word": "Anschluss",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Anschluss"
+  },
+  {
+    "word": "Baby",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Baby, -s"
+  },
+  {
+    "word": "Bäckerei",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Bäckerei"
+  },
+  {
+    "word": "Bad",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Bad"
+  },
+  {
+    "word": "baden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "baden"
+  },
+  {
+    "word": "Bahn",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Bahn"
+  },
+  {
+    "word": "Bahnhof",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bahnhof"
+  },
+  {
+    "word": "Bahnsteig",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bahnsteig"
+  },
+  {
+    "word": "bald",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "bald"
+  },
+  {
+    "word": "Balkon",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Balkon"
+  },
+  {
+    "word": "Banane",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Banane, -n"
+  },
+  {
+    "word": "Bank",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Bank"
+  },
+  {
+    "word": "bar",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "bar"
+  },
+  {
+    "word": "Bauch",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bauch"
+  },
+  {
+    "word": "Baum",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Baum, -ä, e"
+  },
+  {
+    "word": "Beamte",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Beamte, -n"
+  },
+  {
+    "word": "bedeuten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bedeuten"
+  },
+  {
+    "word": "beginnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "beginnen"
+  },
+  {
+    "word": "bei",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "bei"
+  },
+  {
+    "word": "beide",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "beide"
+  },
+  {
+    "word": "Bein",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Bein, -e"
+  },
+  {
+    "word": "Beispiel",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Beispiel, -e"
+  },
+  {
+    "word": "bekannt",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "bekannt"
+  },
+  {
+    "word": "bekommen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bekommen"
+  },
+  {
+    "word": "benutzen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "benutzen"
+  },
+  {
+    "word": "Beruf",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Beruf, -e"
+  },
+  {
+    "word": "besetzt",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "besetzt"
+  },
+  {
+    "word": "besichtigen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "besichtigen"
+  },
+  {
+    "word": "besser",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "besser"
+  },
+  {
+    "word": "bestbestellen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bestbestellen"
+  },
+  {
+    "word": "besuchen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "besuchen"
+  },
+  {
+    "word": "Bett",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Bett, -en"
+  },
+  {
+    "word": "bezahlen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bezahlen"
+  },
+  {
+    "word": "Bier",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Bier"
+  },
+  {
+    "word": "Bild",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Bild, -er"
+  },
+  {
+    "word": "billig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "billig"
+  },
+  {
+    "word": "Birne",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Birne, -n"
+  },
+  {
+    "word": "bis",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "bis"
+  },
+  {
+    "word": "bisschen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bisschen"
+  },
+  {
+    "word": "bitte",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "bitte"
+  },
+  {
+    "word": "Bitte",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Bitte, -n"
+  },
+  {
+    "word": "bitten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bitten"
+  },
+  {
+    "word": "bitter",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "bitter"
+  },
+  {
+    "word": "bleiben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bleiben"
+  },
+  {
+    "word": "Bleistift",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bleistift, -e"
+  },
+  {
+    "word": "Blick",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Blick"
+  },
+  {
+    "word": "Blume",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Blume, -n"
+  },
+  {
+    "word": "Bogen",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bogen"
+  },
+  {
+    "word": "böse",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "böse"
+  },
+  {
+    "word": "brauchen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "brauchen"
+  },
+  {
+    "word": "breit",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "breit"
+  },
+  {
+    "word": "Brief",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Brief, -e"
+  },
+  {
+    "word": "Briefmarke",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Briefmarke, -n"
+  },
+  {
+    "word": "bringen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bringen"
+  },
+  {
+    "word": "Brot",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Brot, -e"
+  },
+  {
+    "word": "Brötchen",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Brötchen, –"
+  },
+  {
+    "word": "Bruder",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bruder, -ü"
+  },
+  {
+    "word": "Buch",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Buch, -ü, er"
+  },
+  {
+    "word": "Buchstabe",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Buchstabe, -n"
+  },
+  {
+    "word": "buchstabieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "buchstabieren"
+  },
+  {
+    "word": "Bus",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Bus, -se"
+  },
+  {
+    "word": "Butter",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Butter"
+  },
+  {
+    "word": "Caf",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Café, -s"
+  },
+  {
+    "word": "Chef",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Chef"
+  },
+  {
+    "word": "Computer",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Computer, –"
+  },
+  {
+    "word": "da",
+    "article": "",
+    "pos": "conjunction",
+    "full_entry": "da"
+  },
+  {
+    "word": "Dame",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Dame, -n"
+  },
+  {
+    "word": "daneben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "daneben"
+  },
+  {
+    "word": "danken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "danken"
+  },
+  {
+    "word": "Dank",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Dank"
+  },
+  {
+    "word": "danke",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "danke"
+  },
+  {
+    "word": "dann",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "dann"
+  },
+  {
+    "word": "Datum",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Datum"
+  },
+  {
+    "word": "dauern",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "dauern"
+  },
+  {
+    "word": "deindenn",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "deindenn"
+  },
+  {
+    "word": "dich",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "dich"
+  },
+  {
+    "word": "diesdir",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "diesdir"
+  },
+  {
+    "word": "Disco",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Disco"
+  },
+  {
+    "word": "Doktor",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Doktor"
+  },
+  {
+    "word": "Doppelzimmer",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Doppelzimmer"
+  },
+  {
+    "word": "Dorf",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Dorf, -ö, er"
+  },
+  {
+    "word": "draußen",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "draußen"
+  },
+  {
+    "word": "drucken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "drucken"
+  },
+  {
+    "word": "Drucker",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Drucker, –"
+  },
+  {
+    "word": "drücken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "drücken"
+  },
+  {
+    "word": "durch",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "durch"
+  },
+  {
+    "word": "Durchsage",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Durchsage, -n"
+  },
+  {
+    "word": "dürfen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dürfen"
+  },
+  {
+    "word": "Durst",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Durst"
+  },
+  {
+    "word": "Dusche",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Dusche"
+  },
+  {
+    "word": "Ecke",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Ecke, -n"
+  },
+  {
+    "word": "Ehefrau",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Ehefrau, -en/"
+  },
+  {
+    "word": "Ehemann",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Ehemann, ä, er"
+  },
+  {
+    "word": "Ei",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Ei, -er"
+  },
+  {
+    "word": "eilig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "eilig"
+  },
+  {
+    "word": "einfach",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "einfach"
+  },
+  {
+    "word": "Eingang",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Eingang"
+  },
+  {
+    "word": "einkaufen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "einkaufen"
+  },
+  {
+    "word": "einladen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "einladen"
+  },
+  {
+    "word": "Einladung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Einladung"
+  },
+  {
+    "word": "einmal",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "einmal"
+  },
+  {
+    "word": "einsteigen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "einsteigen"
+  },
+  {
+    "word": "Eintritt",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Eintritt"
+  },
+  {
+    "word": "Einzelzimmer",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Einzelzimmer"
+  },
+  {
+    "word": "Eltern",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Eltern (pl.)"
+  },
+  {
+    "word": "E-",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die E-Mail, -s"
+  },
+  {
+    "word": "Empfänger",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Empfänger, –"
+  },
+  {
+    "word": "empfehlen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "empfehlen"
+  },
+  {
+    "word": "enden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enden"
+  },
+  {
+    "word": "Ende",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Ende"
+  },
+  {
+    "word": "entschuldigen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "entschuldigen"
+  },
+  {
+    "word": "Entschuldigung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Entschuldigung"
+  },
+  {
+    "word": "er",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "er"
+  },
+  {
+    "word": "Ergebnis",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Ergebnis, -se"
+  },
+  {
+    "word": "erklären",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "erklären"
+  },
+  {
+    "word": "erlauben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "erlauben"
+  },
+  {
+    "word": "Erwachsene",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Erwachsene, -n"
+  },
+  {
+    "word": "erzählen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "erzählen"
+  },
+  {
+    "word": "es",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "es"
+  },
+  {
+    "word": "essen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "essen"
+  },
+  {
+    "word": "Essen",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Essen"
+  },
+  {
+    "word": "euer",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "euer"
+  },
+  {
+    "word": "fahren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fahren"
+  },
+  {
+    "word": "Fahrer",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Fahrer"
+  },
+  {
+    "word": "Fahrkarte",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Fahrkarte, -n"
+  },
+  {
+    "word": "Fahrrad",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Fahrrad, -ä, er"
+  },
+  {
+    "word": "falsch",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "falsch"
+  },
+  {
+    "word": "Familie",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Familie, -n"
+  },
+  {
+    "word": "Familienname",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Familienname"
+  },
+  {
+    "word": "Familienstand",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Familienstand"
+  },
+  {
+    "word": "Farbe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Farbe, -n"
+  },
+  {
+    "word": "Fax",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Fax, -e"
+  },
+  {
+    "word": "fehlen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fehlen"
+  },
+  {
+    "word": "Fehler",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Fehler, –"
+  },
+  {
+    "word": "fernsehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fernsehen"
+  },
+  {
+    "word": "fertig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "fertig"
+  },
+  {
+    "word": "Feuer",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Feuer"
+  },
+  {
+    "word": "Fieber",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Fieber"
+  },
+  {
+    "word": "Film",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Film, -e"
+  },
+  {
+    "word": "finden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "finden"
+  },
+  {
+    "word": "Firma",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Firma"
+  },
+  {
+    "word": "Fisch",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Fisch, -e"
+  },
+  {
+    "word": "Flasche",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Flasche, -n"
+  },
+  {
+    "word": "Fleisch",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Fleisch"
+  },
+  {
+    "word": "fliegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fliegen"
+  },
+  {
+    "word": "abfliegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "abfliegen"
+  },
+  {
+    "word": "Abflug",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Abflug"
+  },
+  {
+    "word": "Flughafen",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Flughafen"
+  },
+  {
+    "word": "Flugzeug",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Flugzeug"
+  },
+  {
+    "word": "Formular",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Formular, -e"
+  },
+  {
+    "word": "Foto",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Foto, -s"
+  },
+  {
+    "word": "fragen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fragen"
+  },
+  {
+    "word": "Frage",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Frage, -n"
+  },
+  {
+    "word": "Frau",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Frau, -en"
+  },
+  {
+    "word": "frei",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "frei"
+  },
+  {
+    "word": "Freizeit",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Freizeit"
+  },
+  {
+    "word": "fremd",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "fremd"
+  },
+  {
+    "word": "Freund",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Freund, -e"
+  },
+  {
+    "word": "früher",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "früher"
+  },
+  {
+    "word": "frühstücken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "frühstücken"
+  },
+  {
+    "word": "Frühstück",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Frühstück"
+  },
+  {
+    "word": "Führung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Führung"
+  },
+  {
+    "word": "für",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "für"
+  },
+  {
+    "word": "Fuß",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Fuß, -ü, e"
+  },
+  {
+    "word": "Fußball",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Fußball"
+  },
+  {
+    "word": "Garten",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Garten"
+  },
+  {
+    "word": "Gast",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Gast, -ä, e"
+  },
+  {
+    "word": "geben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "geben"
+  },
+  {
+    "word": "geboren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "geboren"
+  },
+  {
+    "word": "Geburtsjahr",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Geburtsjahr"
+  },
+  {
+    "word": "Geburtsort",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Geburtsort"
+  },
+  {
+    "word": "Geburtstag",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Geburtstag"
+  },
+  {
+    "word": "gefallen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gefallen"
+  },
+  {
+    "word": "gegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gegen"
+  },
+  {
+    "word": "gehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gehen"
+  },
+  {
+    "word": "gehören",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gehören"
+  },
+  {
+    "word": "Geld",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Geld"
+  },
+  {
+    "word": "Gemüse",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Gemüse"
+  },
+  {
+    "word": "Gepäck",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Gepäck"
+  },
+  {
+    "word": "gerade",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "gerade"
+  },
+  {
+    "word": "geradeaus",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "geradeaus"
+  },
+  {
+    "word": "Geschäft",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Geschäft, -e"
+  },
+  {
+    "word": "Geschenk",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Geschenk, -e"
+  },
+  {
+    "word": "Geschwister",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Geschwister (pl.)"
+  },
+  {
+    "word": "Gespräch",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Gespräch, -e"
+  },
+  {
+    "word": "gestern",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "gestern"
+  },
+  {
+    "word": "gestorben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gestorben"
+  },
+  {
+    "word": "Getränk",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Getränk, -e"
+  },
+  {
+    "word": "Gewicht",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Gewicht"
+  },
+  {
+    "word": "gewinnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gewinnen"
+  },
+  {
+    "word": "Glas",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Glas, -ä, er"
+  },
+  {
+    "word": "glauben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "glauben"
+  },
+  {
+    "word": "gleich",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "gleich"
+  },
+  {
+    "word": "Gleis",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Gleis, -e"
+  },
+  {
+    "word": "Glück",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Glück"
+  },
+  {
+    "word": "glücklich",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "glücklich"
+  },
+  {
+    "word": "Glückwunsch",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Glückwunsch"
+  },
+  {
+    "word": "gratulieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gratulieren"
+  },
+  {
+    "word": "grillen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "grillen"
+  },
+  {
+    "word": "groß",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "groß"
+  },
+  {
+    "word": "Größe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Größe"
+  },
+  {
+    "word": "Großeltern",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Großeltern (pl.)"
+  },
+  {
+    "word": "Großmutter",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Großmutter"
+  },
+  {
+    "word": "Großvater",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Großvater"
+  },
+  {
+    "word": "Gruppe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Gruppe, -n"
+  },
+  {
+    "word": "Gruß",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Gruß, -ü, e"
+  },
+  {
+    "word": "gültig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "gültig"
+  },
+  {
+    "word": "günstig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "günstig"
+  },
+  {
+    "word": "gut",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "gut"
+  },
+  {
+    "word": "Haar",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Haar, -e"
+  },
+  {
+    "word": "haben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "haben"
+  },
+  {
+    "word": "Hähnchen",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Hähnchen, die Halbpension"
+  },
+  {
+    "word": "Halle",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Halle"
+  },
+  {
+    "word": "hallo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "hallo"
+  },
+  {
+    "word": "halten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "halten"
+  },
+  {
+    "word": "Haltestelle",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Haltestelle"
+  },
+  {
+    "word": "Hand",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Hand, -ä, e"
+  },
+  {
+    "word": "Handy",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Handy, -s"
+  },
+  {
+    "word": "Haus",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Haus, -ä, er"
+  },
+  {
+    "word": "Hausaufgabe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Hausaufgabe,-n"
+  },
+  {
+    "word": "Hausfrau",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Hausfrau, -en/"
+  },
+  {
+    "word": "Hausmann",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Hausmann"
+  },
+  {
+    "word": "Heimat",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Heimat"
+  },
+  {
+    "word": "heiraten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "heiraten"
+  },
+  {
+    "word": "heißen",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "heißen"
+  },
+  {
+    "word": "helfen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "helfen"
+  },
+  {
+    "word": "hell",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "hell"
+  },
+  {
+    "word": "Herd",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Herd"
+  },
+  {
+    "word": "Herr",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Herr, -en"
+  },
+  {
+    "word": "herzlich",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "herzlich"
+  },
+  {
+    "word": "heute",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "heute"
+  },
+  {
+    "word": "hier",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "hier"
+  },
+  {
+    "word": "Hilfe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Hilfe"
+  },
+  {
+    "word": "hinten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hinten"
+  },
+  {
+    "word": "Hobby",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Hobby, -s"
+  },
+  {
+    "word": "hoch",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "hoch"
+  },
+  {
+    "word": "Hochzeit",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Hochzeit"
+  },
+  {
+    "word": "holen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "holen"
+  },
+  {
+    "word": "hören",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hören"
+  },
+  {
+    "word": "Hotel",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Hotel, -s"
+  },
+  {
+    "word": "Hund",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Hund, -e"
+  },
+  {
+    "word": "Hunger",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Hunger"
+  },
+  {
+    "word": "ich",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "ich"
+  },
+  {
+    "word": "immer",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "immer"
+  },
+  {
+    "word": "in",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "in"
+  },
+  {
+    "word": "Information",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Information, -en"
+  },
+  {
+    "word": "international",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "international"
+  },
+  {
+    "word": "Internet",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Internet"
+  },
+  {
+    "word": "Die Hausfrau/der Hausmann wäscht, kocht und kauft",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "Die Hausfrau/der Hausmann wäscht, kocht und kauft"
+  },
+  {
+    "word": "ja",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "ja"
+  },
+  {
+    "word": "Jacke",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Jacke, -n"
+  },
+  {
+    "word": "jedjetzt",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "jedjetzt"
+  },
+  {
+    "word": "Job",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Job, -s"
+  },
+  {
+    "word": "Jugendliche",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Jugendliche, -n"
+  },
+  {
+    "word": "jung",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "jung"
+  },
+  {
+    "word": "Junge",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Junge, -n"
+  },
+  {
+    "word": "Kaffee",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kaffee"
+  },
+  {
+    "word": "kaputt",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "kaputt"
+  },
+  {
+    "word": "Karte",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Karte, -n"
+  },
+  {
+    "word": "Kartoffel",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Kartoffel, -n"
+  },
+  {
+    "word": "Kasse",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Kasse"
+  },
+  {
+    "word": "kaufen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kaufen"
+  },
+  {
+    "word": "kein",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "kein"
+  },
+  {
+    "word": "kennen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kennen"
+  },
+  {
+    "word": "kennenlernen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kennenlernen"
+  },
+  {
+    "word": "Kind",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Kind, -er"
+  },
+  {
+    "word": "Kindergarten",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kindergarten"
+  },
+  {
+    "word": "Kino",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Kino, -s"
+  },
+  {
+    "word": "Kiosk",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kiosk"
+  },
+  {
+    "word": "klar",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "klar"
+  },
+  {
+    "word": "Klasse",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Klasse"
+  },
+  {
+    "word": "Kleidung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Kleidung"
+  },
+  {
+    "word": "klein",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "klein"
+  },
+  {
+    "word": "kochen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kochen"
+  },
+  {
+    "word": "Koffer",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Koffer, –"
+  },
+  {
+    "word": "Kollege",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kollege, -n"
+  },
+  {
+    "word": "kommen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kommen"
+  },
+  {
+    "word": "können",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "können"
+  },
+  {
+    "word": "Konto",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Konto"
+  },
+  {
+    "word": "Kopf",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kopf"
+  },
+  {
+    "word": "kosten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kosten"
+  },
+  {
+    "word": "krank",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "krank"
+  },
+  {
+    "word": "kriegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kriegen"
+  },
+  {
+    "word": "Küche",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Küche"
+  },
+  {
+    "word": "Kuchen",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kuchen"
+  },
+  {
+    "word": "Kugelschreiber",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kugelschreiber"
+  },
+  {
+    "word": "Kühlschrank",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kühlschrank"
+  },
+  {
+    "word": "kulturell",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "kulturell"
+  },
+  {
+    "word": "Kunde",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kunde, -n"
+  },
+  {
+    "word": "Kurs",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kurs, -e"
+  },
+  {
+    "word": "kurz",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "kurz"
+  },
+  {
+    "word": "lachen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lachen"
+  },
+  {
+    "word": "Laden",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Laden, -ä"
+  },
+  {
+    "word": "Land",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Land, -ä, er"
+  },
+  {
+    "word": "lang",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "lang"
+  },
+  {
+    "word": "lange",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "lange"
+  },
+  {
+    "word": "langsam",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "langsam"
+  },
+  {
+    "word": "laufen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "laufen"
+  },
+  {
+    "word": "laut",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "laut"
+  },
+  {
+    "word": "leben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "leben"
+  },
+  {
+    "word": "Leben",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Leben"
+  },
+  {
+    "word": "Lebens",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Lebens  mittel (pl.)"
+  },
+  {
+    "word": "ledig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "ledig"
+  },
+  {
+    "word": "legen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "legen"
+  },
+  {
+    "word": "Lehrer",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Lehrer, –"
+  },
+  {
+    "word": "leicht",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "leicht"
+  },
+  {
+    "word": "leider",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "leider"
+  },
+  {
+    "word": "leise",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "leise"
+  },
+  {
+    "word": "lernen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lernen"
+  },
+  {
+    "word": "lesen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lesen"
+  },
+  {
+    "word": "Licht",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Licht"
+  },
+  {
+    "word": "lieblieben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lieblieben"
+  },
+  {
+    "word": "lieber",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "lieber"
+  },
+  {
+    "word": "Lieblingsdas Lied, -er",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "Lieblingsdas Lied, -er"
+  },
+  {
+    "word": "liegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "liegen"
+  },
+  {
+    "word": "links",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "links"
+  },
+  {
+    "word": "Lkw",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Lkw, -s"
+  },
+  {
+    "word": "Lokal",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Lokal"
+  },
+  {
+    "word": "Lösung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Lösung, -en"
+  },
+  {
+    "word": "lustig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "lustig"
+  },
+  {
+    "word": "machen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "machen"
+  },
+  {
+    "word": "Liebe Susanne, lieber Hans,",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "Liebe Susanne, lieber Hans,"
+  },
+  {
+    "word": "Mädchen",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Mädchen, –"
+  },
+  {
+    "word": "man",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "man"
+  },
+  {
+    "word": "Mann",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Mann, -ä, er"
+  },
+  {
+    "word": "männlich",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "männlich"
+  },
+  {
+    "word": "Maschine",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Maschine, -n"
+  },
+  {
+    "word": "Meer",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Meer"
+  },
+  {
+    "word": "mehr",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "mehr"
+  },
+  {
+    "word": "mein",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "mein"
+  },
+  {
+    "word": "mieten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mieten"
+  },
+  {
+    "word": "Miete",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Miete"
+  },
+  {
+    "word": "Milch",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Milch"
+  },
+  {
+    "word": "mit",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "mit"
+  },
+  {
+    "word": "mitbringen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mitbringen"
+  },
+  {
+    "word": "mitkommen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mitkommen"
+  },
+  {
+    "word": "mitmachen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mitmachen"
+  },
+  {
+    "word": "mitnehmen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mitnehmen"
+  },
+  {
+    "word": "Mitte",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Mitte"
+  },
+  {
+    "word": "Möbel",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Möbel (pl.)"
+  },
+  {
+    "word": "möchten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "möchten"
+  },
+  {
+    "word": "mögen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mögen"
+  },
+  {
+    "word": "möglich",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "möglich"
+  },
+  {
+    "word": "Moment",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Moment"
+  },
+  {
+    "word": "morgen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "morgen"
+  },
+  {
+    "word": "müde",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "müde"
+  },
+  {
+    "word": "Mund",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Mund"
+  },
+  {
+    "word": "müssen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "müssen"
+  },
+  {
+    "word": "Mutter",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Mutter, -ü"
+  },
+  {
+    "word": "nach",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "nach"
+  },
+  {
+    "word": "nehmen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "nehmen"
+  },
+  {
+    "word": "nein",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "nein"
+  },
+  {
+    "word": "neu",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "neu"
+  },
+  {
+    "word": "nicht",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "nicht"
+  },
+  {
+    "word": "nichts",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "nichts"
+  },
+  {
+    "word": "nie",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "nie"
+  },
+  {
+    "word": "noch",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "noch"
+  },
+  {
+    "word": "nur",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "nur"
+  },
+  {
+    "word": "oben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "oben"
+  },
+  {
+    "word": "Obst",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Obst"
+  },
+  {
+    "word": "oder",
+    "article": "",
+    "pos": "conjunction",
+    "full_entry": "oder"
+  },
+  {
+    "word": "öffnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "öffnen"
+  },
+  {
+    "word": "geöffnet",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "geöffnet"
+  },
+  {
+    "word": "oft",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "oft"
+  },
+  {
+    "word": "ohne",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "ohne"
+  },
+  {
+    "word": "Öl",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Öl"
+  },
+  {
+    "word": "Oma",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Oma, -s"
+  },
+  {
+    "word": "Opa",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Opa, -s"
+  },
+  {
+    "word": "Ordnung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Ordnung"
+  },
+  {
+    "word": "Ort",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Ort, -e"
+  },
+  {
+    "word": "normal",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "normal"
+  },
+  {
+    "word": "Nummer",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Nummer, -n"
+  },
+  {
+    "word": "Papier",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Papier"
+  },
+  {
+    "word": "Papiere",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Papiere (pl.)"
+  },
+  {
+    "word": "Partner",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Partner, -/"
+  },
+  {
+    "word": "Partnerin",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Partnerin, -nen"
+  },
+  {
+    "word": "Party",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Party"
+  },
+  {
+    "word": "Pass",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Pass, -ä, e"
+  },
+  {
+    "word": "Pause",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Pause, -n"
+  },
+  {
+    "word": "Plan",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Plan, -ä, e"
+  },
+  {
+    "word": "Platz",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Platz, -ä, e"
+  },
+  {
+    "word": "Polizei",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Polizei"
+  },
+  {
+    "word": "Pommes",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Pommes frites (pl.)  Die Kinder essen Hähnchen mit Pommes frites."
+  },
+  {
+    "word": "Post",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Post"
+  },
+  {
+    "word": "Postleitzahl",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Postleitzahl"
+  },
+  {
+    "word": "Praktikum",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Praktikum"
+  },
+  {
+    "word": "Praxis",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Praxis"
+  },
+  {
+    "word": "Preis",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Preis, -e"
+  },
+  {
+    "word": "Problem",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Problem, -e"
+  },
+  {
+    "word": "Prospekt",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Prospekt, -e"
+  },
+  {
+    "word": "Prüfung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Prüfung"
+  },
+  {
+    "word": "pünktlich",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "pünktlich"
+  },
+  {
+    "word": "rauchen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rauchen"
+  },
+  {
+    "word": "Raum",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Raum, -ä, e"
+  },
+  {
+    "word": "Rechnung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Rechnung, -en"
+  },
+  {
+    "word": "rechts",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "rechts"
+  },
+  {
+    "word": "regnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "regnen"
+  },
+  {
+    "word": "Regen",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Regen"
+  },
+  {
+    "word": "Reis",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Reis"
+  },
+  {
+    "word": "reisen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reisen"
+  },
+  {
+    "word": "Reise",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Reise"
+  },
+  {
+    "word": "Reisebüro",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Reisebüro, -s"
+  },
+  {
+    "word": "Reiseführer",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Reiseführer"
+  },
+  {
+    "word": "reparieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reparieren"
+  },
+  {
+    "word": "Reparatur",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Reparatur"
+  },
+  {
+    "word": "Restaurant",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Restaurant, -s"
+  },
+  {
+    "word": "Rezeption",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Rezeption"
+  },
+  {
+    "word": "richtig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "richtig"
+  },
+  {
+    "word": "riechen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "riechen"
+  },
+  {
+    "word": "ruhig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "ruhig"
+  },
+  {
+    "word": "Saft",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Saft"
+  },
+  {
+    "word": "sagen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sagen"
+  },
+  {
+    "word": "Salat",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Salat"
+  },
+  {
+    "word": "Salz",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Salz"
+  },
+  {
+    "word": "S-",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die S-Bahn"
+  },
+  {
+    "word": "Schalter",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schalter"
+  },
+  {
+    "word": "scheinen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "scheinen"
+  },
+  {
+    "word": "schicken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schicken"
+  },
+  {
+    "word": "Schild",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Schild, -er"
+  },
+  {
+    "word": "Schinken",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schinken, –"
+  },
+  {
+    "word": "schlafen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schlafen"
+  },
+  {
+    "word": "schlecht",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "schlecht"
+  },
+  {
+    "word": "schließen",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "schließen"
+  },
+  {
+    "word": "geschlossen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "geschlossen"
+  },
+  {
+    "word": "Schluss",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schluss"
+  },
+  {
+    "word": "Schlüssel",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schlüssel, –"
+  },
+  {
+    "word": "schmecken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schmecken"
+  },
+  {
+    "word": "schnell",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "schnell"
+  },
+  {
+    "word": "schon",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "schon"
+  },
+  {
+    "word": "schön",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "schön"
+  },
+  {
+    "word": "Schrank",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schrank, -ä, e"
+  },
+  {
+    "word": "schreiben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schreiben"
+  },
+  {
+    "word": "Schuh",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schuh, -e"
+  },
+  {
+    "word": "Schule",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Schule"
+  },
+  {
+    "word": "Schüler",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Schüler, –"
+  },
+  {
+    "word": "schwer",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "schwer"
+  },
+  {
+    "word": "Schwester",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Schwester, -n"
+  },
+  {
+    "word": "schwimmen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schwimmen"
+  },
+  {
+    "word": "Schwimmbad",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Schwimmbad"
+  },
+  {
+    "word": "See",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der See"
+  },
+  {
+    "word": "sehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sehen"
+  },
+  {
+    "word": "Sehenswürdigkeit",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Sehenswürdigkeit, -en"
+  },
+  {
+    "word": "sehr",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "sehr"
+  },
+  {
+    "word": "sein",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "sein"
+  },
+  {
+    "word": "seit",
+    "article": "",
+    "pos": "conjunction",
+    "full_entry": "seit"
+  },
+  {
+    "word": "selbstständig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "selbstständig"
+  },
+  {
+    "word": "sich",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "sich"
+  },
+  {
+    "word": "sie",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "sie"
+  },
+  {
+    "word": "sitzen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sitzen"
+  },
+  {
+    "word": "so",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "so"
+  },
+  {
+    "word": "Sofa",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Sofa"
+  },
+  {
+    "word": "sofort",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "sofort"
+  },
+  {
+    "word": "Sohn",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Sohn, -ö, e"
+  },
+  {
+    "word": "sollen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sollen"
+  },
+  {
+    "word": "Sonne",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Sonne"
+  },
+  {
+    "word": "spät",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "spät"
+  },
+  {
+    "word": "später",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "später"
+  },
+  {
+    "word": "Speisekarte",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Speisekarte"
+  },
+  {
+    "word": "spielen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "spielen"
+  },
+  {
+    "word": "Sport",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Sport"
+  },
+  {
+    "word": "Sprache",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Sprache, -n"
+  },
+  {
+    "word": "sprechen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sprechen"
+  },
+  {
+    "word": "Stadt",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Stadt, -ä, e"
+  },
+  {
+    "word": "stehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "stehen"
+  },
+  {
+    "word": "Stelle",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Stelle, -n"
+  },
+  {
+    "word": "stellen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "stellen"
+  },
+  {
+    "word": "Stock",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Stock"
+  },
+  {
+    "word": "Straße",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Straße, -n"
+  },
+  {
+    "word": "Straßenbahn",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Straßenbahn"
+  },
+  {
+    "word": "studieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "studieren"
+  },
+  {
+    "word": "Studium",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Studium"
+  },
+  {
+    "word": "Student",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Student, -en"
+  },
+  {
+    "word": "Stunde",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Stunde, -n"
+  },
+  {
+    "word": "suchen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "suchen"
+  },
+  {
+    "word": "tanzen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tanzen"
+  },
+  {
+    "word": "Tasche",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Tasche, -n"
+  },
+  {
+    "word": "Taxi",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Taxi, -s"
+  },
+  {
+    "word": "Tee",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Tee"
+  },
+  {
+    "word": "Teil",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Teil, -e"
+  },
+  {
+    "word": "telefonieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "telefonieren"
+  },
+  {
+    "word": "Telefon",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Telefon"
+  },
+  {
+    "word": "Termin",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Termin, -e"
+  },
+  {
+    "word": "Test",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Test"
+  },
+  {
+    "word": "teuer",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "teuer"
+  },
+  {
+    "word": "Text",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Text, -e"
+  },
+  {
+    "word": "Thema",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Thema"
+  },
+  {
+    "word": "Ticket",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Ticket, -s"
+  },
+  {
+    "word": "Tisch",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Tisch, -e"
+  },
+  {
+    "word": "Tochter",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Tochter, -ö"
+  },
+  {
+    "word": "Toilette",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Toilette, -en"
+  },
+  {
+    "word": "Tomate",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Tomate, -n"
+  },
+  {
+    "word": "tot",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "tot"
+  },
+  {
+    "word": "Treppe",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Treppe, -n"
+  },
+  {
+    "word": "trinken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "trinken"
+  },
+  {
+    "word": "tschüss",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "tschüss"
+  },
+  {
+    "word": "tun",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "tun"
+  },
+  {
+    "word": "über",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "über"
+  },
+  {
+    "word": "übernachten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "übernachten"
+  },
+  {
+    "word": "überweisen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "überweisen"
+  },
+  {
+    "word": "Uhr",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Uhr"
+  },
+  {
+    "word": "um",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "um"
+  },
+  {
+    "word": "umziehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "umziehen"
+  },
+  {
+    "word": "und",
+    "article": "",
+    "pos": "conjunction",
+    "full_entry": "und"
+  },
+  {
+    "word": "Junge Leute sagen meistens „tschüss!“ und nicht",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "Junge Leute sagen meistens „tschüss!“ und nicht"
+  },
+  {
+    "word": "unserunten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "unserunten"
+  },
+  {
+    "word": "unter",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "unter"
+  },
+  {
+    "word": "Unterricht",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Unterricht"
+  },
+  {
+    "word": "unterschreiben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "unterschreiben"
+  },
+  {
+    "word": "Unterschrift",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Unterschrift"
+  },
+  {
+    "word": "Urlaub",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Urlaub"
+  },
+  {
+    "word": "Vater",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Vater, -ä"
+  },
+  {
+    "word": "verboten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verboten"
+  },
+  {
+    "word": "verdienen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verdienen"
+  },
+  {
+    "word": "Verein",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Verein"
+  },
+  {
+    "word": "verheiratet",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "verheiratet"
+  },
+  {
+    "word": "verkaufen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verkaufen"
+  },
+  {
+    "word": "Verkäufer",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Verkäufer, –"
+  },
+  {
+    "word": "vermieten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vermieten"
+  },
+  {
+    "word": "Vermieter",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Vermieter"
+  },
+  {
+    "word": "verstehen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verstehen"
+  },
+  {
+    "word": "Verwandte",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Verwandte, -n"
+  },
+  {
+    "word": "viel",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "viel"
+  },
+  {
+    "word": "vielleicht",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "vielleicht"
+  },
+  {
+    "word": "von",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "von"
+  },
+  {
+    "word": "vor",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "vor"
+  },
+  {
+    "word": "Vorname",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Vorname, -n"
+  },
+  {
+    "word": "Vorsicht",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Vorsicht"
+  },
+  {
+    "word": "Vorwahl",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Vorwahl"
+  },
+  {
+    "word": "wandern",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "wandern"
+  },
+  {
+    "word": "wann",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "wann"
+  },
+  {
+    "word": "warten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "warten"
+  },
+  {
+    "word": "warum",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "warum"
+  },
+  {
+    "word": "was",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "was"
+  },
+  {
+    "word": "Wasser",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Wasser"
+  },
+  {
+    "word": "weiblich",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "weiblich"
+  },
+  {
+    "word": "Wein",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Wein"
+  },
+  {
+    "word": "weit",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "weit"
+  },
+  {
+    "word": "weiter",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "weiter"
+  },
+  {
+    "word": "wenig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "wenig"
+  },
+  {
+    "word": "wer",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "wer"
+  },
+  {
+    "word": "werden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "werden"
+  },
+  {
+    "word": "Wetter",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Wetter"
+  },
+  {
+    "word": "wichtig",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "wichtig"
+  },
+  {
+    "word": "wie",
+    "article": "",
+    "pos": "conjunction",
+    "full_entry": "wie"
+  },
+  {
+    "word": "wiederholen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "wiederholen"
+  },
+  {
+    "word": "Wiederhören",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Wiederhören"
+  },
+  {
+    "word": "Wiedersehen",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Wiedersehen"
+  },
+  {
+    "word": "willkommen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "willkommen"
+  },
+  {
+    "word": "Wind",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Wind"
+  },
+  {
+    "word": "wir",
+    "article": "",
+    "pos": "pronoun",
+    "full_entry": "wir"
+  },
+  {
+    "word": "wissen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "wissen"
+  },
+  {
+    "word": "wo",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "wo"
+  },
+  {
+    "word": "woher",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "woher"
+  },
+  {
+    "word": "wohin",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "wohin"
+  },
+  {
+    "word": "wohnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "wohnen"
+  },
+  {
+    "word": "Wohnung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Wohnung, -en"
+  },
+  {
+    "word": "wollen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "wollen"
+  },
+  {
+    "word": "Wort",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Wort, -ö, er/-e"
+  },
+  {
+    "word": "wunderbar",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "wunderbar"
+  },
+  {
+    "word": "zahlen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zahlen"
+  },
+  {
+    "word": "Zeit",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Zeit"
+  },
+  {
+    "word": "zurzeit",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "zurzeit"
+  },
+  {
+    "word": "Zeitung",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Zeitung, -en"
+  },
+  {
+    "word": "Zigarette",
+    "article": "die",
+    "pos": "noun",
+    "full_entry": "die Zigarette, -n"
+  },
+  {
+    "word": "Zimmer",
+    "article": "das",
+    "pos": "noun",
+    "full_entry": "das Zimmer, –"
+  },
+  {
+    "word": "Zoll",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Zoll"
+  },
+  {
+    "word": "zu",
+    "article": "",
+    "pos": "preposition",
+    "full_entry": "zu"
+  },
+  {
+    "word": "zufrieden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zufrieden"
+  },
+  {
+    "word": "Zug",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Zug, -ü, e"
+  },
+  {
+    "word": "zurück",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "zurück"
+  },
+  {
+    "word": "zusammen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zusammen"
+  },
+  {
+    "word": "zwischen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zwischen"
+  },
+  {
+    "word": "Kultusminister",
+    "article": "der",
+    "pos": "noun",
+    "full_entry": "der Kultusminister der Länder in der Bundesrepublik Deutschland (KMK), der"
+  },
+  {
+    "word": "Schweizerischen Konferenz der Kantonalen Erziehungs­direktoren (EDK) und",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "Schweizerischen Konferenz der Kantonalen Erziehungs­direktoren (EDK) und"
+  },
+  {
+    "word": "Profile Deutsch. Lernzielbestimmungen, Kannbeschreibungen und kommunikative Mittel für die Niveaustufen A1, A2, B1 und B2 des „Gemeinsamen",
+    "article": "",
+    "pos": "expression",
+    "full_entry": "Profile Deutsch. Lernzielbestimmungen, Kannbeschreibungen und kommunikative Mittel für die Niveaustufen A1, A2, B1 und B2 des „Gemeinsamen"
+  }
+]

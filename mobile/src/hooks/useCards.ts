@@ -2,16 +2,17 @@ import { useState, useCallback, useEffect } from 'react';
 import type {
   GenerateTaskResponse,
   SubmitAnswerResponse,
-  TierStatsResponse,
+  LevelStatsResponse,
   TaskType,
+  Level,
 } from '../types';
-import { generateTask, submitAnswer, getTierStats } from '../api/client';
+import { generateTask, submitAnswer, getLevelStats } from '../api/client';
 
 /**
- * Hook for tier-based learning with dynamic task generation
+ * Hook for level-based learning (A1/A2/B1) with simple word translation tasks
  */
 export function useCards(userId?: string) {
-  const [stats, setStats] = useState<TierStatsResponse | null>(null);
+  const [stats, setStats] = useState<LevelStatsResponse | null>(null);
   const [currentTask, setCurrentTask] = useState<GenerateTaskResponse | null>(null);
   const [nextTask, setNextTask] = useState<GenerateTaskResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -19,15 +20,15 @@ export function useCards(userId?: string) {
   const [taskLoading, setTaskLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [tasksCompletedThisSession, setTasksCompletedThisSession] = useState(0);
-  const [tierJustUnlocked, setTierJustUnlocked] = useState<number | null>(null);
+  const [levelJustUnlocked, setLevelJustUnlocked] = useState<Level | null>(null);
   const [preloading, setPreloading] = useState(false);
 
-  // Load initial tier stats
+  // Load initial level stats
   useEffect(() => {
     async function init() {
       try {
-        const tierStats = await getTierStats();
-        setStats(tierStats);
+        const levelStats = await getLevelStats();
+        setStats(levelStats);
         setLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load stats');
@@ -37,16 +38,15 @@ export function useCards(userId?: string) {
     init();
   }, []);
 
-  // Get task type based on tier (weighted selection)
-  const selectTaskType = useCallback((tier: number): TaskType => {
-    const tierWeights: Record<number, { multipleChoice: number; reverseTranslation: number }> = {
-      1: { multipleChoice: 0.8, reverseTranslation: 0.2 },
-      2: { multipleChoice: 0.6, reverseTranslation: 0.4 },
-      3: { multipleChoice: 0.4, reverseTranslation: 0.6 },
-      4: { multipleChoice: 0.3, reverseTranslation: 0.7 },
+  // Get task type based on level (weighted selection)
+  const selectTaskType = useCallback((level: Level): TaskType => {
+    const levelWeights: Record<Level, { multipleChoice: number; reverseTranslation: number }> = {
+      A1: { multipleChoice: 0.8, reverseTranslation: 0.2 },
+      A2: { multipleChoice: 0.6, reverseTranslation: 0.4 },
+      B1: { multipleChoice: 0.4, reverseTranslation: 0.6 },
     };
 
-    const weights = tierWeights[tier] || tierWeights[1];
+    const weights = levelWeights[level] || levelWeights.A1;
     return Math.random() < weights.multipleChoice ? 'multipleChoice' : 'reverseTranslation';
   }, []);
 
@@ -56,8 +56,8 @@ export function useCards(userId?: string) {
 
     setPreloading(true);
     try {
-      const taskType = selectTaskType(stats.currentTier);
-      const task = await generateTask(stats.currentTier, taskType);
+      const taskType = selectTaskType(stats.currentLevel);
+      const task = await generateTask(stats.currentLevel, taskType);
       setNextTask(task);
     } catch (err) {
       console.warn('Failed to preload next task:', err);
@@ -84,8 +84,8 @@ export function useCards(userId?: string) {
     setError(null);
 
     try {
-      const taskType = selectTaskType(stats.currentTier);
-      const task = await generateTask(stats.currentTier, taskType);
+      const taskType = selectTaskType(stats.currentLevel);
+      const task = await generateTask(stats.currentLevel, taskType);
       setCurrentTask(task);
       // Start preloading the next one
       setTimeout(() => preloadNextTask(), 100);
@@ -113,20 +113,20 @@ export function useCards(userId?: string) {
       try {
         const result = await submitAnswer({
           targetWord: currentTask.targetWord,
-          tier: currentTask.tier,
+          level: currentTask.level,
           taskType: currentTask.taskType,
           userAnswer,
           correctAnswer,
-          previousTier: stats.currentTier,
+          previousLevel: stats.currentLevel,
         });
 
-        // Check for tier unlock
-        if (result.tierUnlocked && result.newTier) {
-          setTierJustUnlocked(result.newTier);
+        // Check for level unlock
+        if (result.levelUnlocked && result.newLevel) {
+          setLevelJustUnlocked(result.newLevel);
         }
 
         // Reload stats after answer
-        const updatedStats = await getTierStats();
+        const updatedStats = await getLevelStats();
         setStats(updatedStats);
 
         // Track session stats
@@ -143,9 +143,9 @@ export function useCards(userId?: string) {
     [currentTask, submitting, stats]
   );
 
-  // Dismiss tier unlock celebration
-  const dismissTierUnlock = useCallback(() => {
-    setTierJustUnlocked(null);
+  // Dismiss level unlock celebration
+  const dismissLevelUnlock = useCallback(() => {
+    setLevelJustUnlocked(null);
   }, []);
 
   return {
@@ -158,18 +158,25 @@ export function useCards(userId?: string) {
     taskLoading,
     submitting,
     tasksCompletedThisSession,
-    tierJustUnlocked,
+    levelJustUnlocked, // Changed from tierJustUnlocked
 
     // Actions
     handleAnswer,
     loadNextTask,
-    dismissTierUnlock,
+    dismissLevelUnlock, // Changed from dismissTierUnlock
 
     // Computed stats
-    tierStatsArray: stats?.tierStats || [],
-    currentTier: stats?.currentTier || 1,
+    levelStatsArray: stats?.levelStats || [],
+    currentLevel: stats?.currentLevel || 'A1',
     overallAccuracy: stats?.overallAccuracy || 0,
     wordProgress: stats?.wordProgress || [],
     hasPreloadedTask: nextTask !== null,
+
+    // Legacy tier compatibility
+    tierJustUnlocked: levelJustUnlocked ?
+      (levelJustUnlocked === 'A1' ? 1 : levelJustUnlocked === 'A2' ? 2 : 3) : null,
+    dismissTierUnlock: dismissLevelUnlock,
+    currentTier: stats?.currentLevel === 'A1' ? 1 : stats?.currentLevel === 'A2' ? 2 : 3,
+    tierStatsArray: stats?.levelStats || [],
   };
 }

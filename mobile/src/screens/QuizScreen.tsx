@@ -22,12 +22,16 @@ export function QuizScreen() {
     taskLoading,
     submitting,
     tasksCompletedThisSession,
-    tierJustUnlocked,
+    levelJustUnlocked, // New level unlock
+    tierJustUnlocked, // Legacy tier unlock (for compatibility)
     handleAnswer,
     loadNextTask,
+    dismissLevelUnlock,
     dismissTierUnlock,
-    tierStatsArray,
-    currentTier,
+    levelStatsArray, // New level stats
+    currentLevel, // New current level (A1/A2/B1)
+    tierStatsArray, // Legacy tier stats
+    currentTier, // Legacy current tier
     overallAccuracy,
     wordProgress,
     hasPreloadedTask,
@@ -149,8 +153,11 @@ export function QuizScreen() {
       <View style={styles.container}>
         <StatsBar
           accuracy={overallAccuracy}
+          levelStats={levelStatsArray}
+          currentLevel={currentLevel}
           tierStats={tierStatsArray}
           currentTier={currentTier}
+          wordProgress={wordProgress}
         />
         <View style={styles.centerContent}>
           <ActivityIndicator size="large" color={colors.primary} />
@@ -213,9 +220,12 @@ export function QuizScreen() {
         )}
       </View>
 
-      {/* Tier unlock celebration overlay */}
-      {tierJustUnlocked && (
-        <TierUnlockCelebration tier={tierJustUnlocked} onDismiss={dismissTierUnlock} />
+      {/* Level/Tier unlock celebration overlay */}
+      {(levelJustUnlocked || tierJustUnlocked) && (
+        <TierUnlockCelebration
+          tier={tierJustUnlocked || (levelJustUnlocked === 'A1' ? 1 : levelJustUnlocked === 'A2' ? 2 : 3)}
+          onDismiss={dismissLevelUnlock || dismissTierUnlock}
+        />
       )}
     </View>
   );

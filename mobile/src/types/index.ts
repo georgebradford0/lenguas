@@ -22,6 +22,7 @@ export interface TranslationResult {
 export interface ProgressRecord {
   word: string;
   tier?: number;
+  level?: string; // New: A1, A2, B1
   timesShown: number;
   correctCount: number;
   lastSeenTaskType?: string | null;
@@ -34,23 +35,28 @@ export interface Choice {
 
 export type ChoiceState = 'default' | 'correct' | 'wrong' | 'reveal' | 'disabled';
 
-// New LLM-based task types
+// Task types
 export type TaskType = 'multipleChoice' | 'reverseTranslation';
+export type Level = 'A1' | 'A2' | 'B1';
+
+// Word vocabulary entry (from JSON files)
+export interface VocabWord {
+  word: string;
+  article: string;
+  pos: string; // part of speech
+  full_entry: string;
+}
 
 export interface MultipleChoiceTaskData {
   german: string;
   correctEnglish: string;
   wrongOptions: string[];
-  chunkPattern?: string;
-  focusGrammar?: string;
 }
 
 export interface ReverseTranslationTaskData {
   english: string;
   correctGerman: string;
   wrongOptions: string[];
-  chunkPattern?: string;
-  focusGrammar?: string;
 }
 
 export type GeneratedTask = MultipleChoiceTaskData | ReverseTranslationTaskData;
@@ -58,11 +64,78 @@ export type GeneratedTask = MultipleChoiceTaskData | ReverseTranslationTaskData;
 export interface GenerateTaskResponse {
   task: GeneratedTask;
   targetWord: string;
-  tier: number;
+  level: Level; // Changed from tier to level
   taskType: TaskType;
   timestamp: string;
 }
 
+export interface LevelStats {
+  level: string;
+  totalAttempts: number;
+  correctAttempts: number;
+  multipleChoiceAttempts: number;
+  multipleChoiceCorrect: number;
+  reverseTranslationAttempts: number;
+  reverseTranslationCorrect: number;
+  unlocked: boolean;
+  unlockedAt: string | null;
+  total: number; // total words in level
+  mastered: number; // words mastered
+  percentage: number; // mastery percentage
+  accuracy: number; // overall accuracy for level
+}
+
+export interface LevelProgress {
+  userId: string;
+  currentLevel: Level;
+  levelStats: LevelStats[];
+  overallAccuracy: number;
+  totalTasksCompleted: number;
+  currentStreak: number;
+  longestStreak: number;
+  lastStudyDate: string | null;
+}
+
+export interface SubmitAnswerRequest {
+  targetWord: string;
+  level: Level; // Changed from tier
+  taskType: TaskType;
+  userAnswer: string;
+  correctAnswer: string;
+  previousLevel?: Level; // Changed from previousTier
+}
+
+export interface SubmitAnswerResponse {
+  correct: boolean;
+  word: string;
+  level: Level; // Changed from tier
+  taskType: TaskType;
+  stats: {
+    timesShown: number;
+    correctCount: number;
+    accuracy: number;
+  };
+  levelUnlocked: boolean; // Changed from tierUnlocked
+  newLevel: Level | null; // Changed from newTier
+  timestamp: string;
+}
+
+export interface WordProgress {
+  word: string;
+  attempts: number;
+  accuracy: number;
+}
+
+export interface LevelStatsResponse {
+  currentLevel: Level;
+  levelStats: LevelStats[];
+  overallAccuracy: number;
+  totalWords: number;
+  totalAttempts: number;
+  wordProgress: WordProgress[];
+}
+
+// Legacy tier types for backward compatibility
 export interface TierStats {
   totalAttempts: number;
   correctAttempts: number;
@@ -88,36 +161,6 @@ export interface TierProgress {
   currentStreak: number;
   longestStreak: number;
   lastStudyDate: string | null;
-}
-
-export interface SubmitAnswerRequest {
-  targetWord: string;
-  tier: number;
-  taskType: TaskType;
-  userAnswer: string;
-  correctAnswer: string;
-  previousTier?: number;
-}
-
-export interface SubmitAnswerResponse {
-  correct: boolean;
-  word: string;
-  tier: number;
-  taskType: TaskType;
-  stats: {
-    timesShown: number;
-    correctCount: number;
-    accuracy: number;
-  };
-  tierUnlocked: boolean;
-  newTier: number | null;
-  timestamp: string;
-}
-
-export interface WordProgress {
-  word: string;
-  attempts: number;
-  accuracy: number;
 }
 
 export interface TierStatsResponse {

@@ -28,6 +28,11 @@ rsync -avz --exclude='node_modules' --exclude='.git' \
     -e "ssh -i $SSH_KEY -o StrictHostKeyChecking=no" \
     $LOCAL_DIR/api $EC2_HOST:$REMOTE_DIR/
 
+# Copy wordlists directory (NEW - required for A1/A2/B1 vocabulary)
+rsync -avz --exclude='.git' \
+    -e "ssh -i $SSH_KEY -o StrictHostKeyChecking=no" \
+    $LOCAL_DIR/wordlists $EC2_HOST:$REMOTE_DIR/
+
 # Copy docker-compose file
 $SCP_CMD $LOCAL_DIR/docker-compose.prod.yml $EC2_HOST:$REMOTE_DIR/docker-compose.yml
 
@@ -53,7 +58,8 @@ echo "✨ Deployment complete!"
 echo ""
 echo "🌐 API URL: http://35.88.113.219:3000"
 echo "📊 Health check: http://35.88.113.219:3000/health"
-echo "📈 Tier stats: http://35.88.113.219:3000/tier-stats"
+echo "📈 Level stats: http://35.88.113.219:3000/level-stats"
+echo "📈 Tier stats (legacy): http://35.88.113.219:3000/tier-stats"
 echo ""
 echo "📝 Useful commands:"
 echo "  View logs:    ssh -i $SSH_KEY $EC2_HOST 'cd $REMOTE_DIR && docker compose logs -f'"
