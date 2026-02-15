@@ -149,10 +149,10 @@ function parsePluralForm(fullEntry) {
 }
 
 /**
- * Format word with singular and plural if available
- * Returns object with display (with plural) and audio (singular only) versions
+ * Format word for task - randomly choose singular or plural form for nouns
+ * Returns object with display and audio text
  */
-function formatWordWithPlural(fullEntry, pos) {
+function formatWordForTask(fullEntry, pos) {
   // Only parse plurals for nouns
   if (pos !== 'noun') {
     return { display: fullEntry, audio: fullEntry };
@@ -160,13 +160,13 @@ function formatWordWithPlural(fullEntry, pos) {
 
   const { singular, plural } = parsePluralForm(fullEntry);
 
-  if (plural) {
-    return {
-      display: `${singular} (pl: ${plural})`,
-      audio: singular
-    };
+  // If plural exists, randomly choose singular or plural (50/50)
+  if (plural && Math.random() < 0.5) {
+    // Use plural form
+    return { display: plural, audio: plural };
   }
 
+  // Use singular form (default)
   return { display: singular, audio: singular };
 }
 
@@ -245,14 +245,14 @@ router.post('/generate-task', async (req, res) => {
     console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level}`);
 
     // Format German word with plural (if noun)
-    const targetFormatted = formatWordWithPlural(targetWord.full_entry, targetWord.pos);
+    const targetFormatted = formatWordForTask(targetWord.full_entry, targetWord.pos);
 
     // Generate distractors (wrong answers) - these are German words/phrases
     const distractors = generateDistractors(targetWord, vocabulary, 3);
     const distractorsFormatted = distractors.map((d, idx) => {
       // Get the original vocab entry to know its POS
       const distWord = vocabulary.find(v => v.full_entry === d);
-      return distWord ? formatWordWithPlural(d, distWord.pos) : { display: d, audio: d };
+      return distWord ? formatWordForTask(d, distWord.pos) : { display: d, audio: d };
     });
 
     // Translate to English (use audio version without plural notation)
