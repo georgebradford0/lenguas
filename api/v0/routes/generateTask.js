@@ -420,8 +420,8 @@ router.post('/submit-answer', async (req, res) => {
 /**
  * Determine current level based on mastery
  * A1 is always available
- * A2 unlocks when 75% of A1 words are mastered (7+ attempts, 75%+ accuracy)
- * B1 unlocks when 75% of A2 words are mastered
+ * A2 unlocks when 100% of A1 words are mastered (7+ attempts, 75%+ accuracy)
+ * B1 unlocks when 100% of A2 words are mastered
  */
 async function determineCurrentLevel() {
   const allProgress = await Progress.find({});
@@ -446,7 +446,7 @@ async function determineCurrentLevel() {
     }
   });
 
-  const a2Unlocked = a1Mastered >= Math.ceil(a1Vocab.length * 0.75);
+  const a2Unlocked = a1Mastered >= a1Vocab.length; // 100% mastery required
 
   if (!a2Unlocked) {
     return 'A1';
@@ -464,7 +464,7 @@ async function determineCurrentLevel() {
     }
   });
 
-  const b1Unlocked = a2Mastered >= Math.ceil(a2Vocab.length * 0.75);
+  const b1Unlocked = a2Mastered >= a2Vocab.length; // 100% mastery required
 
   return b1Unlocked ? 'B1' : 'A2';
 }
@@ -536,12 +536,12 @@ router.get('/level-stats', async (req, res) => {
     // A1 is always unlocked
     a1Stats.unlocked = true;
 
-    // A2 unlocks when 75% of A1 words are mastered
-    const a2Unlocked = a1Stats.mastered >= Math.ceil(a1Vocab.length * 0.75);
+    // A2 unlocks when 100% of A1 words are mastered
+    const a2Unlocked = a1Stats.mastered >= a1Vocab.length;
     a2Stats.unlocked = a2Unlocked;
 
-    // B1 unlocks when 75% of A2 words are mastered
-    const b1Unlocked = a2Unlocked && a2Stats.mastered >= Math.ceil(a2Vocab.length * 0.75);
+    // B1 unlocks when 100% of A2 words are mastered
+    const b1Unlocked = a2Unlocked && a2Stats.mastered >= a2Vocab.length;
     b1Stats.unlocked = b1Unlocked;
 
     // Current level is the highest unlocked level
