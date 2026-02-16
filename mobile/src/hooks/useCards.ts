@@ -40,14 +40,22 @@ export function useCards(userId?: string) {
 
   // Get task type based on level (weighted selection)
   const selectTaskType = useCallback((level: Level): TaskType => {
-    const levelWeights: Record<Level, { multipleChoice: number; reverseTranslation: number }> = {
-      A1: { multipleChoice: 0.8, reverseTranslation: 0.2 },
-      A2: { multipleChoice: 0.6, reverseTranslation: 0.4 },
-      B1: { multipleChoice: 0.4, reverseTranslation: 0.6 },
+    const levelWeights: Record<Level, { multipleChoice: number; reverseTranslation: number; audioMultipleChoice: number }> = {
+      A1: { multipleChoice: 0.6, reverseTranslation: 0.2, audioMultipleChoice: 0.2 },
+      A2: { multipleChoice: 0.4, reverseTranslation: 0.4, audioMultipleChoice: 0.2 },
+      B1: { multipleChoice: 0.2, reverseTranslation: 0.6, audioMultipleChoice: 0.2 },
     };
 
     const weights = levelWeights[level] || levelWeights.A1;
-    return Math.random() < weights.multipleChoice ? 'multipleChoice' : 'reverseTranslation';
+    const random = Math.random();
+
+    if (random < weights.multipleChoice) {
+      return 'multipleChoice';
+    } else if (random < weights.multipleChoice + weights.reverseTranslation) {
+      return 'reverseTranslation';
+    } else {
+      return 'audioMultipleChoice';
+    }
   }, []);
 
   // Preload next task in background
