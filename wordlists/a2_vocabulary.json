@@ -1,11 +1,5 @@
 [
   {
-    "word": "ab",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "ab"
-  },
-  {
     "word": "aber",
     "article": "",
     "pos": "conjunction",
@@ -102,12 +96,6 @@
     "full_entry": "die Ampel, -n"
   },
   {
-    "word": "an",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "an"
-  },
-  {
     "word": "Antwort",
     "article": "die",
     "pos": "noun",
@@ -142,12 +130,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Apparat, -e"
-  },
-  {
-    "word": "aus",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "aus"
   },
   {
     "word": "arbeiten",
@@ -192,12 +174,6 @@
     "full_entry": "auch"
   },
   {
-    "word": "auf",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "auf"
-  },
-  {
     "word": "Ausflug",
     "article": "der",
     "pos": "noun",
@@ -220,12 +196,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Ausland (Sg.)"
-  },
-  {
-    "word": "außer",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "außer"
   },
   {
     "word": "aufregend",
@@ -286,12 +256,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "automatisch"
-  },
-  {
-    "word": "bei",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "bei"
   },
   {
     "word": "beide",
@@ -610,12 +574,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Buch, ¨-er"
-  },
-  {
-    "word": "bis",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "bis"
   },
   {
     "word": "Buchstabe",
@@ -946,12 +904,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "dünn"
-  },
-  {
-    "word": "durch",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "durch"
   },
   {
     "word": "Durst",
@@ -1368,12 +1320,6 @@
     "full_entry": "das Flugzeug, -e"
   },
   {
-    "word": "für",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "für"
-  },
-  {
     "word": "Fluss",
     "article": "der",
     "pos": "noun",
@@ -1530,12 +1476,6 @@
     "full_entry": "froh"
   },
   {
-    "word": "gegen",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "gegen"
-  },
-  {
     "word": "früh",
     "article": "",
     "pos": "adjective",
@@ -1546,12 +1486,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Gegenteil , -e"
-  },
-  {
-    "word": "gegenüber",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "gegenüber"
   },
   {
     "word": "Gehalt",
@@ -1962,12 +1896,6 @@
     "full_entry": "hinten"
   },
   {
-    "word": "hinter",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "hinter"
-  },
-  {
     "word": "Hobby",
     "article": "das",
     "pos": "noun",
@@ -2080,12 +2008,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "immer"
-  },
-  {
-    "word": "in",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "in"
   },
   {
     "word": "jung",
@@ -2982,12 +2904,6 @@
     "full_entry": "der Mitarbeiter, -"
   },
   {
-    "word": "nach",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "nach"
-  },
-  {
     "word": "Nachbar",
     "article": "der",
     "pos": "noun",
@@ -3028,12 +2944,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "natürlich"
-  },
-  {
-    "word": "neben",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "neben"
   },
   {
     "word": "nebenan",
@@ -3118,12 +3028,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "nennen, nennt hat genannt"
-  },
-  {
-    "word": "ohne",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "ohne"
   },
   {
     "word": "nervös",
@@ -4782,12 +4686,6 @@
     "full_entry": "unten"
   },
   {
-    "word": "unter",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "unter"
-  },
-  {
     "word": "Unterricht",
     "article": "der",
     "pos": "noun",
@@ -4798,12 +4696,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "üben, übt hat geübt"
-  },
-  {
-    "word": "über",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "über"
   },
   {
     "word": "überall",
@@ -4840,12 +4732,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Veranstaltung, -en"
-  },
-  {
-    "word": "um",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "um"
   },
   {
     "word": "Verein",
@@ -4912,18 +4798,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "voll"
-  },
-  {
-    "word": "von",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "von"
-  },
-  {
-    "word": "vor",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "vor"
   },
   {
     "word": "vorbei",
@@ -5062,12 +4936,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Weg, -e"
-  },
-  {
-    "word": "wegen",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "wegen"
   },
   {
     "word": "weiblich",
@@ -5268,12 +5136,6 @@
     "full_entry": "das Wort,¨-er"
   },
   {
-    "word": "zu",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "zu"
-  },
-  {
     "word": "wunderbar",
     "article": "",
     "pos": "adjective",
@@ -5362,12 +5224,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "zusammen"
-  },
-  {
-    "word": "zwischen",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "zwischen"
   },
   {
     "word": "wünschen",

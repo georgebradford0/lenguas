@@ -1,11 +1,5 @@
 [
   {
-    "word": "ab",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "ab"
-  },
-  {
     "word": "aber",
     "article": "",
     "pos": "conjunction",
@@ -70,12 +64,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Alter"
-  },
-  {
-    "word": "an",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "an"
   },
   {
     "word": "anbieten",
@@ -246,12 +234,6 @@
     "full_entry": "auch"
   },
   {
-    "word": "auf",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "auf"
-  },
-  {
     "word": "Aufgabe",
     "article": "die",
     "pos": "noun",
@@ -286,12 +268,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Auge, -n"
-  },
-  {
-    "word": "aus",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "aus"
   },
   {
     "word": "Ausflug",
@@ -504,12 +480,6 @@
     "full_entry": "beginnen"
   },
   {
-    "word": "bei",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "bei"
-  },
-  {
     "word": "beide",
     "article": "",
     "pos": "adjective",
@@ -616,12 +586,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Birne, -n"
-  },
-  {
-    "word": "bis",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "bis"
   },
   {
     "word": "bisschen",
@@ -904,12 +868,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "drücken"
-  },
-  {
-    "word": "durch",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "durch"
   },
   {
     "word": "Durchsage",
@@ -1366,12 +1324,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Führung"
-  },
-  {
-    "word": "für",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "für"
   },
   {
     "word": "Fuß",
@@ -1858,12 +1810,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "immer"
-  },
-  {
-    "word": "in",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "in"
   },
   {
     "word": "Information",
@@ -2394,12 +2340,6 @@
     "full_entry": "die Milch"
   },
   {
-    "word": "mit",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "mit"
-  },
-  {
     "word": "mitbringen",
     "article": "",
     "pos": "verb",
@@ -2490,12 +2430,6 @@
     "full_entry": "die Mutter, -ü"
   },
   {
-    "word": "nach",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "nach"
-  },
-  {
     "word": "nehmen",
     "article": "",
     "pos": "verb",
@@ -2578,12 +2512,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "oft"
-  },
-  {
-    "word": "ohne",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "ohne"
   },
   {
     "word": "Öl",
@@ -3372,12 +3300,6 @@
     "full_entry": "tun"
   },
   {
-    "word": "über",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "über"
-  },
-  {
     "word": "übernachten",
     "article": "",
     "pos": "verb",
@@ -3394,12 +3316,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Uhr"
-  },
-  {
-    "word": "um",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "um"
   },
   {
     "word": "umziehen",
@@ -3424,12 +3340,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "unserunten"
-  },
-  {
-    "word": "unter",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "unter"
   },
   {
     "word": "Unterricht",
@@ -3532,18 +3442,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "vielleicht"
-  },
-  {
-    "word": "von",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "von"
-  },
-  {
-    "word": "vor",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "vor"
   },
   {
     "word": "Vorname",
@@ -3790,12 +3688,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Zoll"
-  },
-  {
-    "word": "zu",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "zu"
   },
   {
     "word": "zufrieden",

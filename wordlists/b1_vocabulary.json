@@ -1,11 +1,5 @@
 [
   {
-    "word": "ab",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "ab"
-  },
-  {
     "word": "abbiegen",
     "article": "",
     "pos": "verb",
@@ -322,12 +316,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Amt, ¨-er"
-  },
-  {
-    "word": "an",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "an"
   },
   {
     "word": "analysieren",
@@ -750,12 +738,6 @@
     "full_entry": "auch"
   },
   {
-    "word": "auf",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "auf"
-  },
-  {
     "word": "Aufenthalt",
     "article": "der",
     "pos": "noun",
@@ -906,12 +888,6 @@
     "full_entry": "das Auge, -n"
   },
   {
-    "word": "aus",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "aus"
-  },
-  {
     "word": "ausgebildet",
     "article": "",
     "pos": "adjective",
@@ -1000,12 +976,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "äußerlich"
-  },
-  {
-    "word": "außer",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "außer"
   },
   {
     "word": "außerdem",
@@ -1366,12 +1336,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Behörde, -n"
-  },
-  {
-    "word": "bei",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "bei"
   },
   {
     "word": "beid-",
@@ -1840,12 +1804,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Birne, -n"
-  },
-  {
-    "word": "bis",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "bis"
   },
   {
     "word": "bisher",
@@ -2782,12 +2740,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "ebenso"
-  },
-  {
-    "word": "durch",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "durch"
   },
   {
     "word": "eben",
@@ -4404,12 +4356,6 @@
     "full_entry": "funktionieren, funktioniert, funktionierte, hat funktioniert"
   },
   {
-    "word": "für",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "für"
-  },
-  {
     "word": "furchtbar",
     "article": "",
     "pos": "adjective",
@@ -4590,12 +4536,6 @@
     "full_entry": "die Gefahr, -en"
   },
   {
-    "word": "gegenüber",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "gegenüber"
-  },
-  {
     "word": "Gehalt",
     "article": "das",
     "pos": "noun",
@@ -4636,12 +4576,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Gefühl, -e"
-  },
-  {
-    "word": "gegen",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "gegen"
   },
   {
     "word": "Gegner",
@@ -5656,12 +5590,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Import, -e"
-  },
-  {
-    "word": "in",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "in"
   },
   {
     "word": "indem",
@@ -7746,12 +7674,6 @@
     "full_entry": "das Mobiltelefon, -e"
   },
   {
-    "word": "mit",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "mit"
-  },
-  {
     "word": "Mitarbeiter",
     "article": "der",
     "pos": "noun",
@@ -7986,12 +7908,6 @@
     "full_entry": "die Mutter, ¨-"
   },
   {
-    "word": "nach",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "nach"
-  },
-  {
     "word": "Nachbar",
     "article": "der",
     "pos": "noun",
@@ -8146,12 +8062,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "neblig"
-  },
-  {
-    "word": "neben",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "neben"
   },
   {
     "word": "nebenan",
@@ -8392,12 +8302,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "öffnen, öffnet, öffnete, hat geöffnet"
-  },
-  {
-    "word": "ohne",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "ohne"
   },
   {
     "word": "Ohr",
@@ -11934,12 +11838,6 @@
     "full_entry": "die Übung, -en 1. Diese Übung war sehr schwer."
   },
   {
-    "word": "über",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "über"
-  },
-  {
     "word": "überall",
     "article": "",
     "pos": "adverb",
@@ -12034,12 +11932,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Uhr, -en"
-  },
-  {
-    "word": "um",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "um"
   },
   {
     "word": "überprüfen",
@@ -12184,12 +12076,6 @@
     "article": "",
     "pos": "adverb",
     "full_entry": "unten"
-  },
-  {
-    "word": "unter",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "unter"
   },
   {
     "word": "Umtausch",
@@ -12936,22 +12822,10 @@
     "full_entry": "völlig"
   },
   {
-    "word": "von",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "von"
-  },
-  {
     "word": "voneinander",
     "article": "",
     "pos": "adjective",
     "full_entry": "voneinander"
-  },
-  {
-    "word": "vor",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "vor"
   },
   {
     "word": "voraus",
@@ -13158,12 +13032,6 @@
     "full_entry": "die Wahrheit, -en"
   },
   {
-    "word": "während",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "während"
-  },
-  {
     "word": "wahrscheinlich",
     "article": "",
     "pos": "adverb",
@@ -13246,12 +13114,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "wenden, wendet, wendete, hat gewendet"
-  },
-  {
-    "word": "wegen",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "wegen"
   },
   {
     "word": "wehtun",
@@ -13884,12 +13746,6 @@
     "full_entry": "die Zeugin, -nen"
   },
   {
-    "word": "zu",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "zu"
-  },
-  {
     "word": "Zündholz",
     "article": "das",
     "pos": "noun",
@@ -14062,11 +13918,5 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Zweck, -e"
-  },
-  {
-    "word": "zwischen",
-    "article": "",
-    "pos": "preposition",
-    "full_entry": "zwischen"
   }
 ]
