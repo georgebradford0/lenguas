@@ -1,9 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Platform, PermissionsAndroid } from 'react-native';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { NitroSound } from 'react-native-nitro-sound';
 import RNFS from 'react-native-fs';
-
-const audioRecorderPlayer = new AudioRecorderPlayer();
 
 export interface RecorderHook {
   startRecording: () => Promise<void>;
@@ -20,6 +18,7 @@ export function useRecorder(): RecorderHook {
   const [recordingTime, setRecordingTime] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const recordingPathRef = useRef<string | null>(null);
+  const recorderRef = useRef<NitroSound | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const autoStopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -59,7 +58,7 @@ export function useRecorder(): RecorderHook {
       }
 
       // Generate file path
-      const fileName = `recording_${Date.now()}.mp3`;
+      const fileName = `recording_${Date.now()}.m4a`;
       const path = Platform.select({
         ios: `${RNFS.CachesDirectoryPath}/${fileName}`,
         android: `${RNFS.CachesDirectoryPath}/${fileName}`,
@@ -68,8 +67,15 @@ export function useRecorder(): RecorderHook {
 
       recordingPathRef.current = path;
 
-      // Start recording
-      await audioRecorderPlayer.startRecorder(path);
+      // Create and start recorder
+      recorderRef.current = await NitroSound.create({
+        path,
+        format: 'aac', // AAC format for better compatibility
+        sampleRate: 44100,
+        channels: 1,
+      });
+
+      await recorderRef.current.startRecording();
       setIsRecording(true);
       setRecordingTime(0);
 
@@ -103,15 +109,15 @@ export function useRecorder(): RecorderHook {
         autoStopTimeoutRef.current = null;
       }
 
-      if (!isRecording || !recordingPathRef.current) {
+      if (!isRecording || !recorderRef.current || !recordingPathRef.current) {
         return null;
       }
 
       // Stop recording
-      const result = await audioRecorderPlayer.stopRecorder();
+      await recorderRef.current.stopRecording();
       setIsRecording(false);
 
-      console.log('[Recorder] Stopped recording, result:', result);
+      console.log('[Recorder] Stopped recording');
       console.log('[Recorder] File path:', recordingPathRef.current);
 
       // Read file as base64
@@ -127,6 +133,10 @@ export function useRecorder(): RecorderHook {
 
       // Clean up file
       await RNFS.unlink(recordingPathRef.current);
+
+      // Release recorder
+      await recorderRef.current.release();
+      recorderRef.current = null;
 
       return base64;
     } catch (err) {
@@ -146,11 +156,12 @@ export function useRecorder(): RecorderHook {
       if (autoStopTimeoutRef.current) {
         clearTimeout(autoStopTimeoutRef.current);
       }
-      if (isRecording) {
-        audioRecorderPlayer.stopRecorder().catch(console.error);
+      if (recorderRef.current) {
+        recorderRef.current.stopRecording().catch(console.error);
+        recorderRef.current.release().catch(console.error);
       }
     };
-  }, [isRecording]);
+  }, []);
 
   return {
     startRecording,
