@@ -6,8 +6,9 @@ import { StatsBar } from '../components/StatsBar';
 import { MultipleChoiceTask } from '../components/MultipleChoiceTask';
 import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
 import { AudioMultipleChoiceTask } from '../components/AudioMultipleChoiceTask';
+import { SpeechRecognitionTask } from '../components/SpeechRecognitionTask';
 import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
-import type { MultipleChoiceTaskData, ReverseTranslationTaskData, AudioMultipleChoiceTaskData } from '../types';
+import type { MultipleChoiceTaskData, ReverseTranslationTaskData, AudioMultipleChoiceTaskData, SpeechRecognitionTaskData } from '../types';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -151,6 +152,33 @@ export function QuizScreen() {
     [handleAnswer, loadNextTask, slideAnim]
   );
 
+  const onAnswerSpeechRecognition = useCallback(
+    async (userAnswer: string, correctAnswer: string) => {
+      console.log('[QuizScreen] Starting slide-out animation (Speech Recognition)');
+
+      // Wait for slide-out animation to complete
+      await new Promise<void>((resolve) => {
+        Animated.timing(slideAnim, {
+          toValue: -SCREEN_WIDTH,
+          duration: 250,
+          useNativeDriver: true,
+        }).start(() => {
+          console.log('[QuizScreen] Slide-out animation complete (Speech Recognition)');
+          resolve();
+        });
+      });
+
+      // Reset task ID to allow slide-in animation for next task (even if same word)
+      taskIdRef.current = null;
+      console.log('[QuizScreen] Reset taskIdRef to allow next animation');
+
+      // Submit answer and load next task AFTER animation completes
+      await handleAnswer(userAnswer, correctAnswer);
+      await loadNextTask();
+    },
+    [handleAnswer, loadNextTask, slideAnim]
+  );
+
   // Initial loading
   if (loading) {
     return (
@@ -220,6 +248,13 @@ export function QuizScreen() {
           <AudioMultipleChoiceTask
             taskData={currentTask.task as AudioMultipleChoiceTaskData}
             onAnswer={onAnswerAudioMultipleChoice}
+          />
+        );
+      case 'speechRecognition':
+        return (
+          <SpeechRecognitionTask
+            taskData={currentTask.task as SpeechRecognitionTaskData}
+            onAnswer={onAnswerSpeechRecognition}
           />
         );
       default:

@@ -40,22 +40,34 @@ export function useCards(userId?: string) {
 
   // Get task type based on level (weighted selection)
   const selectTaskType = useCallback((level: Level): TaskType => {
-    const levelWeights: Record<Level, { multipleChoice: number; reverseTranslation: number; audioMultipleChoice: number }> = {
-      A1: { multipleChoice: 0.6, reverseTranslation: 0.2, audioMultipleChoice: 0.2 },
-      A2: { multipleChoice: 0.4, reverseTranslation: 0.4, audioMultipleChoice: 0.2 },
-      B1: { multipleChoice: 0.2, reverseTranslation: 0.6, audioMultipleChoice: 0.2 },
+    const levelWeights: Record<Level, { multipleChoice: number; reverseTranslation: number; audioMultipleChoice: number; speechRecognition: number }> = {
+      A1: { multipleChoice: 0.5, reverseTranslation: 0.15, audioMultipleChoice: 0.2, speechRecognition: 0.15 },
+      A2: { multipleChoice: 0.35, reverseTranslation: 0.25, audioMultipleChoice: 0.2, speechRecognition: 0.2 },
+      B1: { multipleChoice: 0.2, reverseTranslation: 0.3, audioMultipleChoice: 0.2, speechRecognition: 0.3 },
     };
 
     const weights = levelWeights[level] || levelWeights.A1;
     const random = Math.random();
 
-    if (random < weights.multipleChoice) {
+    // Cumulative probability selection
+    let cumulative = 0;
+
+    cumulative += weights.multipleChoice;
+    if (random < cumulative) {
       return 'multipleChoice';
-    } else if (random < weights.multipleChoice + weights.reverseTranslation) {
+    }
+
+    cumulative += weights.reverseTranslation;
+    if (random < cumulative) {
       return 'reverseTranslation';
-    } else {
+    }
+
+    cumulative += weights.audioMultipleChoice;
+    if (random < cumulative) {
       return 'audioMultipleChoice';
     }
+
+    return 'speechRecognition';
   }, []);
 
   // Preload next task in background

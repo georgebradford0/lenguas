@@ -1,0 +1,272 @@
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import type { SpeechRecognitionTaskData } from '../types';
+import { useRecorder } from '../hooks/useRecorder';
+import { useAudio } from '../hooks/useAudio';
+import { transcribeSpeech } from '../api/client';
+import { EnglishCard } from './EnglishCard';
+import { RecordButton } from './RecordButton';
+import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
+
+interface SpeechRecognitionTaskProps {
+  taskData: SpeechRecognitionTaskData;
+  onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
+  onTaskReady?: () => void;
+}
+
+type TaskState = 'ready' | 'recording' | 'processing' | 'feedback';
+
+const ADVANCE_DELAY = 2000;
+
+/**
+ * Speech recognition task
+ * User sees English word, speaks German translation, gets instant feedback
+ */
+export function SpeechRecognitionTask({
+  taskData,
+  onAnswer,
+  onTaskReady,
+}: SpeechRecognitionTaskProps) {
+  const { playAudio } = useAudio();
+  const { startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder();
+
+  const [taskState, setTaskState] = useState<TaskState>('ready');
+  const [transcription, setTranscription] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [similarity, setSimilarity] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Notify parent when task is ready
+  useEffect(() => {
+    onTaskReady?.();
+  }, [onTaskReady]);
+
+  // Handle microphone button press
+  const handleMicPress = useCallback(async () => {
+    if (isRecording) {
+      // Stop recording and process
+      setTaskState('processing');
+      const audioBase64 = await stopRecording();
+
+      if (!audioBase64) {
+        setError('Failed to capture audio. Please try again.');
+        setTaskState('ready');
+        return;
+      }
+
+      try {
+        // Transcribe speech
+        const result = await transcribeSpeech(audioBase64, taskData.correctGerman);
+
+        setTranscription(result.transcription);
+        setIsCorrect(result.match ?? false);
+        setSimilarity(result.similarity ?? 0);
+        setTaskState('feedback');
+
+        // Auto-advance after delay
+        setTimeout(async () => {
+          await onAnswer(result.transcription, taskData.correctGerman);
+        }, ADVANCE_DELAY);
+      } catch (err) {
+        console.error('[SpeechRecognition] Transcription error:', err);
+        setError('Failed to transcribe speech. Please try again.');
+        setTaskState('ready');
+      }
+    } else {
+      // Start recording
+      setError(null);
+      setTaskState('recording');
+      await startRecording();
+    }
+  }, [isRecording, stopRecording, startRecording, taskData.correctGerman, onAnswer]);
+
+  // Handle "give up" button - play correct answer and mark as incorrect
+  const handleGiveUp = useCallback(async () => {
+    // Play correct German audio
+    await playAudio(taskData.correctGermanAudio);
+
+    // Mark as incorrect (user gave up)
+    await onAnswer('', taskData.correctGerman);
+  }, [playAudio, taskData.correctGermanAudio, taskData.correctGerman, onAnswer]);
+
+  // Render feedback state
+  const renderFeedback = () => {
+    if (!transcription) return null;
+
+    return (
+      <View style={styles.feedbackContainer}>
+        <View style={[
+          styles.feedbackCard,
+          isCorrect ? styles.feedbackCorrect : styles.feedbackWrong
+        ]}>
+          <Text style={styles.feedbackTitle}>
+            {isCorrect ? '✓ Correct!' : '✗ Not quite'}
+          </Text>
+
+          <View style={styles.transcriptionSection}>
+            <Text style={styles.transcriptionLabel}>You said:</Text>
+            <Text style={styles.transcriptionText}>{transcription}</Text>
+          </View>
+
+          <View style={styles.correctAnswerSection}>
+            <Text style={styles.correctAnswerLabel}>Correct answer:</Text>
+            <Text style={styles.correctAnswerText}>{taskData.correctGerman}</Text>
+          </View>
+
+          {similarity !== null && !isCorrect && (
+            <Text style={styles.similarityText}>
+              Similarity: {Math.round(similarity * 100)}%
+            </Text>
+          )}
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <>
+      <EnglishCard english={taskData.english} />
+
+      {/* Show recorder error if any */}
+      {(error || recorderError) && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error || recorderError}</Text>
+        </View>
+      )}
+
+      {/* Recording / Processing / Ready state */}
+      {taskState === 'ready' && (
+        <View style={styles.controlsContainer}>
+          <RecordButton
+            onPress={handleMicPress}
+            isRecording={false}
+          />
+          <Text style={styles.hint}>Tap to record (max 5 seconds)</Text>
+          <TouchableOpacity style={styles.giveUpButton} onPress={handleGiveUp}>
+            <Text style={styles.giveUpText}>Hear answer</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {taskState === 'recording' && (
+        <View style={styles.controlsContainer}>
+          <RecordButton
+            onPress={handleMicPress}
+            isRecording={true}
+            recordingTime={recordingTime}
+          />
+          <Text style={styles.hint}>Speak now... (tap to stop)</Text>
+        </View>
+      )}
+
+      {taskState === 'processing' && (
+        <View style={styles.controlsContainer}>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={styles.processingText}>Transcribing...</Text>
+        </View>
+      )}
+
+      {/* Feedback state */}
+      {taskState === 'feedback' && renderFeedback()}
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  controlsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.lg,
+  },
+  hint: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+    textAlign: 'center',
+    marginTop: spacing.md,
+  },
+  giveUpButton: {
+    marginTop: spacing.lg,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.muted,
+  },
+  giveUpText: {
+    fontSize: fontSize.md,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  processingText: {
+    fontSize: fontSize.md,
+    color: colors.muted,
+    marginTop: spacing.md,
+  },
+  errorContainer: {
+    padding: spacing.md,
+    backgroundColor: colors.wrongBackground,
+    borderRadius: borderRadius.md,
+    marginTop: spacing.md,
+  },
+  errorText: {
+    fontSize: fontSize.sm,
+    color: colors.wrong,
+    textAlign: 'center',
+  },
+  feedbackContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: spacing.lg,
+  },
+  feedbackCard: {
+    width: '100%',
+    padding: spacing.xl,
+    borderRadius: borderRadius.lg,
+    borderWidth: 2,
+  },
+  feedbackCorrect: {
+    backgroundColor: colors.correctBackground,
+    borderColor: colors.correct,
+  },
+  feedbackWrong: {
+    backgroundColor: colors.wrongBackground,
+    borderColor: colors.wrong,
+  },
+  feedbackTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: spacing.lg,
+  },
+  transcriptionSection: {
+    marginBottom: spacing.md,
+  },
+  transcriptionLabel: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+    marginBottom: spacing.xs,
+  },
+  transcriptionText: {
+    fontSize: fontSize.lg,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  correctAnswerSection: {
+    marginBottom: spacing.md,
+  },
+  correctAnswerLabel: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+    marginBottom: spacing.xs,
+  },
+  correctAnswerText: {
+    fontSize: fontSize.lg,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  similarityText: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+  },
+});

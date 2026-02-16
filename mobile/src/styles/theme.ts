@@ -3,6 +3,7 @@ export const colors = {
   cardBackground: '#ffffff',
   text: '#2c3e50',
   muted: '#6c757d',
+  primary: '#3498db',
   correct: '#28a745',
   correctBackground: '#d4edda',
   wrong: '#dc3545',

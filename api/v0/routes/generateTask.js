@@ -201,6 +201,69 @@ async function translateWords(germanWords) {
 }
 
 /**
+ * Calculate Levenshtein distance between two strings
+ * Used for fuzzy matching in speech recognition
+ */
+function levenshteinDistance(a, b) {
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+/**
+ * Compare spoken transcription with correct German answer
+ * Uses fuzzy matching to handle pronunciation variations
+ * Returns { match: boolean, similarity: number, normalized: string }
+ */
+function compareGermanTranscription(spoken, correct) {
+  // 1. Normalize both strings (lowercase, trim, remove punctuation only)
+  const normalize = (text) => {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[.,!?;:]/g, ''); // Remove punctuation only, keep articles
+  };
+
+  const spokenNorm = normalize(spoken);
+  const correctNorm = normalize(correct);
+
+  // 2. Exact match
+  if (spokenNorm === correctNorm) {
+    return { match: true, similarity: 1.0, normalized: spokenNorm };
+  }
+
+  // 3. Calculate Levenshtein distance
+  const distance = levenshteinDistance(spokenNorm, correctNorm);
+  const maxLen = Math.max(spokenNorm.length, correctNorm.length);
+  const similarity = 1 - (distance / maxLen);
+
+  // 4. Accept if 85%+ similar
+  return {
+    match: similarity >= 0.85,
+    similarity,
+    normalized: spokenNorm
+  };
+}
+
+/**
  * POST /generate-task
  * Generate a simple word translation task
  *
@@ -220,9 +283,9 @@ router.post('/generate-task', async (req, res) => {
       return res.status(400).json({ error: 'Invalid level. Must be A1, A2, or B1.' });
     }
 
-    if (!['multipleChoice', 'reverseTranslation', 'audioMultipleChoice'].includes(taskType)) {
+    if (!['multipleChoice', 'reverseTranslation', 'audioMultipleChoice', 'speechRecognition'].includes(taskType)) {
       return res.status(400).json({
-        error: 'Invalid taskType. Must be "multipleChoice", "reverseTranslation", or "audioMultipleChoice".'
+        error: 'Invalid taskType. Must be "multipleChoice", "reverseTranslation", "audioMultipleChoice", or "speechRecognition".'
       });
     }
 
@@ -281,6 +344,13 @@ router.post('/generate-task', async (req, res) => {
         germanAudio: targetFormatted.audio,
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
+      };
+    } else if (taskType === 'speechRecognition') {
+      // Speech recognition: show English, user speaks German
+      taskData = {
+        english: correctEnglish,
+        correctGerman: targetFormatted.audio,
+        correctGermanAudio: targetFormatted.audio,
       };
     } else {
       // Reverse: show English, ask for German
@@ -616,6 +686,86 @@ router.get('/tier-stats', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch stats' });
+  }
+});
+
+/**
+ * POST /transcribe-speech
+ * Transcribe German audio using OpenAI Whisper API
+ *
+ * Body:
+ * - audio: string (base64-encoded MP3 audio)
+ * - correctAnswer: string (optional) - the expected German answer for comparison
+ *
+ * Returns:
+ * - transcription: string - the transcribed German text
+ * - match: boolean (if correctAnswer provided) - whether it matches
+ * - similarity: number (if correctAnswer provided) - similarity score 0-1
+ */
+router.post('/transcribe-speech', async (req, res) => {
+  try {
+    const { audio, correctAnswer } = req.body;
+
+    // Validate input
+    if (!audio || typeof audio !== 'string') {
+      return res.status(400).json({ error: 'Missing or invalid audio data' });
+    }
+
+    console.log('[Transcribe] Received audio, length:', audio.length);
+    console.log('[Transcribe] Correct answer:', correctAnswer);
+
+    // Convert base64 to buffer
+    const audioBuffer = Buffer.from(audio, 'base64');
+
+    console.log('[Transcribe] Audio buffer size:', audioBuffer.length, 'bytes');
+
+    // Create a file-like object for OpenAI API
+    const file = {
+      buffer: audioBuffer,
+      originalname: 'audio.mp3',
+      mimetype: 'audio/mp3',
+    };
+
+    // Transcribe using OpenAI Whisper API
+    const response = await openai.audio.transcriptions.create({
+      file: audioBuffer,
+      model: 'whisper-1',
+      language: 'de', // German
+      response_format: 'text',
+    });
+
+    const transcription = typeof response === 'string' ? response : response.text;
+
+    console.log('[Transcribe] Transcription result:', transcription);
+
+    // If correctAnswer is provided, compare with transcription
+    let match = null;
+    let similarity = null;
+    let normalized = null;
+
+    if (correctAnswer) {
+      const comparison = compareGermanTranscription(transcription, correctAnswer);
+      match = comparison.match;
+      similarity = comparison.similarity;
+      normalized = comparison.normalized;
+
+      console.log('[Transcribe] Comparison result:', { match, similarity: similarity.toFixed(3) });
+    }
+
+    res.json({
+      transcription,
+      match,
+      similarity,
+      normalized,
+      timestamp: new Date().toISOString(),
+    });
+
+  } catch (error) {
+    console.error('[Transcribe] Error:', error);
+    res.status(500).json({
+      error: 'Failed to transcribe speech',
+      details: error.message
+    });
   }
 });
 

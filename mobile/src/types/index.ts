@@ -36,7 +36,7 @@ export interface Choice {
 export type ChoiceState = 'default' | 'correct' | 'wrong' | 'reveal' | 'disabled';
 
 // Task types
-export type TaskType = 'multipleChoice' | 'reverseTranslation' | 'audioMultipleChoice';
+export type TaskType = 'multipleChoice' | 'reverseTranslation' | 'audioMultipleChoice' | 'speechRecognition';
 export type Level = 'A1' | 'A2' | 'B1';
 
 // Word vocabulary entry (from JSON files)
@@ -60,6 +60,12 @@ export interface AudioMultipleChoiceTaskData {
   wrongOptions: string[];
 }
 
+export interface SpeechRecognitionTaskData {
+  english: string;              // English word to display
+  correctGerman: string;        // Expected German answer
+  correctGermanAudio: string;   // Audio for "give up" button
+}
+
 export interface ReverseTranslationTaskData {
   english: string;
   correctGerman: string;
@@ -68,7 +74,7 @@ export interface ReverseTranslationTaskData {
   wrongOptionsAudio: string[]; // Singular forms for audio
 }
 
-export type GeneratedTask = MultipleChoiceTaskData | AudioMultipleChoiceTaskData | ReverseTranslationTaskData;
+export type GeneratedTask = MultipleChoiceTaskData | AudioMultipleChoiceTaskData | SpeechRecognitionTaskData | ReverseTranslationTaskData;
 
 export interface GenerateTaskResponse {
   task: GeneratedTask;
@@ -127,6 +133,8 @@ export interface SubmitAnswerResponse {
   levelUnlocked: boolean; // Changed from tierUnlocked
   newLevel: Level | null; // Changed from newTier
   timestamp: string;
+  transcription?: string;  // What user actually said (for speech recognition)
+  similarity?: number;     // Match percentage 0-1 (for speech recognition)
 }
 
 export interface WordProgress {
