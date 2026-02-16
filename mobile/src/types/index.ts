@@ -36,7 +36,7 @@ export interface Choice {
 export type ChoiceState = 'default' | 'correct' | 'wrong' | 'reveal' | 'disabled';
 
 // Task types
-export type TaskType = 'multipleChoice' | 'reverseTranslation';
+export type TaskType = 'multipleChoice' | 'reverseTranslation' | 'audioMultipleChoice';
 export type Level = 'A1' | 'A2' | 'B1';
 
 // Word vocabulary entry (from JSON files)
@@ -54,6 +54,12 @@ export interface MultipleChoiceTaskData {
   wrongOptions: string[];
 }
 
+export interface AudioMultipleChoiceTaskData {
+  germanAudio: string; // Audio only (no visual German text)
+  correctEnglish: string;
+  wrongOptions: string[];
+}
+
 export interface ReverseTranslationTaskData {
   english: string;
   correctGerman: string;
@@ -62,7 +68,7 @@ export interface ReverseTranslationTaskData {
   wrongOptionsAudio: string[]; // Singular forms for audio
 }
 
-export type GeneratedTask = MultipleChoiceTaskData | ReverseTranslationTaskData;
+export type GeneratedTask = MultipleChoiceTaskData | AudioMultipleChoiceTaskData | ReverseTranslationTaskData;
 
 export interface GenerateTaskResponse {
   task: GeneratedTask;

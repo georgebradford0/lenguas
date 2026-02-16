@@ -206,7 +206,7 @@ async function translateWords(germanWords) {
  *
  * Body:
  * - level: string ('A1' | 'A2' | 'B1') - which level to use
- * - taskType: 'multipleChoice' | 'reverseTranslation'
+ * - taskType: 'multipleChoice' | 'reverseTranslation' | 'audioMultipleChoice'
  *
  * Returns:
  * - task: object with German/English word and answer choices
@@ -220,9 +220,9 @@ router.post('/generate-task', async (req, res) => {
       return res.status(400).json({ error: 'Invalid level. Must be A1, A2, or B1.' });
     }
 
-    if (!['multipleChoice', 'reverseTranslation'].includes(taskType)) {
+    if (!['multipleChoice', 'reverseTranslation', 'audioMultipleChoice'].includes(taskType)) {
       return res.status(400).json({
-        error: 'Invalid taskType. Must be "multipleChoice" or "reverseTranslation".'
+        error: 'Invalid taskType. Must be "multipleChoice", "reverseTranslation", or "audioMultipleChoice".'
       });
     }
 
@@ -270,6 +270,14 @@ router.post('/generate-task', async (req, res) => {
       // Show German word, ask for English translation
       taskData = {
         german: targetFormatted.display,
+        germanAudio: targetFormatted.audio,
+        correctEnglish: correctEnglish,
+        wrongOptions: wrongEnglishOptions,
+      };
+    } else if (taskType === 'audioMultipleChoice') {
+      // Audio only: play German audio, ask for English translation
+      // Don't show the German text
+      taskData = {
         germanAudio: targetFormatted.audio,
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
