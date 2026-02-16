@@ -41,8 +41,8 @@ export function useCards(userId?: string) {
   // Get task type based on level (weighted selection)
   const selectTaskType = useCallback((level: Level): TaskType => {
     const levelWeights: Record<Level, { multipleChoice: number; reverseTranslation: number; audioMultipleChoice: number; speechRecognition: number }> = {
-      A1: { multipleChoice: 0.5, reverseTranslation: 0.15, audioMultipleChoice: 0.2, speechRecognition: 0.15 },
-      A2: { multipleChoice: 0.35, reverseTranslation: 0.25, audioMultipleChoice: 0.2, speechRecognition: 0.2 },
+      A1: { multipleChoice: 0.4, reverseTranslation: 0.1, audioMultipleChoice: 0.2, speechRecognition: 0.3 },
+      A2: { multipleChoice: 0.25, reverseTranslation: 0.25, audioMultipleChoice: 0.2, speechRecognition: 0.3 },
       B1: { multipleChoice: 0.2, reverseTranslation: 0.3, audioMultipleChoice: 0.2, speechRecognition: 0.3 },
     };
 
