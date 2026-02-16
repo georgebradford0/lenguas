@@ -414,8 +414,8 @@ router.post('/submit-answer', async (req, res) => {
       previousLevel
     } = req.body;
 
-    // Validate inputs
-    if (!targetWord || !level || !taskType || !userAnswer || !correctAnswer) {
+    // Validate inputs (allow empty userAnswer for "give up" scenario)
+    if (!targetWord || !level || !taskType || userAnswer === undefined || userAnswer === null || !correctAnswer) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
