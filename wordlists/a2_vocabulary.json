@@ -48,12 +48,6 @@
     "full_entry": "der Anrufbeantworter, -"
   },
   {
-    "word": "allein",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "allein"
-  },
-  {
     "word": "anrufen",
     "article": "",
     "pos": "verb",
@@ -186,12 +180,6 @@
     "full_entry": "der Artikel, -"
   },
   {
-    "word": "auch",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "auch"
-  },
-  {
     "word": "auf",
     "article": "",
     "pos": "preposition",
@@ -244,12 +232,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Auge, -n"
-  },
-  {
-    "word": "außerdem",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "außerdem"
   },
   {
     "word": "außerhalb",
@@ -358,12 +340,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Bahnsteig, -e"
-  },
-  {
-    "word": "bald",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "bald"
   },
   {
     "word": "Balkon",
@@ -484,12 +460,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "besetzt"
-  },
-  {
-    "word": "besonders",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "besonders"
   },
   {
     "word": "Bleistift",
@@ -726,12 +696,6 @@
     "full_entry": "denn"
   },
   {
-    "word": "deshalb",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "deshalb"
-  },
-  {
     "word": "deutlich",
     "article": "",
     "pos": "adjective",
@@ -816,12 +780,6 @@
     "full_entry": "das Datum, -en"
   },
   {
-    "word": "damals",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "damals"
-  },
-  {
     "word": "Dame",
     "article": "die",
     "pos": "noun",
@@ -852,12 +810,6 @@
     "full_entry": "danken, dankt hat gedankt"
   },
   {
-    "word": "dann",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "dann"
-  },
-  {
     "word": "dass",
     "article": "",
     "pos": "conjunction",
@@ -874,12 +826,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Dorf, ¨-er"
-  },
-  {
-    "word": "draußen",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "draußen"
   },
   {
     "word": "dringend",
@@ -1050,12 +996,6 @@
     "full_entry": "enden, endet hat geendet"
   },
   {
-    "word": "endlich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "endlich"
-  },
-  {
     "word": "eng",
     "article": "",
     "pos": "adjective",
@@ -1144,12 +1084,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Farbe, -n"
-  },
-  {
-    "word": "fast",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "fast"
   },
   {
     "word": "faul",
@@ -1428,12 +1362,6 @@
     "full_entry": "die Gabel, -n"
   },
   {
-    "word": "ganz",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "ganz"
-  },
-  {
     "word": "Frau",
     "article": "die",
     "pos": "noun",
@@ -1590,12 +1518,6 @@
     "full_entry": "glauben, glaubt hat geglaubt"
   },
   {
-    "word": "gleich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gleich"
-  },
-  {
     "word": "Gleis",
     "article": "das",
     "pos": "noun",
@@ -1698,12 +1620,6 @@
     "full_entry": "das Gepäck (Sg.)"
   },
   {
-    "word": "gerade",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gerade"
-  },
-  {
     "word": "geradeaus",
     "article": "",
     "pos": "adjective",
@@ -1756,12 +1672,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Gespräch, -e"
-  },
-  {
-    "word": "gestern",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gestern"
   },
   {
     "word": "gesund",
@@ -1932,18 +1842,6 @@
     "full_entry": "herzlich"
   },
   {
-    "word": "heute",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "heute"
-  },
-  {
-    "word": "hier",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "hier"
-  },
-  {
     "word": "Hilfe",
     "article": "die",
     "pos": "noun",
@@ -1954,12 +1852,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Himmel (Sg.)"
-  },
-  {
-    "word": "hinten",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "hinten"
   },
   {
     "word": "hinter",
@@ -1990,12 +1882,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "hoffen, hofft hat gehofft"
-  },
-  {
-    "word": "hoffentlich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "hoffentlich"
   },
   {
     "word": "holen",
@@ -2074,12 +1960,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Idee, -n"
-  },
-  {
-    "word": "immer",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "immer"
   },
   {
     "word": "in",
@@ -2214,12 +2094,6 @@
     "full_entry": "kaufen, kauft hat gekauft"
   },
   {
-    "word": "ja",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "ja"
-  },
-  {
     "word": "Jacke",
     "article": "die",
     "pos": "noun",
@@ -2236,12 +2110,6 @@
     "article": "",
     "pos": "pronoun",
     "full_entry": "jemand"
-  },
-  {
-    "word": "jetzt",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "jetzt"
   },
   {
     "word": "Job",
@@ -2580,12 +2448,6 @@
     "full_entry": "lange"
   },
   {
-    "word": "links",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "links"
-  },
-  {
     "word": "langsam",
     "article": "",
     "pos": "adjective",
@@ -2712,12 +2574,6 @@
     "full_entry": "leicht"
   },
   {
-    "word": "leider",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "leider"
-  },
-  {
     "word": "malen",
     "article": "",
     "pos": "verb",
@@ -2734,12 +2590,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "leihen, leiht hat geliehen"
-  },
-  {
-    "word": "manchmal",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "manchmal"
   },
   {
     "word": "Mann",
@@ -2814,12 +2664,6 @@
     "full_entry": "das Meer, -e"
   },
   {
-    "word": "mehr",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "mehr"
-  },
-  {
     "word": "Lied",
     "article": "das",
     "pos": "noun",
@@ -2850,12 +2694,6 @@
     "full_entry": "liegen, liegt hat/ist gelegen"
   },
   {
-    "word": "meistens",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "meistens"
-  },
-  {
     "word": "Moment",
     "article": "der",
     "pos": "noun",
@@ -2872,12 +2710,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Mensch, -en"
-  },
-  {
-    "word": "morgen",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "morgen"
   },
   {
     "word": "Motor",
@@ -2958,12 +2790,6 @@
     "full_entry": "musste"
   },
   {
-    "word": "mindestens",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "mindestens"
-  },
-  {
     "word": "Mütze",
     "article": "die",
     "pos": "noun",
@@ -3022,12 +2848,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Natur (Sg.)"
-  },
-  {
-    "word": "natürlich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "natürlich"
   },
   {
     "word": "neben",
@@ -3096,22 +2916,10 @@
     "full_entry": "offen"
   },
   {
-    "word": "nein",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nein"
-  },
-  {
     "word": "öffnen",
     "article": "",
     "pos": "verb",
     "full_entry": "öffnen, öffnet hat geöffnet"
-  },
-  {
-    "word": "oft",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "oft"
   },
   {
     "word": "nennen",
@@ -3162,22 +2970,10 @@
     "full_entry": "neu"
   },
   {
-    "word": "nicht",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nicht"
-  },
-  {
     "word": "nichts",
     "article": "",
     "pos": "pronoun",
     "full_entry": "nichts"
-  },
-  {
-    "word": "nie",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nie"
   },
   {
     "word": "niemand",
@@ -3202,12 +2998,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Ort, -e"
-  },
-  {
-    "word": "noch",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "noch"
   },
   {
     "word": "normal",
@@ -3300,12 +3090,6 @@
     "full_entry": "parken, parkt hat geparkt"
   },
   {
-    "word": "nur",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nur"
-  },
-  {
     "word": "nützlich",
     "article": "",
     "pos": "adjective",
@@ -3316,12 +3100,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Orange, -n"
-  },
-  {
-    "word": "oben",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "oben"
   },
   {
     "word": "Obst",
@@ -3616,12 +3394,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Programm, -e"
-  },
-  {
-    "word": "rechts",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "rechts"
   },
   {
     "word": "reden",
@@ -3984,12 +3756,6 @@
     "full_entry": "die Schokolade"
   },
   {
-    "word": "schon",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "schon"
-  },
-  {
     "word": "schön",
     "article": "",
     "pos": "adjective",
@@ -4068,12 +3834,6 @@
     "full_entry": "die Sehenswürdigkeit, -en"
   },
   {
-    "word": "sehr",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "sehr"
-  },
-  {
     "word": "Seife",
     "article": "die",
     "pos": "noun",
@@ -4108,12 +3868,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Seite, -n"
-  },
-  {
-    "word": "selbst",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "selbst"
   },
   {
     "word": "Sendung",
@@ -4188,12 +3942,6 @@
     "full_entry": "der Ski, -, -er"
   },
   {
-    "word": "so",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "so"
-  },
-  {
     "word": "Sprache",
     "article": "die",
     "pos": "noun",
@@ -4228,12 +3976,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Star, -s"
-  },
-  {
-    "word": "sofort",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "sofort"
   },
   {
     "word": "stark",
@@ -4344,12 +4086,6 @@
     "full_entry": "sonnig"
   },
   {
-    "word": "sonst",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "sonst"
-  },
-  {
     "word": "spannend",
     "article": "",
     "pos": "adjective",
@@ -4372,12 +4108,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "spät"
-  },
-  {
-    "word": "später",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "später"
   },
   {
     "word": "Spaziergang",
@@ -4776,12 +4506,6 @@
     "full_entry": "der Unfall, ¨-e"
   },
   {
-    "word": "unten",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "unten"
-  },
-  {
     "word": "unter",
     "article": "",
     "pos": "preposition",
@@ -4804,12 +4528,6 @@
     "article": "",
     "pos": "preposition",
     "full_entry": "über"
-  },
-  {
-    "word": "überall",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "überall"
   },
   {
     "word": "Unterschrift",
@@ -4894,12 +4612,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Vertrag, ¨-e"
-  },
-  {
-    "word": "vielleicht",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "vielleicht"
   },
   {
     "word": "Vogel",
@@ -4990,12 +4702,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "wahr"
-  },
-  {
-    "word": "wahrscheinlich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "wahrscheinlich"
   },
   {
     "word": "Wald",
@@ -5100,12 +4806,6 @@
     "full_entry": "wie"
   },
   {
-    "word": "wieder",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "wieder"
-  },
-  {
     "word": "Wiedersehen",
     "article": "das",
     "pos": "noun",
@@ -5128,12 +4828,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "windig"
-  },
-  {
-    "word": "wirklich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "wirklich"
   },
   {
     "word": "Wein",
@@ -5172,18 +4866,6 @@
     "full_entry": "witzig"
   },
   {
-    "word": "weiter",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "weiter"
-  },
-  {
-    "word": "wo",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "wo"
-  },
-  {
     "word": "woher",
     "article": "",
     "pos": "adjective",
@@ -5212,12 +4894,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Wohnung, -en"
-  },
-  {
-    "word": "wenigstens",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "wenigstens"
   },
   {
     "word": "weil",
@@ -5292,12 +4968,6 @@
     "full_entry": "der Zucker (Sg.)"
   },
   {
-    "word": "zuerst",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "zuerst"
-  },
-  {
     "word": "zufrieden",
     "article": "",
     "pos": "adjective",
@@ -5356,12 +5026,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "zurück"
-  },
-  {
-    "word": "zusammen",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "zusammen"
   },
   {
     "word": "zwischen",
