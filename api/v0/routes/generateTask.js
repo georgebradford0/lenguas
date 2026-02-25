@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const Progress = require('../models/Progress');
 const OpenAI = require('openai');
+const { toFile } = require('openai');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -719,16 +720,9 @@ router.post('/transcribe-speech', async (req, res) => {
 
     console.log('[Transcribe] Audio buffer size:', audioBuffer.length, 'bytes');
 
-    // Create a file-like object for OpenAI API
-    const file = {
-      buffer: audioBuffer,
-      originalname: 'audio.mp3',
-      mimetype: 'audio/mp3',
-    };
-
     // Transcribe using OpenAI Whisper API
     const response = await openai.audio.transcriptions.create({
-      file: audioBuffer,
+      file: await toFile(audioBuffer, 'audio.m4a', { type: 'audio/m4a' }),
       model: 'whisper-1',
       language: 'de', // German
       response_format: 'text',

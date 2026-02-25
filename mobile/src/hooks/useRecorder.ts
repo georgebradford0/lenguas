@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Platform, PermissionsAndroid } from 'react-native';
-import { NitroSound } from 'react-native-nitro-sound';
+import { createSound } from 'react-native-nitro-sound';
+import type { Sound } from 'react-native-nitro-sound';
 import RNFS from 'react-native-fs';
 
 export interface RecorderHook {
@@ -17,8 +18,9 @@ export function useRecorder(): RecorderHook {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const soundRef = useRef<Sound | null>(null);
   const recordingPathRef = useRef<string | null>(null);
-  const recorderRef = useRef<NitroSound | null>(null);
+  const isRecordingRef = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const autoStopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -49,66 +51,8 @@ export function useRecorder(): RecorderHook {
     return true;
   };
 
-  const startRecording = useCallback(async () => {
-    try {
-      setError(null);
-
-      // Request permission
-      const hasPermission = await requestPermission();
-      console.log('[Recorder] hasPermission:', hasPermission);
-      if (!hasPermission) {
-        setError('Microphone permission denied');
-        return;
-      }
-
-      // Generate file path
-      const fileName = `recording_${Date.now()}.m4a`;
-      const path = Platform.select({
-        ios: `${RNFS.CachesDirectoryPath}/${fileName}`,
-        android: `${RNFS.CachesDirectoryPath}/${fileName}`,
-        default: fileName,
-      });
-
-      console.log('[Recorder] Recording path:', path);
-      recordingPathRef.current = path;
-
-      // Create and start recorder
-      console.log('[Recorder] Creating NitroSound instance...');
-      recorderRef.current = await NitroSound.create({
-        path,
-        format: 'aac', // AAC format for better compatibility
-        sampleRate: 44100,
-        channels: 1,
-      });
-      console.log('[Recorder] NitroSound instance created, calling startRecording...');
-
-      await recorderRef.current.startRecording();
-      setIsRecording(true);
-      console.log('[Recorder] Recording started successfully');
-      setRecordingTime(0);
-
-      // Start timer
-      timerRef.current = setInterval(() => {
-        setRecordingTime((prev) => prev + 100);
-      }, 100);
-
-      // Auto-stop after 5 seconds
-      autoStopTimeoutRef.current = setTimeout(async () => {
-        await stopRecording();
-      }, MAX_RECORDING_TIME);
-
-      console.log('[Recorder] Started recording to:', path);
-    } catch (err) {
-      console.error('[Recorder] Start error:', err);
-      console.error('[Recorder] Error details:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
-      setError('Failed to start recording');
-      setIsRecording(false);
-    }
-  }, []);
-
   const stopRecording = useCallback(async (): Promise<string | null> => {
     try {
-      // Clear timers
       if (timerRef.current) {
         clearInterval(timerRef.current);
         timerRef.current = null;
@@ -118,56 +62,106 @@ export function useRecorder(): RecorderHook {
         autoStopTimeoutRef.current = null;
       }
 
-      if (!isRecording || !recorderRef.current || !recordingPathRef.current) {
+      if (!isRecordingRef.current || !soundRef.current || !recordingPathRef.current) {
+        console.log('[Recorder] stopRecording called but not recording, skipping');
         return null;
       }
 
-      // Stop recording
-      await recorderRef.current.stopRecording();
+      console.log('[Recorder] Stopping recording...');
+      await soundRef.current.stopRecorder();
       setIsRecording(false);
+      isRecordingRef.current = false;
 
-      console.log('[Recorder] Stopped recording');
-      console.log('[Recorder] File path:', recordingPathRef.current);
+      const filePath = recordingPathRef.current;
+      console.log('[Recorder] Stopped, file path:', filePath);
 
-      // Read file as base64
-      const fileExists = await RNFS.exists(recordingPathRef.current);
+      soundRef.current = null;
+
+      const fileExists = await RNFS.exists(filePath);
       if (!fileExists) {
-        console.error('[Recorder] File does not exist:', recordingPathRef.current);
+        console.error('[Recorder] File does not exist:', filePath);
         setError('Recording file not found');
         return null;
       }
 
-      const base64 = await RNFS.readFile(recordingPathRef.current, 'base64');
+      const base64 = await RNFS.readFile(filePath, 'base64');
       console.log('[Recorder] Read base64, length:', base64.length);
 
-      // Clean up file
-      await RNFS.unlink(recordingPathRef.current);
-
-      // Release recorder
-      await recorderRef.current.release();
-      recorderRef.current = null;
+      await RNFS.unlink(filePath);
 
       return base64;
     } catch (err) {
       console.error('[Recorder] Stop error:', err);
+      console.error('[Recorder] Error details:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
       setError('Failed to stop recording');
       setIsRecording(false);
+      isRecordingRef.current = false;
+      soundRef.current = null;
       return null;
     }
-  }, [isRecording]);
+  }, []);
+
+  const startRecording = useCallback(async () => {
+    try {
+      setError(null);
+
+      const hasPermission = await requestPermission();
+      console.log('[Recorder] hasPermission:', hasPermission);
+      if (!hasPermission) {
+        setError('Microphone permission denied');
+        return;
+      }
+
+      const fileName = `recording_${Date.now()}.m4a`;
+      const path = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+      console.log('[Recorder] Recording path:', path);
+      recordingPathRef.current = path;
+
+      console.log('[Recorder] Creating Sound instance...');
+      soundRef.current = createSound();
+
+      console.log('[Recorder] Calling startRecorder...');
+      await soundRef.current.startRecorder(path, {
+        AVEncodingOptionIOS: 'aac',
+        AVNumberOfChannelsKeyIOS: 1,
+        AVSampleRateKeyIOS: 44100,
+      });
+
+      setIsRecording(true);
+      isRecordingRef.current = true;
+      setRecordingTime(0);
+      console.log('[Recorder] Recording started successfully');
+
+      // Start timer
+      timerRef.current = setInterval(() => {
+        setRecordingTime((prev) => prev + 100);
+      }, 100);
+
+      // Auto-stop after 5 seconds
+      autoStopTimeoutRef.current = setTimeout(async () => {
+        console.log('[Recorder] Auto-stopping after 5 seconds');
+        await stopRecording();
+      }, MAX_RECORDING_TIME);
+
+    } catch (err) {
+      console.error('[Recorder] Start error:', err);
+      console.error('[Recorder] Error details:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      setError('Failed to start recording');
+      setIsRecording(false);
+      isRecordingRef.current = false;
+      soundRef.current = null;
+    }
+  }, [stopRecording]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      if (autoStopTimeoutRef.current) {
-        clearTimeout(autoStopTimeoutRef.current);
-      }
-      if (recorderRef.current) {
-        recorderRef.current.stopRecording().catch(console.error);
-        recorderRef.current.release().catch(console.error);
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
+      if (soundRef.current && isRecordingRef.current) {
+        soundRef.current.stopRecorder().catch(console.error);
+        soundRef.current = null;
       }
     };
   }, []);
