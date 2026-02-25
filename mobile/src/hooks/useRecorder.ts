@@ -24,6 +24,7 @@ export function useRecorder(): RecorderHook {
 
   // Request microphone permission on Android
   const requestPermission = async (): Promise<boolean> => {
+    console.log('[Recorder] Requesting permission, platform:', Platform.OS);
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -36,13 +37,15 @@ export function useRecorder(): RecorderHook {
             buttonPositive: 'OK',
           }
         );
+        console.log('[Recorder] Android permission result:', granted);
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
-        console.error('Permission request error:', err);
+        console.error('[Recorder] Permission request error:', err);
         return false;
       }
     }
     // iOS permission is requested automatically on first use
+    console.log('[Recorder] iOS - permission will be requested by system on first use');
     return true;
   };
 
@@ -52,6 +55,7 @@ export function useRecorder(): RecorderHook {
 
       // Request permission
       const hasPermission = await requestPermission();
+      console.log('[Recorder] hasPermission:', hasPermission);
       if (!hasPermission) {
         setError('Microphone permission denied');
         return;
@@ -65,18 +69,22 @@ export function useRecorder(): RecorderHook {
         default: fileName,
       });
 
+      console.log('[Recorder] Recording path:', path);
       recordingPathRef.current = path;
 
       // Create and start recorder
+      console.log('[Recorder] Creating NitroSound instance...');
       recorderRef.current = await NitroSound.create({
         path,
         format: 'aac', // AAC format for better compatibility
         sampleRate: 44100,
         channels: 1,
       });
+      console.log('[Recorder] NitroSound instance created, calling startRecording...');
 
       await recorderRef.current.startRecording();
       setIsRecording(true);
+      console.log('[Recorder] Recording started successfully');
       setRecordingTime(0);
 
       // Start timer
@@ -92,6 +100,7 @@ export function useRecorder(): RecorderHook {
       console.log('[Recorder] Started recording to:', path);
     } catch (err) {
       console.error('[Recorder] Start error:', err);
+      console.error('[Recorder] Error details:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
       setError('Failed to start recording');
       setIsRecording(false);
     }

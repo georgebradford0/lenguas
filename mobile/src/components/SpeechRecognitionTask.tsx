@@ -38,26 +38,33 @@ export function SpeechRecognitionTask({
 
   // Notify parent when task is ready
   useEffect(() => {
+    console.log('[SpeechRecognitionTask] Mounted, word:', taskData.correctGerman);
     onTaskReady?.();
   }, [onTaskReady]);
 
   // Handle microphone button press
   const handleMicPress = useCallback(async () => {
     if (isRecording) {
+      console.log('[SpeechRecognitionTask] Stopping recording...');
       // Stop recording and process
       setTaskState('processing');
       const audioBase64 = await stopRecording();
 
+      console.log('[SpeechRecognitionTask] Audio captured, base64 length:', audioBase64?.length ?? 0);
+
       if (!audioBase64) {
+        console.warn('[SpeechRecognitionTask] No audio data returned from stopRecording');
         setError('Failed to capture audio. Please try again.');
         setTaskState('ready');
         return;
       }
 
       try {
+        console.log('[SpeechRecognitionTask] Sending to transcribe API...');
         // Transcribe speech
         const result = await transcribeSpeech(audioBase64, taskData.correctGerman);
 
+        console.log('[SpeechRecognitionTask] Transcription result:', result);
         setTranscription(result.transcription);
         setIsCorrect(result.match ?? false);
         setSimilarity(result.similarity ?? 0);
@@ -68,15 +75,17 @@ export function SpeechRecognitionTask({
           await onAnswer(result.transcription, taskData.correctGerman);
         }, ADVANCE_DELAY);
       } catch (err) {
-        console.error('[SpeechRecognition] Transcription error:', err);
+        console.error('[SpeechRecognitionTask] Transcription error:', err);
         setError('Failed to transcribe speech. Please try again.');
         setTaskState('ready');
       }
     } else {
+      console.log('[SpeechRecognitionTask] Starting recording...');
       // Start recording
       setError(null);
       setTaskState('recording');
       await startRecording();
+      console.log('[SpeechRecognitionTask] startRecording() returned, isRecording should be true');
     }
   }, [isRecording, stopRecording, startRecording, taskData.correctGerman, onAnswer]);
 
