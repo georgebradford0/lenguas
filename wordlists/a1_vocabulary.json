@@ -228,12 +228,6 @@
     "full_entry": "der Arzt, -Ä, e"
   },
   {
-    "word": "auch",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "auch"
-  },
-  {
     "word": "Aufgabe",
     "article": "die",
     "pos": "noun",
@@ -418,12 +412,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Bahnsteig"
-  },
-  {
-    "word": "bald",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "bald"
   },
   {
     "word": "Balkon",
@@ -786,12 +774,6 @@
     "full_entry": "danke"
   },
   {
-    "word": "dann",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "dann"
-  },
-  {
     "word": "Datum",
     "article": "das",
     "pos": "noun",
@@ -844,12 +826,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Dorf, -ö, er"
-  },
-  {
-    "word": "draußen",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "draußen"
   },
   {
     "word": "drucken",
@@ -1422,12 +1398,6 @@
     "full_entry": "das Gepäck"
   },
   {
-    "word": "gerade",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gerade"
-  },
-  {
     "word": "geradeaus",
     "article": "",
     "pos": "adjective",
@@ -1456,12 +1426,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Gespräch, -e"
-  },
-  {
-    "word": "gestern",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gestern"
   },
   {
     "word": "gestorben",
@@ -1498,12 +1462,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "glauben"
-  },
-  {
-    "word": "gleich",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gleich"
   },
   {
     "word": "Gleis",
@@ -1728,18 +1686,6 @@
     "full_entry": "herzlich"
   },
   {
-    "word": "heute",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "heute"
-  },
-  {
-    "word": "hier",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "hier"
-  },
-  {
     "word": "Hilfe",
     "article": "die",
     "pos": "noun",
@@ -1806,12 +1752,6 @@
     "full_entry": "ich"
   },
   {
-    "word": "immer",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "immer"
-  },
-  {
     "word": "Information",
     "article": "die",
     "pos": "noun",
@@ -1834,12 +1774,6 @@
     "article": "",
     "pos": "expression",
     "full_entry": "Die Hausfrau/der Hausmann wäscht, kocht und kauft"
-  },
-  {
-    "word": "ja",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "ja"
   },
   {
     "word": "Jacke",
@@ -2178,12 +2112,6 @@
     "full_entry": "leicht"
   },
   {
-    "word": "leider",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "leider"
-  },
-  {
     "word": "leise",
     "article": "",
     "pos": "adjective",
@@ -2214,12 +2142,6 @@
     "full_entry": "lieblieben"
   },
   {
-    "word": "lieber",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "lieber"
-  },
-  {
     "word": "Lieblingsdas Lied, -er",
     "article": "",
     "pos": "expression",
@@ -2230,12 +2152,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "liegen"
-  },
-  {
-    "word": "links",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "links"
   },
   {
     "word": "Lkw",
@@ -2308,12 +2224,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Meer"
-  },
-  {
-    "word": "mehr",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "mehr"
   },
   {
     "word": "mein",
@@ -2436,46 +2346,16 @@
     "full_entry": "nehmen"
   },
   {
-    "word": "nein",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nein"
-  },
-  {
     "word": "neu",
     "article": "",
     "pos": "adjective",
     "full_entry": "neu"
   },
   {
-    "word": "nicht",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nicht"
-  },
-  {
     "word": "nichts",
     "article": "",
     "pos": "pronoun",
     "full_entry": "nichts"
-  },
-  {
-    "word": "nie",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nie"
-  },
-  {
-    "word": "noch",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "noch"
-  },
-  {
-    "word": "nur",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "nur"
   },
   {
     "word": "oben",
@@ -2506,12 +2386,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "geöffnet"
-  },
-  {
-    "word": "oft",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "oft"
   },
   {
     "word": "Öl",
@@ -2692,12 +2566,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Rechnung, -en"
-  },
-  {
-    "word": "rechts",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "rechts"
   },
   {
     "word": "regnen",
@@ -2892,12 +2760,6 @@
     "full_entry": "schnell"
   },
   {
-    "word": "schon",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "schon"
-  },
-  {
     "word": "schön",
     "article": "",
     "pos": "adjective",
@@ -2976,12 +2838,6 @@
     "full_entry": "die Sehenswürdigkeit, -en"
   },
   {
-    "word": "sehr",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "sehr"
-  },
-  {
     "word": "sein",
     "article": "",
     "pos": "pronoun",
@@ -3018,22 +2874,10 @@
     "full_entry": "sitzen"
   },
   {
-    "word": "so",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "so"
-  },
-  {
     "word": "Sofa",
     "article": "das",
     "pos": "noun",
     "full_entry": "das Sofa"
-  },
-  {
-    "word": "sofort",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "sofort"
   },
   {
     "word": "Sohn",
@@ -3058,12 +2902,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "spät"
-  },
-  {
-    "word": "später",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "später"
   },
   {
     "word": "Speisekarte",
@@ -3438,12 +3276,6 @@
     "full_entry": "viel"
   },
   {
-    "word": "vielleicht",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "vielleicht"
-  },
-  {
     "word": "Vorname",
     "article": "der",
     "pos": "noun",
@@ -3514,12 +3346,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "weit"
-  },
-  {
-    "word": "weiter",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "weiter"
   },
   {
     "word": "wenig",
@@ -3598,12 +3424,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "wissen"
-  },
-  {
-    "word": "wo",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "wo"
   },
   {
     "word": "woher",
