@@ -850,11 +850,12 @@ router.post('/compare-pronunciation', async (req, res) => {
     // 1. Write user audio to disk
     fs.writeFileSync(userM4a, Buffer.from(audio, 'base64'));
 
-    // 2. Get Polly TTS reference for the target word (same Hans voice as the app)
+    // 2. Get Polly TTS reference for the target word (same Daniel voice as the app)
     const pollyResp = await pollyClient.send(new SynthesizeSpeechCommand({
       Text:         targetWord,
       OutputFormat: 'mp3',
-      VoiceId:      'Hans',
+      VoiceId:      'Daniel',
+      Engine:       'generative',
       LanguageCode: 'de-DE',
     }));
     const refBytes = await pollyResp.AudioStream.transformToByteArray();

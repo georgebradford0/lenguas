@@ -10,7 +10,8 @@ router.get('/:text', async (req, res) => {
     const command = new SynthesizeSpeechCommand({
       Text: req.params.text,
       OutputFormat: 'mp3',
-      VoiceId: 'Hans',
+      VoiceId: 'Daniel',
+      Engine: 'generative',
       LanguageCode: 'de-DE',
     });
     const response = await polly.send(command);
