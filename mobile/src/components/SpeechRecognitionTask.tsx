@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import type { SpeechRecognitionTaskData } from '../types';
+import type { SpeechRecognitionTaskData, Language } from '../types';
 import { useRecorder } from '../hooks/useRecorder';
 import { useAudio } from '../hooks/useAudio';
 import { comparePronunciation } from '../api/client';
@@ -12,6 +12,7 @@ interface SpeechRecognitionTaskProps {
   taskData: SpeechRecognitionTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
   onTaskReady?: () => void;
+  language?: Language;
 }
 
 type TaskState = 'ready' | 'recording' | 'processing' | 'feedback';
@@ -26,8 +27,9 @@ export function SpeechRecognitionTask({
   taskData,
   onAnswer,
   onTaskReady,
+  language = 'de',
 }: SpeechRecognitionTaskProps) {
-  const { playAudio } = useAudio();
+  const { playAudio } = useAudio(language);
   const { startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder();
 
   const [taskState, setTaskState] = useState<TaskState>('ready');
@@ -60,7 +62,7 @@ export function SpeechRecognitionTask({
 
       try {
         console.log('[SpeechRecognitionTask] Sending to compare-pronunciation API...');
-        const result = await comparePronunciation(audioBase64, taskData.correctGerman);
+        const result = await comparePronunciation(audioBase64, taskData.correctGerman, language);
 
         console.log('[SpeechRecognitionTask] Comparison result:', result);
         setIsCorrect(result.isCorrect);

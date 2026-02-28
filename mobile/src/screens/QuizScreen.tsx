@@ -8,14 +8,14 @@ import { ReverseTranslationTask } from '../components/ReverseTranslationTask';
 import { AudioMultipleChoiceTask } from '../components/AudioMultipleChoiceTask';
 import { SpeechRecognitionTask } from '../components/SpeechRecognitionTask';
 import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
-import type { MultipleChoiceTaskData, ReverseTranslationTaskData, AudioMultipleChoiceTaskData, SpeechRecognitionTaskData } from '../types';
+import type { MultipleChoiceTaskData, ReverseTranslationTaskData, AudioMultipleChoiceTaskData, SpeechRecognitionTaskData, Language } from '../types';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 /**
  * Main quiz screen with dynamic task generation
  */
-export function QuizScreen() {
+export function QuizScreen({ language = 'de' }: { language?: Language }) {
   const {
     stats,
     currentTask,
@@ -37,7 +37,7 @@ export function QuizScreen() {
     overallAccuracy,
     wordProgress,
     hasPreloadedTask,
-  } = useCards();
+  } = useCards(language);
 
   // Animation value for slide transition
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -234,6 +234,7 @@ export function QuizScreen() {
           <MultipleChoiceTask
             taskData={currentTask.task as MultipleChoiceTaskData}
             onAnswer={onAnswerMultipleChoice}
+            language={language}
           />
         );
       case 'reverseTranslation':
@@ -241,6 +242,7 @@ export function QuizScreen() {
           <ReverseTranslationTask
             taskData={currentTask.task as ReverseTranslationTaskData}
             onAnswer={onAnswerReverseTranslation}
+            language={language}
           />
         );
       case 'audioMultipleChoice':
@@ -248,6 +250,7 @@ export function QuizScreen() {
           <AudioMultipleChoiceTask
             taskData={currentTask.task as AudioMultipleChoiceTaskData}
             onAnswer={onAnswerAudioMultipleChoice}
+            language={language}
           />
         );
       case 'speechRecognition':
@@ -255,6 +258,7 @@ export function QuizScreen() {
           <SpeechRecognitionTask
             taskData={currentTask.task as SpeechRecognitionTaskData}
             onAnswer={onAnswerSpeechRecognition}
+            language={language}
           />
         );
       default:

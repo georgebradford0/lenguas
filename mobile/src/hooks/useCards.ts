@@ -5,13 +5,14 @@ import type {
   LevelStatsResponse,
   TaskType,
   Level,
+  Language,
 } from '../types';
 import { generateTask, submitAnswer, getLevelStats } from '../api/client';
 
 /**
  * Hook for level-based learning (A1/A2/B1) with simple word translation tasks
  */
-export function useCards(userId?: string) {
+export function useCards(language: Language = 'de', userId?: string) {
   const [stats, setStats] = useState<LevelStatsResponse | null>(null);
   const [currentTask, setCurrentTask] = useState<GenerateTaskResponse | null>(null);
   const [nextTask, setNextTask] = useState<GenerateTaskResponse | null>(null);
@@ -27,7 +28,7 @@ export function useCards(userId?: string) {
   useEffect(() => {
     async function init() {
       try {
-        const levelStats = await getLevelStats();
+        const levelStats = await getLevelStats(language);
         setStats(levelStats);
         setLoading(false);
       } catch (err) {
@@ -36,7 +37,7 @@ export function useCards(userId?: string) {
       }
     }
     init();
-  }, []);
+  }, [language]);
 
   // Get task type based on level (weighted selection)
   const selectTaskType = useCallback((level: Level): TaskType => {
@@ -77,7 +78,7 @@ export function useCards(userId?: string) {
     setPreloading(true);
     try {
       const taskType = selectTaskType(stats.currentLevel);
-      const task = await generateTask(stats.currentLevel, taskType);
+      const task = await generateTask(stats.currentLevel, taskType, language);
       setNextTask(task);
     } catch (err) {
       console.warn('Failed to preload next task:', err);
@@ -105,7 +106,7 @@ export function useCards(userId?: string) {
 
     try {
       const taskType = selectTaskType(stats.currentLevel);
-      const task = await generateTask(stats.currentLevel, taskType);
+      const task = await generateTask(stats.currentLevel, taskType, language);
       setCurrentTask(task);
       // Start preloading the next one
       setTimeout(() => preloadNextTask(), 100);
@@ -138,6 +139,7 @@ export function useCards(userId?: string) {
           userAnswer,
           correctAnswer,
           previousLevel: stats.currentLevel,
+          language,
         });
 
         // Check for level unlock
@@ -146,7 +148,7 @@ export function useCards(userId?: string) {
         }
 
         // Reload stats after answer
-        const updatedStats = await getLevelStats();
+        const updatedStats = await getLevelStats(language);
         setStats(updatedStats);
 
         // Track session stats

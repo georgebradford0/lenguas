@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import type { ReverseTranslationTaskData, Choice } from '../types';
+import type { ReverseTranslationTaskData, Choice, Language } from '../types';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
@@ -10,6 +10,7 @@ interface ReverseTranslationTaskProps {
   taskData: ReverseTranslationTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
   onTaskReady?: () => void;
+  language?: Language;
 }
 
 const PAUSE_AFTER_AUDIO = 500;
@@ -22,8 +23,9 @@ export function ReverseTranslationTask({
   taskData,
   onAnswer,
   onTaskReady,
+  language = 'de',
 }: ReverseTranslationTaskProps) {
-  const { playAudio } = useAudio();
+  const { playAudio } = useAudio(language);
 
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);

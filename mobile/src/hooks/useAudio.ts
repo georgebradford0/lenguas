@@ -7,17 +7,18 @@ import { speak } from '../api/client';
 // Enable playback in silence mode on iOS
 Sound.setCategory('Playback');
 
-export function useAudio() {
+export function useAudio(language = 'de') {
   const cacheRef = useRef<Record<string, Promise<string>>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const soundRef = useRef<Sound | null>(null);
 
   const prefetchAudio = useCallback((word: string) => {
-    if (!cacheRef.current[word]) {
-      cacheRef.current[word] = speak(word);
+    const key = `${language}:${word}`;
+    if (!cacheRef.current[key]) {
+      cacheRef.current[key] = speak(word, language);
     }
-    return cacheRef.current[word];
-  }, []);
+    return cacheRef.current[key];
+  }, [language]);
 
   const playAudio = useCallback(
     async (word: string): Promise<void> => {
@@ -49,9 +50,9 @@ export function useAudio() {
           }
 
           // Write base64 to temp file and play
-          // Sanitize filename to avoid special characters
+          // Sanitize filename to avoid special characters; include language to avoid collisions
           const sanitizedWord = word.replace(/[^a-zA-Z0-9]/g, '_');
-          const fileName = `audio_${sanitizedWord}.mp3`;
+          const fileName = `audio_${language}_${sanitizedWord}.mp3`;
           const tempPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
           // Validate base64 data

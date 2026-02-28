@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text } from 'react-native';
-import type { MultipleChoiceTaskData, Choice } from '../types';
+import type { MultipleChoiceTaskData, Choice, Language } from '../types';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
 import { WordCard } from './WordCard';
@@ -10,6 +10,7 @@ interface MultipleChoiceTaskProps {
   taskData: MultipleChoiceTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
   onTaskReady?: () => void;
+  language?: Language;
 }
 
 const ADVANCE_DELAY = 1200;
@@ -22,8 +23,9 @@ export function MultipleChoiceTask({
   taskData,
   onAnswer,
   onTaskReady,
+  language = 'de',
 }: MultipleChoiceTaskProps) {
-  const { playAudio, prefetchAudio } = useAudio();
+  const { playAudio, prefetchAudio } = useAudio(language);
 
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);

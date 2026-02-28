@@ -38,6 +38,7 @@ export type ChoiceState = 'default' | 'correct' | 'wrong' | 'reveal' | 'disabled
 // Task types
 export type TaskType = 'multipleChoice' | 'reverseTranslation' | 'audioMultipleChoice' | 'speechRecognition';
 export type Level = 'A1' | 'A2' | 'B1';
+export type Language = 'de' | 'nl';
 
 // Word vocabulary entry (from JSON files)
 export interface VocabWord {
@@ -113,11 +114,12 @@ export interface LevelProgress {
 
 export interface SubmitAnswerRequest {
   targetWord: string;
-  level: Level; // Changed from tier
+  level: Level;
   taskType: TaskType;
   userAnswer: string;
   correctAnswer: string;
-  previousLevel?: Level; // Changed from previousTier
+  previousLevel?: Level;
+  language?: Language;
 }
 
 export interface SubmitAnswerResponse {

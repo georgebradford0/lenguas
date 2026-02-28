@@ -16,7 +16,7 @@ const LANGUAGE_CONFIG = {
       A2: 'nl_a2_vocabulary.json',
       B1: 'nl_b1_vocabulary.json',
     },
-    tts: { VoiceId: 'Laura', Engine: 'neural', LanguageCode: 'nl-NL' },
+    tts: { VoiceId: 'Ruben', Engine: 'neural', LanguageCode: 'nl-NL' },
     parsePlurals: false,
   },
 };

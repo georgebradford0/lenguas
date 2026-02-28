@@ -29,8 +29,8 @@ export async function translate(word: string): Promise<TranslationResult> {
   return response.json();
 }
 
-export async function speak(text: string): Promise<string> {
-  const response = await fetch(`${API_BASE}/speak/${encodeURIComponent(text)}`);
+export async function speak(text: string, language = 'de'): Promise<string> {
+  const response = await fetch(`${API_BASE}/speak/${encodeURIComponent(text)}?language=${language}`);
   if (!response.ok) {
     throw new Error('Failed to get speech');
   }
@@ -80,18 +80,14 @@ export async function saveProgress(
 export async function generateTask(
   level: string, // A1, A2, or B1
   taskType: TaskType,
-  focusArea?: string
+  language = 'de',
 ): Promise<GenerateTaskResponse> {
   const response = await fetch(`${API_BASE}/generate-task`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      level,
-      taskType,
-      focusArea: focusArea || 'general',
-    }),
+    body: JSON.stringify({ level, taskType, language }),
   });
 
   if (!response.ok) {
@@ -120,8 +116,8 @@ export async function submitAnswer(
 }
 
 // Get level-based stats (new)
-export async function getLevelStats(): Promise<LevelStatsResponse> {
-  const response = await fetch(`${API_BASE}/level-stats`);
+export async function getLevelStats(language = 'de'): Promise<LevelStatsResponse> {
+  const response = await fetch(`${API_BASE}/level-stats?language=${language}`);
 
   if (!response.ok) {
     throw new Error('Failed to load level stats');
@@ -144,17 +140,15 @@ export async function getTierStats(): Promise<TierStatsResponse> {
 // Compare user's pronunciation against Polly TTS reference using MFCC + DTW
 export async function comparePronunciation(
   audioBase64: string,
-  targetWord: string
+  targetWord: string,
+  language = 'de',
 ): Promise<{ similarity: number; isCorrect: boolean }> {
   const response = await fetch(`${API_BASE}/compare-pronunciation`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      audio: audioBase64,
-      targetWord,
-    }),
+    body: JSON.stringify({ audio: audioBase64, targetWord, language }),
   });
 
   if (!response.ok) {
