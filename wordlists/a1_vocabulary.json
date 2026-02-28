@@ -1,11 +1,5 @@
 [
   {
-    "word": "aber",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "aber"
-  },
-  {
     "word": "abfahren",
     "article": "",
     "pos": "verb",
@@ -150,12 +144,6 @@
     "full_entry": "der Anrufbeantworter"
   },
   {
-    "word": "an sein",
-    "article": "",
-    "pos": "expression",
-    "full_entry": "an sein"
-  },
-  {
     "word": "antworten",
     "article": "",
     "pos": "verb",
@@ -240,12 +228,6 @@
     "full_entry": "aufhören"
   },
   {
-    "word": "auf sein",
-    "article": "",
-    "pos": "expression",
-    "full_entry": "auf sein"
-  },
-  {
     "word": "aufstehen",
     "article": "",
     "pos": "verb",
@@ -316,12 +298,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "aussehen"
-  },
-  {
-    "word": "aus sein",
-    "article": "",
-    "pos": "expression",
-    "full_entry": "aus sein"
   },
   {
     "word": "aussteigen",
@@ -738,12 +714,6 @@
     "full_entry": "der Computer, –"
   },
   {
-    "word": "da",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "da"
-  },
-  {
     "word": "Dame",
     "article": "die",
     "pos": "noun",
@@ -790,12 +760,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "deindenn"
-  },
-  {
-    "word": "dich",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "dich"
   },
   {
     "word": "diesdir",
@@ -1002,12 +966,6 @@
     "full_entry": "die Entschuldigung"
   },
   {
-    "word": "er",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "er"
-  },
-  {
     "word": "Ergebnis",
     "article": "das",
     "pos": "noun",
@@ -1038,12 +996,6 @@
     "full_entry": "erzählen"
   },
   {
-    "word": "es",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "es"
-  },
-  {
     "word": "essen",
     "article": "",
     "pos": "verb",
@@ -1054,12 +1006,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Essen"
-  },
-  {
-    "word": "euer",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "euer"
   },
   {
     "word": "fahren",
@@ -1746,12 +1692,6 @@
     "full_entry": "der Hunger"
   },
   {
-    "word": "ich",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "ich"
-  },
-  {
     "word": "Information",
     "article": "die",
     "pos": "noun",
@@ -2178,12 +2118,6 @@
     "full_entry": "das Mädchen, –"
   },
   {
-    "word": "man",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "man"
-  },
-  {
     "word": "Mann",
     "article": "der",
     "pos": "noun",
@@ -2206,12 +2140,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Meer"
-  },
-  {
-    "word": "mein",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "mein"
   },
   {
     "word": "mieten",
@@ -2334,12 +2262,6 @@
     "full_entry": "neu"
   },
   {
-    "word": "nichts",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "nichts"
-  },
-  {
     "word": "oben",
     "article": "",
     "pos": "verb",
@@ -2350,12 +2272,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Obst"
-  },
-  {
-    "word": "oder",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "oder"
   },
   {
     "word": "öffnen",
@@ -2820,34 +2736,10 @@
     "full_entry": "die Sehenswürdigkeit, -en"
   },
   {
-    "word": "sein",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "sein"
-  },
-  {
-    "word": "seit",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "seit"
-  },
-  {
     "word": "selbstständig",
     "article": "",
     "pos": "adjective",
     "full_entry": "selbstständig"
-  },
-  {
-    "word": "sich",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "sich"
-  },
-  {
-    "word": "sie",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "sie"
   },
   {
     "word": "sitzen",
@@ -3144,18 +3036,6 @@
     "full_entry": "umziehen"
   },
   {
-    "word": "und",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "und"
-  },
-  {
-    "word": "Junge Leute sagen meistens „tschüss!“ und nicht",
-    "article": "",
-    "pos": "expression",
-    "full_entry": "Junge Leute sagen meistens „tschüss!“ und nicht"
-  },
-  {
     "word": "unserunten",
     "article": "",
     "pos": "verb",
@@ -3300,12 +3180,6 @@
     "full_entry": "warum"
   },
   {
-    "word": "was",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "was"
-  },
-  {
     "word": "Wasser",
     "article": "das",
     "pos": "noun",
@@ -3336,12 +3210,6 @@
     "full_entry": "wenig"
   },
   {
-    "word": "wer",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "wer"
-  },
-  {
     "word": "werden",
     "article": "",
     "pos": "verb",
@@ -3358,12 +3226,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "wichtig"
-  },
-  {
-    "word": "wie",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "wie"
   },
   {
     "word": "wiederholen",
@@ -3394,12 +3256,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Wind"
-  },
-  {
-    "word": "wir",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "wir"
   },
   {
     "word": "wissen",

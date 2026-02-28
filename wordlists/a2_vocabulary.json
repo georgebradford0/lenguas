@@ -1,11 +1,5 @@
 [
   {
-    "word": "aber",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "aber"
-  },
-  {
     "word": "abholen",
     "article": "",
     "pos": "verb",
@@ -52,12 +46,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Anruf, -e"
-  },
-  {
-    "word": "als",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "als"
   },
   {
     "word": "Anschluss",
@@ -648,12 +636,6 @@
     "full_entry": "denken, denkt hat gedacht"
   },
   {
-    "word": "denn",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "denn"
-  },
-  {
     "word": "deutlich",
     "article": "",
     "pos": "adjective",
@@ -690,12 +672,6 @@
     "full_entry": "die Disko, -s"
   },
   {
-    "word": "doch",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "doch"
-  },
-  {
     "word": "Chef",
     "article": "der",
     "pos": "noun",
@@ -724,12 +700,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Creme, -s/-n"
-  },
-  {
-    "word": "da",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "da"
   },
   {
     "word": "Datum",
@@ -766,12 +736,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "danken, dankt hat gedankt"
-  },
-  {
-    "word": "dass",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "dass"
   },
   {
     "word": "Datei",
@@ -1108,12 +1072,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Essen, -"
-  },
-  {
-    "word": "etwas",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "etwas"
   },
   {
     "word": "Fest",
@@ -2028,12 +1986,6 @@
     "full_entry": "die Jeans (Pl.)"
   },
   {
-    "word": "jemand",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "jemand"
-  },
-  {
     "word": "Job",
     "article": "der",
     "pos": "noun",
@@ -2502,12 +2454,6 @@
     "full_entry": "malen, malt hat gemalt"
   },
   {
-    "word": "man",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "man"
-  },
-  {
     "word": "leihen",
     "article": "",
     "pos": "verb",
@@ -2874,18 +2820,6 @@
     "full_entry": "neu"
   },
   {
-    "word": "nichts",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "nichts"
-  },
-  {
-    "word": "niemand",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "niemand"
-  },
-  {
     "word": "nirgends",
     "article": "",
     "pos": "adjective",
@@ -3010,12 +2944,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Obst (Sg.)"
-  },
-  {
-    "word": "oder",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "oder"
   },
   {
     "word": "Partnerin",
@@ -3762,12 +3690,6 @@
     "full_entry": "schrecklich"
   },
   {
-    "word": "seit",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "seit"
-  },
-  {
     "word": "Seite",
     "article": "die",
     "pos": "noun",
@@ -4398,12 +4320,6 @@
     "full_entry": "unbedingt"
   },
   {
-    "word": "und",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "und"
-  },
-  {
     "word": "Unfall",
     "article": "der",
     "pos": "noun",
@@ -4602,18 +4518,6 @@
     "full_entry": "warum"
   },
   {
-    "word": "was",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "was"
-  },
-  {
-    "word": "wenn",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "wenn"
-  },
-  {
     "word": "Wäsche",
     "article": "die",
     "pos": "noun",
@@ -4666,12 +4570,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "wichtig"
-  },
-  {
-    "word": "wie",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "wie"
   },
   {
     "word": "Wiedersehen",
@@ -4762,12 +4660,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Wohnung, -en"
-  },
-  {
-    "word": "weil",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "weil"
   },
   {
     "word": "Wohnzimmer",

@@ -18,12 +18,6 @@
     "full_entry": "das Abenteuer, -"
   },
   {
-    "word": "aber",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "aber"
-  },
-  {
     "word": "abfahren",
     "article": "",
     "pos": "verb",
@@ -46,12 +40,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Abfalleimer, -"
-  },
-  {
-    "word": "Abgase",
-    "article": "",
-    "pos": "noun_plural",
-    "full_entry": "Abgase (Pl.)"
   },
   {
     "word": "abgeben",
@@ -208,12 +196,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Alphabet, -e"
-  },
-  {
-    "word": "als",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "als"
   },
   {
     "word": "also",
@@ -1224,12 +1206,6 @@
     "full_entry": "die Bedienungsanleitung,"
   },
   {
-    "word": "-en",
-    "article": "",
-    "pos": "other",
-    "full_entry": "-en"
-  },
-  {
     "word": "Bedingung",
     "article": "die",
     "pos": "noun",
@@ -1588,12 +1564,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "bestimmt"
-  },
-  {
-    "word": "bevor",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "bevor"
   },
   {
     "word": "bewegen",
@@ -2118,12 +2088,6 @@
     "full_entry": "der Bus, -se"
   },
   {
-    "word": "da",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "da"
-  },
-  {
     "word": "dabei",
     "article": "",
     "pos": "adjective",
@@ -2194,12 +2158,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Dame, -n"
-  },
-  {
-    "word": "damit",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "damit"
   },
   {
     "word": "danach",
@@ -2292,18 +2250,6 @@
     "full_entry": "das Denkmal, ¨-er"
   },
   {
-    "word": "denn",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "denn"
-  },
-  {
-    "word": "dass",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "dass"
-  },
-  {
     "word": "dasselbe",
     "article": "",
     "pos": "adjective",
@@ -2356,12 +2302,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Dialekt, -e"
-  },
-  {
-    "word": "doch",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "doch"
   },
   {
     "word": "Dialog",
@@ -2488,12 +2428,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Diskothek, -en/Disko,"
-  },
-  {
-    "word": "-s",
-    "article": "",
-    "pos": "other",
-    "full_entry": "-s"
   },
   {
     "word": "dies-",
@@ -2628,12 +2562,6 @@
     "full_entry": "ebenso"
   },
   {
-    "word": "eben",
-    "article": "",
-    "pos": "particle",
-    "full_entry": "eben"
-  },
-  {
     "word": "echt",
     "article": "",
     "pos": "adjective",
@@ -2734,12 +2662,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "eigen-"
-  },
-  {
-    "word": "eigentlich",
-    "article": "",
-    "pos": "particle",
-    "full_entry": "eigentlich"
   },
   {
     "word": "eindeutig",
@@ -3384,12 +3306,6 @@
     "full_entry": "erst-"
   },
   {
-    "word": "etwas",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "etwas"
-  },
-  {
     "word": "erstellen",
     "article": "",
     "pos": "verb",
@@ -3430,12 +3346,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "erziehen, erzieht, erzog, hat erzogen"
-  },
-  {
-    "word": "es",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "es"
   },
   {
     "word": "eventuell",
@@ -3634,12 +3544,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "fällig"
-  },
-  {
-    "word": "falls",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "falls"
   },
   {
     "word": "falsch",
@@ -5010,12 +4914,6 @@
     "full_entry": "häufig"
   },
   {
-    "word": "halt",
-    "article": "",
-    "pos": "particle",
-    "full_entry": "halt"
-  },
-  {
     "word": "halten",
     "article": "",
     "pos": "verb",
@@ -5608,12 +5506,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "jedoch"
-  },
-  {
-    "word": "jemand",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "jemand"
   },
   {
     "word": "Kabine",
@@ -7074,12 +6966,6 @@
     "full_entry": "die Malerin, -nen"
   },
   {
-    "word": "man",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "man"
-  },
-  {
     "word": "manch-",
     "article": "",
     "pos": "adjective",
@@ -7560,12 +7446,6 @@
     "full_entry": "das Museum, Museen"
   },
   {
-    "word": "nachdem",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "nachdem"
-  },
-  {
     "word": "Nachfrage",
     "article": "die",
     "pos": "noun",
@@ -7806,22 +7686,10 @@
     "full_entry": "der Nichtraucher, die Nichtraucherin, -nen"
   },
   {
-    "word": "nichts",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "nichts"
-  },
-  {
     "word": "niedrig",
     "article": "",
     "pos": "adjective",
     "full_entry": "niedrig"
-  },
-  {
-    "word": "niemand",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "niemand"
   },
   {
     "word": "Note",
@@ -7914,12 +7782,6 @@
     "full_entry": "der Notfall, ¨-e 1. Wir haben einen Notfall. Bitte schicken"
   },
   {
-    "word": "ob",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "ob"
-  },
-  {
     "word": "ober-",
     "article": "",
     "pos": "adjective",
@@ -7942,18 +7804,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Ohr, -en"
-  },
-  {
-    "word": "obwohl",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "obwohl"
-  },
-  {
-    "word": "oder",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "oder"
   },
   {
     "word": "Öl",
@@ -9738,12 +9588,6 @@
     "full_entry": "sein, ist, war, ist gewesen 1. Ich bin Mechaniker."
   },
   {
-    "word": "seit",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "seit"
-  },
-  {
     "word": "seitdem",
     "article": "",
     "pos": "adjective",
@@ -9978,12 +9822,6 @@
     "full_entry": "sicher"
   },
   {
-    "word": "sobald",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "sobald"
-  },
-  {
     "word": "Socke",
     "article": "die",
     "pos": "noun",
@@ -9994,12 +9832,6 @@
     "article": "das",
     "pos": "noun",
     "full_entry": "das Souvenir, -s"
-  },
-  {
-    "word": "sodass",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "sodass"
   },
   {
     "word": "soviel",
@@ -10048,12 +9880,6 @@
     "article": "",
     "pos": "verb",
     "full_entry": "sollen, soll, sollte, hat gesollt (hat sollen als"
-  },
-  {
-    "word": "sondern",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "sondern"
   },
   {
     "word": "sozial",
@@ -11730,12 +11556,6 @@
     "full_entry": "die Unterkunft, ¨-e"
   },
   {
-    "word": "und",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "und"
-  },
-  {
     "word": "unbedingt",
     "article": "",
     "pos": "adjective",
@@ -12456,12 +12276,6 @@
     "full_entry": "das Vorstellungsgespräch,"
   },
   {
-    "word": "-e",
-    "article": "",
-    "pos": "other",
-    "full_entry": "-e"
-  },
-  {
     "word": "Vorteil",
     "article": "der",
     "pos": "noun",
@@ -12594,12 +12408,6 @@
     "full_entry": "warum"
   },
   {
-    "word": "was",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "was"
-  },
-  {
     "word": "Waschmittel",
     "article": "das",
     "pos": "noun",
@@ -12654,12 +12462,6 @@
     "full_entry": "weich"
   },
   {
-    "word": "weil",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "weil"
-  },
-  {
     "word": "Wein",
     "article": "der",
     "pos": "noun",
@@ -12672,12 +12474,6 @@
     "full_entry": "weinen, weint, weinte, hat geweint"
   },
   {
-    "word": "-weise",
-    "article": "",
-    "pos": "other",
-    "full_entry": "-weise"
-  },
-  {
     "word": "weit",
     "article": "",
     "pos": "adjective",
@@ -12688,18 +12484,6 @@
     "article": "die",
     "pos": "noun",
     "full_entry": "die Weiterbildung, -en"
-  },
-  {
-    "word": "wenn",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "wenn"
-  },
-  {
-    "word": "wer",
-    "article": "",
-    "pos": "pronoun",
-    "full_entry": "wer"
   },
   {
     "word": "Werbung",
@@ -12802,12 +12586,6 @@
     "article": "der",
     "pos": "noun",
     "full_entry": "der Wind, -e"
-  },
-  {
-    "word": "wie",
-    "article": "",
-    "pos": "conjunction",
-    "full_entry": "wie"
   },
   {
     "word": "Wiederholung",
@@ -12916,12 +12694,6 @@
     "article": "",
     "pos": "adjective",
     "full_entry": "wohin"
-  },
-  {
-    "word": "wohl",
-    "article": "",
-    "pos": "particle",
-    "full_entry": "wohl"
   },
   {
     "word": "wohnen",
