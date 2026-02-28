@@ -277,9 +277,9 @@
   },
   {
     "word": "août",
-    "article": "l'",
+    "article": "",
     "pos": "noun",
-    "full_entry": "l' août"
+    "full_entry": "août"
   },
   {
     "word": "apercevoir",
@@ -523,9 +523,9 @@
   },
   {
     "word": "avril",
-    "article": "l'",
+    "article": "",
     "pos": "noun",
-    "full_entry": "l' avril"
+    "full_entry": "avril"
   },
   {
     "word": "aéroport",
@@ -1747,9 +1747,9 @@
   },
   {
     "word": "dimanche",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le dimanche"
+    "full_entry": "dimanche"
   },
   {
     "word": "dire",
@@ -1909,9 +1909,9 @@
   },
   {
     "word": "décembre",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le décembre"
+    "full_entry": "décembre"
   },
   {
     "word": "décider",
@@ -2569,9 +2569,9 @@
   },
   {
     "word": "février",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le février"
+    "full_entry": "février"
   },
   {
     "word": "fête",
@@ -3115,9 +3115,9 @@
   },
   {
     "word": "janvier",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le janvier"
+    "full_entry": "janvier"
   },
   {
     "word": "jardin",
@@ -3151,9 +3151,9 @@
   },
   {
     "word": "jeudi",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le jeudi"
+    "full_entry": "jeudi"
   },
   {
     "word": "jeune",
@@ -3223,15 +3223,15 @@
   },
   {
     "word": "juillet",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le juillet"
+    "full_entry": "juillet"
   },
   {
     "word": "juin",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le juin"
+    "full_entry": "juin"
   },
   {
     "word": "jus",
@@ -3427,9 +3427,9 @@
   },
   {
     "word": "lundi",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le lundi"
+    "full_entry": "lundi"
   },
   {
     "word": "lycée",
@@ -3577,9 +3577,9 @@
   },
   {
     "word": "mardi",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le mardi"
+    "full_entry": "mardi"
   },
   {
     "word": "mari",
@@ -3667,9 +3667,9 @@
   },
   {
     "word": "mercredi",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le mercredi"
+    "full_entry": "mercredi"
   },
   {
     "word": "merveilleux",
@@ -4027,9 +4027,9 @@
   },
   {
     "word": "novembre",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le novembre"
+    "full_entry": "novembre"
   },
   {
     "word": "nuit",
@@ -4075,9 +4075,9 @@
   },
   {
     "word": "octobre",
-    "article": "l'",
+    "article": "",
     "pos": "noun",
-    "full_entry": "l' octobre"
+    "full_entry": "octobre"
   },
   {
     "word": "odeur",
@@ -5545,9 +5545,9 @@
   },
   {
     "word": "samedi",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le samedi"
+    "full_entry": "samedi"
   },
   {
     "word": "santé",
@@ -5629,9 +5629,9 @@
   },
   {
     "word": "septembre",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le septembre"
+    "full_entry": "septembre"
   },
   {
     "word": "serpent",
@@ -6385,9 +6385,9 @@
   },
   {
     "word": "vendredi",
-    "article": "le",
+    "article": "",
     "pos": "noun",
-    "full_entry": "le vendredi"
+    "full_entry": "vendredi"
   },
   {
     "word": "venir",
