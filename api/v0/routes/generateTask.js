@@ -409,10 +409,30 @@ router.post('/generate-task', async (req, res) => {
       };
     });
 
-    // Select a word using weighted selection (spaced repetition)
-    const targetWord = selectWord(vocabulary, progressRecords);
+    // For speechRecognition, only select words the user has already answered correctly
+    // a minimum number of times through other task types.
+    const MIN_CORRECT_FOR_SPEECH = 3;
+    let effectiveTaskType = taskType;
+    let wordPool = vocabulary;
 
-    console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level}`);
+    if (taskType === 'speechRecognition') {
+      const qualifiedWords = vocabulary.filter(w => {
+        const prog = progressRecords[w.word];
+        return prog && prog.correctCount >= MIN_CORRECT_FOR_SPEECH;
+      });
+
+      if (qualifiedWords.length > 0) {
+        wordPool = qualifiedWords;
+      } else {
+        effectiveTaskType = 'multipleChoice';
+        console.log('[generate-task] No words qualify for speechRecognition yet, falling back to multipleChoice');
+      }
+    }
+
+    // Select a word using weighted selection (spaced repetition)
+    const targetWord = selectWord(wordPool, progressRecords);
+
+    console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level} [taskType: ${effectiveTaskType}]`);
 
     // Format German word with plural (if noun)
     const targetFormatted = formatWordForTask(targetWord.full_entry, targetWord.pos);
@@ -436,7 +456,7 @@ router.post('/generate-task', async (req, res) => {
     // Build task based on type
     let taskData;
 
-    if (taskType === 'multipleChoice') {
+    if (effectiveTaskType === 'multipleChoice') {
       // Show German word, ask for English translation
       taskData = {
         german: targetFormatted.display,
@@ -444,7 +464,7 @@ router.post('/generate-task', async (req, res) => {
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
       };
-    } else if (taskType === 'audioMultipleChoice') {
+    } else if (effectiveTaskType === 'audioMultipleChoice') {
       // Audio only: play German audio, ask for English translation
       // Don't show the German text
       taskData = {
@@ -452,7 +472,7 @@ router.post('/generate-task', async (req, res) => {
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
       };
-    } else if (taskType === 'speechRecognition') {
+    } else if (effectiveTaskType === 'speechRecognition') {
       // Speech recognition: show English, user speaks German
       taskData = {
         english: correctEnglish,
@@ -478,7 +498,7 @@ router.post('/generate-task', async (req, res) => {
       task: taskData,
       targetWord: targetWord.word,
       level,
-      taskType,
+      taskType: effectiveTaskType,
       timestamp: new Date().toISOString()
     });
 
