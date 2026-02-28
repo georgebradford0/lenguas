@@ -1,18 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const { PollyClient, SynthesizeSpeechCommand } = require('@aws-sdk/client-polly');
+const { LANGUAGE_CONFIG } = require('../config/languages');
 
 const polly = new PollyClient();
 
-// GET /speak/:text - synthesize German speech, returns mp3 audio
+// GET /speak/:text - synthesize speech, returns mp3 audio
+// Query param: ?language=de (default) or ?language=nl
 router.get('/:text', async (req, res) => {
   try {
+    const language = req.query.language || 'de';
+    const ttsConfig = (LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG['de']).tts;
+
     const command = new SynthesizeSpeechCommand({
       Text: req.params.text,
       OutputFormat: 'mp3',
-      VoiceId: 'Daniel',
-      Engine: 'generative',
-      LanguageCode: 'de-DE',
+      ...ttsConfig,
     });
     const response = await polly.send(command);
     const bytes = await response.AudioStream.transformToByteArray();

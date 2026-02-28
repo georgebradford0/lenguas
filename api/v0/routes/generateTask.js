@@ -7,21 +7,33 @@ const os = require('os');
 const Progress = require('../models/Progress');
 const OpenAI = require('openai');
 const { PollyClient, SynthesizeSpeechCommand } = require('@aws-sdk/client-polly');
+const { LANGUAGE_CONFIG } = require('../config/languages');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const pollyClient = new PollyClient();
 
-// Load vocabulary from JSON files
-function loadVocabulary(level) {
-  const levelFiles = {
-    'A1': path.join(__dirname, '..', 'wordlists', 'a1_vocabulary.json'),
-    'A2': path.join(__dirname, '..', 'wordlists', 'a2_vocabulary.json'),
-    'B1': path.join(__dirname, '..', 'wordlists', 'b1_vocabulary.json'),
-  };
+// One-time startup migration: tag existing progress records without a language field
+async function migrateProgressLanguage() {
+  const result = await Progress.updateMany(
+    { language: { $exists: false } },
+    { $set: { language: 'de' } }
+  );
+  if (result.modifiedCount > 0)
+    console.log(`Migrated ${result.modifiedCount} progress records → language='de'`);
+}
+migrateProgressLanguage().catch(err => console.error('Migration error:', err));
 
-  const filePath = levelFiles[level];
-  if (!filePath || !fs.existsSync(filePath)) {
-    throw new Error(`No vocabulary found for level ${level}`);
+// Load vocabulary from JSON files
+function loadVocabulary(level, language = 'de') {
+  const langConfig = LANGUAGE_CONFIG[language];
+  if (!langConfig) throw new Error(`Unsupported language: ${language}`);
+
+  const filename = langConfig.levels[level];
+  if (!filename) throw new Error(`No vocabulary found for level ${level} in language ${language}`);
+
+  const filePath = path.join(__dirname, '..', 'wordlists', filename);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Vocabulary file not found: ${filePath}`);
   }
 
   const content = fs.readFileSync(filePath, 'utf-8');
@@ -156,9 +168,9 @@ function parsePluralForm(fullEntry) {
  * Format word for task - randomly choose singular or plural form for nouns
  * Returns object with display and audio text
  */
-function formatWordForTask(fullEntry, pos) {
-  // Only parse plurals for nouns
-  if (pos !== 'noun') {
+function formatWordForTask(fullEntry, pos, language = 'de') {
+  // Only parse plurals for nouns in languages that support it
+  if (pos !== 'noun' || !LANGUAGE_CONFIG[language]?.parsePlurals) {
     return { display: fullEntry, audio: fullEntry };
   }
 
@@ -393,9 +405,13 @@ function convertToPcm(inputPath, outputPath) {
  */
 router.post('/generate-task', async (req, res) => {
   try {
-    const { level = 'A1', taskType = 'multipleChoice', userId = 'default' } = req.body;
+    const { level = 'A1', taskType = 'multipleChoice', userId = 'default', language = 'de' } = req.body;
 
     // Validate inputs
+    if (!LANGUAGE_CONFIG[language]) {
+      return res.status(400).json({ error: `Invalid language. Must be one of: ${Object.keys(LANGUAGE_CONFIG).join(', ')}.` });
+    }
+
     if (!['A1', 'A2', 'B1'].includes(level)) {
       return res.status(400).json({ error: 'Invalid level. Must be A1, A2, or B1.' });
     }
@@ -407,11 +423,11 @@ router.post('/generate-task', async (req, res) => {
     }
 
     // Load vocabulary for the level
-    const vocabulary = loadVocabulary(level);
+    const vocabulary = loadVocabulary(level, language);
 
-    // Load progress for all words
+    // Load progress for all words in this language
     const progressRecords = {};
-    const allProgress = await Progress.find({});
+    const allProgress = await Progress.find({ language });
     allProgress.forEach(p => {
       progressRecords[p.word] = {
         timesShown: p.timesShown,
@@ -454,14 +470,14 @@ router.post('/generate-task', async (req, res) => {
     }
 
     // Format word with plural (if noun)
-    const targetFormatted = formatWordForTask(targetWord.full_entry, targetWord.pos);
+    const targetFormatted = formatWordForTask(targetWord.full_entry, targetWord.pos, language);
 
-    // Generate distractors (wrong answers) - these are German words/phrases
+    // Generate distractors (wrong answers)
     const distractors = generateDistractors(targetWord, vocabulary, 3);
     const distractorsFormatted = distractors.map((d, idx) => {
       // Get the original vocab entry to know its POS
       const distWord = vocabulary.find(v => v.full_entry === d);
-      return distWord ? formatWordForTask(d, distWord.pos) : { display: d, audio: d };
+      return distWord ? formatWordForTask(d, distWord.pos, language) : { display: d, audio: d };
     });
 
     // Translate to English (use audio version without plural notation)
@@ -517,6 +533,7 @@ router.post('/generate-task', async (req, res) => {
       task: taskData,
       targetWord: targetWord.word,
       level,
+      language,
       taskType: effectiveTaskType,
       timestamp: new Date().toISOString()
     });
@@ -557,7 +574,8 @@ router.post('/submit-answer', async (req, res) => {
       taskType,
       userAnswer,
       correctAnswer,
-      previousLevel
+      previousLevel,
+      language = 'de',
     } = req.body;
 
     // Validate inputs (allow empty userAnswer for "give up" scenario)
@@ -571,12 +589,13 @@ router.post('/submit-answer', async (req, res) => {
     console.log(`Answer for "${targetWord}": ${isCorrect ? 'CORRECT' : 'WRONG'}`);
     console.log(`  User: "${userAnswer}", Correct: "${correctAnswer}"`);
 
-    // Find or create progress for this word
-    let progress = await Progress.findOne({ word: targetWord });
+    // Find or create progress for this word+language
+    let progress = await Progress.findOne({ word: targetWord, language });
 
     if (!progress) {
       progress = new Progress({
         word: targetWord,
+        language,
         level: level,
         timesShown: 0,
         correctCount: 0,
@@ -606,7 +625,7 @@ router.post('/submit-answer', async (req, res) => {
 
     // Only check if we have a previousLevel to compare against
     if (previousLevel) {
-      const currentLevel = await determineCurrentLevel();
+      const currentLevel = await determineCurrentLevel(language);
 
       // Level unlock detected
       if (currentLevel !== previousLevel) {
@@ -647,16 +666,16 @@ router.post('/submit-answer', async (req, res) => {
  * A2 unlocks when 100% of A1 words are mastered (7+ attempts, 75%+ accuracy)
  * B1 unlocks when 100% of A2 words are mastered
  */
-async function determineCurrentLevel() {
-  const allProgress = await Progress.find({});
+async function determineCurrentLevel(language = 'de') {
+  const allProgress = await Progress.find({ language });
   const progressMap = {};
   allProgress.forEach(p => {
     progressMap[p.word] = p;
   });
 
   // Load vocabularies
-  const a1Vocab = loadVocabulary('A1');
-  const a2Vocab = loadVocabulary('A2');
+  const a1Vocab = loadVocabulary('A1', language);
+  const a2Vocab = loadVocabulary('A2', language);
 
   // Calculate A1 mastery
   let a1Mastered = 0;
@@ -705,13 +724,19 @@ async function determineCurrentLevel() {
  */
 router.get('/level-stats', async (req, res) => {
   try {
-    // Load all progress
-    const allProgress = await Progress.find({});
+    const language = req.query.language || 'de';
+
+    if (!LANGUAGE_CONFIG[language]) {
+      return res.status(400).json({ error: `Invalid language. Must be one of: ${Object.keys(LANGUAGE_CONFIG).join(', ')}.` });
+    }
+
+    // Load all progress for this language
+    const allProgress = await Progress.find({ language });
 
     // Load vocabularies
-    const a1Vocab = loadVocabulary('A1');
-    const a2Vocab = loadVocabulary('A2');
-    const b1Vocab = loadVocabulary('B1');
+    const a1Vocab = loadVocabulary('A1', language);
+    const a2Vocab = loadVocabulary('A2', language);
+    const b1Vocab = loadVocabulary('B1', language);
 
     // Calculate stats for each level
     const calculateLevelStats = (vocab, levelName) => {
@@ -850,7 +875,7 @@ router.get('/tier-stats', async (req, res) => {
 router.post('/compare-pronunciation', async (req, res) => {
   const tmpFiles = [];
   try {
-    const { audio, targetWord } = req.body;
+    const { audio, targetWord, language = 'de' } = req.body;
 
     if (!audio || typeof audio !== 'string' || !targetWord) {
       return res.status(400).json({ error: 'Missing audio or targetWord' });
@@ -869,13 +894,12 @@ router.post('/compare-pronunciation', async (req, res) => {
     // 1. Write user audio to disk
     fs.writeFileSync(userM4a, Buffer.from(audio, 'base64'));
 
-    // 2. Get Polly TTS reference for the target word (same Daniel voice as the app)
+    // 2. Get Polly TTS reference for the target word (match the app's voice for this language)
+    const ttsConfig = (LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG['de']).tts;
     const pollyResp = await pollyClient.send(new SynthesizeSpeechCommand({
       Text:         targetWord,
       OutputFormat: 'mp3',
-      VoiceId:      'Daniel',
-      Engine:       'generative',
-      LanguageCode: 'de-DE',
+      ...ttsConfig,
     }));
     const refBytes = await pollyResp.AudioStream.transformToByteArray();
     fs.writeFileSync(refMp3, Buffer.from(refBytes));
