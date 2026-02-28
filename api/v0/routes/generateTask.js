@@ -174,34 +174,44 @@ function formatWordForTask(fullEntry, pos) {
   return { display: singular, audio: singular };
 }
 
-// Translate German word to English using OpenAI
-async function translateWord(germanWord) {
+// Translate a word to English using OpenAI.
+// If needsArticle is true (Dutch nouns with no article), the model also
+// returns the correct article in the format "de|house" or "het|house".
+// Returns { translation, article } — article is '' when not applicable.
+async function translateWord(word, { needsArticle = false } = {}) {
   try {
+    let systemContent = 'You are a translator. Translate the given word or phrase to English. Give ONLY the English translation, nothing else. Keep it brief (1-5 words).';
+    if (needsArticle) {
+      systemContent += ' This word is a noun with no article. Also determine the correct Dutch article (de or het) and prefix your response with it followed by a pipe character, e.g. "het|house" or "de|street".';
+    }
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
-        {
-          role: 'system',
-          content: 'You are a German-English translator. Translate the given German word or phrase to English. Give ONLY the English translation, nothing else. Keep it brief (1-5 words).',
-        },
-        { role: 'user', content: germanWord },
+        { role: 'system', content: systemContent },
+        { role: 'user', content: word },
       ],
       temperature: 0.3,
       max_tokens: 20,
     });
-    return response.choices[0].message.content.trim();
+    const text = response.choices[0].message.content.trim();
+    if (needsArticle && text.includes('|')) {
+      const [rawArticle, translation] = text.split('|').map(s => s.trim());
+      const article = rawArticle.toLowerCase() === 'het' ? 'het' : 'de';
+      return { translation, article };
+    }
+    return { translation: text, article: '' };
   } catch (error) {
     console.error('Translation error:', error);
-    return germanWord; // Fallback to German if translation fails
+    return { translation: word, article: '' };
   }
 }
 
-// Translate multiple words in parallel
+// Translate multiple words in parallel — returns array of translation strings
 async function translateWords(germanWords) {
-  const translations = await Promise.all(
+  const results = await Promise.all(
     germanWords.map(word => translateWord(word))
   );
-  return translations;
+  return results.map(r => r.translation);
 }
 
 // ── Pronunciation comparison: MFCC + DTW ────────────────────────────────────
@@ -434,7 +444,16 @@ router.post('/generate-task', async (req, res) => {
 
     console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level} [taskType: ${effectiveTaskType}]`);
 
-    // Format German word with plural (if noun)
+    // If the word has no article (e.g. Dutch nouns), look one up via OpenAI
+    if (targetWord.pos === 'noun' && !targetWord.article) {
+      const { article } = await translateWord(targetWord.word, { needsArticle: true });
+      if (article) {
+        targetWord.article = article;
+        targetWord.full_entry = `${article} ${targetWord.full_entry}`;
+      }
+    }
+
+    // Format word with plural (if noun)
     const targetFormatted = formatWordForTask(targetWord.full_entry, targetWord.pos);
 
     // Generate distractors (wrong answers) - these are German words/phrases
@@ -446,7 +465,7 @@ router.post('/generate-task', async (req, res) => {
     });
 
     // Translate to English (use audio version without plural notation)
-    const correctEnglish = await translateWord(targetFormatted.audio);
+    const { translation: correctEnglish } = await translateWord(targetFormatted.audio);
     const wrongEnglishOptions = await translateWords(distractorsFormatted.map(d => d.audio));
 
     console.log(`Formatted: "${targetWord.full_entry}" → "${targetFormatted.display}"`);

@@ -1,0 +1,4466 @@
+[
+  {
+    "word": "aardappel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aardappel"
+  },
+  {
+    "word": "aaien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aaien"
+  },
+  {
+    "word": "aanhalingstekens",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aanhalingstekens"
+  },
+  {
+    "word": "aankruisen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aankruisen"
+  },
+  {
+    "word": "aansteken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aansteken"
+  },
+  {
+    "word": "aap",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aap"
+  },
+  {
+    "word": "aardbei",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aardbei"
+  },
+  {
+    "word": "achterdeur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "achterdeur"
+  },
+  {
+    "word": "administratie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "administratie"
+  },
+  {
+    "word": "akker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "akker"
+  },
+  {
+    "word": "apotheek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "apotheek"
+  },
+  {
+    "word": "appel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "appel"
+  },
+  {
+    "word": "appelsap",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "appelsap"
+  },
+  {
+    "word": "april",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "april"
+  },
+  {
+    "word": "arm",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "arm"
+  },
+  {
+    "word": "aubergine",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aubergine"
+  },
+  {
+    "word": "augustus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "augustus"
+  },
+  {
+    "word": "auto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "auto"
+  },
+  {
+    "word": "avond",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "avond"
+  },
+  {
+    "word": "avondeten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "avondeten"
+  },
+  {
+    "word": "azijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "azijn"
+  },
+  {
+    "word": "baard",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "baard"
+  },
+  {
+    "word": "baby",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "baby"
+  },
+  {
+    "word": "babykleertjes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "babykleertjes"
+  },
+  {
+    "word": "badje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "badje"
+  },
+  {
+    "word": "badkamer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "badkamer"
+  },
+  {
+    "word": "badpak",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "badpak"
+  },
+  {
+    "word": "bagage",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bagage"
+  },
+  {
+    "word": "bakker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bakker"
+  },
+  {
+    "word": "balkon",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "balkon"
+  },
+  {
+    "word": "banaan",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "banaan"
+  },
+  {
+    "word": "bank",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bank"
+  },
+  {
+    "word": "bed",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bed"
+  },
+  {
+    "word": "bedje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bedje"
+  },
+  {
+    "word": "been",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "been"
+  },
+  {
+    "word": "beer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "beer"
+  },
+  {
+    "word": "begrijpen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "begrijpen"
+  },
+  {
+    "word": "bel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bel"
+  },
+  {
+    "word": "beloven",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "beloven"
+  },
+  {
+    "word": "benen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "benen"
+  },
+  {
+    "word": "berg",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "berg"
+  },
+  {
+    "word": "bergtop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bergtop"
+  },
+  {
+    "word": "beschuit met muisjes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "beschuit met muisjes"
+  },
+  {
+    "word": "betalen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "betalen"
+  },
+  {
+    "word": "bevalling",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bevalling"
+  },
+  {
+    "word": "bewaker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bewaker"
+  },
+  {
+    "word": "BH",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "BH"
+  },
+  {
+    "word": "bier",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bier"
+  },
+  {
+    "word": "bij",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bij"
+  },
+  {
+    "word": "bijkeuken",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bijkeuken"
+  },
+  {
+    "word": "bijten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bijten"
+  },
+  {
+    "word": "bikini",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bikini"
+  },
+  {
+    "word": "bil",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bil"
+  },
+  {
+    "word": "billen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "billen"
+  },
+  {
+    "word": "blazen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "blazen"
+  },
+  {
+    "word": "bliksem",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bliksem"
+  },
+  {
+    "word": "bloeden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bloeden"
+  },
+  {
+    "word": "bloeien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bloeien"
+  },
+  {
+    "word": "bloem",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bloem"
+  },
+  {
+    "word": "bloemetje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bloemetje"
+  },
+  {
+    "word": "bloemist",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bloemist"
+  },
+  {
+    "word": "bloemkool",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bloemkool"
+  },
+  {
+    "word": "bloempje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bloempje"
+  },
+  {
+    "word": "blouse",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "blouse"
+  },
+  {
+    "word": "blussen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "blussen"
+  },
+  {
+    "word": "bodywarmer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bodywarmer"
+  },
+  {
+    "word": "boek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boek"
+  },
+  {
+    "word": "boekenkast",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boekenkast"
+  },
+  {
+    "word": "boekhandel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boekhandel"
+  },
+  {
+    "word": "boerenkool",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boerenkool"
+  },
+  {
+    "word": "boete",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boete"
+  },
+  {
+    "word": "bol",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bol"
+  },
+  {
+    "word": "bonen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bonen"
+  },
+  {
+    "word": "bonnetje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bonnetje"
+  },
+  {
+    "word": "boom",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boom"
+  },
+  {
+    "word": "boot",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boot"
+  },
+  {
+    "word": "boren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "boren"
+  },
+  {
+    "word": "borst",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "borst"
+  },
+  {
+    "word": "borsten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "borsten"
+  },
+  {
+    "word": "borstvoeding",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "borstvoeding"
+  },
+  {
+    "word": "bos",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bos"
+  },
+  {
+    "word": "boter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boter"
+  },
+  {
+    "word": "botten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "botten"
+  },
+  {
+    "word": "bouwen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bouwen"
+  },
+  {
+    "word": "bouwmarkt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bouwmarkt"
+  },
+  {
+    "word": "bovenarm",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bovenarm"
+  },
+  {
+    "word": "bovenbeen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bovenbeen"
+  },
+  {
+    "word": "box",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "box"
+  },
+  {
+    "word": "branden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "branden"
+  },
+  {
+    "word": "broccoli",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "broccoli"
+  },
+  {
+    "word": "broer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "broer"
+  },
+  {
+    "word": "broertje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "broertje"
+  },
+  {
+    "word": "brood",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "brood"
+  },
+  {
+    "word": "bruiloft",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bruiloft"
+  },
+  {
+    "word": "buik",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "buik"
+  },
+  {
+    "word": "buikpijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "buikpijn"
+  },
+  {
+    "word": "bus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bus"
+  },
+  {
+    "word": "bushalte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bushalte"
+  },
+  {
+    "word": "champagne",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "champagne"
+  },
+  {
+    "word": "champignon",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "champignon"
+  },
+  {
+    "word": "chauffeur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chauffeur"
+  },
+  {
+    "word": "chips",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chips"
+  },
+  {
+    "word": "chocolade",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chocolade"
+  },
+  {
+    "word": "chocolademelk",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chocolademelk"
+  },
+  {
+    "word": "chocopasta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chocopasta"
+  },
+  {
+    "word": "cirkel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cirkel"
+  },
+  {
+    "word": "computer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "computer"
+  },
+  {
+    "word": "conducteur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "conducteur"
+  },
+  {
+    "word": "contactloos betalen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contactloos betalen"
+  },
+  {
+    "word": "contant betalen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contant betalen"
+  },
+  {
+    "word": "contract",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "contract"
+  },
+  {
+    "word": "controle",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "controle"
+  },
+  {
+    "word": "courgette",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "courgette"
+  },
+  {
+    "word": "couscous",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "couscous"
+  },
+  {
+    "word": "crackers",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "crackers"
+  },
+  {
+    "word": "creditcard",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "creditcard"
+  },
+  {
+    "word": "dag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dag"
+  },
+  {
+    "word": "dagdeel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dagdeel"
+  },
+  {
+    "word": "dak",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dak"
+  },
+  {
+    "word": "dal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dal"
+  },
+  {
+    "word": "dansen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dansen"
+  },
+  {
+    "word": "darmen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "darmen"
+  },
+  {
+    "word": "december",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "december"
+  },
+  {
+    "word": "denken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "denken"
+  },
+  {
+    "word": "denken / nadenken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "denken / nadenken"
+  },
+  {
+    "word": "deur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "deur"
+  },
+  {
+    "word": "digibord",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "digibord"
+  },
+  {
+    "word": "digidcode",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "digidcode"
+  },
+  {
+    "word": "dinsdag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dinsdag"
+  },
+  {
+    "word": "directeur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "directeur"
+  },
+  {
+    "word": "dolfijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dolfijn"
+  },
+  {
+    "word": "donderdag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "donderdag"
+  },
+  {
+    "word": "doorstrepen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "doorstrepen"
+  },
+  {
+    "word": "dorp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dorp"
+  },
+  {
+    "word": "draaien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "draaien"
+  },
+  {
+    "word": "dragen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dragen"
+  },
+  {
+    "word": "drankje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "drankje"
+  },
+  {
+    "word": "driehoek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "driehoek"
+  },
+  {
+    "word": "drijven",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "drijven"
+  },
+  {
+    "word": "drinken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "drinken"
+  },
+  {
+    "word": "drogist",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "drogist"
+  },
+  {
+    "word": "drop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "drop"
+  },
+  {
+    "word": "druiven",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "druiven"
+  },
+  {
+    "word": "drukker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "drukker"
+  },
+  {
+    "word": "dubbele punt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dubbele punt"
+  },
+  {
+    "word": "duif",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "duif"
+  },
+  {
+    "word": "duiken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "duiken"
+  },
+  {
+    "word": "duim",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "duim"
+  },
+  {
+    "word": "duinen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "duinen"
+  },
+  {
+    "word": "duwen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "duwen"
+  },
+  {
+    "word": "een cent",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "een cent"
+  },
+  {
+    "word": "eend",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "eend"
+  },
+  {
+    "word": "ei",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ei"
+  },
+  {
+    "word": "eiland",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "eiland"
+  },
+  {
+    "word": "elleboog",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "elleboog"
+  },
+  {
+    "word": "enkel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "enkel"
+  },
+  {
+    "word": "enkelvoud",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "enkelvoud"
+  },
+  {
+    "word": "erwten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "erwten"
+  },
+  {
+    "word": "erwtensoep",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "erwtensoep"
+  },
+  {
+    "word": "etalagepop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "etalagepop"
+  },
+  {
+    "word": "eten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "eten"
+  },
+  {
+    "word": "etui",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "etui"
+  },
+  {
+    "word": "examen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "examen"
+  },
+  {
+    "word": "ezel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ezel"
+  },
+  {
+    "word": "factuur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "factuur"
+  },
+  {
+    "word": "factuur betalen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "factuur betalen"
+  },
+  {
+    "word": "februari",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "februari"
+  },
+  {
+    "word": "feest",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "feest"
+  },
+  {
+    "word": "fiets",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fiets"
+  },
+  {
+    "word": "fietsen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fietsen"
+  },
+  {
+    "word": "flesvoeding",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "flesvoeding"
+  },
+  {
+    "word": "frisdrank",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "frisdrank"
+  },
+  {
+    "word": "fruit",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fruit"
+  },
+  {
+    "word": "gaan",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gaan"
+  },
+  {
+    "word": "gamen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gamen"
+  },
+  {
+    "word": "gang",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gang"
+  },
+  {
+    "word": "gans",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gans"
+  },
+  {
+    "word": "garantie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "garantie"
+  },
+  {
+    "word": "gasten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gasten"
+  },
+  {
+    "word": "geboorte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "geboorte"
+  },
+  {
+    "word": "geit",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "geit"
+  },
+  {
+    "word": "geloven",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "geloven"
+  },
+  {
+    "word": "gepast betalen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gepast betalen"
+  },
+  {
+    "word": "gesp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gesp"
+  },
+  {
+    "word": "geven",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "geven"
+  },
+  {
+    "word": "gezicht",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gezicht"
+  },
+  {
+    "word": "giraffe",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "giraffe"
+  },
+  {
+    "word": "glijden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "glijden"
+  },
+  {
+    "word": "glimlachen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "glimlachen"
+  },
+  {
+    "word": "gooien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gooien"
+  },
+  {
+    "word": "gordijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gordijn"
+  },
+  {
+    "word": "gras",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gras"
+  },
+  {
+    "word": "gratis",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gratis"
+  },
+  {
+    "word": "griep",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "griep"
+  },
+  {
+    "word": "groeien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "groeien"
+  },
+  {
+    "word": "groente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "groente"
+  },
+  {
+    "word": "groenteboer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "groenteboer"
+  },
+  {
+    "word": "groeten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "groeten"
+  },
+  {
+    "word": "gum",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gum"
+  },
+  {
+    "word": "haan",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "haan"
+  },
+  {
+    "word": "haar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "haar"
+  },
+  {
+    "word": "hagelslag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hagelslag"
+  },
+  {
+    "word": "hals",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hals"
+  },
+  {
+    "word": "hand",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hand"
+  },
+  {
+    "word": "handen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "handen"
+  },
+  {
+    "word": "handpalm",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "handpalm"
+  },
+  {
+    "word": "handschoenen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "handschoenen"
+  },
+  {
+    "word": "haring",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "haring"
+  },
+  {
+    "word": "hart",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hart"
+  },
+  {
+    "word": "hartje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hartje"
+  },
+  {
+    "word": "hebben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hebben"
+  },
+  {
+    "word": "heg",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "heg"
+  },
+  {
+    "word": "heide",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "heide"
+  },
+  {
+    "word": "helpen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "helpen"
+  },
+  {
+    "word": "herfst",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "herfst"
+  },
+  {
+    "word": "hersens",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hersens"
+  },
+  {
+    "word": "hert",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hert"
+  },
+  {
+    "word": "heup",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "heup"
+  },
+  {
+    "word": "hoed",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hoed"
+  },
+  {
+    "word": "hoesten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hoesten"
+  },
+  {
+    "word": "hond",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hond"
+  },
+  {
+    "word": "honderd euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "honderd euro"
+  },
+  {
+    "word": "hoofd",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hoofd"
+  },
+  {
+    "word": "hoofddoek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hoofddoek"
+  },
+  {
+    "word": "hoofdletter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hoofdletter"
+  },
+  {
+    "word": "hoofdpijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hoofdpijn"
+  },
+  {
+    "word": "horen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "horen"
+  },
+  {
+    "word": "huid",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "huid"
+  },
+  {
+    "word": "huilen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "huilen"
+  },
+  {
+    "word": "huis",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "huis"
+  },
+  {
+    "word": "huiswerk",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "huiswerk"
+  },
+  {
+    "word": "IBAN-nummer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "IBAN-nummer"
+  },
+  {
+    "word": "ijs",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ijs"
+  },
+  {
+    "word": "inburgeren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "inburgeren"
+  },
+  {
+    "word": "inchecken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "inchecken"
+  },
+  {
+    "word": "insecten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "insecten"
+  },
+  {
+    "word": "instappen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "instappen"
+  },
+  {
+    "word": "internetbankieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "internetbankieren"
+  },
+  {
+    "word": "inversie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "inversie"
+  },
+  {
+    "word": "jaar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jaar"
+  },
+  {
+    "word": "jam",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jam"
+  },
+  {
+    "word": "januari",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "januari"
+  },
+  {
+    "word": "jas van nylon",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jas van nylon"
+  },
+  {
+    "word": "jeuk",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jeuk"
+  },
+  {
+    "word": "joggingbroek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "joggingbroek"
+  },
+  {
+    "word": "juli",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "juli"
+  },
+  {
+    "word": "juni",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "juni"
+  },
+  {
+    "word": "jurk",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jurk"
+  },
+  {
+    "word": "juwelier",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "juwelier"
+  },
+  {
+    "word": "kaarten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kaarten"
+  },
+  {
+    "word": "kaartlezer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kaartlezer"
+  },
+  {
+    "word": "kaas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kaas"
+  },
+  {
+    "word": "kado",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kado"
+  },
+  {
+    "word": "kameel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kameel"
+  },
+  {
+    "word": "kantine",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kantine"
+  },
+  {
+    "word": "kapper",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kapper"
+  },
+  {
+    "word": "kassa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kassa"
+  },
+  {
+    "word": "kassamedewerker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kassamedewerker"
+  },
+  {
+    "word": "kast",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kast"
+  },
+  {
+    "word": "keelpijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "keelpijn"
+  },
+  {
+    "word": "kelder",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kelder"
+  },
+  {
+    "word": "keuken",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "keuken"
+  },
+  {
+    "word": "kietelen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kietelen"
+  },
+  {
+    "word": "kijken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kijken"
+  },
+  {
+    "word": "kikker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kikker"
+  },
+  {
+    "word": "kinderkleding",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kinderkleding"
+  },
+  {
+    "word": "kip",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kip"
+  },
+  {
+    "word": "klachten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "klachten"
+  },
+  {
+    "word": "kledingwinkel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kledingwinkel"
+  },
+  {
+    "word": "kleed",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kleed"
+  },
+  {
+    "word": "kleerhanger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kleerhanger"
+  },
+  {
+    "word": "kleine letter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kleine letter"
+  },
+  {
+    "word": "kletsen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kletsen"
+  },
+  {
+    "word": "kleur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kleur"
+  },
+  {
+    "word": "klimmen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "klimmen"
+  },
+  {
+    "word": "klittenband",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "klittenband"
+  },
+  {
+    "word": "kluisjes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kluisjes"
+  },
+  {
+    "word": "knie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "knie"
+  },
+  {
+    "word": "knippen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "knippen"
+  },
+  {
+    "word": "knoeien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "knoeien"
+  },
+  {
+    "word": "knoflook",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "knoflook"
+  },
+  {
+    "word": "knoop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "knoop"
+  },
+  {
+    "word": "koe",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "koe"
+  },
+  {
+    "word": "koekjes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "koekjes"
+  },
+  {
+    "word": "koffie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "koffie"
+  },
+  {
+    "word": "koken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "koken"
+  },
+  {
+    "word": "komkommer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "komkommer"
+  },
+  {
+    "word": "komma",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "komma"
+  },
+  {
+    "word": "konijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "konijn"
+  },
+  {
+    "word": "koorts",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "koorts"
+  },
+  {
+    "word": "kopen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kopen"
+  },
+  {
+    "word": "korte broek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "korte broek"
+  },
+  {
+    "word": "korting",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "korting"
+  },
+  {
+    "word": "kraamhulp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kraamhulp"
+  },
+  {
+    "word": "kraan",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kraan"
+  },
+  {
+    "word": "krabben",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "krabben"
+  },
+  {
+    "word": "krijgen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "krijgen"
+  },
+  {
+    "word": "krokodil",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "krokodil"
+  },
+  {
+    "word": "kruiden",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kruiden"
+  },
+  {
+    "word": "kruis",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kruis"
+  },
+  {
+    "word": "kubus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kubus"
+  },
+  {
+    "word": "kuit",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kuit"
+  },
+  {
+    "word": "kunnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "kunnen"
+  },
+  {
+    "word": "kussen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kussen"
+  },
+  {
+    "word": "kwartaal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kwartaal"
+  },
+  {
+    "word": "laarzen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "laarzen"
+  },
+  {
+    "word": "lachen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lachen"
+  },
+  {
+    "word": "lamp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lamp"
+  },
+  {
+    "word": "lange broek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lange broek"
+  },
+  {
+    "word": "leeuw",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "leeuw"
+  },
+  {
+    "word": "leggen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "leggen"
+  },
+  {
+    "word": "legging",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "legging"
+  },
+  {
+    "word": "lente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lente"
+  },
+  {
+    "word": "letter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "letter"
+  },
+  {
+    "word": "lezen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lezen"
+  },
+  {
+    "word": "liggen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "liggen"
+  },
+  {
+    "word": "lijmen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lijmen"
+  },
+  {
+    "word": "lijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lijn"
+  },
+  {
+    "word": "liniaal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "liniaal"
+  },
+  {
+    "word": "lippen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lippen"
+  },
+  {
+    "word": "loket",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "loket"
+  },
+  {
+    "word": "longen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "longen"
+  },
+  {
+    "word": "lopen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lopen"
+  },
+  {
+    "word": "luiers",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "luiers"
+  },
+  {
+    "word": "luisteren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "luisteren"
+  },
+  {
+    "word": "lunch",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lunch"
+  },
+  {
+    "word": "maag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "maag"
+  },
+  {
+    "word": "maand",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "maand"
+  },
+  {
+    "word": "maandag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "maandag"
+  },
+  {
+    "word": "maart",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "maart"
+  },
+  {
+    "word": "maat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "maat"
+  },
+  {
+    "word": "machinist",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "machinist"
+  },
+  {
+    "word": "mais",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mais"
+  },
+  {
+    "word": "mandarijnen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mandarijnen"
+  },
+  {
+    "word": "map",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "map"
+  },
+  {
+    "word": "markt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "markt"
+  },
+  {
+    "word": "mat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mat"
+  },
+  {
+    "word": "medicijnen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "medicijnen"
+  },
+  {
+    "word": "meel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "meel"
+  },
+  {
+    "word": "meer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "meer"
+  },
+  {
+    "word": "meervoud",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "meervoud"
+  },
+  {
+    "word": "mei",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mei"
+  },
+  {
+    "word": "melk",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "melk"
+  },
+  {
+    "word": "meloen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "meloen"
+  },
+  {
+    "word": "meten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "meten"
+  },
+  {
+    "word": "meterkast",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "meterkast"
+  },
+  {
+    "word": "metro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "metro"
+  },
+  {
+    "word": "middag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "middag"
+  },
+  {
+    "word": "middaguur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "middaguur"
+  },
+  {
+    "word": "middelvinger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "middelvinger"
+  },
+  {
+    "word": "middernacht",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "middernacht"
+  },
+  {
+    "word": "mobiel bankieren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mobiel bankieren"
+  },
+  {
+    "word": "model",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "model"
+  },
+  {
+    "word": "moeder",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "moeder"
+  },
+  {
+    "word": "moeten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "moeten"
+  },
+  {
+    "word": "mogen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mogen"
+  },
+  {
+    "word": "mond",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mond"
+  },
+  {
+    "word": "motor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "motor"
+  },
+  {
+    "word": "muesli",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "muesli"
+  },
+  {
+    "word": "mug",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mug"
+  },
+  {
+    "word": "muis",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "muis"
+  },
+  {
+    "word": "mus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mus"
+  },
+  {
+    "word": "muts",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "muts"
+  },
+  {
+    "word": "muur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "muur"
+  },
+  {
+    "word": "naaien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "naaien"
+  },
+  {
+    "word": "nacht",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nacht"
+  },
+  {
+    "word": "nachthemd",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nachthemd"
+  },
+  {
+    "word": "nagel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nagel"
+  },
+  {
+    "word": "najaar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "najaar"
+  },
+  {
+    "word": "navel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "navel"
+  },
+  {
+    "word": "nek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nek"
+  },
+  {
+    "word": "neus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "neus"
+  },
+  {
+    "word": "nieren",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nieren"
+  },
+  {
+    "word": "nietje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nietje"
+  },
+  {
+    "word": "niezen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "niezen"
+  },
+  {
+    "word": "nijlpaard",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nijlpaard"
+  },
+  {
+    "word": "noten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "noten"
+  },
+  {
+    "word": "november",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "november"
+  },
+  {
+    "word": "ober",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ober"
+  },
+  {
+    "word": "ochtend",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ochtend"
+  },
+  {
+    "word": "oefening",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oefening"
+  },
+  {
+    "word": "ogen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ogen"
+  },
+  {
+    "word": "oktober",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oktober"
+  },
+  {
+    "word": "olie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "olie"
+  },
+  {
+    "word": "oliebollen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oliebollen"
+  },
+  {
+    "word": "olifant",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "olifant"
+  },
+  {
+    "word": "olijven",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "olijven"
+  },
+  {
+    "word": "oma",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oma"
+  },
+  {
+    "word": "omcirkelen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "omcirkelen"
+  },
+  {
+    "word": "omkeren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "omkeren"
+  },
+  {
+    "word": "onderarm",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "onderarm"
+  },
+  {
+    "word": "onderbeen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "onderbeen"
+  },
+  {
+    "word": "onderbroek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "onderbroek"
+  },
+  {
+    "word": "onderstrepen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "onderstrepen"
+  },
+  {
+    "word": "ondertekenen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ondertekenen"
+  },
+  {
+    "word": "onderwerp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "onderwerp"
+  },
+  {
+    "word": "ontbijt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ontbijt"
+  },
+  {
+    "word": "oog",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oog"
+  },
+  {
+    "word": "oor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oor"
+  },
+  {
+    "word": "oorpijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oorpijn"
+  },
+  {
+    "word": "opa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "opa"
+  },
+  {
+    "word": "opladen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "opladen"
+  },
+  {
+    "word": "opruiming",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "opruiming"
+  },
+  {
+    "word": "opslaan",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "opslaan"
+  },
+  {
+    "word": "opstaan",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "opstaan"
+  },
+  {
+    "word": "opticien",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "opticien"
+  },
+  {
+    "word": "oren",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oren"
+  },
+  {
+    "word": "ovaal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ovaal"
+  },
+  {
+    "word": "ov-chipkaart",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ov-chipkaart"
+  },
+  {
+    "word": "overhemd",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "overhemd"
+  },
+  {
+    "word": "overstappen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "overstappen"
+  },
+  {
+    "word": "oversteken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "oversteken"
+  },
+  {
+    "word": "paard",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "paard"
+  },
+  {
+    "word": "pannenkoek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pannenkoek"
+  },
+  {
+    "word": "panty",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "panty"
+  },
+  {
+    "word": "papegaai",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "papegaai"
+  },
+  {
+    "word": "papier",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "papier"
+  },
+  {
+    "word": "paprika",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "paprika"
+  },
+  {
+    "word": "pashokje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pashokje"
+  },
+  {
+    "word": "pasje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pasje"
+  },
+  {
+    "word": "passen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "passen"
+  },
+  {
+    "word": "pasta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pasta"
+  },
+  {
+    "word": "patat/friet",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "patat/friet"
+  },
+  {
+    "word": "pauw",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pauw"
+  },
+  {
+    "word": "peer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "peer"
+  },
+  {
+    "word": "pen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pen"
+  },
+  {
+    "word": "peper",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "peper"
+  },
+  {
+    "word": "pepernoten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pepernoten"
+  },
+  {
+    "word": "persoonsvorm",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "persoonsvorm"
+  },
+  {
+    "word": "pet",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pet"
+  },
+  {
+    "word": "pijl",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pijl"
+  },
+  {
+    "word": "pillen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pillen"
+  },
+  {
+    "word": "pinautomaat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pinautomaat"
+  },
+  {
+    "word": "pindakaas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pindakaas"
+  },
+  {
+    "word": "pinguïn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pinguïn"
+  },
+  {
+    "word": "pink",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pink"
+  },
+  {
+    "word": "pinnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pinnen"
+  },
+  {
+    "word": "pinpas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pinpas"
+  },
+  {
+    "word": "pizza",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pizza"
+  },
+  {
+    "word": "plafond",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plafond"
+  },
+  {
+    "word": "plakband",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plakband"
+  },
+  {
+    "word": "plank",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plank"
+  },
+  {
+    "word": "plant",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plant"
+  },
+  {
+    "word": "poes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "poes"
+  },
+  {
+    "word": "poetsen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "poetsen"
+  },
+  {
+    "word": "pols",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pols"
+  },
+  {
+    "word": "positiekleding",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "positiekleding"
+  },
+  {
+    "word": "potlood",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "potlood"
+  },
+  {
+    "word": "praten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "praten"
+  },
+  {
+    "word": "prijs",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "prijs"
+  },
+  {
+    "word": "prikken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "prikken"
+  },
+  {
+    "word": "punt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "punt"
+  },
+  {
+    "word": "puntenslijper",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "puntenslijper"
+  },
+  {
+    "word": "pyjama",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pyjama"
+  },
+  {
+    "word": "raam",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "raam"
+  },
+  {
+    "word": "rat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rat"
+  },
+  {
+    "word": "rechthoek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rechthoek"
+  },
+  {
+    "word": "regels",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "regels"
+  },
+  {
+    "word": "regen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "regen"
+  },
+  {
+    "word": "regenboog",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "regenboog"
+  },
+  {
+    "word": "reizen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reizen"
+  },
+  {
+    "word": "rek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rek"
+  },
+  {
+    "word": "rennen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rennen"
+  },
+  {
+    "word": "repareren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "repareren"
+  },
+  {
+    "word": "respect",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "respect"
+  },
+  {
+    "word": "restaurant",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "restaurant"
+  },
+  {
+    "word": "riem",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "riem"
+  },
+  {
+    "word": "rijden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rijden"
+  },
+  {
+    "word": "rijst",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rijst"
+  },
+  {
+    "word": "ringvinger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ringvinger"
+  },
+  {
+    "word": "rits",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rits"
+  },
+  {
+    "word": "rivier",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rivier"
+  },
+  {
+    "word": "rode bieten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rode bieten"
+  },
+  {
+    "word": "rode kool",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rode kool"
+  },
+  {
+    "word": "rok",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rok"
+  },
+  {
+    "word": "roltrap",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "roltrap"
+  },
+  {
+    "word": "roos",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "roos"
+  },
+  {
+    "word": "route",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "route"
+  },
+  {
+    "word": "rozijnen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rozijnen"
+  },
+  {
+    "word": "rug",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rug"
+  },
+  {
+    "word": "ruiken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ruiken"
+  },
+  {
+    "word": "ruilen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ruilen"
+  },
+  {
+    "word": "ruit",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ruit"
+  },
+  {
+    "word": "rundvlees",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rundvlees"
+  },
+  {
+    "word": "salade",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "salade"
+  },
+  {
+    "word": "scannen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "scannen"
+  },
+  {
+    "word": "schaap",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schaap"
+  },
+  {
+    "word": "schaar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schaar"
+  },
+  {
+    "word": "schaatsen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schaatsen"
+  },
+  {
+    "word": "schaken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schaken"
+  },
+  {
+    "word": "schilderen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schilderen"
+  },
+  {
+    "word": "schoenen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schoenen"
+  },
+  {
+    "word": "schoenwinkel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schoenwinkel"
+  },
+  {
+    "word": "schoppen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schoppen"
+  },
+  {
+    "word": "schouder",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schouder"
+  },
+  {
+    "word": "schrift",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schrift"
+  },
+  {
+    "word": "schrijven",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schrijven"
+  },
+  {
+    "word": "schroeven",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schroeven"
+  },
+  {
+    "word": "schuren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "schuren"
+  },
+  {
+    "word": "schuur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "schuur"
+  },
+  {
+    "word": "scooter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "scooter"
+  },
+  {
+    "word": "seizoenen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "seizoenen"
+  },
+  {
+    "word": "september",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "september"
+  },
+  {
+    "word": "shirt van katoen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "shirt van katoen"
+  },
+  {
+    "word": "sinaasappel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sinaasappel"
+  },
+  {
+    "word": "sinaasappelsap",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sinaasappelsap"
+  },
+  {
+    "word": "sjaal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sjaal"
+  },
+  {
+    "word": "sla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sla"
+  },
+  {
+    "word": "slaan",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "slaan"
+  },
+  {
+    "word": "slaapkamer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "slaapkamer"
+  },
+  {
+    "word": "slager",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "slager"
+  },
+  {
+    "word": "slang",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "slang"
+  },
+  {
+    "word": "slapen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "slapen"
+  },
+  {
+    "word": "slippers",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "slippers"
+  },
+  {
+    "word": "sloot",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sloot"
+  },
+  {
+    "word": "sneakers",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sneakers"
+  },
+  {
+    "word": "sneeuw",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sneeuw"
+  },
+  {
+    "word": "sneeuwpop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sneeuwpop"
+  },
+  {
+    "word": "snijden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "snijden"
+  },
+  {
+    "word": "snoep",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "snoep"
+  },
+  {
+    "word": "snor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "snor"
+  },
+  {
+    "word": "snuiten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "snuiten"
+  },
+  {
+    "word": "soep",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "soep"
+  },
+  {
+    "word": "sokken",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sokken"
+  },
+  {
+    "word": "spelen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "spelen"
+  },
+  {
+    "word": "spieren",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spieren"
+  },
+  {
+    "word": "spijkerbroek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spijkerbroek"
+  },
+  {
+    "word": "spin",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spin"
+  },
+  {
+    "word": "spinazie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spinazie"
+  },
+  {
+    "word": "sporten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sporten"
+  },
+  {
+    "word": "spreekbeurt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spreekbeurt"
+  },
+  {
+    "word": "spreken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "spreken"
+  },
+  {
+    "word": "springen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "springen"
+  },
+  {
+    "word": "spruitjes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spruitjes"
+  },
+  {
+    "word": "spuitje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spuitje"
+  },
+  {
+    "word": "staan",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "staan"
+  },
+  {
+    "word": "staart",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "staart"
+  },
+  {
+    "word": "stad",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stad"
+  },
+  {
+    "word": "stamppot",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stamppot"
+  },
+  {
+    "word": "station",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "station"
+  },
+  {
+    "word": "ster",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ster"
+  },
+  {
+    "word": "sterke drank",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sterke drank"
+  },
+  {
+    "word": "stift",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stift"
+  },
+  {
+    "word": "stippellijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stippellijn"
+  },
+  {
+    "word": "stoel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stoel"
+  },
+  {
+    "word": "stofzuigen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "stofzuigen"
+  },
+  {
+    "word": "storing",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "storing"
+  },
+  {
+    "word": "strand",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "strand"
+  },
+  {
+    "word": "stroop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stroop"
+  },
+  {
+    "word": "stroopwafels",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stroopwafels"
+  },
+  {
+    "word": "stropdas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "stropdas"
+  },
+  {
+    "word": "struik",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "struik"
+  },
+  {
+    "word": "suiker",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "suiker"
+  },
+  {
+    "word": "supermarkt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "supermarkt"
+  },
+  {
+    "word": "taart",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "taart"
+  },
+  {
+    "word": "tafel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tafel"
+  },
+  {
+    "word": "tand",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tand"
+  },
+  {
+    "word": "tandpijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tandpijn"
+  },
+  {
+    "word": "tankstation",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tankstation"
+  },
+  {
+    "word": "tapijt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tapijt"
+  },
+  {
+    "word": "taxi",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "taxi"
+  },
+  {
+    "word": "teen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "teen"
+  },
+  {
+    "word": "tegenstelling: antwoord-vraag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: antwoord-vraag"
+  },
+  {
+    "word": "tegenstelling: dag-nacht",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: dag-nacht"
+  },
+  {
+    "word": "tegenstelling: geven-nemen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: geven-nemen"
+  },
+  {
+    "word": "tegenstelling: kelder-zolder",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: kelder-zolder"
+  },
+  {
+    "word": "tegenstelling: lachen-huilen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: lachen-huilen"
+  },
+  {
+    "word": "tegenstelling: man-vrouw",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: man-vrouw"
+  },
+  {
+    "word": "tegenstelling: meisje-jongen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: meisje-jongen"
+  },
+  {
+    "word": "tegenstelling: nieuw-oud",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: nieuw-oud"
+  },
+  {
+    "word": "tegenstelling: opstaan-gaan zitten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: opstaan-gaan zitten"
+  },
+  {
+    "word": "tegenstelling: praten-luisteren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: praten-luisteren"
+  },
+  {
+    "word": "tegenstelling: schrijven-lezen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: schrijven-lezen"
+  },
+  {
+    "word": "tegenstelling: staan-liggen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: staan-liggen"
+  },
+  {
+    "word": "tegenstelling: stad-dorp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: stad-dorp"
+  },
+  {
+    "word": "tegenstelling: uitgang-ingang",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: uitgang-ingang"
+  },
+  {
+    "word": "tegenstelling: uitstappen-instappen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: uitstappen-instappen"
+  },
+  {
+    "word": "tegenstelling: vergeten-zich herinneren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: vergeten-zich herinneren"
+  },
+  {
+    "word": "tegenstelling: verliezen-winnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tegenstelling: verliezen-winnen"
+  },
+  {
+    "word": "tegenstelling: vloer-plafond",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tegenstelling: vloer-plafond"
+  },
+  {
+    "word": "tekenen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tekenen"
+  },
+  {
+    "word": "temperatuur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "temperatuur"
+  },
+  {
+    "word": "tenen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tenen"
+  },
+  {
+    "word": "terras",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "terras"
+  },
+  {
+    "word": "thee",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "thee"
+  },
+  {
+    "word": "tien cent",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tien cent"
+  },
+  {
+    "word": "tien euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tien euro"
+  },
+  {
+    "word": "tijger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tijger"
+  },
+  {
+    "word": "tillen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tillen"
+  },
+  {
+    "word": "timmeren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "timmeren"
+  },
+  {
+    "word": "toetje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "toetje"
+  },
+  {
+    "word": "toets",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "toets"
+  },
+  {
+    "word": "toilet",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "toilet"
+  },
+  {
+    "word": "toiletten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "toiletten"
+  },
+  {
+    "word": "tomaat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tomaat"
+  },
+  {
+    "word": "topje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "topje"
+  },
+  {
+    "word": "tractor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tractor"
+  },
+  {
+    "word": "tram",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tram"
+  },
+  {
+    "word": "trap",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "trap"
+  },
+  {
+    "word": "trein",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "trein"
+  },
+  {
+    "word": "trekken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "trekken"
+  },
+  {
+    "word": "trui",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "trui"
+  },
+  {
+    "word": "trui van wol",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "trui van wol"
+  },
+  {
+    "word": "T-shirt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "T-shirt"
+  },
+  {
+    "word": "tuin",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tuin"
+  },
+  {
+    "word": "tuincentrum",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tuincentrum"
+  },
+  {
+    "word": "tulp",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tulp"
+  },
+  {
+    "word": "tv",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tv"
+  },
+  {
+    "word": "tweehonderd euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tweehonderd euro"
+  },
+  {
+    "word": "twintig cent",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "twintig cent"
+  },
+  {
+    "word": "twintig euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "twintig euro"
+  },
+  {
+    "word": "typen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "typen"
+  },
+  {
+    "word": "ui",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ui"
+  },
+  {
+    "word": "uitchecken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "uitchecken"
+  },
+  {
+    "word": "uitroepteken",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "uitroepteken"
+  },
+  {
+    "word": "uitrusten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "uitrusten"
+  },
+  {
+    "word": "uitstappen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "uitstappen"
+  },
+  {
+    "word": "uitverkoop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "uitverkoop"
+  },
+  {
+    "word": "uur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "uur"
+  },
+  {
+    "word": "vaas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vaas"
+  },
+  {
+    "word": "vader",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vader"
+  },
+  {
+    "word": "vallen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vallen"
+  },
+  {
+    "word": "vangen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vangen"
+  },
+  {
+    "word": "varen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "varen"
+  },
+  {
+    "word": "vegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vegen"
+  },
+  {
+    "word": "verbinden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verbinden"
+  },
+  {
+    "word": "vergeten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vergeten"
+  },
+  {
+    "word": "verjaardag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "verjaardag"
+  },
+  {
+    "word": "verkeerslicht",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "verkeerslicht"
+  },
+  {
+    "word": "verkleinwoord",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "verkleinwoord"
+  },
+  {
+    "word": "verkopen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verkopen"
+  },
+  {
+    "word": "verkoper",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "verkoper"
+  },
+  {
+    "word": "verliezen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verliezen"
+  },
+  {
+    "word": "verloskundige",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "verloskundige"
+  },
+  {
+    "word": "vertellen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vertellen"
+  },
+  {
+    "word": "vertraging",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vertraging"
+  },
+  {
+    "word": "vervoersbewijs",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vervoersbewijs"
+  },
+  {
+    "word": "vest",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vest"
+  },
+  {
+    "word": "vierkant",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vierkant"
+  },
+  {
+    "word": "vijf cent",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vijf cent"
+  },
+  {
+    "word": "vijf euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vijf euro"
+  },
+  {
+    "word": "vijfhonderd euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vijfhonderd euro"
+  },
+  {
+    "word": "vijftig cent",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vijftig cent"
+  },
+  {
+    "word": "vijftig euro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vijftig euro"
+  },
+  {
+    "word": "vinden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vinden"
+  },
+  {
+    "word": "vinger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vinger"
+  },
+  {
+    "word": "vinkje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vinkje"
+  },
+  {
+    "word": "vis",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vis"
+  },
+  {
+    "word": "vlees",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vlees"
+  },
+  {
+    "word": "vlieg",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vlieg"
+  },
+  {
+    "word": "vliegen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vliegen"
+  },
+  {
+    "word": "vliegtuig",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vliegtuig"
+  },
+  {
+    "word": "vlinder",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vlinder"
+  },
+  {
+    "word": "vloer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vloer"
+  },
+  {
+    "word": "voedsel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voedsel"
+  },
+  {
+    "word": "voelen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "voelen"
+  },
+  {
+    "word": "voet",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voet"
+  },
+  {
+    "word": "voetballen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "voetballen"
+  },
+  {
+    "word": "voeten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voeten"
+  },
+  {
+    "word": "voetganger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voetganger"
+  },
+  {
+    "word": "voetzool",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voetzool"
+  },
+  {
+    "word": "vogels",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vogels"
+  },
+  {
+    "word": "voordeur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voordeur"
+  },
+  {
+    "word": "voorjaar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voorjaar"
+  },
+  {
+    "word": "voorzetsel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "voorzetsel"
+  },
+  {
+    "word": "vorst",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vorst"
+  },
+  {
+    "word": "vraagteken",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vraagteken"
+  },
+  {
+    "word": "vraagwoord",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vraagwoord"
+  },
+  {
+    "word": "vraagzin",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vraagzin"
+  },
+  {
+    "word": "vrachtauto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vrachtauto"
+  },
+  {
+    "word": "vragen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vragen"
+  },
+  {
+    "word": "vrijdag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vrijdag"
+  },
+  {
+    "word": "vrije tijd",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vrije tijd"
+  },
+  {
+    "word": "wang",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wang"
+  },
+  {
+    "word": "wanten",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wanten"
+  },
+  {
+    "word": "warenhuis",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "warenhuis"
+  },
+  {
+    "word": "wassen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "wassen"
+  },
+  {
+    "word": "wastafel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wastafel"
+  },
+  {
+    "word": "water",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "water"
+  },
+  {
+    "word": "waterschoenen",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "waterschoenen"
+  },
+  {
+    "word": "waterval",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "waterval"
+  },
+  {
+    "word": "website",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "website"
+  },
+  {
+    "word": "week",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "week"
+  },
+  {
+    "word": "weiland",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "weiland"
+  },
+  {
+    "word": "wenkbrauw",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wenkbrauw"
+  },
+  {
+    "word": "werken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "werken"
+  },
+  {
+    "word": "weten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "weten"
+  },
+  {
+    "word": "wijn",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wijn"
+  },
+  {
+    "word": "wijsvinger",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wijsvinger"
+  },
+  {
+    "word": "willen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "willen"
+  },
+  {
+    "word": "wimper",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wimper"
+  },
+  {
+    "word": "winnen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "winnen"
+  },
+  {
+    "word": "winter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "winter"
+  },
+  {
+    "word": "winterjas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "winterjas"
+  },
+  {
+    "word": "witte kool",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "witte kool"
+  },
+  {
+    "word": "woensdag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "woensdag"
+  },
+  {
+    "word": "wolk",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wolk"
+  },
+  {
+    "word": "wonen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "wonen"
+  },
+  {
+    "word": "woonkamer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "woonkamer"
+  },
+  {
+    "word": "woord",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "woord"
+  },
+  {
+    "word": "worden",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "worden"
+  },
+  {
+    "word": "wortel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "wortel"
+  },
+  {
+    "word": "yoghurt",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "yoghurt"
+  },
+  {
+    "word": "zagen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zagen"
+  },
+  {
+    "word": "zalf",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zalf"
+  },
+  {
+    "word": "zaterdag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zaterdag"
+  },
+  {
+    "word": "zebra",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zebra"
+  },
+  {
+    "word": "zebrapad",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zebrapad"
+  },
+  {
+    "word": "zee",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zee"
+  },
+  {
+    "word": "zeehond",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zeehond"
+  },
+  {
+    "word": "zich voorstellen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich voorstellen"
+  },
+  {
+    "word": "zich aanstellen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich aanstellen"
+  },
+  {
+    "word": "zich ergeren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich ergeren"
+  },
+  {
+    "word": "zich herinneren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich herinneren"
+  },
+  {
+    "word": "zich inspannen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich inspannen"
+  },
+  {
+    "word": "zich scheren",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich scheren"
+  },
+  {
+    "word": "zich vergissen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich vergissen"
+  },
+  {
+    "word": "zich vervelen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich vervelen"
+  },
+  {
+    "word": "zich wassen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zich wassen"
+  },
+  {
+    "word": "zien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zien"
+  },
+  {
+    "word": "zijn",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zijn"
+  },
+  {
+    "word": "zin",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zin"
+  },
+  {
+    "word": "zingen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zingen"
+  },
+  {
+    "word": "zinken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zinken"
+  },
+  {
+    "word": "zinsdeel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zinsdeel"
+  },
+  {
+    "word": "zitten",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zitten"
+  },
+  {
+    "word": "zoeken",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zoeken"
+  },
+  {
+    "word": "zolder",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zolder"
+  },
+  {
+    "word": "zomer",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zomer"
+  },
+  {
+    "word": "zomerjas",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zomerjas"
+  },
+  {
+    "word": "zon",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zon"
+  },
+  {
+    "word": "zondag",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zondag"
+  },
+  {
+    "word": "zonnebril",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zonnebril"
+  },
+  {
+    "word": "zout",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zout"
+  },
+  {
+    "word": "zuigen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zuigen"
+  },
+  {
+    "word": "zullen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zullen"
+  },
+  {
+    "word": "zus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zus"
+  },
+  {
+    "word": "zusje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zusje"
+  },
+  {
+    "word": "zwaaien",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zwaaien"
+  },
+  {
+    "word": "zwaan",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zwaan"
+  },
+  {
+    "word": "zwangerschapstest",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zwangerschapstest"
+  },
+  {
+    "word": "zwembroek",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zwembroek"
+  },
+  {
+    "word": "zwemmen",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "zwemmen"
+  },
+  {
+    "word": "vraagwoord",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vraagwoord"
+  }
+]
