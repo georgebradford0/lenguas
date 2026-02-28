@@ -8,6 +8,7 @@ import type { Language } from './src/types';
 const LANGUAGES: { code: Language; flag: string; label: string; sublabel: string }[] = [
   { code: 'de', flag: '🇩🇪', label: 'German', sublabel: 'Deutsch' },
   { code: 'nl', flag: '🇳🇱', label: 'Dutch', sublabel: 'Nederlands' },
+  { code: 'fr', flag: '🇫🇷', label: 'French', sublabel: 'Français' },
 ];
 
 function LanguageSelectScreen({ onSelect }: { onSelect: (lang: Language) => void }) {

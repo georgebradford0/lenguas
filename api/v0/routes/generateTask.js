@@ -187,14 +187,15 @@ function formatWordForTask(fullEntry, pos, language = 'de') {
 }
 
 // Translate a word to English using OpenAI.
-// If needsArticle is true (Dutch nouns with no article), the model also
-// returns the correct article in the format "de|house" or "het|house".
+// If language is provided and the word is a noun without an article, also
+// looks up the correct article using language config.
 // Returns { translation, article } — article is '' when not applicable.
-async function translateWord(word, { needsArticle = false } = {}) {
+async function translateWord(word, { needsArticle = false, language = 'de' } = {}) {
   try {
     let systemContent = 'You are a translator. Translate the given word or phrase to English. Give ONLY the English translation, nothing else. Keep it brief (1-5 words).';
-    if (needsArticle) {
-      systemContent += ' This word is a noun with no article. Also determine the correct Dutch article (de or het) and prefix your response with it followed by a pipe character, e.g. "het|house" or "de|street".';
+    const langConfig = LANGUAGE_CONFIG[language];
+    if (needsArticle && langConfig?.articlePrompt) {
+      systemContent += ' ' + langConfig.articlePrompt;
     }
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -206,9 +207,9 @@ async function translateWord(word, { needsArticle = false } = {}) {
       max_tokens: 20,
     });
     const text = response.choices[0].message.content.trim();
-    if (needsArticle && text.includes('|')) {
+    if (needsArticle && langConfig?.normalizeArticle && text.includes('|')) {
       const [rawArticle, translation] = text.split('|').map(s => s.trim());
-      const article = rawArticle.toLowerCase() === 'het' ? 'het' : 'de';
+      const article = langConfig.normalizeArticle(rawArticle);
       return { translation, article };
     }
     return { translation: text, article: '' };
@@ -462,7 +463,7 @@ router.post('/generate-task', async (req, res) => {
 
     // If the word has no article (e.g. Dutch nouns), look one up via OpenAI
     if (targetWord.pos === 'noun' && !targetWord.article) {
-      const { article } = await translateWord(targetWord.word, { needsArticle: true });
+      const { article } = await translateWord(targetWord.word, { needsArticle: true, language });
       if (article) {
         targetWord.article = article;
         targetWord.full_entry = `${article} ${targetWord.full_entry}`;

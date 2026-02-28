@@ -1,0 +1,10364 @@
+[
+  {
+    "word": "abbaye",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' abbaye"
+  },
+  {
+    "word": "abbé",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' abbé"
+  },
+  {
+    "word": "abondant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "abondant"
+  },
+  {
+    "word": "aborder",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aborder"
+  },
+  {
+    "word": "aboyer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aboyer"
+  },
+  {
+    "word": "abri",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' abri"
+  },
+  {
+    "word": "absence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' absence"
+  },
+  {
+    "word": "absolu",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "absolu"
+  },
+  {
+    "word": "absolument",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "absolument"
+  },
+  {
+    "word": "absurde",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "absurde"
+  },
+  {
+    "word": "accorder",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "accorder"
+  },
+  {
+    "word": "accrocher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "accrocher"
+  },
+  {
+    "word": "accuser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "accuser"
+  },
+  {
+    "word": "accès",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' accès"
+  },
+  {
+    "word": "accéder",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "accéder"
+  },
+  {
+    "word": "accélérer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "accélérer"
+  },
+  {
+    "word": "acier",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' acier"
+  },
+  {
+    "word": "acquérir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "acquérir"
+  },
+  {
+    "word": "acte",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' acte"
+  },
+  {
+    "word": "acteur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' acteur"
+  },
+  {
+    "word": "action",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' action"
+  },
+  {
+    "word": "actuel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "actuel"
+  },
+  {
+    "word": "adaptation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' adaptation"
+  },
+  {
+    "word": "adepte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "adepte"
+  },
+  {
+    "word": "adieu",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' adieu"
+  },
+  {
+    "word": "admettre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "admettre"
+  },
+  {
+    "word": "administration",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' administration"
+  },
+  {
+    "word": "adolescent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "adolescent"
+  },
+  {
+    "word": "adopter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "adopter"
+  },
+  {
+    "word": "adoptif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "adoptif"
+  },
+  {
+    "word": "adresser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "adresser"
+  },
+  {
+    "word": "adroit",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "adroit"
+  },
+  {
+    "word": "afficher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "afficher"
+  },
+  {
+    "word": "affirmer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "affirmer"
+  },
+  {
+    "word": "affreux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "affreux"
+  },
+  {
+    "word": "affronter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "affronter"
+  },
+  {
+    "word": "agent",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' agent"
+  },
+  {
+    "word": "agitation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' agitation"
+  },
+  {
+    "word": "agiter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "agiter"
+  },
+  {
+    "word": "agrandir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "agrandir"
+  },
+  {
+    "word": "agresser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "agresser"
+  },
+  {
+    "word": "agricole",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "agricole"
+  },
+  {
+    "word": "agriculteur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' agriculteur"
+  },
+  {
+    "word": "agréer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "agréer"
+  },
+  {
+    "word": "aiguille",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' aiguille"
+  },
+  {
+    "word": "ailler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ailler"
+  },
+  {
+    "word": "aimable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "aimable"
+  },
+  {
+    "word": "aise",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' aise"
+  },
+  {
+    "word": "alentour",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "alentour"
+  },
+  {
+    "word": "algérien",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "algérien"
+  },
+  {
+    "word": "alimentaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "alimentaire"
+  },
+  {
+    "word": "amande",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' amande"
+  },
+  {
+    "word": "amener",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "amener"
+  },
+  {
+    "word": "amélioration",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' amélioration"
+  },
+  {
+    "word": "améliorer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "améliorer"
+  },
+  {
+    "word": "aménager",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aménager"
+  },
+  {
+    "word": "ancêtre",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ancêtre"
+  },
+  {
+    "word": "ange",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' ange"
+  },
+  {
+    "word": "animateur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "animateur"
+  },
+  {
+    "word": "annonce",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' annonce"
+  },
+  {
+    "word": "annuel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "annuel"
+  },
+  {
+    "word": "anticiper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anticiper"
+  },
+  {
+    "word": "apparemment",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "apparemment"
+  },
+  {
+    "word": "apparence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' apparence"
+  },
+  {
+    "word": "appel",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' appel"
+  },
+  {
+    "word": "apprentissage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' apprentissage"
+  },
+  {
+    "word": "apprécier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "apprécier"
+  },
+  {
+    "word": "armer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "armer"
+  },
+  {
+    "word": "armoire",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' armoire"
+  },
+  {
+    "word": "armure",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' armure"
+  },
+  {
+    "word": "armée",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' armée"
+  },
+  {
+    "word": "arranger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "arranger"
+  },
+  {
+    "word": "arrestation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' arrestation"
+  },
+  {
+    "word": "arrivé",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' arrivé"
+  },
+  {
+    "word": "arrière",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' arrière"
+  },
+  {
+    "word": "arroser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "arroser"
+  },
+  {
+    "word": "arrêt",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' arrêt"
+  },
+  {
+    "word": "arrêté",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' arrêté"
+  },
+  {
+    "word": "artificiel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "artificiel"
+  },
+  {
+    "word": "artiste",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "artiste"
+  },
+  {
+    "word": "artistique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "artistique"
+  },
+  {
+    "word": "arène",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' arène"
+  },
+  {
+    "word": "aspect",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' aspect"
+  },
+  {
+    "word": "aspirateur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' aspirateur"
+  },
+  {
+    "word": "assassin",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' assassin"
+  },
+  {
+    "word": "assemblée",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' assemblée"
+  },
+  {
+    "word": "assiette",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' assiette"
+  },
+  {
+    "word": "associer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "associer"
+  },
+  {
+    "word": "assurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "assurer"
+  },
+  {
+    "word": "atmosphère",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' atmosphère"
+  },
+  {
+    "word": "attaque",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' attaque"
+  },
+  {
+    "word": "atteindre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "atteindre"
+  },
+  {
+    "word": "attente",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' attente"
+  },
+  {
+    "word": "attentif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "attentif"
+  },
+  {
+    "word": "attentivement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "attentivement"
+  },
+  {
+    "word": "attirer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "attirer"
+  },
+  {
+    "word": "attitude",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' attitude"
+  },
+  {
+    "word": "attribuer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "attribuer"
+  },
+  {
+    "word": "au-dessous",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "au-dessous"
+  },
+  {
+    "word": "auditeur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' auditeur"
+  },
+  {
+    "word": "augmentation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' augmentation"
+  },
+  {
+    "word": "augmenter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "augmenter"
+  },
+  {
+    "word": "auparavant",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "auparavant"
+  },
+  {
+    "word": "auto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "auto"
+  },
+  {
+    "word": "autobus",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' autobus"
+  },
+  {
+    "word": "automatiquement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "automatiquement"
+  },
+  {
+    "word": "automobile",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' automobile"
+  },
+  {
+    "word": "automobile",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "automobile"
+  },
+  {
+    "word": "automobiliste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "automobiliste"
+  },
+  {
+    "word": "autorisation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' autorisation"
+  },
+  {
+    "word": "autorité",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' autorité"
+  },
+  {
+    "word": "autrefois",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "autrefois"
+  },
+  {
+    "word": "autrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "autrement"
+  },
+  {
+    "word": "avance",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' avance"
+  },
+  {
+    "word": "avec",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "avec"
+  },
+  {
+    "word": "avenir",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' avenir"
+  },
+  {
+    "word": "aventurier",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' aventurier"
+  },
+  {
+    "word": "avertir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "avertir"
+  },
+  {
+    "word": "aveugle",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aveugle"
+  },
+  {
+    "word": "aveugle",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "aveugle"
+  },
+  {
+    "word": "avocat",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' avocat"
+  },
+  {
+    "word": "aérer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aérer"
+  },
+  {
+    "word": "aîné",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' aîné"
+  },
+  {
+    "word": "baccalauréat",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le baccalauréat"
+  },
+  {
+    "word": "bagage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bagage"
+  },
+  {
+    "word": "bagarre",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bagarre"
+  },
+  {
+    "word": "bague",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bague"
+  },
+  {
+    "word": "baiser",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le baiser"
+  },
+  {
+    "word": "baisse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la baisse"
+  },
+  {
+    "word": "baisser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "baisser"
+  },
+  {
+    "word": "ballet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ballet"
+  },
+  {
+    "word": "banal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "banal"
+  },
+  {
+    "word": "banc",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le banc"
+  },
+  {
+    "word": "barbe",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "barbe"
+  },
+  {
+    "word": "barque",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la barque"
+  },
+  {
+    "word": "barreau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le barreau"
+  },
+  {
+    "word": "barrière",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la barrière"
+  },
+  {
+    "word": "bas",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bas"
+  },
+  {
+    "word": "basque",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "basque"
+  },
+  {
+    "word": "bassin",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bassin"
+  },
+  {
+    "word": "bataille",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bataille"
+  },
+  {
+    "word": "batterie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la batterie"
+  },
+  {
+    "word": "bavard",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "bavard"
+  },
+  {
+    "word": "belle-fille",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la belle-fille"
+  },
+  {
+    "word": "berger",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le berger"
+  },
+  {
+    "word": "bienvenu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bienvenu"
+  },
+  {
+    "word": "bijou",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bijou"
+  },
+  {
+    "word": "bilan",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bilan"
+  },
+  {
+    "word": "bizarrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "bizarrement"
+  },
+  {
+    "word": "blesser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "blesser"
+  },
+  {
+    "word": "blouse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la blouse"
+  },
+  {
+    "word": "bohémien",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "bohémien"
+  },
+  {
+    "word": "bohémien",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bohémien"
+  },
+  {
+    "word": "bon",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "bon"
+  },
+  {
+    "word": "bonbon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bonbon"
+  },
+  {
+    "word": "bond",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bond"
+  },
+  {
+    "word": "bonhomme",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bonhomme"
+  },
+  {
+    "word": "bonnet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bonnet"
+  },
+  {
+    "word": "bonté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bonté"
+  },
+  {
+    "word": "boucher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "boucher"
+  },
+  {
+    "word": "boucle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la boucle"
+  },
+  {
+    "word": "bouclier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bouclier"
+  },
+  {
+    "word": "boue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la boue"
+  },
+  {
+    "word": "bouger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bouger"
+  },
+  {
+    "word": "bougie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bougie"
+  },
+  {
+    "word": "bouillir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bouillir"
+  },
+  {
+    "word": "bouleverser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bouleverser"
+  },
+  {
+    "word": "boulot",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le boulot"
+  },
+  {
+    "word": "boulot",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "boulot"
+  },
+  {
+    "word": "bourgade",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bourgade"
+  },
+  {
+    "word": "bourgeoisie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bourgeoisie"
+  },
+  {
+    "word": "bouton",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bouton"
+  },
+  {
+    "word": "branche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la branche"
+  },
+  {
+    "word": "brancher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "brancher"
+  },
+  {
+    "word": "bref",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "bref"
+  },
+  {
+    "word": "breton",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "breton"
+  },
+  {
+    "word": "brevet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le brevet"
+  },
+  {
+    "word": "bricolage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bricolage"
+  },
+  {
+    "word": "brigadier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le brigadier"
+  },
+  {
+    "word": "brillant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "brillant"
+  },
+  {
+    "word": "briser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "briser"
+  },
+  {
+    "word": "britannique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "britannique"
+  },
+  {
+    "word": "bronze",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bronze"
+  },
+  {
+    "word": "brouillard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le brouillard"
+  },
+  {
+    "word": "bruire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bruire"
+  },
+  {
+    "word": "brume",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la brume"
+  },
+  {
+    "word": "brusquement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "brusquement"
+  },
+  {
+    "word": "brutal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "brutal"
+  },
+  {
+    "word": "bruyant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "bruyant"
+  },
+  {
+    "word": "brûlant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "brûlant"
+  },
+  {
+    "word": "budget",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le budget"
+  },
+  {
+    "word": "but",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le but"
+  },
+  {
+    "word": "bâton",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bâton"
+  },
+  {
+    "word": "bénéficier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bénéficier"
+  },
+  {
+    "word": "bête",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "bête"
+  },
+  {
+    "word": "bête",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la bête"
+  },
+  {
+    "word": "bûcheron",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le bûcheron"
+  },
+  {
+    "word": "cabane",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cabane"
+  },
+  {
+    "word": "cabine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cabine"
+  },
+  {
+    "word": "cabinet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cabinet"
+  },
+  {
+    "word": "cachette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cachette"
+  },
+  {
+    "word": "cadre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cadre"
+  },
+  {
+    "word": "cadrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cadrer"
+  },
+  {
+    "word": "caillou",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le caillou"
+  },
+  {
+    "word": "calculer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "calculer"
+  },
+  {
+    "word": "calendrier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le calendrier"
+  },
+  {
+    "word": "calmer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "calmer"
+  },
+  {
+    "word": "camionnette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la camionnette"
+  },
+  {
+    "word": "camp",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le camp"
+  },
+  {
+    "word": "camper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "camper"
+  },
+  {
+    "word": "caméra",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la caméra"
+  },
+  {
+    "word": "candidature",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la candidature"
+  },
+  {
+    "word": "capitaine",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le capitaine"
+  },
+  {
+    "word": "caractère",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le caractère"
+  },
+  {
+    "word": "caractéristique",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la caractéristique"
+  },
+  {
+    "word": "carafe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la carafe"
+  },
+  {
+    "word": "carburant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le carburant"
+  },
+  {
+    "word": "carburer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "carburer"
+  },
+  {
+    "word": "caresse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la caresse"
+  },
+  {
+    "word": "caresser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "caresser"
+  },
+  {
+    "word": "carrefour",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le carrefour"
+  },
+  {
+    "word": "carrosse",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le carrosse"
+  },
+  {
+    "word": "carton",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le carton"
+  },
+  {
+    "word": "case",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la case"
+  },
+  {
+    "word": "caserne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la caserne"
+  },
+  {
+    "word": "cassé",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "cassé"
+  },
+  {
+    "word": "castagnettes",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "castagnettes"
+  },
+  {
+    "word": "catastrophe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la catastrophe"
+  },
+  {
+    "word": "catholique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "catholique"
+  },
+  {
+    "word": "catégorie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la catégorie"
+  },
+  {
+    "word": "cauchemar",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cauchemar"
+  },
+  {
+    "word": "causer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "causer"
+  },
+  {
+    "word": "cavalier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cavalier"
+  },
+  {
+    "word": "ceinture",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ceinture"
+  },
+  {
+    "word": "celer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "celer"
+  },
+  {
+    "word": "celte",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "celte"
+  },
+  {
+    "word": "celtique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "celtique"
+  },
+  {
+    "word": "cendrillon",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cendrillon"
+  },
+  {
+    "word": "cent",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cent"
+  },
+  {
+    "word": "centaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la centaine"
+  },
+  {
+    "word": "centimètre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le centimètre"
+  },
+  {
+    "word": "central",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "central"
+  },
+  {
+    "word": "centraliser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "centraliser"
+  },
+  {
+    "word": "certes",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "certes"
+  },
+  {
+    "word": "cerveau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cerveau"
+  },
+  {
+    "word": "cesser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cesser"
+  },
+  {
+    "word": "chaleur",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la chaleur"
+  },
+  {
+    "word": "champignon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le champignon"
+  },
+  {
+    "word": "championnat",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le championnat"
+  },
+  {
+    "word": "chandelier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le chandelier"
+  },
+  {
+    "word": "change",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le change"
+  },
+  {
+    "word": "changement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le changement"
+  },
+  {
+    "word": "char",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le char"
+  },
+  {
+    "word": "charbon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le charbon"
+  },
+  {
+    "word": "charge",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la charge"
+  },
+  {
+    "word": "charger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "charger"
+  },
+  {
+    "word": "chasse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la chasse"
+  },
+  {
+    "word": "chasser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "chasser"
+  },
+  {
+    "word": "chasseur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le chasseur"
+  },
+  {
+    "word": "chauffer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "chauffer"
+  },
+  {
+    "word": "chausser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "chausser"
+  },
+  {
+    "word": "chef",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chef"
+  },
+  {
+    "word": "chemise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la chemise"
+  },
+  {
+    "word": "choc",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le choc"
+  },
+  {
+    "word": "choquant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "choquant"
+  },
+  {
+    "word": "choquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "choquer"
+  },
+  {
+    "word": "chérir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "chérir"
+  },
+  {
+    "word": "cigare",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cigare"
+  },
+  {
+    "word": "cigarette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cigarette"
+  },
+  {
+    "word": "cinquantaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cinquantaine"
+  },
+  {
+    "word": "cinquième",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cinquième"
+  },
+  {
+    "word": "cinéaste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cinéaste"
+  },
+  {
+    "word": "cinématographique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "cinématographique"
+  },
+  {
+    "word": "circuit",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le circuit"
+  },
+  {
+    "word": "circulation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la circulation"
+  },
+  {
+    "word": "circuler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "circuler"
+  },
+  {
+    "word": "cirer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cirer"
+  },
+  {
+    "word": "cirque",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cirque"
+  },
+  {
+    "word": "citadin",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le citadin"
+  },
+  {
+    "word": "citoyen",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le citoyen"
+  },
+  {
+    "word": "civil",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "civil"
+  },
+  {
+    "word": "civilisation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la civilisation"
+  },
+  {
+    "word": "clairement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "clairement"
+  },
+  {
+    "word": "classement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le classement"
+  },
+  {
+    "word": "clef",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la clef"
+  },
+  {
+    "word": "cliché",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cliché"
+  },
+  {
+    "word": "clientèle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la clientèle"
+  },
+  {
+    "word": "cloche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cloche"
+  },
+  {
+    "word": "clôture",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la clôture"
+  },
+  {
+    "word": "coach",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coach"
+  },
+  {
+    "word": "cocher",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cocher"
+  },
+  {
+    "word": "cochon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cochon"
+  },
+  {
+    "word": "coffret",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coffret"
+  },
+  {
+    "word": "cohabitation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cohabitation"
+  },
+  {
+    "word": "col",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le col"
+  },
+  {
+    "word": "collectif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "collectif"
+  },
+  {
+    "word": "colocataire",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "colocataire"
+  },
+  {
+    "word": "colocation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la colocation"
+  },
+  {
+    "word": "colonel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le colonel"
+  },
+  {
+    "word": "combattant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le combattant"
+  },
+  {
+    "word": "combattre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "combattre"
+  },
+  {
+    "word": "commande",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la commande"
+  },
+  {
+    "word": "commencement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le commencement"
+  },
+  {
+    "word": "commissaire",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "commissaire"
+  },
+  {
+    "word": "commun",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le commun"
+  },
+  {
+    "word": "commune",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la commune"
+  },
+  {
+    "word": "communion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la communion"
+  },
+  {
+    "word": "communiquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "communiquer"
+  },
+  {
+    "word": "compagnon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le compagnon"
+  },
+  {
+    "word": "comparaison",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la comparaison"
+  },
+  {
+    "word": "comparer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "comparer"
+  },
+  {
+    "word": "compassion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la compassion"
+  },
+  {
+    "word": "complètement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "complètement"
+  },
+  {
+    "word": "comportement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le comportement"
+  },
+  {
+    "word": "comporter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "comporter"
+  },
+  {
+    "word": "compte",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le compte"
+  },
+  {
+    "word": "compétition",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la compétition"
+  },
+  {
+    "word": "concentrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "concentrer"
+  },
+  {
+    "word": "concierge",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "concierge"
+  },
+  {
+    "word": "conclure",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "conclure"
+  },
+  {
+    "word": "concret",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "concret"
+  },
+  {
+    "word": "concurrence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la concurrence"
+  },
+  {
+    "word": "condamnation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la condamnation"
+  },
+  {
+    "word": "condamner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "condamner"
+  },
+  {
+    "word": "conduite",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la conduite"
+  },
+  {
+    "word": "confier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "confier"
+  },
+  {
+    "word": "conflit",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le conflit"
+  },
+  {
+    "word": "confondre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "confondre"
+  },
+  {
+    "word": "confort",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le confort"
+  },
+  {
+    "word": "conquérir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "conquérir"
+  },
+  {
+    "word": "conquête",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la conquête"
+  },
+  {
+    "word": "conscience",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la conscience"
+  },
+  {
+    "word": "conseiller",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le conseiller"
+  },
+  {
+    "word": "conservateur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le conservateur"
+  },
+  {
+    "word": "conservateur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "conservateur"
+  },
+  {
+    "word": "considérable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "considérable"
+  },
+  {
+    "word": "consister",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "consister"
+  },
+  {
+    "word": "consommateur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le consommateur"
+  },
+  {
+    "word": "consommation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la consommation"
+  },
+  {
+    "word": "constamment",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "constamment"
+  },
+  {
+    "word": "constitution",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la constitution"
+  },
+  {
+    "word": "consulter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "consulter"
+  },
+  {
+    "word": "conséquence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la conséquence"
+  },
+  {
+    "word": "conséquent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "conséquent"
+  },
+  {
+    "word": "contagieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "contagieux"
+  },
+  {
+    "word": "contenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contenir"
+  },
+  {
+    "word": "contenter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contenter"
+  },
+  {
+    "word": "contenu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le contenu"
+  },
+  {
+    "word": "contexte",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le contexte"
+  },
+  {
+    "word": "contrainte",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la contrainte"
+  },
+  {
+    "word": "contraire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le contraire"
+  },
+  {
+    "word": "contrairement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "contrairement"
+  },
+  {
+    "word": "contrat",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le contrat"
+  },
+  {
+    "word": "contribuer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contribuer"
+  },
+  {
+    "word": "contrôler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contrôler"
+  },
+  {
+    "word": "convaincant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "convaincant"
+  },
+  {
+    "word": "convenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "convenir"
+  },
+  {
+    "word": "convention",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la convention"
+  },
+  {
+    "word": "convertir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "convertir"
+  },
+  {
+    "word": "convivialité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la convivialité"
+  },
+  {
+    "word": "copain",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "copain"
+  },
+  {
+    "word": "copieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "copieux"
+  },
+  {
+    "word": "coq",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coq"
+  },
+  {
+    "word": "corne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la corne"
+  },
+  {
+    "word": "correct",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "correct"
+  },
+  {
+    "word": "correspondre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "correspondre"
+  },
+  {
+    "word": "corrida",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la corrida"
+  },
+  {
+    "word": "costume",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le costume"
+  },
+  {
+    "word": "coton",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coton"
+  },
+  {
+    "word": "cou",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cou"
+  },
+  {
+    "word": "coucher",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coucher"
+  },
+  {
+    "word": "coude",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coude"
+  },
+  {
+    "word": "coudre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "coudre"
+  },
+  {
+    "word": "couler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "couler"
+  },
+  {
+    "word": "coupable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "coupable"
+  },
+  {
+    "word": "courageusement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "courageusement"
+  },
+  {
+    "word": "courant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "courant"
+  },
+  {
+    "word": "courant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le courant"
+  },
+  {
+    "word": "couronne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la couronne"
+  },
+  {
+    "word": "courrier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le courrier"
+  },
+  {
+    "word": "court",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "court"
+  },
+  {
+    "word": "court",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le court"
+  },
+  {
+    "word": "couteau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le couteau"
+  },
+  {
+    "word": "couturier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le couturier"
+  },
+  {
+    "word": "couvercle",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le couvercle"
+  },
+  {
+    "word": "couverture",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la couverture"
+  },
+  {
+    "word": "coïncidence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la coïncidence"
+  },
+  {
+    "word": "coût",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le coût"
+  },
+  {
+    "word": "cracher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cracher"
+  },
+  {
+    "word": "craquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "craquer"
+  },
+  {
+    "word": "cravate",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la cravate"
+  },
+  {
+    "word": "crayon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le crayon"
+  },
+  {
+    "word": "creuser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "creuser"
+  },
+  {
+    "word": "crime",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le crime"
+  },
+  {
+    "word": "critique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "critique"
+  },
+  {
+    "word": "critique",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "critique"
+  },
+  {
+    "word": "critère",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le critère"
+  },
+  {
+    "word": "croiser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "croiser"
+  },
+  {
+    "word": "croix",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la croix"
+  },
+  {
+    "word": "créateur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le créateur"
+  },
+  {
+    "word": "création",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la création"
+  },
+  {
+    "word": "cueillir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cueillir"
+  },
+  {
+    "word": "curieusement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "curieusement"
+  },
+  {
+    "word": "curiosité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la curiosité"
+  },
+  {
+    "word": "curé",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le curé"
+  },
+  {
+    "word": "cycle",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le cycle"
+  },
+  {
+    "word": "cycliste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cycliste"
+  },
+  {
+    "word": "danger",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le danger"
+  },
+  {
+    "word": "davantage",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "davantage"
+  },
+  {
+    "word": "debout",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "debout"
+  },
+  {
+    "word": "dedans",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "dedans"
+  },
+  {
+    "word": "dehors",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le dehors"
+  },
+  {
+    "word": "demeurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "demeurer"
+  },
+  {
+    "word": "demoiselle",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "demoiselle"
+  },
+  {
+    "word": "dentelle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la dentelle"
+  },
+  {
+    "word": "dernièrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "dernièrement"
+  },
+  {
+    "word": "derrière",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "derrière"
+  },
+  {
+    "word": "description",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la description"
+  },
+  {
+    "word": "design",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le design"
+  },
+  {
+    "word": "dessous",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "dessous"
+  },
+  {
+    "word": "dessus",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "dessus"
+  },
+  {
+    "word": "destin",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le destin"
+  },
+  {
+    "word": "destiner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "destiner"
+  },
+  {
+    "word": "dette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la dette"
+  },
+  {
+    "word": "devant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le devant"
+  },
+  {
+    "word": "deviner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "deviner"
+  },
+  {
+    "word": "diamètre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le diamètre"
+  },
+  {
+    "word": "difficilement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "difficilement"
+  },
+  {
+    "word": "diffusion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la diffusion"
+  },
+  {
+    "word": "différemment",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "différemment"
+  },
+  {
+    "word": "dimension",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la dimension"
+  },
+  {
+    "word": "diminuer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "diminuer"
+  },
+  {
+    "word": "diplôme",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le diplôme"
+  },
+  {
+    "word": "discipline",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la discipline"
+  },
+  {
+    "word": "discret",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "discret"
+  },
+  {
+    "word": "disparition",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la disparition"
+  },
+  {
+    "word": "disponible",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "disponible"
+  },
+  {
+    "word": "disposition",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la disposition"
+  },
+  {
+    "word": "dispute",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la dispute"
+  },
+  {
+    "word": "disputer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "disputer"
+  },
+  {
+    "word": "dissiper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dissiper"
+  },
+  {
+    "word": "distance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la distance"
+  },
+  {
+    "word": "distinction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la distinction"
+  },
+  {
+    "word": "distinguer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "distinguer"
+  },
+  {
+    "word": "distribuer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "distribuer"
+  },
+  {
+    "word": "dizaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la dizaine"
+  },
+  {
+    "word": "docteur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le docteur"
+  },
+  {
+    "word": "doctorat",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le doctorat"
+  },
+  {
+    "word": "documentaire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le documentaire"
+  },
+  {
+    "word": "dollar",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le dollar"
+  },
+  {
+    "word": "domestique",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "domestique"
+  },
+  {
+    "word": "domicile",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le domicile"
+  },
+  {
+    "word": "dominant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "dominant"
+  },
+  {
+    "word": "dominer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dominer"
+  },
+  {
+    "word": "dominical",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "dominical"
+  },
+  {
+    "word": "dommage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le dommage"
+  },
+  {
+    "word": "don",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le don"
+  },
+  {
+    "word": "dorer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dorer"
+  },
+  {
+    "word": "doré",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "doré"
+  },
+  {
+    "word": "dossier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le dossier"
+  },
+  {
+    "word": "doubler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "doubler"
+  },
+  {
+    "word": "douceur",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la douceur"
+  },
+  {
+    "word": "douer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "douer"
+  },
+  {
+    "word": "douter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "douter"
+  },
+  {
+    "word": "dragon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le dragon"
+  },
+  {
+    "word": "dramatique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "dramatique"
+  },
+  {
+    "word": "dramaturge",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dramaturge"
+  },
+  {
+    "word": "drame",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le drame"
+  },
+  {
+    "word": "drap",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le drap"
+  },
+  {
+    "word": "drapeau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le drapeau"
+  },
+  {
+    "word": "dresser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dresser"
+  },
+  {
+    "word": "duc",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le duc"
+  },
+  {
+    "word": "dur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le dur"
+  },
+  {
+    "word": "durcir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "durcir"
+  },
+  {
+    "word": "durée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la durée"
+  },
+  {
+    "word": "débarrasser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "débarrasser"
+  },
+  {
+    "word": "déborder",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "déborder"
+  },
+  {
+    "word": "débrouiller",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "débrouiller"
+  },
+  {
+    "word": "débutant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "débutant"
+  },
+  {
+    "word": "débuter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "débuter"
+  },
+  {
+    "word": "décerner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "décerner"
+  },
+  {
+    "word": "décharge",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la décharge"
+  },
+  {
+    "word": "déchet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le déchet"
+  },
+  {
+    "word": "déchirer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "déchirer"
+  },
+  {
+    "word": "décourager",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "décourager"
+  },
+  {
+    "word": "décrocher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "décrocher"
+  },
+  {
+    "word": "décès",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le décès"
+  },
+  {
+    "word": "déesse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la déesse"
+  },
+  {
+    "word": "défense",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la défense"
+  },
+  {
+    "word": "défenseur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le défenseur"
+  },
+  {
+    "word": "dégager",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dégager"
+  },
+  {
+    "word": "délai",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le délai"
+  },
+  {
+    "word": "démolir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "démolir"
+  },
+  {
+    "word": "démonstration",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la démonstration"
+  },
+  {
+    "word": "déménagement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le déménagement"
+  },
+  {
+    "word": "dénoncer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dénoncer"
+  },
+  {
+    "word": "dépasser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dépasser"
+  },
+  {
+    "word": "dépense",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la dépense"
+  },
+  {
+    "word": "dépenser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dépenser"
+  },
+  {
+    "word": "déplacement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le déplacement"
+  },
+  {
+    "word": "déplacer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "déplacer"
+  },
+  {
+    "word": "déprimer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "déprimer"
+  },
+  {
+    "word": "dérouler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dérouler"
+  },
+  {
+    "word": "désarmer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "désarmer"
+  },
+  {
+    "word": "désert",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "désert"
+  },
+  {
+    "word": "désert",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le désert"
+  },
+  {
+    "word": "déserter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "déserter"
+  },
+  {
+    "word": "désespoir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le désespoir"
+  },
+  {
+    "word": "désespérément",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "désespérément"
+  },
+  {
+    "word": "déshabiller",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "déshabiller"
+  },
+  {
+    "word": "désir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le désir"
+  },
+  {
+    "word": "désordre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le désordre"
+  },
+  {
+    "word": "détacher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "détacher"
+  },
+  {
+    "word": "détective",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "détective"
+  },
+  {
+    "word": "détendre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "détendre"
+  },
+  {
+    "word": "détruire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "détruire"
+  },
+  {
+    "word": "déçu",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "déçu"
+  },
+  {
+    "word": "effacer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "effacer"
+  },
+  {
+    "word": "effectivement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "effectivement"
+  },
+  {
+    "word": "effectuer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "effectuer"
+  },
+  {
+    "word": "efficace",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "efficace"
+  },
+  {
+    "word": "efficacité",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' efficacité"
+  },
+  {
+    "word": "effort",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' effort"
+  },
+  {
+    "word": "embouteillage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' embouteillage"
+  },
+  {
+    "word": "embrasse",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' embrasse"
+  },
+  {
+    "word": "emparer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "emparer"
+  },
+  {
+    "word": "empire",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' empire"
+  },
+  {
+    "word": "emplacement",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' emplacement"
+  },
+  {
+    "word": "employer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "employer"
+  },
+  {
+    "word": "employé",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' employé"
+  },
+  {
+    "word": "empoisonner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "empoisonner"
+  },
+  {
+    "word": "emporter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "emporter"
+  },
+  {
+    "word": "emprunter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "emprunter"
+  },
+  {
+    "word": "empêcher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "empêcher"
+  },
+  {
+    "word": "encourager",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "encourager"
+  },
+  {
+    "word": "enfuir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enfuir"
+  },
+  {
+    "word": "enjeu",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' enjeu"
+  },
+  {
+    "word": "ennemi",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' ennemi"
+  },
+  {
+    "word": "ennui",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' ennui"
+  },
+  {
+    "word": "enregistrement",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' enregistrement"
+  },
+  {
+    "word": "enregistrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enregistrer"
+  },
+  {
+    "word": "enrichir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enrichir"
+  },
+  {
+    "word": "enseigner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enseigner"
+  },
+  {
+    "word": "enterrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enterrer"
+  },
+  {
+    "word": "enthousiasme",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' enthousiasme"
+  },
+  {
+    "word": "entièrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "entièrement"
+  },
+  {
+    "word": "entourage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' entourage"
+  },
+  {
+    "word": "entourer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "entourer"
+  },
+  {
+    "word": "entraîneur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' entraîneur"
+  },
+  {
+    "word": "entretien",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' entretien"
+  },
+  {
+    "word": "envahir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "envahir"
+  },
+  {
+    "word": "enveloppe",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' enveloppe"
+  },
+  {
+    "word": "envelopper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "envelopper"
+  },
+  {
+    "word": "envier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "envier"
+  },
+  {
+    "word": "envoi",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' envoi"
+  },
+  {
+    "word": "envoler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "envoler"
+  },
+  {
+    "word": "escalade",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' escalade"
+  },
+  {
+    "word": "espoir",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' espoir"
+  },
+  {
+    "word": "esprit",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' esprit"
+  },
+  {
+    "word": "espèce",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' espèce"
+  },
+  {
+    "word": "espérance",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' espérance"
+  },
+  {
+    "word": "essence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' essence"
+  },
+  {
+    "word": "essuyer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "essuyer"
+  },
+  {
+    "word": "est-à-dire",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "est-à-dire"
+  },
+  {
+    "word": "estimer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "estimer"
+  },
+  {
+    "word": "ethnique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ethnique"
+  },
+  {
+    "word": "exact",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "exact"
+  },
+  {
+    "word": "examiner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "examiner"
+  },
+  {
+    "word": "exceptionnel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "exceptionnel"
+  },
+  {
+    "word": "excursion",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' excursion"
+  },
+  {
+    "word": "excuse",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' excuse"
+  },
+  {
+    "word": "excès",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' excès"
+  },
+  {
+    "word": "exemplaire",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' exemplaire"
+  },
+  {
+    "word": "exercer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "exercer"
+  },
+  {
+    "word": "exiger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "exiger"
+  },
+  {
+    "word": "exil",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' exil"
+  },
+  {
+    "word": "exiler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "exiler"
+  },
+  {
+    "word": "existence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' existence"
+  },
+  {
+    "word": "exotisme",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' exotisme"
+  },
+  {
+    "word": "exploration",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' exploration"
+  },
+  {
+    "word": "explorer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "explorer"
+  },
+  {
+    "word": "exploser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "exploser"
+  },
+  {
+    "word": "expression",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' expression"
+  },
+  {
+    "word": "exprès",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "exprès"
+  },
+  {
+    "word": "expérience",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' expérience"
+  },
+  {
+    "word": "extraire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "extraire"
+  },
+  {
+    "word": "extraordinaire",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' extraordinaire"
+  },
+  {
+    "word": "extérieur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' extérieur"
+  },
+  {
+    "word": "extérieur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "extérieur"
+  },
+  {
+    "word": "fabuleux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "fabuleux"
+  },
+  {
+    "word": "faciliter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "faciliter"
+  },
+  {
+    "word": "facture",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la facture"
+  },
+  {
+    "word": "faible",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "faible"
+  },
+  {
+    "word": "faiblement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "faiblement"
+  },
+  {
+    "word": "faiblesse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la faiblesse"
+  },
+  {
+    "word": "faillir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "faillir"
+  },
+  {
+    "word": "familial",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "familial"
+  },
+  {
+    "word": "familier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "familier"
+  },
+  {
+    "word": "fantaisie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fantaisie"
+  },
+  {
+    "word": "fantôme",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fantôme"
+  },
+  {
+    "word": "fascination",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fascination"
+  },
+  {
+    "word": "fatal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "fatal"
+  },
+  {
+    "word": "fatigue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fatigue"
+  },
+  {
+    "word": "faune",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "faune"
+  },
+  {
+    "word": "faute",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la faute"
+  },
+  {
+    "word": "fauteuil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fauteuil"
+  },
+  {
+    "word": "façade",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la façade"
+  },
+  {
+    "word": "ferme",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "ferme"
+  },
+  {
+    "word": "ferme",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ferme"
+  },
+  {
+    "word": "ferme",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ferme"
+  },
+  {
+    "word": "ferment",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ferment"
+  },
+  {
+    "word": "festival",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le festival"
+  },
+  {
+    "word": "feuillage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le feuillage"
+  },
+  {
+    "word": "fiancé",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fiancé"
+  },
+  {
+    "word": "fiche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fiche"
+  },
+  {
+    "word": "fichier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fichier"
+  },
+  {
+    "word": "fiction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fiction"
+  },
+  {
+    "word": "fier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "fier"
+  },
+  {
+    "word": "fierté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fierté"
+  },
+  {
+    "word": "figure",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la figure"
+  },
+  {
+    "word": "figurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "figurer"
+  },
+  {
+    "word": "fil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fil"
+  },
+  {
+    "word": "file",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la file"
+  },
+  {
+    "word": "fillette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fillette"
+  },
+  {
+    "word": "filmer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "filmer"
+  },
+  {
+    "word": "filtre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le filtre"
+  },
+  {
+    "word": "financer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "financer"
+  },
+  {
+    "word": "financier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "financier"
+  },
+  {
+    "word": "fixe",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "fixe"
+  },
+  {
+    "word": "fièrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "fièrement"
+  },
+  {
+    "word": "fièvre",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fièvre"
+  },
+  {
+    "word": "flamme",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la flamme"
+  },
+  {
+    "word": "flash",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le flash"
+  },
+  {
+    "word": "fleurir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fleurir"
+  },
+  {
+    "word": "flore",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la flore"
+  },
+  {
+    "word": "folie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la folie"
+  },
+  {
+    "word": "foncer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "foncer"
+  },
+  {
+    "word": "foncier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "foncier"
+  },
+  {
+    "word": "fonctionnaire",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fonctionnaire"
+  },
+  {
+    "word": "forcer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "forcer"
+  },
+  {
+    "word": "formation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la formation"
+  },
+  {
+    "word": "formule",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la formule"
+  },
+  {
+    "word": "formuler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "formuler"
+  },
+  {
+    "word": "fort",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "fort"
+  },
+  {
+    "word": "fortement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "fortement"
+  },
+  {
+    "word": "fortune",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fortune"
+  },
+  {
+    "word": "fossé",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fossé"
+  },
+  {
+    "word": "foudre",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "foudre"
+  },
+  {
+    "word": "foule",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la foule"
+  },
+  {
+    "word": "four",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le four"
+  },
+  {
+    "word": "fourchette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fourchette"
+  },
+  {
+    "word": "franc",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le franc"
+  },
+  {
+    "word": "franc",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "franc"
+  },
+  {
+    "word": "franchir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "franchir"
+  },
+  {
+    "word": "frappe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la frappe"
+  },
+  {
+    "word": "fraîcheur",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fraîcheur"
+  },
+  {
+    "word": "frein",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le frein"
+  },
+  {
+    "word": "frigo",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le frigo"
+  },
+  {
+    "word": "frire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "frire"
+  },
+  {
+    "word": "frissonner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "frissonner"
+  },
+  {
+    "word": "frite",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la frite"
+  },
+  {
+    "word": "front",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le front"
+  },
+  {
+    "word": "frontière",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la frontière"
+  },
+  {
+    "word": "frotter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "frotter"
+  },
+  {
+    "word": "fréquent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "fréquent"
+  },
+  {
+    "word": "fréquentation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fréquentation"
+  },
+  {
+    "word": "fréquenter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fréquenter"
+  },
+  {
+    "word": "frôler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "frôler"
+  },
+  {
+    "word": "fuir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fuir"
+  },
+  {
+    "word": "fuite",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fuite"
+  },
+  {
+    "word": "fumeur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fumeur"
+  },
+  {
+    "word": "fumée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fumée"
+  },
+  {
+    "word": "furieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "furieux"
+  },
+  {
+    "word": "fusil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fusil"
+  },
+  {
+    "word": "fâcher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fâcher"
+  },
+  {
+    "word": "fécondité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fécondité"
+  },
+  {
+    "word": "fédération",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fédération"
+  },
+  {
+    "word": "fée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la fée"
+  },
+  {
+    "word": "féminisme",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le féminisme"
+  },
+  {
+    "word": "féministe",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "féministe"
+  },
+  {
+    "word": "fût",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le fût"
+  },
+  {
+    "word": "gagnant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le gagnant"
+  },
+  {
+    "word": "gai",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gai"
+  },
+  {
+    "word": "gallo-romain",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gallo-romain"
+  },
+  {
+    "word": "gant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le gant"
+  },
+  {
+    "word": "garantie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la garantie"
+  },
+  {
+    "word": "garer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "garer"
+  },
+  {
+    "word": "gars",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le gars"
+  },
+  {
+    "word": "gaulois",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gaulois"
+  },
+  {
+    "word": "gaz",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le gaz"
+  },
+  {
+    "word": "gelée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la gelée"
+  },
+  {
+    "word": "gendarme",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le gendarme"
+  },
+  {
+    "word": "geste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "geste"
+  },
+  {
+    "word": "gestion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la gestion"
+  },
+  {
+    "word": "gigantesque",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gigantesque"
+  },
+  {
+    "word": "glacer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "glacer"
+  },
+  {
+    "word": "global",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "global"
+  },
+  {
+    "word": "golf",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le golf"
+  },
+  {
+    "word": "gorge",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gorge"
+  },
+  {
+    "word": "goutte",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la goutte"
+  },
+  {
+    "word": "gouvernemental",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gouvernemental"
+  },
+  {
+    "word": "goûter",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le goûter"
+  },
+  {
+    "word": "grandeur",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la grandeur"
+  },
+  {
+    "word": "grandir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "grandir"
+  },
+  {
+    "word": "gratitude",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la gratitude"
+  },
+  {
+    "word": "gratter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gratter"
+  },
+  {
+    "word": "grecque",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "grecque"
+  },
+  {
+    "word": "grenier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le grenier"
+  },
+  {
+    "word": "grimper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "grimper"
+  },
+  {
+    "word": "grippe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la grippe"
+  },
+  {
+    "word": "grossir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "grossir"
+  },
+  {
+    "word": "grève",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la grève"
+  },
+  {
+    "word": "guerrier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "guerrier"
+  },
+  {
+    "word": "guerrier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le guerrier"
+  },
+  {
+    "word": "guide",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "guide"
+  },
+  {
+    "word": "guider",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "guider"
+  },
+  {
+    "word": "guillotine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la guillotine"
+  },
+  {
+    "word": "guérir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "guérir"
+  },
+  {
+    "word": "gâcher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gâcher"
+  },
+  {
+    "word": "géant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le géant"
+  },
+  {
+    "word": "généralement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "généralement"
+  },
+  {
+    "word": "générosité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la générosité"
+  },
+  {
+    "word": "gênant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gênant"
+  },
+  {
+    "word": "gêner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "gêner"
+  },
+  {
+    "word": "gêné",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "gêné"
+  },
+  {
+    "word": "gîte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gîte"
+  },
+  {
+    "word": "habile",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "habile"
+  },
+  {
+    "word": "habit",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' habit"
+  },
+  {
+    "word": "habitation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' habitation"
+  },
+  {
+    "word": "habituel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "habituel"
+  },
+  {
+    "word": "habituellement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "habituellement"
+  },
+  {
+    "word": "habituer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "habituer"
+  },
+  {
+    "word": "hache",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' hache"
+  },
+  {
+    "word": "haine",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' haine"
+  },
+  {
+    "word": "hall",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' hall"
+  },
+  {
+    "word": "halte",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' halte"
+  },
+  {
+    "word": "hasard",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' hasard"
+  },
+  {
+    "word": "hausse",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' hausse"
+  },
+  {
+    "word": "haut",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' haut"
+  },
+  {
+    "word": "hauteur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' hauteur"
+  },
+  {
+    "word": "haïr",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "haïr"
+  },
+  {
+    "word": "hier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hier"
+  },
+  {
+    "word": "hier",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hier"
+  },
+  {
+    "word": "high-tech",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "high-tech"
+  },
+  {
+    "word": "hisser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hisser"
+  },
+  {
+    "word": "hommage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' hommage"
+  },
+  {
+    "word": "honnête",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "honnête"
+  },
+  {
+    "word": "honte",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' honte"
+  },
+  {
+    "word": "horloge",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' horloge"
+  },
+  {
+    "word": "humain",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' humain"
+  },
+  {
+    "word": "humanitaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "humanitaire"
+  },
+  {
+    "word": "hurler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "hurler"
+  },
+  {
+    "word": "héberger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "héberger"
+  },
+  {
+    "word": "héroïne",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "héroïne"
+  },
+  {
+    "word": "identifier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "identifier"
+  },
+  {
+    "word": "idiot",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "idiot"
+  },
+  {
+    "word": "idiot",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' idiot"
+  },
+  {
+    "word": "illusion",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' illusion"
+  },
+  {
+    "word": "illégal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "illégal"
+  },
+  {
+    "word": "imagination",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' imagination"
+  },
+  {
+    "word": "imbécile",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "imbécile"
+  },
+  {
+    "word": "imiter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "imiter"
+  },
+  {
+    "word": "immigrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "immigrer"
+  },
+  {
+    "word": "immobile",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "immobile"
+  },
+  {
+    "word": "immobilier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "immobilier"
+  },
+  {
+    "word": "impatient",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "impatient"
+  },
+  {
+    "word": "implanter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "implanter"
+  },
+  {
+    "word": "impliquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "impliquer"
+  },
+  {
+    "word": "importance",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' importance"
+  },
+  {
+    "word": "importer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "importer"
+  },
+  {
+    "word": "imposant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "imposant"
+  },
+  {
+    "word": "imposer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "imposer"
+  },
+  {
+    "word": "impossible",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' impossible"
+  },
+  {
+    "word": "impressionnant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "impressionnant"
+  },
+  {
+    "word": "imprimer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "imprimer"
+  },
+  {
+    "word": "impôt",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' impôt"
+  },
+  {
+    "word": "inaugurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "inaugurer"
+  },
+  {
+    "word": "incapable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "incapable"
+  },
+  {
+    "word": "incendie",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' incendie"
+  },
+  {
+    "word": "incendier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "incendier"
+  },
+  {
+    "word": "incident",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' incident"
+  },
+  {
+    "word": "inclure",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "inclure"
+  },
+  {
+    "word": "inconnu",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' inconnu"
+  },
+  {
+    "word": "inconvénient",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' inconvénient"
+  },
+  {
+    "word": "indemne",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "indemne"
+  },
+  {
+    "word": "indication",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' indication"
+  },
+  {
+    "word": "indifférence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' indifférence"
+  },
+  {
+    "word": "indifférent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "indifférent"
+  },
+  {
+    "word": "indigner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "indigner"
+  },
+  {
+    "word": "indispensable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "indispensable"
+  },
+  {
+    "word": "individu",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' individu"
+  },
+  {
+    "word": "industrie",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' industrie"
+  },
+  {
+    "word": "industriel",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' industriel"
+  },
+  {
+    "word": "indépendance",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' indépendance"
+  },
+  {
+    "word": "influence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' influence"
+  },
+  {
+    "word": "initiation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' initiation"
+  },
+  {
+    "word": "initiative",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' initiative"
+  },
+  {
+    "word": "initier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "initier"
+  },
+  {
+    "word": "injuste",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "injuste"
+  },
+  {
+    "word": "injustice",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' injustice"
+  },
+  {
+    "word": "inquiétant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "inquiétant"
+  },
+  {
+    "word": "insolite",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "insolite"
+  },
+  {
+    "word": "insulte",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' insulte"
+  },
+  {
+    "word": "insécurité",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' insécurité"
+  },
+  {
+    "word": "intact",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "intact"
+  },
+  {
+    "word": "intellectuel",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' intellectuel"
+  },
+  {
+    "word": "intelligence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' intelligence"
+  },
+  {
+    "word": "intensif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "intensif"
+  },
+  {
+    "word": "intention",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' intention"
+  },
+  {
+    "word": "interactif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "interactif"
+  },
+  {
+    "word": "interpeller",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "interpeller"
+  },
+  {
+    "word": "interprète",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "interprète"
+  },
+  {
+    "word": "interpréter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "interpréter"
+  },
+  {
+    "word": "interrompre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "interrompre"
+  },
+  {
+    "word": "intervenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "intervenir"
+  },
+  {
+    "word": "intervention",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' intervention"
+  },
+  {
+    "word": "interview",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' interview"
+  },
+  {
+    "word": "intituler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "intituler"
+  },
+  {
+    "word": "intriguer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "intriguer"
+  },
+  {
+    "word": "intégrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "intégrer"
+  },
+  {
+    "word": "intérêt",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' intérêt"
+  },
+  {
+    "word": "inutile",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "inutile"
+  },
+  {
+    "word": "invisible",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "invisible"
+  },
+  {
+    "word": "invite",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' invite"
+  },
+  {
+    "word": "ironique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ironique"
+  },
+  {
+    "word": "isoler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "isoler"
+  },
+  {
+    "word": "isolé",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "isolé"
+  },
+  {
+    "word": "jalousie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la jalousie"
+  },
+  {
+    "word": "jambon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le jambon"
+  },
+  {
+    "word": "jardinier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "jardinier"
+  },
+  {
+    "word": "jaune",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jaune"
+  },
+  {
+    "word": "jet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le jet"
+  },
+  {
+    "word": "job",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le job"
+  },
+  {
+    "word": "joindre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "joindre"
+  },
+  {
+    "word": "joue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la joue"
+  },
+  {
+    "word": "journal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "journal"
+  },
+  {
+    "word": "joyeusement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "joyeusement"
+  },
+  {
+    "word": "jugement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le jugement"
+  },
+  {
+    "word": "juger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "juger"
+  },
+  {
+    "word": "jungle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la jungle"
+  },
+  {
+    "word": "jupe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la jupe"
+  },
+  {
+    "word": "jurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "jurer"
+  },
+  {
+    "word": "jury",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le jury"
+  },
+  {
+    "word": "juste",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le juste"
+  },
+  {
+    "word": "lac",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le lac"
+  },
+  {
+    "word": "laid",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "laid"
+  },
+  {
+    "word": "laine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la laine"
+  },
+  {
+    "word": "lame",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lame"
+  },
+  {
+    "word": "lance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lance"
+  },
+  {
+    "word": "langage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le langage"
+  },
+  {
+    "word": "largement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "largement"
+  },
+  {
+    "word": "lavabo",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le lavabo"
+  },
+  {
+    "word": "lecteur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le lecteur"
+  },
+  {
+    "word": "lent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "lent"
+  },
+  {
+    "word": "lenteur",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lenteur"
+  },
+  {
+    "word": "lessive",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lessive"
+  },
+  {
+    "word": "librement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "librement"
+  },
+  {
+    "word": "licence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la licence"
+  },
+  {
+    "word": "lier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lier"
+  },
+  {
+    "word": "ligne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ligne"
+  },
+  {
+    "word": "lilas",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le lilas"
+  },
+  {
+    "word": "limite",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la limite"
+  },
+  {
+    "word": "limiter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "limiter"
+  },
+  {
+    "word": "linge",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le linge"
+  },
+  {
+    "word": "lion",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le lion"
+  },
+  {
+    "word": "littoral",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le littoral"
+  },
+  {
+    "word": "littéraire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "littéraire"
+  },
+  {
+    "word": "littéralement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "littéralement"
+  },
+  {
+    "word": "livrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "livrer"
+  },
+  {
+    "word": "loger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "loger"
+  },
+  {
+    "word": "logiciel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le logiciel"
+  },
+  {
+    "word": "longuement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "longuement"
+  },
+  {
+    "word": "lors",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "lors"
+  },
+  {
+    "word": "loto",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le loto"
+  },
+  {
+    "word": "lourdement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "lourdement"
+  },
+  {
+    "word": "loyal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "loyal"
+  },
+  {
+    "word": "loyer",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le loyer"
+  },
+  {
+    "word": "lutte",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lutte"
+  },
+  {
+    "word": "lyonnais",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "lyonnais"
+  },
+  {
+    "word": "là-dedans",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "là-dedans"
+  },
+  {
+    "word": "là-haut",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "là-haut"
+  },
+  {
+    "word": "lâche",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "lâche"
+  },
+  {
+    "word": "lèvre",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lèvre"
+  },
+  {
+    "word": "légion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la légion"
+  },
+  {
+    "word": "légèrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "légèrement"
+  },
+  {
+    "word": "mac",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mac"
+  },
+  {
+    "word": "machine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la machine"
+  },
+  {
+    "word": "maghrébin",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "maghrébin"
+  },
+  {
+    "word": "magicien",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le magicien"
+  },
+  {
+    "word": "magie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la magie"
+  },
+  {
+    "word": "magique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "magique"
+  },
+  {
+    "word": "maigre",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "maigre"
+  },
+  {
+    "word": "maigrir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "maigrir"
+  },
+  {
+    "word": "maillot",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le maillot"
+  },
+  {
+    "word": "maintenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "maintenir"
+  },
+  {
+    "word": "majeur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "majeur"
+  },
+  {
+    "word": "majorité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la majorité"
+  },
+  {
+    "word": "maladie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la maladie"
+  },
+  {
+    "word": "malheur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le malheur"
+  },
+  {
+    "word": "malheureux",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le malheureux"
+  },
+  {
+    "word": "mamie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mamie"
+  },
+  {
+    "word": "manche",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "manche"
+  },
+  {
+    "word": "manger",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le manger"
+  },
+  {
+    "word": "manifestation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la manifestation"
+  },
+  {
+    "word": "manque",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le manque"
+  },
+  {
+    "word": "manteau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le manteau"
+  },
+  {
+    "word": "manuel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "manuel"
+  },
+  {
+    "word": "marathon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le marathon"
+  },
+  {
+    "word": "marchand",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le marchand"
+  },
+  {
+    "word": "marchand",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "marchand"
+  },
+  {
+    "word": "marchandise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la marchandise"
+  },
+  {
+    "word": "marin",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "marin"
+  },
+  {
+    "word": "marié",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le marié"
+  },
+  {
+    "word": "marteau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le marteau"
+  },
+  {
+    "word": "masse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la masse"
+  },
+  {
+    "word": "match",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le match"
+  },
+  {
+    "word": "matinée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la matinée"
+  },
+  {
+    "word": "matériel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "matériel"
+  },
+  {
+    "word": "matériel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le matériel"
+  },
+  {
+    "word": "maîtrise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la maîtrise"
+  },
+  {
+    "word": "maîtriser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "maîtriser"
+  },
+  {
+    "word": "membre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le membre"
+  },
+  {
+    "word": "menace",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la menace"
+  },
+  {
+    "word": "menacer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "menacer"
+  },
+  {
+    "word": "mensonge",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mensonge"
+  },
+  {
+    "word": "mensuel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "mensuel"
+  },
+  {
+    "word": "menteur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le menteur"
+  },
+  {
+    "word": "menton",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le menton"
+  },
+  {
+    "word": "mesdames",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mesdames"
+  },
+  {
+    "word": "mesdemoiselles",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mesdemoiselles"
+  },
+  {
+    "word": "mesure",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mesure"
+  },
+  {
+    "word": "mets",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mets"
+  },
+  {
+    "word": "meuble",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le meuble"
+  },
+  {
+    "word": "mi-temps",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mi-temps"
+  },
+  {
+    "word": "militaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "militaire"
+  },
+  {
+    "word": "mille",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mille"
+  },
+  {
+    "word": "milliard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le milliard"
+  },
+  {
+    "word": "millier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le millier"
+  },
+  {
+    "word": "millénaire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le millénaire"
+  },
+  {
+    "word": "mine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mine"
+  },
+  {
+    "word": "mineur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "mineur"
+  },
+  {
+    "word": "minimum",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le minimum"
+  },
+  {
+    "word": "ministre",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ministre"
+  },
+  {
+    "word": "ministère",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ministère"
+  },
+  {
+    "word": "minuit",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le minuit"
+  },
+  {
+    "word": "miracle",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le miracle"
+  },
+  {
+    "word": "miroir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le miroir"
+  },
+  {
+    "word": "mise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mise"
+  },
+  {
+    "word": "mission",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mission"
+  },
+  {
+    "word": "misère",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la misère"
+  },
+  {
+    "word": "misérable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "misérable"
+  },
+  {
+    "word": "mobiliser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mobiliser"
+  },
+  {
+    "word": "mobylette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mobylette"
+  },
+  {
+    "word": "modeste",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "modeste"
+  },
+  {
+    "word": "modifier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "modifier"
+  },
+  {
+    "word": "modèle",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le modèle"
+  },
+  {
+    "word": "monarchie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la monarchie"
+  },
+  {
+    "word": "monastère",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le monastère"
+  },
+  {
+    "word": "monstre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le monstre"
+  },
+  {
+    "word": "monte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "monte"
+  },
+  {
+    "word": "moral",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "moral"
+  },
+  {
+    "word": "moralité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la moralité"
+  },
+  {
+    "word": "mordre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mordre"
+  },
+  {
+    "word": "mort",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "mort"
+  },
+  {
+    "word": "motivation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la motivation"
+  },
+  {
+    "word": "motiver",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "motiver"
+  },
+  {
+    "word": "moto",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la moto"
+  },
+  {
+    "word": "mouche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mouche"
+  },
+  {
+    "word": "mouchoir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mouchoir"
+  },
+  {
+    "word": "mouiller",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mouiller"
+  },
+  {
+    "word": "mourant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "mourant"
+  },
+  {
+    "word": "moustache",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la moustache"
+  },
+  {
+    "word": "mouvement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mouvement"
+  },
+  {
+    "word": "muet",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "muet"
+  },
+  {
+    "word": "multiplier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "multiplier"
+  },
+  {
+    "word": "municipal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "municipal"
+  },
+  {
+    "word": "murmure",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le murmure"
+  },
+  {
+    "word": "murmurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "murmurer"
+  },
+  {
+    "word": "muscler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "muscler"
+  },
+  {
+    "word": "mythe",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mythe"
+  },
+  {
+    "word": "mère",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "mère"
+  },
+  {
+    "word": "méchant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "méchant"
+  },
+  {
+    "word": "méchant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le méchant"
+  },
+  {
+    "word": "mécher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mécher"
+  },
+  {
+    "word": "médaille",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la médaille"
+  },
+  {
+    "word": "médiathèque",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "médiathèque"
+  },
+  {
+    "word": "médical",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "médical"
+  },
+  {
+    "word": "méfier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "méfier"
+  },
+  {
+    "word": "mélange",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mélange"
+  },
+  {
+    "word": "mélodie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la mélodie"
+  },
+  {
+    "word": "mémoire",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mémoire"
+  },
+  {
+    "word": "ménager",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ménager"
+  },
+  {
+    "word": "ménestrel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ménestrel"
+  },
+  {
+    "word": "mérite",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le mérite"
+  },
+  {
+    "word": "mériter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mériter"
+  },
+  {
+    "word": "métallique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "métallique"
+  },
+  {
+    "word": "méthode",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la méthode"
+  },
+  {
+    "word": "mêler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mêler"
+  },
+  {
+    "word": "nappe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la nappe"
+  },
+  {
+    "word": "natal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "natal"
+  },
+  {
+    "word": "naturellement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "naturellement"
+  },
+  {
+    "word": "navette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la navette"
+  },
+  {
+    "word": "neiger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "neiger"
+  },
+  {
+    "word": "nettoyage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le nettoyage"
+  },
+  {
+    "word": "neuf",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "neuf"
+  },
+  {
+    "word": "noble",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "noble"
+  },
+  {
+    "word": "noble",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "noble"
+  },
+  {
+    "word": "nommer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "nommer"
+  },
+  {
+    "word": "nommé",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "nommé"
+  },
+  {
+    "word": "nord",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "nord"
+  },
+  {
+    "word": "normalement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "normalement"
+  },
+  {
+    "word": "notion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la notion"
+  },
+  {
+    "word": "nourrir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "nourrir"
+  },
+  {
+    "word": "nouveau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le nouveau"
+  },
+  {
+    "word": "nouveauté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la nouveauté"
+  },
+  {
+    "word": "nu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le nu"
+  },
+  {
+    "word": "nucléaire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le nucléaire"
+  },
+  {
+    "word": "nucléaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "nucléaire"
+  },
+  {
+    "word": "numérique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "numérique"
+  },
+  {
+    "word": "négatif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "négatif"
+  },
+  {
+    "word": "négociation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la négociation"
+  },
+  {
+    "word": "objectif",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' objectif"
+  },
+  {
+    "word": "objectif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "objectif"
+  },
+  {
+    "word": "obligation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' obligation"
+  },
+  {
+    "word": "obscurité",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' obscurité"
+  },
+  {
+    "word": "obtenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "obtenir"
+  },
+  {
+    "word": "obéir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "obéir"
+  },
+  {
+    "word": "occidental",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "occidental"
+  },
+  {
+    "word": "officier",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' officier"
+  },
+  {
+    "word": "offre",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' offre"
+  },
+  {
+    "word": "ogre",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' ogre"
+  },
+  {
+    "word": "olympique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "olympique"
+  },
+  {
+    "word": "opinion",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' opinion"
+  },
+  {
+    "word": "opposer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "opposer"
+  },
+  {
+    "word": "opposition",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' opposition"
+  },
+  {
+    "word": "option",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' option"
+  },
+  {
+    "word": "opérer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "opérer"
+  },
+  {
+    "word": "orage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' orage"
+  },
+  {
+    "word": "orange",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "orange"
+  },
+  {
+    "word": "ordinateur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ordinateur"
+  },
+  {
+    "word": "ordonnance",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ordonnance"
+  },
+  {
+    "word": "ordonner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ordonner"
+  },
+  {
+    "word": "oreiller",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' oreiller"
+  },
+  {
+    "word": "originalité",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' originalité"
+  },
+  {
+    "word": "orthographe",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' orthographe"
+  },
+  {
+    "word": "os",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' os"
+  },
+  {
+    "word": "oser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "oser"
+  },
+  {
+    "word": "ouest",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ouest"
+  },
+  {
+    "word": "ours",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' ours"
+  },
+  {
+    "word": "ouvert",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ouvert"
+  },
+  {
+    "word": "ouvrier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "ouvrier"
+  },
+  {
+    "word": "paille",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la paille"
+  },
+  {
+    "word": "pair",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pair"
+  },
+  {
+    "word": "palme",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la palme"
+  },
+  {
+    "word": "panier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le panier"
+  },
+  {
+    "word": "panique",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la panique"
+  },
+  {
+    "word": "panne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la panne"
+  },
+  {
+    "word": "papi",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le papi"
+  },
+  {
+    "word": "paquebot",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le paquebot"
+  },
+  {
+    "word": "par-dessus",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "par-dessus"
+  },
+  {
+    "word": "paraître",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "paraître"
+  },
+  {
+    "word": "parcourir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "parcourir"
+  },
+  {
+    "word": "parcours",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le parcours"
+  },
+  {
+    "word": "pardonner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pardonner"
+  },
+  {
+    "word": "pareil",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pareil"
+  },
+  {
+    "word": "pareil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pareil"
+  },
+  {
+    "word": "paresseux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "paresseux"
+  },
+  {
+    "word": "parfaitement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "parfaitement"
+  },
+  {
+    "word": "parier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "parier"
+  },
+  {
+    "word": "parler",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le parler"
+  },
+  {
+    "word": "partenaire",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "partenaire"
+  },
+  {
+    "word": "participant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "participant"
+  },
+  {
+    "word": "particularité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la particularité"
+  },
+  {
+    "word": "particulier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le particulier"
+  },
+  {
+    "word": "partiel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "partiel"
+  },
+  {
+    "word": "parvenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "parvenir"
+  },
+  {
+    "word": "passager",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le passager"
+  },
+  {
+    "word": "passant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le passant"
+  },
+  {
+    "word": "passe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la passe"
+  },
+  {
+    "word": "passeport",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le passeport"
+  },
+  {
+    "word": "paternité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la paternité"
+  },
+  {
+    "word": "patiemment",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "patiemment"
+  },
+  {
+    "word": "patience",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la patience"
+  },
+  {
+    "word": "patienter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "patienter"
+  },
+  {
+    "word": "patte",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la patte"
+  },
+  {
+    "word": "pause",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pause"
+  },
+  {
+    "word": "pauvre",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pauvre"
+  },
+  {
+    "word": "pauvreté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pauvreté"
+  },
+  {
+    "word": "payant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "payant"
+  },
+  {
+    "word": "paysan",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "paysan"
+  },
+  {
+    "word": "paysan",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le paysan"
+  },
+  {
+    "word": "pelote",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pelote"
+  },
+  {
+    "word": "pencher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pencher"
+  },
+  {
+    "word": "pensée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pensée"
+  },
+  {
+    "word": "perfectionner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "perfectionner"
+  },
+  {
+    "word": "permis",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le permis"
+  },
+  {
+    "word": "permission",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la permission"
+  },
+  {
+    "word": "personnalité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la personnalité"
+  },
+  {
+    "word": "personnel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le personnel"
+  },
+  {
+    "word": "peser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "peser"
+  },
+  {
+    "word": "petits-enfants",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "petits-enfants"
+  },
+  {
+    "word": "peuple",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le peuple"
+  },
+  {
+    "word": "philosophie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la philosophie"
+  },
+  {
+    "word": "photographie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la photographie"
+  },
+  {
+    "word": "photographier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "photographier"
+  },
+  {
+    "word": "physique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "physique"
+  },
+  {
+    "word": "physique",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "physique"
+  },
+  {
+    "word": "physiquement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "physiquement"
+  },
+  {
+    "word": "phénomène",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le phénomène"
+  },
+  {
+    "word": "pic",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pic"
+  },
+  {
+    "word": "pilote",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pilote"
+  },
+  {
+    "word": "pique-nique",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pique-nique"
+  },
+  {
+    "word": "pique-niquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pique-niquer"
+  },
+  {
+    "word": "piquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "piquer"
+  },
+  {
+    "word": "pirogue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pirogue"
+  },
+  {
+    "word": "pitié",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pitié"
+  },
+  {
+    "word": "pizza",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pizza"
+  },
+  {
+    "word": "piège",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le piège"
+  },
+  {
+    "word": "placard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le placard"
+  },
+  {
+    "word": "plafond",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le plafond"
+  },
+  {
+    "word": "plaindre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "plaindre"
+  },
+  {
+    "word": "plaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la plaine"
+  },
+  {
+    "word": "plainte",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la plainte"
+  },
+  {
+    "word": "plaisanterie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la plaisanterie"
+  },
+  {
+    "word": "planète",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la planète"
+  },
+  {
+    "word": "plaque",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la plaque"
+  },
+  {
+    "word": "plat",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "plat"
+  },
+  {
+    "word": "pli",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pli"
+  },
+  {
+    "word": "plier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "plier"
+  },
+  {
+    "word": "plongeur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le plongeur"
+  },
+  {
+    "word": "plupart",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plupart"
+  },
+  {
+    "word": "pneu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pneu"
+  },
+  {
+    "word": "poche",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "poche"
+  },
+  {
+    "word": "poids",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le poids"
+  },
+  {
+    "word": "poil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le poil"
+  },
+  {
+    "word": "poing",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le poing"
+  },
+  {
+    "word": "pointe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pointe"
+  },
+  {
+    "word": "poire",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la poire"
+  },
+  {
+    "word": "poison",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le poison"
+  },
+  {
+    "word": "poitrine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la poitrine"
+  },
+  {
+    "word": "policier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le policier"
+  },
+  {
+    "word": "policier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "policier"
+  },
+  {
+    "word": "politesse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la politesse"
+  },
+  {
+    "word": "politique",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "politique"
+  },
+  {
+    "word": "pollution",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pollution"
+  },
+  {
+    "word": "pompier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pompier"
+  },
+  {
+    "word": "pop",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pop"
+  },
+  {
+    "word": "porcelaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la porcelaine"
+  },
+  {
+    "word": "porte",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "porte"
+  },
+  {
+    "word": "porter",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le porter"
+  },
+  {
+    "word": "portrait",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le portrait"
+  },
+  {
+    "word": "portée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la portée"
+  },
+  {
+    "word": "positif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "positif"
+  },
+  {
+    "word": "possession",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la possession"
+  },
+  {
+    "word": "possible",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le possible"
+  },
+  {
+    "word": "pot",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pot"
+  },
+  {
+    "word": "poubelle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la poubelle"
+  },
+  {
+    "word": "poumon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le poumon"
+  },
+  {
+    "word": "poursuivre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "poursuivre"
+  },
+  {
+    "word": "pousse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pousse"
+  },
+  {
+    "word": "pouvoir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le pouvoir"
+  },
+  {
+    "word": "poème",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le poème"
+  },
+  {
+    "word": "prairie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la prairie"
+  },
+  {
+    "word": "pratiquement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "pratiquement"
+  },
+  {
+    "word": "premièrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "premièrement"
+  },
+  {
+    "word": "pressant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pressant"
+  },
+  {
+    "word": "pressé",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pressé"
+  },
+  {
+    "word": "prestigieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "prestigieux"
+  },
+  {
+    "word": "preuve",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la preuve"
+  },
+  {
+    "word": "primaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "primaire"
+  },
+  {
+    "word": "princesse",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "princesse"
+  },
+  {
+    "word": "principalement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "principalement"
+  },
+  {
+    "word": "principe",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le principe"
+  },
+  {
+    "word": "prise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la prise"
+  },
+  {
+    "word": "priver",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "priver"
+  },
+  {
+    "word": "privé",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "privé"
+  },
+  {
+    "word": "prière",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la prière"
+  },
+  {
+    "word": "probablement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "probablement"
+  },
+  {
+    "word": "procurer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "procurer"
+  },
+  {
+    "word": "producteur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le producteur"
+  },
+  {
+    "word": "professionnel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le professionnel"
+  },
+  {
+    "word": "professionnel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "professionnel"
+  },
+  {
+    "word": "profil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le profil"
+  },
+  {
+    "word": "profond",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "profond"
+  },
+  {
+    "word": "profondeur",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la profondeur"
+  },
+  {
+    "word": "profondément",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "profondément"
+  },
+  {
+    "word": "programmer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "programmer"
+  },
+  {
+    "word": "progresser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "progresser"
+  },
+  {
+    "word": "progressivement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "progressivement"
+  },
+  {
+    "word": "projection",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la projection"
+  },
+  {
+    "word": "promotion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la promotion"
+  },
+  {
+    "word": "prononcer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "prononcer"
+  },
+  {
+    "word": "proportion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la proportion"
+  },
+  {
+    "word": "propos",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le propos"
+  },
+  {
+    "word": "propreté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la propreté"
+  },
+  {
+    "word": "propriétaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "propriétaire"
+  },
+  {
+    "word": "propriété",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la propriété"
+  },
+  {
+    "word": "protestant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le protestant"
+  },
+  {
+    "word": "provenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "provenir"
+  },
+  {
+    "word": "provincial",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le provincial"
+  },
+  {
+    "word": "provision",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la provision"
+  },
+  {
+    "word": "provoquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "provoquer"
+  },
+  {
+    "word": "prudent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "prudent"
+  },
+  {
+    "word": "précipiter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "précipiter"
+  },
+  {
+    "word": "préciser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "préciser"
+  },
+  {
+    "word": "précisément",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "précisément"
+  },
+  {
+    "word": "précédent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "précédent"
+  },
+  {
+    "word": "préfecture",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la préfecture"
+  },
+  {
+    "word": "préférence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la préférence"
+  },
+  {
+    "word": "préhistorique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "préhistorique"
+  },
+  {
+    "word": "présence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la présence"
+  },
+  {
+    "word": "présent",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le présent"
+  },
+  {
+    "word": "présentation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la présentation"
+  },
+  {
+    "word": "présidence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la présidence"
+  },
+  {
+    "word": "présider",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "présider"
+  },
+  {
+    "word": "prétendre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "prétendre"
+  },
+  {
+    "word": "prévenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "prévenir"
+  },
+  {
+    "word": "prévision",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la prévision"
+  },
+  {
+    "word": "prêt",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le prêt"
+  },
+  {
+    "word": "prêtre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le prêtre"
+  },
+  {
+    "word": "psychologique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "psychologique"
+  },
+  {
+    "word": "psychologue",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "psychologue"
+  },
+  {
+    "word": "public",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "public"
+  },
+  {
+    "word": "public",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le public"
+  },
+  {
+    "word": "publication",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la publication"
+  },
+  {
+    "word": "publicitaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "publicitaire"
+  },
+  {
+    "word": "puissance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la puissance"
+  },
+  {
+    "word": "puissant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "puissant"
+  },
+  {
+    "word": "punition",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la punition"
+  },
+  {
+    "word": "pureté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la pureté"
+  },
+  {
+    "word": "pâle",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pâle"
+  },
+  {
+    "word": "pénible",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "pénible"
+  },
+  {
+    "word": "pénétrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pénétrer"
+  },
+  {
+    "word": "périple",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le périple"
+  },
+  {
+    "word": "pêcher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pêcher"
+  },
+  {
+    "word": "qualifier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "qualifier"
+  },
+  {
+    "word": "quasiment",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "quasiment"
+  },
+  {
+    "word": "que",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "que"
+  },
+  {
+    "word": "quinzaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la quinzaine"
+  },
+  {
+    "word": "quotidien",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le quotidien"
+  },
+  {
+    "word": "quotidiennement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "quotidiennement"
+  },
+  {
+    "word": "quête",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la quête"
+  },
+  {
+    "word": "rage",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la rage"
+  },
+  {
+    "word": "raisonnable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "raisonnable"
+  },
+  {
+    "word": "rallumer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rallumer"
+  },
+  {
+    "word": "rapport",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rapport"
+  },
+  {
+    "word": "rapporter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rapporter"
+  },
+  {
+    "word": "rarement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "rarement"
+  },
+  {
+    "word": "rassembler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rassembler"
+  },
+  {
+    "word": "rater",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rater"
+  },
+  {
+    "word": "rattacher",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rattacher"
+  },
+  {
+    "word": "rayon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rayon"
+  },
+  {
+    "word": "rebelle",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "rebelle"
+  },
+  {
+    "word": "recette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la recette"
+  },
+  {
+    "word": "recommander",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "recommander"
+  },
+  {
+    "word": "reconduire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reconduire"
+  },
+  {
+    "word": "reconnaissance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la reconnaissance"
+  },
+  {
+    "word": "record",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le record"
+  },
+  {
+    "word": "recours",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le recours"
+  },
+  {
+    "word": "recueil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le recueil"
+  },
+  {
+    "word": "reculer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reculer"
+  },
+  {
+    "word": "redescendre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "redescendre"
+  },
+  {
+    "word": "redevenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "redevenir"
+  },
+  {
+    "word": "redonner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "redonner"
+  },
+  {
+    "word": "refaire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "refaire"
+  },
+  {
+    "word": "refermer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "refermer"
+  },
+  {
+    "word": "refuge",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le refuge"
+  },
+  {
+    "word": "regagner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "regagner"
+  },
+  {
+    "word": "regard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le regard"
+  },
+  {
+    "word": "reggae",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le reggae"
+  },
+  {
+    "word": "regret",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le regret"
+  },
+  {
+    "word": "regrouper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "regrouper"
+  },
+  {
+    "word": "rejeter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rejeter"
+  },
+  {
+    "word": "rejoindre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rejoindre"
+  },
+  {
+    "word": "relever",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "relever"
+  },
+  {
+    "word": "relier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "relier"
+  },
+  {
+    "word": "religieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "religieux"
+  },
+  {
+    "word": "religieux",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le religieux"
+  },
+  {
+    "word": "relique",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la relique"
+  },
+  {
+    "word": "remarier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "remarier"
+  },
+  {
+    "word": "remarque",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "remarque"
+  },
+  {
+    "word": "remettre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "remettre"
+  },
+  {
+    "word": "remuer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "remuer"
+  },
+  {
+    "word": "renard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le renard"
+  },
+  {
+    "word": "renoncer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "renoncer"
+  },
+  {
+    "word": "renouveler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "renouveler"
+  },
+  {
+    "word": "renseignement",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le renseignement"
+  },
+  {
+    "word": "rentraire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rentraire"
+  },
+  {
+    "word": "rentrée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la rentrée"
+  },
+  {
+    "word": "renverser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "renverser"
+  },
+  {
+    "word": "renvoyer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "renvoyer"
+  },
+  {
+    "word": "repasser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "repasser"
+  },
+  {
+    "word": "repenser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "repenser"
+  },
+  {
+    "word": "replier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "replier"
+  },
+  {
+    "word": "reportage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le reportage"
+  },
+  {
+    "word": "repos",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le repos"
+  },
+  {
+    "word": "repousser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "repousser"
+  },
+  {
+    "word": "reprise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la reprise"
+  },
+  {
+    "word": "reproche",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le reproche"
+  },
+  {
+    "word": "respect",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le respect"
+  },
+  {
+    "word": "respectueux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "respectueux"
+  },
+  {
+    "word": "respiration",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la respiration"
+  },
+  {
+    "word": "respirer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "respirer"
+  },
+  {
+    "word": "ressentir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ressentir"
+  },
+  {
+    "word": "ressort",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ressort"
+  },
+  {
+    "word": "ressortir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ressortir"
+  },
+  {
+    "word": "ressource",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ressource"
+  },
+  {
+    "word": "restauration",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la restauration"
+  },
+  {
+    "word": "retomber",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "retomber"
+  },
+  {
+    "word": "retracer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "retracer"
+  },
+  {
+    "word": "retraiter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "retraiter"
+  },
+  {
+    "word": "retraité",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le retraité"
+  },
+  {
+    "word": "revanche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la revanche"
+  },
+  {
+    "word": "revendiquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "revendiquer"
+  },
+  {
+    "word": "revenu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le revenu"
+  },
+  {
+    "word": "revivre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "revivre"
+  },
+  {
+    "word": "revue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la revue"
+  },
+  {
+    "word": "rez-de-chaussée",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rez-de-chaussée"
+  },
+  {
+    "word": "rhume",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rhume"
+  },
+  {
+    "word": "riche",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "riche"
+  },
+  {
+    "word": "rideau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rideau"
+  },
+  {
+    "word": "risque",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le risque"
+  },
+  {
+    "word": "risquer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "risquer"
+  },
+  {
+    "word": "robot",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le robot"
+  },
+  {
+    "word": "robotique",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la robotique"
+  },
+  {
+    "word": "roche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la roche"
+  },
+  {
+    "word": "rocher",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rocher"
+  },
+  {
+    "word": "roman",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "roman"
+  },
+  {
+    "word": "romancier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le romancier"
+  },
+  {
+    "word": "rompre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rompre"
+  },
+  {
+    "word": "rond",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rond"
+  },
+  {
+    "word": "ronde",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ronde"
+  },
+  {
+    "word": "rose",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rose"
+  },
+  {
+    "word": "rose",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "rose"
+  },
+  {
+    "word": "rougir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rougir"
+  },
+  {
+    "word": "routier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "routier"
+  },
+  {
+    "word": "roux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "roux"
+  },
+  {
+    "word": "ruban",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ruban"
+  },
+  {
+    "word": "ruine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ruine"
+  },
+  {
+    "word": "ruisseau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ruisseau"
+  },
+  {
+    "word": "rythme",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le rythme"
+  },
+  {
+    "word": "règle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la règle"
+  },
+  {
+    "word": "règne",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le règne"
+  },
+  {
+    "word": "réaction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réaction"
+  },
+  {
+    "word": "réagir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "réagir"
+  },
+  {
+    "word": "réalisation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réalisation"
+  },
+  {
+    "word": "réaliste",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "réaliste"
+  },
+  {
+    "word": "réapparaître",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "réapparaître"
+  },
+  {
+    "word": "récent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "récent"
+  },
+  {
+    "word": "récit",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le récit"
+  },
+  {
+    "word": "réclamer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "réclamer"
+  },
+  {
+    "word": "récompense",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la récompense"
+  },
+  {
+    "word": "récompenser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "récompenser"
+  },
+  {
+    "word": "récupérer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "récupérer"
+  },
+  {
+    "word": "rédaction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la rédaction"
+  },
+  {
+    "word": "réduire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "réduire"
+  },
+  {
+    "word": "réel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "réel"
+  },
+  {
+    "word": "réellement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "réellement"
+  },
+  {
+    "word": "réflexion",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réflexion"
+  },
+  {
+    "word": "référence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la référence"
+  },
+  {
+    "word": "régaler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "régaler"
+  },
+  {
+    "word": "régime",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le régime"
+  },
+  {
+    "word": "régional",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "régional"
+  },
+  {
+    "word": "régulier",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "régulier"
+  },
+  {
+    "word": "régulièrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "régulièrement"
+  },
+  {
+    "word": "réjouir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "réjouir"
+  },
+  {
+    "word": "répandre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "répandre"
+  },
+  {
+    "word": "réparation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réparation"
+  },
+  {
+    "word": "réparer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "réparer"
+  },
+  {
+    "word": "répertoire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le répertoire"
+  },
+  {
+    "word": "républicain",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "républicain"
+  },
+  {
+    "word": "réputation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réputation"
+  },
+  {
+    "word": "répétition",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la répétition"
+  },
+  {
+    "word": "réservation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réservation"
+  },
+  {
+    "word": "résider",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "résider"
+  },
+  {
+    "word": "résidu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le résidu"
+  },
+  {
+    "word": "résistance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la résistance"
+  },
+  {
+    "word": "résister",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "résister"
+  },
+  {
+    "word": "résultat",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le résultat"
+  },
+  {
+    "word": "réussite",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la réussite"
+  },
+  {
+    "word": "révolution",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la révolution"
+  },
+  {
+    "word": "révolutionnaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "révolutionnaire"
+  },
+  {
+    "word": "révolutionner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "révolutionner"
+  },
+  {
+    "word": "révélation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la révélation"
+  },
+  {
+    "word": "révéler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "révéler"
+  },
+  {
+    "word": "rêverie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la rêverie"
+  },
+  {
+    "word": "sabot",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sabot"
+  },
+  {
+    "word": "sacré",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sacré"
+  },
+  {
+    "word": "saint",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "saint"
+  },
+  {
+    "word": "saisir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "saisir"
+  },
+  {
+    "word": "salaire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le salaire"
+  },
+  {
+    "word": "salarié",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le salarié"
+  },
+  {
+    "word": "salir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "salir"
+  },
+  {
+    "word": "sandwich",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sandwich"
+  },
+  {
+    "word": "satisfaction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la satisfaction"
+  },
+  {
+    "word": "satisfaire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "satisfaire"
+  },
+  {
+    "word": "saucisse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la saucisse"
+  },
+  {
+    "word": "savoir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le savoir"
+  },
+  {
+    "word": "savoureux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "savoureux"
+  },
+  {
+    "word": "science-fiction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la science-fiction"
+  },
+  {
+    "word": "sculpteur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sculpteur"
+  },
+  {
+    "word": "seau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le seau"
+  },
+  {
+    "word": "second",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le second"
+  },
+  {
+    "word": "secouer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "secouer"
+  },
+  {
+    "word": "secours",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le secours"
+  },
+  {
+    "word": "secret",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "secret"
+  },
+  {
+    "word": "secrètement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "secrètement"
+  },
+  {
+    "word": "section",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la section"
+  },
+  {
+    "word": "seigneur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le seigneur"
+  },
+  {
+    "word": "sein",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sein"
+  },
+  {
+    "word": "sel",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sel"
+  },
+  {
+    "word": "semblable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "semblable"
+  },
+  {
+    "word": "semblant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le semblant"
+  },
+  {
+    "word": "sensation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la sensation"
+  },
+  {
+    "word": "sentier",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sentier"
+  },
+  {
+    "word": "serrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "serrer"
+  },
+  {
+    "word": "serrure",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la serrure"
+  },
+  {
+    "word": "servante",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "servante"
+  },
+  {
+    "word": "serviette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la serviette"
+  },
+  {
+    "word": "serviteur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le serviteur"
+  },
+  {
+    "word": "seuil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le seuil"
+  },
+  {
+    "word": "sexe",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sexe"
+  },
+  {
+    "word": "sexuel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sexuel"
+  },
+  {
+    "word": "short",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le short"
+  },
+  {
+    "word": "siffler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "siffler"
+  },
+  {
+    "word": "signaler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "signaler"
+  },
+  {
+    "word": "signer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "signer"
+  },
+  {
+    "word": "signifier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "signifier"
+  },
+  {
+    "word": "silencieusement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "silencieusement"
+  },
+  {
+    "word": "silencieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "silencieux"
+  },
+  {
+    "word": "silhouette",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la silhouette"
+  },
+  {
+    "word": "simplicité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la simplicité"
+  },
+  {
+    "word": "sire",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sire"
+  },
+  {
+    "word": "sirène",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la sirène"
+  },
+  {
+    "word": "siège",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le siège"
+  },
+  {
+    "word": "smoking",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le smoking"
+  },
+  {
+    "word": "soigner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "soigner"
+  },
+  {
+    "word": "soigneusement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "soigneusement"
+  },
+  {
+    "word": "soigné",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "soigné"
+  },
+  {
+    "word": "soin",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le soin"
+  },
+  {
+    "word": "sol",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sol"
+  },
+  {
+    "word": "solennel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "solennel"
+  },
+  {
+    "word": "solide",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "solide"
+  },
+  {
+    "word": "solitaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "solitaire"
+  },
+  {
+    "word": "solo",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le solo"
+  },
+  {
+    "word": "sombre",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sombre"
+  },
+  {
+    "word": "somme",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "somme"
+  },
+  {
+    "word": "songe",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le songe"
+  },
+  {
+    "word": "songer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "songer"
+  },
+  {
+    "word": "sortant",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sortant"
+  },
+  {
+    "word": "sorte",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la sorte"
+  },
+  {
+    "word": "sou",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sou"
+  },
+  {
+    "word": "souffle",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le souffle"
+  },
+  {
+    "word": "souffrir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "souffrir"
+  },
+  {
+    "word": "souhait",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le souhait"
+  },
+  {
+    "word": "soulager",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "soulager"
+  },
+  {
+    "word": "soulever",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "soulever"
+  },
+  {
+    "word": "souper",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le souper"
+  },
+  {
+    "word": "souple",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "souple"
+  },
+  {
+    "word": "source",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la source"
+  },
+  {
+    "word": "sourcil",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sourcil"
+  },
+  {
+    "word": "sourd",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sourd"
+  },
+  {
+    "word": "souris",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "souris"
+  },
+  {
+    "word": "spacieux",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "spacieux"
+  },
+  {
+    "word": "spatial",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "spatial"
+  },
+  {
+    "word": "spécialiste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "spécialiste"
+  },
+  {
+    "word": "square",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le square"
+  },
+  {
+    "word": "stabilité",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la stabilité"
+  },
+  {
+    "word": "stade",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le stade"
+  },
+  {
+    "word": "stand",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le stand"
+  },
+  {
+    "word": "standard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le standard"
+  },
+  {
+    "word": "star",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la star"
+  },
+  {
+    "word": "statue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la statue"
+  },
+  {
+    "word": "stress",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le stress"
+  },
+  {
+    "word": "strict",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "strict"
+  },
+  {
+    "word": "structure",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la structure"
+  },
+  {
+    "word": "stupéfaction",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la stupéfaction"
+  },
+  {
+    "word": "subventionner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "subventionner"
+  },
+  {
+    "word": "successif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "successif"
+  },
+  {
+    "word": "sucrer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sucrer"
+  },
+  {
+    "word": "sud",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sud"
+  },
+  {
+    "word": "suffisant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "suffisant"
+  },
+  {
+    "word": "sujet",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sujet"
+  },
+  {
+    "word": "supplier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "supplier"
+  },
+  {
+    "word": "supplémentaire",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "supplémentaire"
+  },
+  {
+    "word": "support",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le support"
+  },
+  {
+    "word": "supporter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "supporter"
+  },
+  {
+    "word": "supposer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "supposer"
+  },
+  {
+    "word": "supprimer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "supprimer"
+  },
+  {
+    "word": "supérieur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le supérieur"
+  },
+  {
+    "word": "surface",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la surface"
+  },
+  {
+    "word": "surgeler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "surgeler"
+  },
+  {
+    "word": "surmonter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "surmonter"
+  },
+  {
+    "word": "sursauter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sursauter"
+  },
+  {
+    "word": "survivre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "survivre"
+  },
+  {
+    "word": "symbolique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "symbolique"
+  },
+  {
+    "word": "synthétique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "synthétique"
+  },
+  {
+    "word": "système",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le système"
+  },
+  {
+    "word": "sèche",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sèche"
+  },
+  {
+    "word": "séance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la séance"
+  },
+  {
+    "word": "séduire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "séduire"
+  },
+  {
+    "word": "sélectif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "sélectif"
+  },
+  {
+    "word": "sélectionner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "sélectionner"
+  },
+  {
+    "word": "sénéchal",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sénéchal"
+  },
+  {
+    "word": "série",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la série"
+  },
+  {
+    "word": "sérieusement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "sérieusement"
+  },
+  {
+    "word": "sérieux",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le sérieux"
+  },
+  {
+    "word": "tabac",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tabac"
+  },
+  {
+    "word": "tailleur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tailleur"
+  },
+  {
+    "word": "talent",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le talent"
+  },
+  {
+    "word": "talon",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le talon"
+  },
+  {
+    "word": "tambour",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tambour"
+  },
+  {
+    "word": "tambourin",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tambourin"
+  },
+  {
+    "word": "tantôt",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "tantôt"
+  },
+  {
+    "word": "taper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "taper"
+  },
+  {
+    "word": "tarder",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tarder"
+  },
+  {
+    "word": "tas",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tas"
+  },
+  {
+    "word": "tasse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tasse"
+  },
+  {
+    "word": "taureau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le taureau"
+  },
+  {
+    "word": "technicien",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le technicien"
+  },
+  {
+    "word": "technique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "technique"
+  },
+  {
+    "word": "technologique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "technologique"
+  },
+  {
+    "word": "tee-shirt",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tee-shirt"
+  },
+  {
+    "word": "temple",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le temple"
+  },
+  {
+    "word": "tempête",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tempête"
+  },
+  {
+    "word": "tendance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tendance"
+  },
+  {
+    "word": "tendre",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "tendre"
+  },
+  {
+    "word": "tendre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tendre"
+  },
+  {
+    "word": "tendrement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "tendrement"
+  },
+  {
+    "word": "tenter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tenter"
+  },
+  {
+    "word": "tenue",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tenue"
+  },
+  {
+    "word": "terriblement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "terriblement"
+  },
+  {
+    "word": "test",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le test"
+  },
+  {
+    "word": "tester",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tester"
+  },
+  {
+    "word": "thème",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le thème"
+  },
+  {
+    "word": "ticket",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ticket"
+  },
+  {
+    "word": "tiers",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tiers"
+  },
+  {
+    "word": "tigre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tigre"
+  },
+  {
+    "word": "tilleul",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tilleul"
+  },
+  {
+    "word": "tissu",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tissu"
+  },
+  {
+    "word": "toile",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la toile"
+  },
+  {
+    "word": "tolérance",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tolérance"
+  },
+  {
+    "word": "tombe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tombe"
+  },
+  {
+    "word": "tombée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tombée"
+  },
+  {
+    "word": "ton",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ton"
+  },
+  {
+    "word": "tonne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tonne"
+  },
+  {
+    "word": "tonneau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tonneau"
+  },
+  {
+    "word": "tort",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tort"
+  },
+  {
+    "word": "total",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "total"
+  },
+  {
+    "word": "totalement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "totalement"
+  },
+  {
+    "word": "touche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la touche"
+  },
+  {
+    "word": "toucher",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le toucher"
+  },
+  {
+    "word": "tourmenter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tourmenter"
+  },
+  {
+    "word": "tournant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tournant"
+  },
+  {
+    "word": "tournoi",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tournoi"
+  },
+  {
+    "word": "tournée",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tournée"
+  },
+  {
+    "word": "tous",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tous"
+  },
+  {
+    "word": "tousser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tousser"
+  },
+  {
+    "word": "toute",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "toute"
+  },
+  {
+    "word": "toutefois",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "toutefois"
+  },
+  {
+    "word": "trace",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la trace"
+  },
+  {
+    "word": "traduire",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "traduire"
+  },
+  {
+    "word": "trafic",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le trafic"
+  },
+  {
+    "word": "tragique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "tragique"
+  },
+  {
+    "word": "tragédie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tragédie"
+  },
+  {
+    "word": "traiter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "traiter"
+  },
+  {
+    "word": "trajet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le trajet"
+  },
+  {
+    "word": "tranche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tranche"
+  },
+  {
+    "word": "transformation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la transformation"
+  },
+  {
+    "word": "transmettre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "transmettre"
+  },
+  {
+    "word": "transmission",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la transmission"
+  },
+  {
+    "word": "transparent",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "transparent"
+  },
+  {
+    "word": "transporter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "transporter"
+  },
+  {
+    "word": "travailleur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "travailleur"
+  },
+  {
+    "word": "travers",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le travers"
+  },
+  {
+    "word": "traîner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "traîner"
+  },
+  {
+    "word": "tremblant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "tremblant"
+  },
+  {
+    "word": "trembler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "trembler"
+  },
+  {
+    "word": "trentaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la trentaine"
+  },
+  {
+    "word": "tri",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tri"
+  },
+  {
+    "word": "tribunal",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tribunal"
+  },
+  {
+    "word": "tristement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "tristement"
+  },
+  {
+    "word": "tristesse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tristesse"
+  },
+  {
+    "word": "trottoir",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le trottoir"
+  },
+  {
+    "word": "trou",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le trou"
+  },
+  {
+    "word": "trouble",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le trouble"
+  },
+  {
+    "word": "troubler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "troubler"
+  },
+  {
+    "word": "troupe",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la troupe"
+  },
+  {
+    "word": "trésor",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le trésor"
+  },
+  {
+    "word": "tube",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tube"
+  },
+  {
+    "word": "tuyau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le tuyau"
+  },
+  {
+    "word": "typiquement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "typiquement"
+  },
+  {
+    "word": "tâche",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tâche"
+  },
+  {
+    "word": "télécommande",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la télécommande"
+  },
+  {
+    "word": "téléphonique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "téléphonique"
+  },
+  {
+    "word": "téléspectateur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le téléspectateur"
+  },
+  {
+    "word": "témoignage",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le témoignage"
+  },
+  {
+    "word": "témoigner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "témoigner"
+  },
+  {
+    "word": "témoin",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le témoin"
+  },
+  {
+    "word": "uni",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "uni"
+  },
+  {
+    "word": "uniforme",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' uniforme"
+  },
+  {
+    "word": "unique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "unique"
+  },
+  {
+    "word": "uniquement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "uniquement"
+  },
+  {
+    "word": "unir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "unir"
+  },
+  {
+    "word": "universel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "universel"
+  },
+  {
+    "word": "urbain",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "urbain"
+  },
+  {
+    "word": "urgence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' urgence"
+  },
+  {
+    "word": "usage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' usage"
+  },
+  {
+    "word": "user",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "user"
+  },
+  {
+    "word": "utilisation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' utilisation"
+  },
+  {
+    "word": "vache",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vache"
+  },
+  {
+    "word": "vague",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vague"
+  },
+  {
+    "word": "vague",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "vague"
+  },
+  {
+    "word": "vainqueur",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le vainqueur"
+  },
+  {
+    "word": "vaisselle",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vaisselle"
+  },
+  {
+    "word": "valise",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la valise"
+  },
+  {
+    "word": "valoir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "valoir"
+  },
+  {
+    "word": "variable",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "variable"
+  },
+  {
+    "word": "varié",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "varié"
+  },
+  {
+    "word": "variété",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la variété"
+  },
+  {
+    "word": "vase",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vase"
+  },
+  {
+    "word": "vaste",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "vaste"
+  },
+  {
+    "word": "veau",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le veau"
+  },
+  {
+    "word": "veille",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la veille"
+  },
+  {
+    "word": "vendeur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "vendeur"
+  },
+  {
+    "word": "venger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "venger"
+  },
+  {
+    "word": "vente",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vente"
+  },
+  {
+    "word": "ventre",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le ventre"
+  },
+  {
+    "word": "verbal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "verbal"
+  },
+  {
+    "word": "vert",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le vert"
+  },
+  {
+    "word": "victime",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la victime"
+  },
+  {
+    "word": "victoire",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la victoire"
+  },
+  {
+    "word": "vidéo",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "vidéo"
+  },
+  {
+    "word": "vieillard",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le vieillard"
+  },
+  {
+    "word": "vieillir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "vieillir"
+  },
+  {
+    "word": "vigne",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vigne"
+  },
+  {
+    "word": "villa",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la villa"
+  },
+  {
+    "word": "vingtaine",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vingtaine"
+  },
+  {
+    "word": "violemment",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "violemment"
+  },
+  {
+    "word": "violence",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la violence"
+  },
+  {
+    "word": "violet",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "violet"
+  },
+  {
+    "word": "vision",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vision"
+  },
+  {
+    "word": "vitesse",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vitesse"
+  },
+  {
+    "word": "vitre",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vitre"
+  },
+  {
+    "word": "vivant",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le vivant"
+  },
+  {
+    "word": "vivant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "vivant"
+  },
+  {
+    "word": "vivement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "vivement"
+  },
+  {
+    "word": "vocal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "vocal"
+  },
+  {
+    "word": "vocation",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la vocation"
+  },
+  {
+    "word": "voie",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la voie"
+  },
+  {
+    "word": "voire",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "voire"
+  },
+  {
+    "word": "volcan",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le volcan"
+  },
+  {
+    "word": "volet",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le volet"
+  },
+  {
+    "word": "voleur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "voleur"
+  },
+  {
+    "word": "volontiers",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "volontiers"
+  },
+  {
+    "word": "volonté",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la volonté"
+  },
+  {
+    "word": "vote",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le vote"
+  },
+  {
+    "word": "voter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "voter"
+  },
+  {
+    "word": "voyageur",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "voyageur"
+  },
+  {
+    "word": "végétal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "végétal"
+  },
+  {
+    "word": "véritablement",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "véritablement"
+  },
+  {
+    "word": "zéro",
+    "article": "le",
+    "pos": "noun",
+    "full_entry": "le zéro"
+  },
+  {
+    "word": "âme",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' âme"
+  },
+  {
+    "word": "éblouir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "éblouir"
+  },
+  {
+    "word": "écart",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' écart"
+  },
+  {
+    "word": "échapper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "échapper"
+  },
+  {
+    "word": "échec",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' échec"
+  },
+  {
+    "word": "éclair",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' éclair"
+  },
+  {
+    "word": "éclairer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "éclairer"
+  },
+  {
+    "word": "éclater",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "éclater"
+  },
+  {
+    "word": "écologie",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' écologie"
+  },
+  {
+    "word": "économiser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "économiser"
+  },
+  {
+    "word": "écouler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "écouler"
+  },
+  {
+    "word": "écraser",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "écraser"
+  },
+  {
+    "word": "écrier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "écrier"
+  },
+  {
+    "word": "écrit",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' écrit"
+  },
+  {
+    "word": "écriture",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' écriture"
+  },
+  {
+    "word": "écureuil",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' écureuil"
+  },
+  {
+    "word": "édifier",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "édifier"
+  },
+  {
+    "word": "éditeur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' éditeur"
+  },
+  {
+    "word": "édition",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' édition"
+  },
+  {
+    "word": "éducatif",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "éducatif"
+  },
+  {
+    "word": "éducation",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' éducation"
+  },
+  {
+    "word": "égal",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "égal"
+  },
+  {
+    "word": "élan",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' élan"
+  },
+  {
+    "word": "électeur",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' électeur"
+  },
+  {
+    "word": "élection",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' élection"
+  },
+  {
+    "word": "électronique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "électronique"
+  },
+  {
+    "word": "élever",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "élever"
+  },
+  {
+    "word": "éloigner",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "éloigner"
+  },
+  {
+    "word": "élégance",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' élégance"
+  },
+  {
+    "word": "émerveiller",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "émerveiller"
+  },
+  {
+    "word": "émettre",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "émettre"
+  },
+  {
+    "word": "émouvoir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "émouvoir"
+  },
+  {
+    "word": "énerver",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "énerver"
+  },
+  {
+    "word": "énigmatique",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "énigmatique"
+  },
+  {
+    "word": "énormément",
+    "article": "",
+    "pos": "adv",
+    "full_entry": "énormément"
+  },
+  {
+    "word": "épais",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "épais"
+  },
+  {
+    "word": "épaule",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' épaule"
+  },
+  {
+    "word": "épicerie",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' épicerie"
+  },
+  {
+    "word": "épingle",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' épingle"
+  },
+  {
+    "word": "épouse",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "épouse"
+  },
+  {
+    "word": "époux",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' époux"
+  },
+  {
+    "word": "épreuve",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' épreuve"
+  },
+  {
+    "word": "équipage",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' équipage"
+  },
+  {
+    "word": "équiper",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "équiper"
+  },
+  {
+    "word": "établir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "établir"
+  },
+  {
+    "word": "établissement",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' établissement"
+  },
+  {
+    "word": "étagère",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' étagère"
+  },
+  {
+    "word": "état",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' état"
+  },
+  {
+    "word": "éternel",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "éternel"
+  },
+  {
+    "word": "éternité",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' éternité"
+  },
+  {
+    "word": "étiquette",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' étiquette"
+  },
+  {
+    "word": "étonnant",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "étonnant"
+  },
+  {
+    "word": "étonnement",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' étonnement"
+  },
+  {
+    "word": "étouffer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "étouffer"
+  },
+  {
+    "word": "étrange",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' étrange"
+  },
+  {
+    "word": "étrange",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "étrange"
+  },
+  {
+    "word": "évaluer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "évaluer"
+  },
+  {
+    "word": "évanouir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "évanouir"
+  },
+  {
+    "word": "éveiller",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "éveiller"
+  },
+  {
+    "word": "évidence",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' évidence"
+  },
+  {
+    "word": "évident",
+    "article": "",
+    "pos": "adj",
+    "full_entry": "évident"
+  },
+  {
+    "word": "éviter",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "éviter"
+  },
+  {
+    "word": "événement",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' événement"
+  },
+  {
+    "word": "évêque",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' évêque"
+  },
+  {
+    "word": "être",
+    "article": "l'",
+    "pos": "noun",
+    "full_entry": "l' être"
+  }
+]

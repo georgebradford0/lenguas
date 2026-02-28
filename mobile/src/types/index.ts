@@ -38,7 +38,7 @@ export type ChoiceState = 'default' | 'correct' | 'wrong' | 'reveal' | 'disabled
 // Task types
 export type TaskType = 'multipleChoice' | 'reverseTranslation' | 'audioMultipleChoice' | 'speechRecognition';
 export type Level = 'A1' | 'A2' | 'B1';
-export type Language = 'de' | 'nl';
+export type Language = 'de' | 'nl' | 'fr';
 
 // Word vocabulary entry (from JSON files)
 export interface VocabWord {
