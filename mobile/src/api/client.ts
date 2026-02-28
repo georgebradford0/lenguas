@@ -141,30 +141,25 @@ export async function getTierStats(): Promise<TierStatsResponse> {
   return response.json();
 }
 
-// Transcribe speech to text using OpenAI Whisper API
-export async function transcribeSpeech(
+// Compare user's pronunciation against Polly TTS reference using MFCC + DTW
+export async function comparePronunciation(
   audioBase64: string,
-  correctAnswer?: string
-): Promise<{ transcription: string; match?: boolean; similarity?: number }> {
-  const response = await fetch(`${API_BASE}/transcribe-speech`, {
+  targetWord: string
+): Promise<{ similarity: number; isCorrect: boolean }> {
+  const response = await fetch(`${API_BASE}/compare-pronunciation`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       audio: audioBase64,
-      correctAnswer,
+      targetWord,
     }),
   });
 
   if (!response.ok) {
-    throw new Error('Transcription failed');
+    throw new Error('Pronunciation comparison failed');
   }
 
-  const data = await response.json();
-  return {
-    transcription: data.transcription,
-    match: data.match,
-    similarity: data.similarity,
-  };
+  return response.json();
 }

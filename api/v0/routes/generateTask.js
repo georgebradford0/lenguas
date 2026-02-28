@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const { execFile } = require('child_process');
+const os = require('os');
 const Progress = require('../models/Progress');
 const OpenAI = require('openai');
-const { toFile } = require('openai');
+const { PollyClient, SynthesizeSpeechCommand } = require('@aws-sdk/client-polly');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const pollyClient = new PollyClient();
 
 // Load vocabulary from JSON files
 function loadVocabulary(level) {
@@ -201,67 +204,170 @@ async function translateWords(germanWords) {
   return translations;
 }
 
-/**
- * Calculate Levenshtein distance between two strings
- * Used for fuzzy matching in speech recognition
- */
-function levenshteinDistance(a, b) {
-  const matrix = [];
-  for (let i = 0; i <= b.length; i++) {
-    matrix[i] = [i];
+// ── Pronunciation comparison: MFCC + DTW ────────────────────────────────────
+const SAMPLE_RATE       = 16000;
+const FRAME_SIZE        = 512;    // ~32 ms at 16 kHz, must be power-of-2
+const HOP_SIZE          = 160;    // 10 ms at 16 kHz
+const NUM_MEL           = 26;
+const NUM_MFCC          = 13;
+const FMIN              = 80;
+const FMAX              = 7600;
+const MAX_DTW_DIST      = 20;     // normalised DTW distance mapping to 0% similarity
+const CORRECT_THRESHOLD = 0.60;   // ≥60% similarity → correct
+
+let _melFilterbankCache = null;
+
+function _hammingWindow(size) {
+  const w = new Float64Array(size);
+  for (let i = 0; i < size; i++)
+    w[i] = 0.54 - 0.46 * Math.cos(2 * Math.PI * i / (size - 1));
+  return w;
+}
+
+// In-place radix-2 Cooley-Tukey FFT (re, im: Float64Array, length = power-of-2)
+function _fft(re, im) {
+  const n = re.length;
+  for (let i = 1, j = 0; i < n; i++) {
+    let bit = n >> 1;
+    for (; j & bit; bit >>= 1) j ^= bit;
+    j ^= bit;
+    if (i < j) {
+      let t = re[i]; re[i] = re[j]; re[j] = t;
+          t = im[i]; im[i] = im[j]; im[j] = t;
+    }
   }
-  for (let j = 0; j <= a.length; j++) {
-    matrix[0][j] = j;
-  }
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      if (b.charAt(i - 1) === a.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1];
-      } else {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1,
-          matrix[i][j - 1] + 1,
-          matrix[i - 1][j] + 1
-        );
+  for (let len = 2; len <= n; len <<= 1) {
+    const half = len >> 1;
+    const ang  = -2 * Math.PI / len;
+    const wRe  = Math.cos(ang), wIm = Math.sin(ang);
+    for (let i = 0; i < n; i += len) {
+      let cRe = 1, cIm = 0;
+      for (let j = 0; j < half; j++) {
+        const ur = re[i+j], ui = im[i+j];
+        const vr = re[i+j+half] * cRe - im[i+j+half] * cIm;
+        const vi = re[i+j+half] * cIm + im[i+j+half] * cRe;
+        re[i+j]      = ur + vr;  im[i+j]      = ui + vi;
+        re[i+j+half] = ur - vr;  im[i+j+half] = ui - vi;
+        const tmp = cRe * wRe - cIm * wIm;
+        cIm = cRe * wIm + cIm * wRe;  cRe = tmp;
       }
     }
   }
-  return matrix[b.length][a.length];
 }
 
-/**
- * Compare spoken transcription with correct German answer
- * Uses fuzzy matching to handle pronunciation variations
- * Returns { match: boolean, similarity: number, normalized: string }
- */
-function compareGermanTranscription(spoken, correct) {
-  // 1. Normalize both strings (lowercase, trim, remove punctuation only)
-  const normalize = (text) => {
-    return text
-      .toLowerCase()
-      .trim()
-      .replace(/[.,!?;:]/g, ''); // Remove punctuation only, keep articles
-  };
-
-  const spokenNorm = normalize(spoken);
-  const correctNorm = normalize(correct);
-
-  // 2. Exact match
-  if (spokenNorm === correctNorm) {
-    return { match: true, similarity: 1.0, normalized: spokenNorm };
+function _getMelFilterbank() {
+  if (_melFilterbankCache) return _melFilterbankCache;
+  const bins   = FRAME_SIZE / 2 + 1;
+  const hzMel  = hz => 2595 * Math.log10(1 + hz / 700);
+  const melHz  = m  => 700 * (10 ** (m / 2595) - 1);
+  const mMin   = hzMel(FMIN), mMax = hzMel(FMAX);
+  const melPts = Array.from({ length: NUM_MEL + 2 }, (_, i) =>
+    mMin + (mMax - mMin) * i / (NUM_MEL + 1));
+  const hzPts  = melPts.map(melHz);
+  const binPts = hzPts.map(hz => Math.floor((FRAME_SIZE + 1) * hz / SAMPLE_RATE));
+  const fb = [];
+  for (let m = 1; m <= NUM_MEL; m++) {
+    const f = new Float64Array(bins);
+    for (let k = binPts[m-1]; k < binPts[m];   k++) if (k < bins) f[k] = (k - binPts[m-1]) / (binPts[m]   - binPts[m-1]);
+    for (let k = binPts[m];   k <= binPts[m+1]; k++) if (k < bins) f[k] = (binPts[m+1] - k) / (binPts[m+1] - binPts[m]);
+    fb.push(f);
   }
+  _melFilterbankCache = fb;
+  return fb;
+}
 
-  // 3. Calculate Levenshtein distance
-  const distance = levenshteinDistance(spokenNorm, correctNorm);
-  const maxLen = Math.max(spokenNorm.length, correctNorm.length);
-  const similarity = 1 - (distance / maxLen);
+// DCT-II: returns first numCoeffs coefficients
+function _dct2(x, numCoeffs) {
+  const n = x.length;
+  return Array.from({ length: numCoeffs }, (_, k) => {
+    let s = 0;
+    for (let i = 0; i < n; i++) s += x[i] * Math.cos(Math.PI * k * (2 * i + 1) / (2 * n));
+    return s;
+  });
+}
 
-  // 4. Accept if 85%+ similar
-  return {
-    match: similarity >= 0.85,
-    similarity,
-    normalized: spokenNorm
-  };
+// Cepstral mean & variance normalisation (per-utterance)
+function _cmvn(frames) {
+  if (!frames.length) return frames;
+  const dim  = frames[0].length;
+  const mean = new Float64Array(dim);
+  const std  = new Float64Array(dim);
+  for (const f of frames) for (let i = 0; i < dim; i++) mean[i] += f[i];
+  for (let i = 0; i < dim; i++) mean[i] /= frames.length;
+  for (const f of frames) for (let i = 0; i < dim; i++) std[i] += (f[i] - mean[i]) ** 2;
+  for (let i = 0; i < dim; i++) std[i] = Math.sqrt(std[i] / frames.length + 1e-8);
+  return frames.map(f => f.map((v, i) => (v - mean[i]) / std[i]));
+}
+
+// Extract MFCC matrix from raw Float32 PCM samples
+function extractMFCCs(samples) {
+  const hamming = _hammingWindow(FRAME_SIZE);
+  const fb      = _getMelFilterbank();
+  const fftBins = FRAME_SIZE / 2 + 1;
+  const frames  = [];
+  for (let start = 0; start + FRAME_SIZE <= samples.length; start += HOP_SIZE) {
+    const re = new Float64Array(FRAME_SIZE);
+    const im = new Float64Array(FRAME_SIZE);
+    for (let i = 0; i < FRAME_SIZE; i++) re[i] = samples[start + i] * hamming[i];
+    _fft(re, im);
+    const power = new Float64Array(fftBins);
+    for (let k = 0; k < fftBins; k++) power[k] = (re[k] ** 2 + im[k] ** 2) / FRAME_SIZE;
+    const logMel = fb.map(filt => {
+      let e = 0;
+      for (let k = 0; k < fftBins; k++) e += filt[k] * power[k];
+      return Math.log(Math.max(e, 1e-10));
+    });
+    // Skip C0 (average energy), keep C1–C13
+    frames.push(_dct2(logMel, NUM_MFCC + 1).slice(1));
+  }
+  return _cmvn(frames);
+}
+
+function _euclidean(a, b) {
+  let s = 0;
+  for (let i = 0; i < a.length; i++) s += (a[i] - b[i]) ** 2;
+  return Math.sqrt(s);
+}
+
+// DTW: returns normalised distance (total accumulated cost / (n + m))
+function _dtw(seq1, seq2) {
+  const n = seq1.length, m = seq2.length;
+  if (!n || !m) return Infinity;
+  const dp = new Float64Array((n + 1) * (m + 1)).fill(1e9);
+  dp[0] = 0;
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      const cost = _euclidean(seq1[i - 1], seq2[j - 1]);
+      dp[i * (m + 1) + j] = cost + Math.min(
+        dp[(i - 1) * (m + 1) + j],
+        dp[i * (m + 1) + (j - 1)],
+        dp[(i - 1) * (m + 1) + (j - 1)]
+      );
+    }
+  }
+  return dp[n * (m + 1) + m] / (n + m);
+}
+
+function dtwDistToSimilarity(dist) {
+  return Math.max(0, Math.min(1, 1 - dist / MAX_DTW_DIST));
+}
+
+// Convert any audio file to 16 kHz mono float32 PCM, trimming leading/trailing silence
+function convertToPcm(inputPath, outputPath) {
+  return new Promise((resolve, reject) => {
+    execFile('ffmpeg', [
+      '-i', inputPath,
+      '-af', 'silenceremove=start_periods=1:start_silence=0.05:start_threshold=-40dB:stop_periods=-1:stop_silence=0.05:stop_threshold=-40dB',
+      '-ar', String(SAMPLE_RATE),
+      '-ac', '1',
+      '-f', 'f32le',
+      '-y',
+      outputPath,
+    ], (err, _stdout, stderr) => {
+      if (err) reject(new Error(`ffmpeg error: ${stderr.slice(-300)}`));
+      else resolve();
+    });
+  });
 }
 
 /**
@@ -691,75 +797,91 @@ router.get('/tier-stats', async (req, res) => {
 });
 
 /**
- * POST /transcribe-speech
- * Transcribe German audio using OpenAI Whisper API
+ * POST /compare-pronunciation
+ * Compare user's spoken German against a Polly TTS reference using MFCC + DTW.
  *
  * Body:
- * - audio: string (base64-encoded MP3 audio)
- * - correctAnswer: string (optional) - the expected German answer for comparison
+ *   audio:      string  – base64-encoded m4a recording
+ *   targetWord: string  – the German word/phrase to compare against
  *
  * Returns:
- * - transcription: string - the transcribed German text
- * - match: boolean (if correctAnswer provided) - whether it matches
- * - similarity: number (if correctAnswer provided) - similarity score 0-1
+ *   similarity: number  – 0..1
+ *   isCorrect:  boolean – similarity >= CORRECT_THRESHOLD
  */
-router.post('/transcribe-speech', async (req, res) => {
+router.post('/compare-pronunciation', async (req, res) => {
+  const tmpFiles = [];
   try {
-    const { audio, correctAnswer } = req.body;
+    const { audio, targetWord } = req.body;
 
-    // Validate input
-    if (!audio || typeof audio !== 'string') {
-      return res.status(400).json({ error: 'Missing or invalid audio data' });
+    if (!audio || typeof audio !== 'string' || !targetWord) {
+      return res.status(400).json({ error: 'Missing audio or targetWord' });
     }
 
-    console.log('[Transcribe] Received audio, length:', audio.length);
-    console.log('[Transcribe] Correct answer:', correctAnswer);
+    console.log('[Pronunciation] Comparing pronunciation for:', targetWord);
 
-    // Convert base64 to buffer
-    const audioBuffer = Buffer.from(audio, 'base64');
+    const id      = Date.now();
+    const tmpDir  = os.tmpdir();
+    const userM4a = path.join(tmpDir, `user_${id}.m4a`);
+    const userPcm = path.join(tmpDir, `user_${id}.f32`);
+    const refMp3  = path.join(tmpDir, `ref_${id}.mp3`);
+    const refPcm  = path.join(tmpDir, `ref_${id}.f32`);
+    tmpFiles.push(userM4a, userPcm, refMp3, refPcm);
 
-    console.log('[Transcribe] Audio buffer size:', audioBuffer.length, 'bytes');
+    // 1. Write user audio to disk
+    fs.writeFileSync(userM4a, Buffer.from(audio, 'base64'));
 
-    // Transcribe using OpenAI Whisper API
-    const response = await openai.audio.transcriptions.create({
-      file: await toFile(audioBuffer, 'audio.m4a', { type: 'audio/m4a' }),
-      model: 'whisper-1',
-      language: 'de', // German
-      response_format: 'text',
-    });
+    // 2. Get Polly TTS reference for the target word (same Hans voice as the app)
+    const pollyResp = await pollyClient.send(new SynthesizeSpeechCommand({
+      Text:         targetWord,
+      OutputFormat: 'mp3',
+      VoiceId:      'Hans',
+      LanguageCode: 'de-DE',
+    }));
+    const refBytes = await pollyResp.AudioStream.transformToByteArray();
+    fs.writeFileSync(refMp3, Buffer.from(refBytes));
 
-    const transcription = typeof response === 'string' ? response : response.text;
+    // 3. Convert both to 16 kHz mono float32 PCM with leading/trailing silence trimmed
+    await Promise.all([
+      convertToPcm(userM4a, userPcm),
+      convertToPcm(refMp3,  refPcm),
+    ]);
 
-    console.log('[Transcribe] Transcription result:', transcription);
+    // 4. Read PCM buffers
+    const userBuf = fs.readFileSync(userPcm);
+    const refBuf  = fs.readFileSync(refPcm);
 
-    // If correctAnswer is provided, compare with transcription
-    let match = null;
-    let similarity = null;
-    let normalized = null;
-
-    if (correctAnswer) {
-      const comparison = compareGermanTranscription(transcription, correctAnswer);
-      match = comparison.match;
-      similarity = comparison.similarity;
-      normalized = comparison.normalized;
-
-      console.log('[Transcribe] Comparison result:', { match, similarity: similarity.toFixed(3) });
+    if (userBuf.length < FRAME_SIZE * 4) {
+      console.warn('[Pronunciation] User audio too short after silence removal');
+      return res.json({ similarity: 0, isCorrect: false });
     }
 
-    res.json({
-      transcription,
-      match,
-      similarity,
-      normalized,
-      timestamp: new Date().toISOString(),
-    });
+    const userSamples = new Float32Array(userBuf.buffer.slice(userBuf.byteOffset, userBuf.byteOffset + userBuf.byteLength));
+    const refSamples  = new Float32Array(refBuf.buffer.slice(refBuf.byteOffset,   refBuf.byteOffset  + refBuf.byteLength));
 
-  } catch (error) {
-    console.error('[Transcribe] Error:', error);
-    res.status(500).json({
-      error: 'Failed to transcribe speech',
-      details: error.message
-    });
+    // 5. Extract MFCC matrices
+    const userMFCCs = extractMFCCs(userSamples);
+    const refMFCCs  = extractMFCCs(refSamples);
+
+    if (!userMFCCs.length || !refMFCCs.length) {
+      return res.json({ similarity: 0, isCorrect: false });
+    }
+
+    // 6. DTW comparison → similarity score
+    const dist       = _dtw(userMFCCs, refMFCCs);
+    const similarity = dtwDistToSimilarity(dist);
+    const isCorrect  = similarity >= CORRECT_THRESHOLD;
+
+    console.log(`[Pronunciation] "${targetWord}" DTW=${dist.toFixed(2)} similarity=${(similarity * 100).toFixed(1)}% isCorrect=${isCorrect}`);
+
+    res.json({ similarity, isCorrect });
+
+  } catch (err) {
+    console.error('[Pronunciation] Error:', err.message);
+    res.status(500).json({ error: 'Pronunciation comparison failed', details: err.message });
+  } finally {
+    for (const f of tmpFiles) {
+      try { fs.unlinkSync(f); } catch (_) {}
+    }
   }
 });
 

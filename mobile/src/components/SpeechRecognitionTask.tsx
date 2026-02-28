@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'rea
 import type { SpeechRecognitionTaskData } from '../types';
 import { useRecorder } from '../hooks/useRecorder';
 import { useAudio } from '../hooks/useAudio';
-import { transcribeSpeech } from '../api/client';
+import { comparePronunciation } from '../api/client';
 import { EnglishCard } from './EnglishCard';
 import { RecordButton } from './RecordButton';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
@@ -31,7 +31,6 @@ export function SpeechRecognitionTask({
   const { startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder();
 
   const [taskState, setTaskState] = useState<TaskState>('ready');
-  const [transcription, setTranscription] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [similarity, setSimilarity] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,23 +59,21 @@ export function SpeechRecognitionTask({
       }
 
       try {
-        console.log('[SpeechRecognitionTask] Sending to transcribe API...');
-        // Transcribe speech
-        const result = await transcribeSpeech(audioBase64, taskData.correctGerman);
+        console.log('[SpeechRecognitionTask] Sending to compare-pronunciation API...');
+        const result = await comparePronunciation(audioBase64, taskData.correctGerman);
 
-        console.log('[SpeechRecognitionTask] Transcription result:', result);
-        setTranscription(result.transcription);
-        setIsCorrect(result.match ?? false);
-        setSimilarity(result.similarity ?? 0);
+        console.log('[SpeechRecognitionTask] Comparison result:', result);
+        setIsCorrect(result.isCorrect);
+        setSimilarity(result.similarity);
         setTaskState('feedback');
 
         // Auto-advance after delay
         setTimeout(async () => {
-          await onAnswer(result.transcription, taskData.correctGerman);
+          await onAnswer(result.isCorrect ? taskData.correctGerman : '', taskData.correctGerman);
         }, ADVANCE_DELAY);
       } catch (err) {
-        console.error('[SpeechRecognitionTask] Transcription error:', err);
-        setError('Failed to transcribe speech. Please try again.');
+        console.error('[SpeechRecognitionTask] Comparison error:', err);
+        setError('Failed to analyze pronunciation. Please try again.');
         setTaskState('ready');
       }
     } else {
@@ -100,8 +97,6 @@ export function SpeechRecognitionTask({
 
   // Render feedback state
   const renderFeedback = () => {
-    if (!transcription) return null;
-
     return (
       <View style={styles.feedbackContainer}>
         <View style={[
@@ -109,22 +104,17 @@ export function SpeechRecognitionTask({
           isCorrect ? styles.feedbackCorrect : styles.feedbackWrong
         ]}>
           <Text style={styles.feedbackTitle}>
-            {isCorrect ? '✓ Correct!' : '✗ Not quite'}
+            {isCorrect ? '✓ Good pronunciation!' : '✗ Keep practicing'}
           </Text>
-
-          <View style={styles.transcriptionSection}>
-            <Text style={styles.transcriptionLabel}>You said:</Text>
-            <Text style={styles.transcriptionText}>{transcription}</Text>
-          </View>
 
           <View style={styles.correctAnswerSection}>
             <Text style={styles.correctAnswerLabel}>Correct answer:</Text>
             <Text style={styles.correctAnswerText}>{taskData.correctGerman}</Text>
           </View>
 
-          {similarity !== null && !isCorrect && (
+          {similarity !== null && (
             <Text style={styles.similarityText}>
-              Similarity: {Math.round(similarity * 100)}%
+              Match: {Math.round(similarity * 100)}%
             </Text>
           )}
         </View>
@@ -171,7 +161,7 @@ export function SpeechRecognitionTask({
       {taskState === 'processing' && (
         <View style={styles.controlsContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={styles.processingText}>Transcribing...</Text>
+          <Text style={styles.processingText}>Analyzing...</Text>
         </View>
       )}
 
@@ -245,19 +235,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
     marginBottom: spacing.lg,
-  },
-  transcriptionSection: {
-    marginBottom: spacing.md,
-  },
-  transcriptionLabel: {
-    fontSize: fontSize.sm,
-    color: colors.muted,
-    marginBottom: spacing.xs,
-  },
-  transcriptionText: {
-    fontSize: fontSize.lg,
-    fontWeight: '600',
-    color: colors.text,
   },
   correctAnswerSection: {
     marginBottom: spacing.md,
