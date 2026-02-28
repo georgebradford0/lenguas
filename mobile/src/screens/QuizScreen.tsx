@@ -15,7 +15,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 /**
  * Main quiz screen with dynamic task generation
  */
-export function QuizScreen({ language = 'de' }: { language?: Language }) {
+export function QuizScreen({ language = 'de', onBack }: { language?: Language; onBack?: () => void }) {
   const {
     stats,
     currentTask,
@@ -214,6 +214,7 @@ export function QuizScreen({ language = 'de' }: { language?: Language }) {
           tierStats={tierStatsArray}
           currentTier={currentTier}
           wordProgress={wordProgress}
+          onBack={onBack}
         />
         <View style={styles.centerContent}>
           <ActivityIndicator size="large" color={colors.primary} />
@@ -273,6 +274,7 @@ export function QuizScreen({ language = 'de' }: { language?: Language }) {
         tierStats={tierStatsArray}
         currentTier={currentTier}
         wordProgress={wordProgress}
+        onBack={onBack}
       />
       <View style={styles.content}>
         {submitting && !hasPreloadedTask ? (

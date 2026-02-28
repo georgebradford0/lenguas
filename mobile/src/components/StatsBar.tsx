@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { colors, spacing, fontSize } from '../styles/theme';
 import type { WordProgress, LevelStats } from '../types';
 
@@ -18,6 +18,7 @@ interface StatsBarProps {
   levelStats?: LevelStats[];
   currentLevel?: string; // A1, A2, or B1
   wordProgress: WordProgress[];
+  onBack?: () => void;
 }
 
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
@@ -33,7 +34,8 @@ export function StatsBar({
   currentTier,
   levelStats,
   currentLevel,
-  wordProgress
+  wordProgress,
+  onBack,
 }: StatsBarProps) {
   // Determine if we're using the new level system or old tier system
   const isLevelBased = !!currentLevel && !!levelStats;
@@ -55,7 +57,18 @@ export function StatsBar({
     displayColor = TIER_COLORS[currentTier - 1] || colors.primary;
   }
 
-  if (!currentStats || !wordProgress || wordProgress.length === 0) return null;
+  if (!currentStats || !wordProgress || wordProgress.length === 0) {
+    if (onBack) {
+      return (
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.backButton} onPress={onBack} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+            <Text style={styles.backButtonText}>‹</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    return null;
+  }
 
   // Calculate mastery threshold line position (fixed at 7 attempts)
   const MASTERY_ATTEMPTS = 7;
@@ -70,6 +83,11 @@ export function StatsBar({
 
   return (
     <View style={styles.container}>
+      {onBack && (
+        <TouchableOpacity style={styles.backButton} onPress={onBack} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+          <Text style={styles.backButtonText}>‹</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.centeredContent}>
         <Text style={[styles.levelText, { color: displayColor }]}>
           {displayText}
@@ -92,6 +110,21 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    left: spacing.lg,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: spacing.sm,
+  },
+  backButtonText: {
+    fontSize: 36,
+    color: colors.muted,
+    fontWeight: '300',
+    lineHeight: 40,
   },
   centeredContent: {
     alignItems: 'center',

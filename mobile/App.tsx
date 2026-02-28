@@ -50,7 +50,7 @@ function AppContent() {
       {Platform.OS !== 'web' && <StatusBar barStyle="light-content" backgroundColor={colors.background} />}
       {language === null
         ? <LanguageSelectScreen onSelect={setLanguage} />
-        : <QuizScreen language={language} />
+        : <QuizScreen language={language} onBack={() => setLanguage(null)} />
       }
     </View>
   );
