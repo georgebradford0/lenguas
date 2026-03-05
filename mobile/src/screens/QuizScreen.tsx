@@ -271,6 +271,8 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
     <View style={styles.container}>
       <StatsBar
         accuracy={overallAccuracy}
+        levelStats={levelStatsArray}
+        currentLevel={currentLevel}
         tierStats={tierStatsArray}
         currentTier={currentTier}
         wordProgress={wordProgress}

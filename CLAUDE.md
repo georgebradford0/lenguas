@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a German language learning app using the European Framework levels (A1/A2/B1). It generates simple word translation tasks from curated vocabulary lists, with spaced repetition and mastery tracking.
+This is a language learning app using the European Framework levels (A1/A2/B1). It generates simple word translation tasks from curated vocabulary lists, with spaced repetition and mastery tracking.
 
 **Architecture:**
 - **Frontend**: React Native mobile app (`mobile/` directory)
