@@ -1,0 +1,1436 @@
+[
+  {
+    "word": "abandonar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "abandonar"
+  },
+  {
+    "word": "abstracto",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "abstracto"
+  },
+  {
+    "word": "abundante",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "abundante"
+  },
+  {
+    "word": "acercarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "acercarse"
+  },
+  {
+    "word": "acontecimiento",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el acontecimiento"
+  },
+  {
+    "word": "actualizar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "actualizar"
+  },
+  {
+    "word": "acusar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "acusar"
+  },
+  {
+    "word": "adaptarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "adaptarse"
+  },
+  {
+    "word": "adecuado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "adecuado"
+  },
+  {
+    "word": "administración",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la administración"
+  },
+  {
+    "word": "advertir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "advertir"
+  },
+  {
+    "word": "afectar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "afectar"
+  },
+  {
+    "word": "afirmación",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la afirmación"
+  },
+  {
+    "word": "agotado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "agotado"
+  },
+  {
+    "word": "agresivo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "agresivo"
+  },
+  {
+    "word": "alcanzar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "alcanzar"
+  },
+  {
+    "word": "alegría",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la alegría"
+  },
+  {
+    "word": "alivio",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el alivio"
+  },
+  {
+    "word": "ambiguo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "ambiguo"
+  },
+  {
+    "word": "amenazar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "amenazar"
+  },
+  {
+    "word": "análisis",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el análisis"
+  },
+  {
+    "word": "animar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "animar"
+  },
+  {
+    "word": "ansiedad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ansiedad"
+  },
+  {
+    "word": "anticipar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "anticipar"
+  },
+  {
+    "word": "aptitud",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la aptitud"
+  },
+  {
+    "word": "argumentar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "argumentar"
+  },
+  {
+    "word": "armonía",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la armonía"
+  },
+  {
+    "word": "asombrar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "asombrar"
+  },
+  {
+    "word": "asunto",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el asunto"
+  },
+  {
+    "word": "aterrizar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aterrizar"
+  },
+  {
+    "word": "autoridad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la autoridad"
+  },
+  {
+    "word": "básicamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "básicamente"
+  },
+  {
+    "word": "beneficio",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el beneficio"
+  },
+  {
+    "word": "burocracia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la burocracia"
+  },
+  {
+    "word": "cálido",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "cálido"
+  },
+  {
+    "word": "calificar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "calificar"
+  },
+  {
+    "word": "capacidad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la capacidad"
+  },
+  {
+    "word": "capaz",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "capaz"
+  },
+  {
+    "word": "característica",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la característica"
+  },
+  {
+    "word": "carecer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "carecer"
+  },
+  {
+    "word": "casualidad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la casualidad"
+  },
+  {
+    "word": "causar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "causar"
+  },
+  {
+    "word": "certeza",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la certeza"
+  },
+  {
+    "word": "ciertamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "ciertamente"
+  },
+  {
+    "word": "circunstancia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la circunstancia"
+  },
+  {
+    "word": "ciudadano",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el ciudadano"
+  },
+  {
+    "word": "colaborar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "colaborar"
+  },
+  {
+    "word": "colega",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el colega"
+  },
+  {
+    "word": "colgar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "colgar"
+  },
+  {
+    "word": "combinar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "combinar"
+  },
+  {
+    "word": "competencia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la competencia"
+  },
+  {
+    "word": "competir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "competir"
+  },
+  {
+    "word": "complejo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "complejo"
+  },
+  {
+    "word": "componente",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el componente"
+  },
+  {
+    "word": "comportamiento",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el comportamiento"
+  },
+  {
+    "word": "compromiso",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el compromiso"
+  },
+  {
+    "word": "concentrarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "concentrarse"
+  },
+  {
+    "word": "concepto",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el concepto"
+  },
+  {
+    "word": "confianza",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la confianza"
+  },
+  {
+    "word": "conflicto",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el conflicto"
+  },
+  {
+    "word": "consecuencia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la consecuencia"
+  },
+  {
+    "word": "considerablemente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "considerablemente"
+  },
+  {
+    "word": "consolidar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "consolidar"
+  },
+  {
+    "word": "contradecir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contradecir"
+  },
+  {
+    "word": "controlar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "controlar"
+  },
+  {
+    "word": "convencer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "convencer"
+  },
+  {
+    "word": "corrupción",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la corrupción"
+  },
+  {
+    "word": "costumbre",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la costumbre"
+  },
+  {
+    "word": "crecimiento",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el crecimiento"
+  },
+  {
+    "word": "crítico",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "crítico"
+  },
+  {
+    "word": "cronológicamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "cronológicamente"
+  },
+  {
+    "word": "cualquier",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "cualquier"
+  },
+  {
+    "word": "cuestionar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cuestionar"
+  },
+  {
+    "word": "culpable",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "culpable"
+  },
+  {
+    "word": "débil",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "débil"
+  },
+  {
+    "word": "dedicado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "dedicado"
+  },
+  {
+    "word": "defensa",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la defensa"
+  },
+  {
+    "word": "definitivamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "definitivamente"
+  },
+  {
+    "word": "delito",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el delito"
+  },
+  {
+    "word": "demostrar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "demostrar"
+  },
+  {
+    "word": "denunciar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "denunciar"
+  },
+  {
+    "word": "deprimido",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "deprimido"
+  },
+  {
+    "word": "desafío",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el desafío"
+  },
+  {
+    "word": "desaparecer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "desaparecer"
+  },
+  {
+    "word": "desigualdad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la desigualdad"
+  },
+  {
+    "word": "destino",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el destino"
+  },
+  {
+    "word": "desarrollar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "desarrollar"
+  },
+  {
+    "word": "desarrollo",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el desarrollo"
+  },
+  {
+    "word": "determinado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "determinado"
+  },
+  {
+    "word": "digno",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "digno"
+  },
+  {
+    "word": "discutir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "discutir"
+  },
+  {
+    "word": "disponible",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "disponible"
+  },
+  {
+    "word": "diversidad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la diversidad"
+  },
+  {
+    "word": "dominar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dominar"
+  },
+  {
+    "word": "duda",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la duda"
+  },
+  {
+    "word": "dudar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dudar"
+  },
+  {
+    "word": "durable",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "durable"
+  },
+  {
+    "word": "efectivamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "efectivamente"
+  },
+  {
+    "word": "eficiente",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "eficiente"
+  },
+  {
+    "word": "elaborar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "elaborar"
+  },
+  {
+    "word": "enfrentar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enfrentar"
+  },
+  {
+    "word": "entusiasmo",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el entusiasmo"
+  },
+  {
+    "word": "equivocado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "equivocado"
+  },
+  {
+    "word": "establecer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "establecer"
+  },
+  {
+    "word": "estricto",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "estricto"
+  },
+  {
+    "word": "ético",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "ético"
+  },
+  {
+    "word": "evaluar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "evaluar"
+  },
+  {
+    "word": "evidencia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la evidencia"
+  },
+  {
+    "word": "exigente",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "exigente"
+  },
+  {
+    "word": "exigir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "exigir"
+  },
+  {
+    "word": "expectativa",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la expectativa"
+  },
+  {
+    "word": "experiencia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la experiencia"
+  },
+  {
+    "word": "extraño",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "extraño"
+  },
+  {
+    "word": "financiero",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "financiero"
+  },
+  {
+    "word": "flexibilidad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la flexibilidad"
+  },
+  {
+    "word": "flexible",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "flexible"
+  },
+  {
+    "word": "fracasar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "fracasar"
+  },
+  {
+    "word": "fracaso",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el fracaso"
+  },
+  {
+    "word": "fundamental",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "fundamental"
+  },
+  {
+    "word": "garantizar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "garantizar"
+  },
+  {
+    "word": "generalmente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "generalmente"
+  },
+  {
+    "word": "gestión",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la gestión"
+  },
+  {
+    "word": "globalización",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la globalización"
+  },
+  {
+    "word": "gradualmente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "gradualmente"
+  },
+  {
+    "word": "grave",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "grave"
+  },
+  {
+    "word": "habilidad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la habilidad"
+  },
+  {
+    "word": "ignorar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ignorar"
+  },
+  {
+    "word": "igualdad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la igualdad"
+  },
+  {
+    "word": "implicar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "implicar"
+  },
+  {
+    "word": "imprescindible",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "imprescindible"
+  },
+  {
+    "word": "inesperado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "inesperado"
+  },
+  {
+    "word": "injusto",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "injusto"
+  },
+  {
+    "word": "innovación",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la innovación"
+  },
+  {
+    "word": "innovador",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "innovador"
+  },
+  {
+    "word": "integrar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "integrar"
+  },
+  {
+    "word": "inteligencia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la inteligencia"
+  },
+  {
+    "word": "intencionadamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "intencionadamente"
+  },
+  {
+    "word": "investigación",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la investigación"
+  },
+  {
+    "word": "investigar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "investigar"
+  },
+  {
+    "word": "involucrar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "involucrar"
+  },
+  {
+    "word": "irresponsable",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "irresponsable"
+  },
+  {
+    "word": "juzgar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "juzgar"
+  },
+  {
+    "word": "justamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "justamente"
+  },
+  {
+    "word": "justicia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la justicia"
+  },
+  {
+    "word": "lamentablemente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "lamentablemente"
+  },
+  {
+    "word": "liderar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "liderar"
+  },
+  {
+    "word": "liderazgo",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el liderazgo"
+  },
+  {
+    "word": "lógicamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "lógicamente"
+  },
+  {
+    "word": "lucha",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la lucha"
+  },
+  {
+    "word": "luchar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "luchar"
+  },
+  {
+    "word": "manifestar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "manifestar"
+  },
+  {
+    "word": "manipular",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "manipular"
+  },
+  {
+    "word": "marginado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "marginado"
+  },
+  {
+    "word": "madurez",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la madurez"
+  },
+  {
+    "word": "medida",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la medida"
+  },
+  {
+    "word": "memoria",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la memoria"
+  },
+  {
+    "word": "mejorar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mejorar"
+  },
+  {
+    "word": "metódicamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "metódicamente"
+  },
+  {
+    "word": "metodología",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la metodología"
+  },
+  {
+    "word": "misterioso",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "misterioso"
+  },
+  {
+    "word": "motivar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "motivar"
+  },
+  {
+    "word": "motivación",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la motivación"
+  },
+  {
+    "word": "necesariamente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "necesariamente"
+  },
+  {
+    "word": "negativo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "negativo"
+  },
+  {
+    "word": "negociar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "negociar"
+  },
+  {
+    "word": "objetivo",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el objetivo"
+  },
+  {
+    "word": "obligatorio",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "obligatorio"
+  },
+  {
+    "word": "obtener",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "obtener"
+  },
+  {
+    "word": "obvio",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "obvio"
+  },
+  {
+    "word": "ocultar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ocultar"
+  },
+  {
+    "word": "optimista",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "optimista"
+  },
+  {
+    "word": "orientar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "orientar"
+  },
+  {
+    "word": "organismo",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el organismo"
+  },
+  {
+    "word": "parcialmente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "parcialmente"
+  },
+  {
+    "word": "patrimonio",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el patrimonio"
+  },
+  {
+    "word": "percibir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "percibir"
+  },
+  {
+    "word": "perseverar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "perseverar"
+  },
+  {
+    "word": "perspectiva",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la perspectiva"
+  },
+  {
+    "word": "persuadir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "persuadir"
+  },
+  {
+    "word": "planificar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "planificar"
+  },
+  {
+    "word": "plantear",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "plantear"
+  },
+  {
+    "word": "posiblemente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "posiblemente"
+  },
+  {
+    "word": "potencial",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el potencial"
+  },
+  {
+    "word": "preciso",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "preciso"
+  },
+  {
+    "word": "predominante",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "predominante"
+  },
+  {
+    "word": "preocupación",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la preocupación"
+  },
+  {
+    "word": "presión",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la presión"
+  },
+  {
+    "word": "prevenir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "prevenir"
+  },
+  {
+    "word": "prioridad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la prioridad"
+  },
+  {
+    "word": "proceso",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el proceso"
+  },
+  {
+    "word": "profundo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "profundo"
+  },
+  {
+    "word": "prohibir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "prohibir"
+  },
+  {
+    "word": "promover",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "promover"
+  },
+  {
+    "word": "proponer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "proponer"
+  },
+  {
+    "word": "proteger",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "proteger"
+  },
+  {
+    "word": "proveer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "proveer"
+  },
+  {
+    "word": "provocar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "provocar"
+  },
+  {
+    "word": "racional",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "racional"
+  },
+  {
+    "word": "realmente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "realmente"
+  },
+  {
+    "word": "rechazar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "rechazar"
+  },
+  {
+    "word": "reconocer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reconocer"
+  },
+  {
+    "word": "reflexión",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la reflexión"
+  },
+  {
+    "word": "reflexionar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reflexionar"
+  },
+  {
+    "word": "relación",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la relación"
+  },
+  {
+    "word": "relevante",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "relevante"
+  },
+  {
+    "word": "rendimiento",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el rendimiento"
+  },
+  {
+    "word": "representar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "representar"
+  },
+  {
+    "word": "resistir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "resistir"
+  },
+  {
+    "word": "resolución",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la resolución"
+  },
+  {
+    "word": "resolver",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "resolver"
+  },
+  {
+    "word": "responsabilidad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la responsabilidad"
+  },
+  {
+    "word": "riguroso",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "riguroso"
+  },
+  {
+    "word": "riesgo",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el riesgo"
+  },
+  {
+    "word": "satisfecho",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "satisfecho"
+  },
+  {
+    "word": "sector",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el sector"
+  },
+  {
+    "word": "significativo",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "significativo"
+  },
+  {
+    "word": "simplemente",
+    "article": "",
+    "pos": "adverb",
+    "full_entry": "simplemente"
+  },
+  {
+    "word": "solidaridad",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la solidaridad"
+  },
+  {
+    "word": "sostenible",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "sostenible"
+  },
+  {
+    "word": "superar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "superar"
+  },
+  {
+    "word": "surgir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "surgir"
+  },
+  {
+    "word": "talento",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el talento"
+  },
+  {
+    "word": "tarea",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tarea"
+  },
+  {
+    "word": "tecnología",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tecnología"
+  },
+  {
+    "word": "tendencia",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tendencia"
+  },
+  {
+    "word": "tensión",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tensión"
+  },
+  {
+    "word": "transformar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "transformar"
+  },
+  {
+    "word": "transparente",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "transparente"
+  },
+  {
+    "word": "tratar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tratar"
+  },
+  {
+    "word": "tristeza",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la tristeza"
+  },
+  {
+    "word": "urgente",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "urgente"
+  },
+  {
+    "word": "utilizar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "utilizar"
+  },
+  {
+    "word": "validar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "validar"
+  },
+  {
+    "word": "valor",
+    "article": "el",
+    "pos": "noun",
+    "full_entry": "el valor"
+  },
+  {
+    "word": "ventaja",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la ventaja"
+  },
+  {
+    "word": "verificar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "verificar"
+  },
+  {
+    "word": "víctima",
+    "article": "la",
+    "pos": "noun",
+    "full_entry": "la víctima"
+  },
+  {
+    "word": "vinculado",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "vinculado"
+  },
+  {
+    "word": "vulnerable",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "vulnerable"
+  }
+]

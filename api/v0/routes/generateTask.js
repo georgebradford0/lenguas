@@ -413,8 +413,9 @@ router.post('/generate-task', async (req, res) => {
       return res.status(400).json({ error: `Invalid language. Must be one of: ${Object.keys(LANGUAGE_CONFIG).join(', ')}.` });
     }
 
-    if (!['A1', 'A2', 'B1'].includes(level)) {
-      return res.status(400).json({ error: 'Invalid level. Must be A1, A2, or B1.' });
+    const availableLevels = Object.keys(LANGUAGE_CONFIG[language].levels);
+    if (!availableLevels.includes(level)) {
+      return res.status(400).json({ error: `Invalid level. Must be one of: ${availableLevels.join(', ')}.` });
     }
 
     if (!['multipleChoice', 'reverseTranslation', 'audioMultipleChoice', 'speechRecognition'].includes(taskType)) {
@@ -662,55 +663,36 @@ router.post('/submit-answer', async (req, res) => {
 });
 
 /**
- * Determine current level based on mastery
- * A1 is always available
- * A2 unlocks when 100% of A1 words are mastered (7+ attempts, 75%+ accuracy)
- * B1 unlocks when 100% of A2 words are mastered
+ * Determine current level based on mastery.
+ * The first level is always available; each subsequent level unlocks
+ * when 100% of the previous level's words are mastered (7+ attempts, 75%+ accuracy).
  */
 async function determineCurrentLevel(language = 'de') {
+  const levels = Object.keys(LANGUAGE_CONFIG[language].levels);
   const allProgress = await Progress.find({ language });
   const progressMap = {};
   allProgress.forEach(p => {
     progressMap[p.word] = p;
   });
 
-  // Load vocabularies
-  const a1Vocab = loadVocabulary('A1', language);
-  const a2Vocab = loadVocabulary('A2', language);
-
-  // Calculate A1 mastery
-  let a1Mastered = 0;
-  a1Vocab.forEach(w => {
-    const prog = progressMap[w.word];
-    if (prog) {
+  let currentLevel = levels[0];
+  for (let i = 0; i < levels.length - 1; i++) {
+    const vocab = loadVocabulary(levels[i], language);
+    const mastered = vocab.filter(w => {
+      const prog = progressMap[w.word];
+      if (!prog) return false;
       const acc = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
-      if (prog.timesShown >= 7 && acc >= 0.75) {
-        a1Mastered++;
-      }
+      return prog.timesShown >= 7 && acc >= 0.75;
+    }).length;
+
+    if (mastered >= vocab.length) {
+      currentLevel = levels[i + 1];
+    } else {
+      break;
     }
-  });
-
-  const a2Unlocked = a1Mastered >= a1Vocab.length; // 100% mastery required
-
-  if (!a2Unlocked) {
-    return 'A1';
   }
 
-  // Calculate A2 mastery
-  let a2Mastered = 0;
-  a2Vocab.forEach(w => {
-    const prog = progressMap[w.word];
-    if (prog) {
-      const acc = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
-      if (prog.timesShown >= 7 && acc >= 0.75) {
-        a2Mastered++;
-      }
-    }
-  });
-
-  const b1Unlocked = a2Mastered >= a2Vocab.length; // 100% mastery required
-
-  return b1Unlocked ? 'B1' : 'A2';
+  return currentLevel;
 }
 
 /**
@@ -734,18 +716,14 @@ router.get('/level-stats', async (req, res) => {
     // Load all progress for this language
     const allProgress = await Progress.find({ language });
 
-    // Load vocabularies
-    const a1Vocab = loadVocabulary('A1', language);
-    const a2Vocab = loadVocabulary('A2', language);
-    const b1Vocab = loadVocabulary('B1', language);
+    const levels = Object.keys(LANGUAGE_CONFIG[language].levels);
+
+    // Build progress map
+    const progressMap = {};
+    allProgress.forEach(p => { progressMap[p.word] = p; });
 
     // Calculate stats for each level
     const calculateLevelStats = (vocab, levelName) => {
-      const progressMap = {};
-      allProgress.forEach(p => {
-        progressMap[p.word] = p;
-      });
-
       let totalAttempts = 0;
       let correctAttempts = 0;
       let masteredCount = 0;
@@ -755,86 +733,62 @@ router.get('/level-stats', async (req, res) => {
         if (prog) {
           totalAttempts += prog.timesShown;
           correctAttempts += prog.correctCount;
-
-          // Mastery criteria: 7+ attempts AND 75%+ accuracy
           const accuracy = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
-          if (prog.timesShown >= 7 && accuracy >= 0.75) {
-            masteredCount++;
-          }
+          if (prog.timesShown >= 7 && accuracy >= 0.75) masteredCount++;
         }
       });
 
       const accuracy = totalAttempts > 0 ? correctAttempts / totalAttempts : 0;
-      const masteryPercentage = Math.round((masteredCount / vocab.length) * 100);
-
       return {
         level: levelName,
         total: vocab.length,
         mastered: masteredCount,
-        percentage: masteryPercentage,
+        percentage: Math.round((masteredCount / vocab.length) * 100),
         totalAttempts,
         accuracy: Math.round(accuracy * 100),
-        unlocked: false, // Will be set below
+        unlocked: false,
       };
     };
 
-    const a1Stats = calculateLevelStats(a1Vocab, 'A1');
-    const a2Stats = calculateLevelStats(a2Vocab, 'A2');
-    const b1Stats = calculateLevelStats(b1Vocab, 'B1');
+    // Load vocabs and stats for all levels
+    const vocabs = levels.map(l => loadVocabulary(l, language));
+    const levelStatsArray = vocabs.map((v, i) => calculateLevelStats(v, levels[i]));
 
-    // Determine level unlocking
-    // A1 is always unlocked
-    a1Stats.unlocked = true;
-
-    // A2 unlocks when 100% of A1 words are mastered
-    const a2Unlocked = a1Stats.mastered >= a1Vocab.length;
-    a2Stats.unlocked = a2Unlocked;
-
-    // B1 unlocks when 100% of A2 words are mastered
-    const b1Unlocked = a2Unlocked && a2Stats.mastered >= a2Vocab.length;
-    b1Stats.unlocked = b1Unlocked;
-
-    // Current level is the highest unlocked level
-    let currentLevel = 'A1';
-    if (b1Unlocked) currentLevel = 'B1';
-    else if (a2Unlocked) currentLevel = 'A2';
-
-    const levelStatsArray = [a1Stats, a2Stats, b1Stats];
+    // Determine unlocking: first level always unlocked, each subsequent
+    // unlocks when previous is 100% mastered
+    levelStatsArray[0].unlocked = true;
+    let currentLevel = levels[0];
+    for (let i = 1; i < levels.length; i++) {
+      const prevUnlocked = levelStatsArray[i - 1].unlocked;
+      const prevFullyMastered = levelStatsArray[i - 1].mastered >= vocabs[i - 1].length;
+      levelStatsArray[i].unlocked = prevUnlocked && prevFullyMastered;
+      if (levelStatsArray[i].unlocked) currentLevel = levels[i];
+    }
 
     // Calculate overall stats
     const totalAttempts = allProgress.reduce((sum, p) => sum + p.timesShown, 0);
     const totalCorrect = allProgress.reduce((sum, p) => sum + p.correctCount, 0);
     const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
-    // Get per-word progress for current level
-    const currentLevelVocab = currentLevel === 'A1' ? a1Vocab : currentLevel === 'A2' ? a2Vocab : b1Vocab;
-    const progressMap = {};
-    allProgress.forEach(p => {
-      progressMap[p.word] = p;
-    });
-
+    // Per-word progress for current level
+    const currentLevelVocab = vocabs[levels.indexOf(currentLevel)];
     const wordProgress = currentLevelVocab.map(w => {
       const prog = progressMap[w.word];
-      if (!prog) {
-        return { word: w.word, attempts: 0, accuracy: 0 };
-      }
+      if (!prog) return { word: w.word, attempts: 0, accuracy: 0 };
       const accuracy = prog.timesShown > 0 ? prog.correctCount / prog.timesShown : 0;
-      return {
-        word: w.word,
-        attempts: prog.timesShown,
-        accuracy: Math.round(accuracy * 100)
-      };
+      return { word: w.word, attempts: prog.timesShown, accuracy: Math.round(accuracy * 100) };
     });
 
-    console.log(`Level progression: A1 ${a1Stats.mastered}/${a1Vocab.length}, A2 ${a2Unlocked ? 'UNLOCKED' : 'locked'}, B1 ${b1Unlocked ? 'UNLOCKED' : 'locked'}`);
+    const unlockLog = levelStatsArray.map(s => `${s.level} ${s.mastered}/${s.total}`).join(', ');
+    console.log(`Level progression [${language}]: ${unlockLog}`);
 
     res.json({
       currentLevel,
       levelStats: levelStatsArray,
       overallAccuracy,
-      totalWords: a1Vocab.length + a2Vocab.length + b1Vocab.length,
+      totalWords: vocabs.reduce((sum, v) => sum + v.length, 0),
       totalAttempts,
-      wordProgress // Per-word progress for current level
+      wordProgress,
     });
 
   } catch (error) {

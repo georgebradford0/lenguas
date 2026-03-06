@@ -38,6 +38,22 @@ const LANGUAGE_CONFIG = {
       return 'le';
     },
   },
+  es: {
+    name: 'Spanish',
+    levels: {
+      A1: 'es_a1_vocabulary.json',
+      A2: 'es_a2_vocabulary.json',
+      B2: 'es_b2_vocabulary.json',
+    },
+    tts: { VoiceId: 'Lucia', Engine: 'neural', LanguageCode: 'es-ES' },
+    parsePlurals: false,
+    normalizeArticle: (raw) => {
+      const r = raw.toLowerCase();
+      if (r === 'la' || r === 'las') return r;
+      if (r === 'los') return 'los';
+      return 'el';
+    },
+  },
 };
 
 module.exports = { LANGUAGE_CONFIG };
