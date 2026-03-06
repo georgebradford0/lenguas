@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet, StatusBar, Platform, View, Text, TouchableOpacity,
-  TextInput, ActivityIndicator, KeyboardAvoidingView, Alert,
+  TextInput, ActivityIndicator, KeyboardAvoidingView, Alert, Modal, Pressable,
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { QuizScreen } from './src/screens/QuizScreen';
@@ -17,11 +17,29 @@ const LANGUAGES: { code: Language; flag: string; label: string; sublabel: string
   { code: 'es', flag: '🇪🇸', label: 'Spanish', sublabel: 'Español' },
 ];
 
-function LanguageSelectScreen({ onSelect }: { onSelect: (lang: Language) => void }) {
+function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Language) => void; onLogout: () => void }) {
   const [pressed, setPressed] = useState<Language | null>(null);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   return (
     <View style={langStyles.container}>
+      <TouchableOpacity style={langStyles.settingsButton} onPress={() => setMenuVisible(true)}>
+        <Text style={langStyles.settingsIcon}>⚙️</Text>
+      </TouchableOpacity>
+
+      <Modal transparent visible={menuVisible} animationType="fade" onRequestClose={() => setMenuVisible(false)}>
+        <Pressable style={langStyles.menuOverlay} onPress={() => setMenuVisible(false)}>
+          <View style={langStyles.menuDropdown}>
+            <TouchableOpacity
+              style={langStyles.menuItem}
+              onPress={() => { setMenuVisible(false); onLogout(); }}
+            >
+              <Text style={langStyles.menuItemText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Modal>
+
       <View style={langStyles.header}>
         <Text style={langStyles.title}>Language Learning</Text>
         <Text style={langStyles.subtitle}>Which language would you like to learn?</Text>
@@ -210,7 +228,7 @@ function AppContent() {
       {authStep === 'email' || authStep === 'code'
         ? <LoginScreen onAuthenticated={() => setAuthStep('language')} />
         : language === null
-          ? <LanguageSelectScreen onSelect={setLanguage} />
+          ? <LanguageSelectScreen onSelect={setLanguage} onLogout={handleLogout} />
           : <QuizScreen language={language} onBack={() => setLanguage(null)} />
       }
     </View>
@@ -325,6 +343,42 @@ const langStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.xl,
+  },
+  settingsButton: {
+    position: 'absolute',
+    top: spacing.md,
+    right: spacing.md,
+    padding: spacing.xs,
+  },
+  settingsIcon: {
+    fontSize: 24,
+  },
+  menuOverlay: {
+    flex: 1,
+  },
+  menuDropdown: {
+    position: 'absolute',
+    top: spacing.md + 36,
+    right: spacing.md,
+    backgroundColor: colors.cardBackground,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 6,
+    minWidth: 140,
+  },
+  menuItem: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  menuItemText: {
+    fontSize: fontSize.xs,
+    color: colors.wrong,
+    fontWeight: '500',
   },
   header: {
     alignItems: 'center',
