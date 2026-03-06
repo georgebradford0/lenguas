@@ -12,9 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-polly": "^3.980.0",
+    "@aws-sdk/client-ses": "^3.1003.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5",
     "openai": "^6.17.0"
   }

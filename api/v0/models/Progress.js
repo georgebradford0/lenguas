@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const progressSchema = new mongoose.Schema({
+  userId:           { type: String, required: true, index: true },
   word:             { type: String, required: true, index: true },
   language:         { type: String, required: true, default: 'de' },
   tier:             { type: Number, default: 1 },
@@ -10,6 +11,6 @@ const progressSchema = new mongoose.Schema({
   lastSeenTaskType: { type: String, default: null },
 }, { timestamps: true });
 
-progressSchema.index({ word: 1, language: 1 }, { unique: true });
+progressSchema.index({ userId: 1, word: 1, language: 1 }, { unique: true });
 
 module.exports = mongoose.model('Progress', progressSchema);

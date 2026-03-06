@@ -13,8 +13,44 @@ import type {
 // Remote API server on AWS EC2
 const API_BASE = 'http://35.88.113.219:3000';
 
+// Auth token holder — set after login
+let _authToken: string | null = null;
+
+export function setAuthToken(token: string | null) {
+  _authToken = token;
+}
+
+function authHeaders(): Record<string, string> {
+  return _authToken ? { Authorization: `Bearer ${_authToken}` } : {};
+}
+
+export async function loginRequest(email: string): Promise<void> {
+  const response = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.error || 'Failed to send login code');
+  }
+}
+
+export async function verifyCode(email: string, code: string): Promise<{ token: string; userId: string }> {
+  const response = await fetch(`${API_BASE}/auth/verify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, code }),
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.error || 'Invalid or expired code');
+  }
+  return response.json();
+}
+
 export async function loadWords(): Promise<WordData[]> {
-  const response = await fetch(`${API_BASE}/words`);
+  const response = await fetch(`${API_BASE}/words`, { headers: authHeaders() });
   if (!response.ok) {
     throw new Error('Failed to load words');
   }
@@ -30,7 +66,7 @@ export async function translate(word: string): Promise<TranslationResult> {
 }
 
 export async function speak(text: string, language = 'de'): Promise<string> {
-  const response = await fetch(`${API_BASE}/speak/${encodeURIComponent(text)}?language=${language}`);
+  const response = await fetch(`${API_BASE}/speak/${encodeURIComponent(text)}?language=${language}`, { headers: authHeaders() });
   if (!response.ok) {
     throw new Error('Failed to get speech');
   }
@@ -44,7 +80,7 @@ export async function speak(text: string, language = 'de'): Promise<string> {
 }
 
 export async function loadProgress(): Promise<Record<string, ProgressRecord>> {
-  const response = await fetch(`${API_BASE}/progress`);
+  const response = await fetch(`${API_BASE}/progress`, { headers: authHeaders() });
   if (!response.ok) {
     throw new Error('Failed to load progress');
   }
@@ -68,9 +104,7 @@ export async function saveProgress(
 ): Promise<void> {
   await fetch(`${API_BASE}/progress/${encodeURIComponent(word)}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(data),
   });
 }
@@ -84,9 +118,7 @@ export async function generateTask(
 ): Promise<GenerateTaskResponse> {
   const response = await fetch(`${API_BASE}/generate-task`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify({ level, taskType, language }),
   });
 
@@ -102,9 +134,7 @@ export async function submitAnswer(
 ): Promise<SubmitAnswerResponse> {
   const response = await fetch(`${API_BASE}/submit-answer`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(request),
   });
 
@@ -117,7 +147,7 @@ export async function submitAnswer(
 
 // Get level-based stats (new)
 export async function getLevelStats(language = 'de'): Promise<LevelStatsResponse> {
-  const response = await fetch(`${API_BASE}/level-stats?language=${language}`);
+  const response = await fetch(`${API_BASE}/level-stats?language=${language}`, { headers: authHeaders() });
 
   if (!response.ok) {
     throw new Error('Failed to load level stats');
@@ -128,7 +158,7 @@ export async function getLevelStats(language = 'de'): Promise<LevelStatsResponse
 
 // Legacy tier stats (for backward compatibility)
 export async function getTierStats(): Promise<TierStatsResponse> {
-  const response = await fetch(`${API_BASE}/tier-stats`);
+  const response = await fetch(`${API_BASE}/tier-stats`, { headers: authHeaders() });
 
   if (!response.ok) {
     throw new Error('Failed to load tier stats');
@@ -145,9 +175,7 @@ export async function comparePronunciation(
 ): Promise<{ similarity: number; isCorrect: boolean }> {
   const response = await fetch(`${API_BASE}/compare-pronunciation`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify({ audio: audioBase64, targetWord, language }),
   });
 

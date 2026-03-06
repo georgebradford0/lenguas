@@ -12,16 +12,6 @@ const { LANGUAGE_CONFIG } = require('../config/languages');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const pollyClient = new PollyClient();
 
-// One-time startup migration: tag existing progress records without a language field
-async function migrateProgressLanguage() {
-  const result = await Progress.updateMany(
-    { language: { $exists: false } },
-    { $set: { language: 'de' } }
-  );
-  if (result.modifiedCount > 0)
-    console.log(`Migrated ${result.modifiedCount} progress records → language='de'`);
-}
-migrateProgressLanguage().catch(err => console.error('Migration error:', err));
 
 // Load vocabulary from JSON files
 function loadVocabulary(level, language = 'de') {
@@ -406,7 +396,8 @@ function convertToPcm(inputPath, outputPath) {
  */
 router.post('/generate-task', async (req, res) => {
   try {
-    const { level = 'A1', taskType = 'multipleChoice', userId = 'default', language = 'de' } = req.body;
+    const { level = 'A1', taskType = 'multipleChoice', language = 'de' } = req.body;
+    const userId = req.user.userId;
 
     // Validate inputs
     if (!LANGUAGE_CONFIG[language]) {
@@ -427,9 +418,9 @@ router.post('/generate-task', async (req, res) => {
     // Load vocabulary for the level
     const vocabulary = loadVocabulary(level, language);
 
-    // Load progress for all words in this language
+    // Load progress for all words in this language for this user
     const progressRecords = {};
-    const allProgress = await Progress.find({ language });
+    const allProgress = await Progress.find({ userId, language });
     allProgress.forEach(p => {
       progressRecords[p.word] = {
         timesShown: p.timesShown,
@@ -579,6 +570,7 @@ router.post('/submit-answer', async (req, res) => {
       previousLevel,
       language = 'de',
     } = req.body;
+    const userId = req.user.userId;
 
     // Validate inputs (allow empty userAnswer for "give up" scenario)
     if (!targetWord || !level || !taskType || userAnswer === undefined || userAnswer === null || !correctAnswer) {
@@ -591,11 +583,12 @@ router.post('/submit-answer', async (req, res) => {
     console.log(`Answer for "${targetWord}": ${isCorrect ? 'CORRECT' : 'WRONG'}`);
     console.log(`  User: "${userAnswer}", Correct: "${correctAnswer}"`);
 
-    // Find or create progress for this word+language
-    let progress = await Progress.findOne({ word: targetWord, language });
+    // Find or create progress for this user+word+language
+    let progress = await Progress.findOne({ userId, word: targetWord, language });
 
     if (!progress) {
       progress = new Progress({
+        userId,
         word: targetWord,
         language,
         level: level,
@@ -627,7 +620,7 @@ router.post('/submit-answer', async (req, res) => {
 
     // Only check if we have a previousLevel to compare against
     if (previousLevel) {
-      const currentLevel = await determineCurrentLevel(language);
+      const currentLevel = await determineCurrentLevel(language, userId);
 
       // Level unlock detected
       if (currentLevel !== previousLevel) {
@@ -667,9 +660,10 @@ router.post('/submit-answer', async (req, res) => {
  * The first level is always available; each subsequent level unlocks
  * when 100% of the previous level's words are mastered (7+ attempts, 75%+ accuracy).
  */
-async function determineCurrentLevel(language = 'de') {
+async function determineCurrentLevel(language = 'de', userId) {
   const levels = Object.keys(LANGUAGE_CONFIG[language].levels);
-  const allProgress = await Progress.find({ language });
+  const query = userId ? { userId, language } : { language };
+  const allProgress = await Progress.find(query);
   const progressMap = {};
   allProgress.forEach(p => {
     progressMap[p.word] = p;
@@ -708,13 +702,14 @@ async function determineCurrentLevel(language = 'de') {
 router.get('/level-stats', async (req, res) => {
   try {
     const language = req.query.language || 'de';
+    const userId = req.user.userId;
 
     if (!LANGUAGE_CONFIG[language]) {
       return res.status(400).json({ error: `Invalid language. Must be one of: ${Object.keys(LANGUAGE_CONFIG).join(', ')}.` });
     }
 
-    // Load all progress for this language
-    const allProgress = await Progress.find({ language });
+    // Load all progress for this user and language
+    const allProgress = await Progress.find({ userId, language });
 
     const levels = Object.keys(LANGUAGE_CONFIG[language].levels);
 
