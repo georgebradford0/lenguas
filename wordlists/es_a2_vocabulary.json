@@ -1,837 +1,195 @@
 [
   {
-    "word": "abierto",
+    "word": "cabeza",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cabeza"
+  },
+  {
+    "word": "cara",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cara"
+  },
+  {
+    "word": "brazo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "brazo"
+  },
+  {
+    "word": "mano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mano"
+  },
+  {
+    "word": "dedo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dedo"
+  },
+  {
+    "word": "pierna",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pierna"
+  },
+  {
+    "word": "pie",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pie"
+  },
+  {
+    "word": "oído",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "oído"
+  },
+  {
+    "word": "muela",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "muela"
+  },
+  {
+    "word": "garganta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "garganta"
+  },
+  {
+    "word": "estómago",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "estómago"
+  },
+  {
+    "word": "espalda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "espalda"
+  },
+  {
+    "word": "calvo",
     "article": "",
     "pos": "adjective",
-    "full_entry": "abierto"
+    "full_entry": "calvo"
   },
   {
-    "word": "abogado",
-    "article": "el",
+    "word": "pelo",
+    "article": "",
     "pos": "noun",
-    "full_entry": "el abogado"
+    "full_entry": "pelo"
   },
   {
-    "word": "acción",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la acción"
-  },
-  {
-    "word": "activo",
+    "word": "rizado",
     "article": "",
     "pos": "adjective",
-    "full_entry": "activo"
+    "full_entry": "rizado"
   },
   {
-    "word": "acuerdo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el acuerdo"
-  },
-  {
-    "word": "adelante",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "adelante"
-  },
-  {
-    "word": "aeropuerto",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el aeropuerto"
-  },
-  {
-    "word": "agradable",
+    "word": "largo",
     "article": "",
     "pos": "adjective",
-    "full_entry": "agradable"
+    "full_entry": "largo"
   },
   {
-    "word": "alojamiento",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el alojamiento"
-  },
-  {
-    "word": "alquilar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "alquilar"
-  },
-  {
-    "word": "amable",
+    "word": "corto",
     "article": "",
     "pos": "adjective",
-    "full_entry": "amable"
+    "full_entry": "corto"
   },
   {
-    "word": "ambiente",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el ambiente"
-  },
-  {
-    "word": "animal",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el animal"
-  },
-  {
-    "word": "antiguo",
+    "word": "gorra",
     "article": "",
-    "pos": "adjective",
-    "full_entry": "antiguo"
+    "pos": "noun",
+    "full_entry": "gorra"
   },
   {
-    "word": "aprender",
+    "word": "lavarse",
     "article": "",
     "pos": "verb",
-    "full_entry": "aprender"
+    "full_entry": "lavarse"
   },
   {
-    "word": "árbol",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el árbol"
-  },
-  {
-    "word": "asistir",
+    "word": "peinarse",
     "article": "",
     "pos": "verb",
-    "full_entry": "asistir"
+    "full_entry": "peinarse"
   },
   {
-    "word": "aspecto",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el aspecto"
-  },
-  {
-    "word": "atención",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la atención"
-  },
-  {
-    "word": "atractivo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "atractivo"
-  },
-  {
-    "word": "barato",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "barato"
-  },
-  {
-    "word": "barrio",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el barrio"
-  },
-  {
-    "word": "bicicleta",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la bicicleta"
-  },
-  {
-    "word": "bosque",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el bosque"
-  },
-  {
-    "word": "camarero",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el camarero"
-  },
-  {
-    "word": "campo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el campo"
-  },
-  {
-    "word": "cantar",
+    "word": "afeitarse",
     "article": "",
     "pos": "verb",
-    "full_entry": "cantar"
+    "full_entry": "afeitarse"
   },
   {
-    "word": "carretera",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la carretera"
-  },
-  {
-    "word": "centro",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el centro"
-  },
-  {
-    "word": "cerebro",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el cerebro"
-  },
-  {
-    "word": "cielo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el cielo"
-  },
-  {
-    "word": "claro",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "claro"
-  },
-  {
-    "word": "cliente",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el cliente"
-  },
-  {
-    "word": "clima",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el clima"
-  },
-  {
-    "word": "cocinar",
+    "word": "andar",
     "article": "",
     "pos": "verb",
-    "full_entry": "cocinar"
+    "full_entry": "andar"
   },
   {
-    "word": "comenzar",
+    "word": "pasear",
     "article": "",
     "pos": "verb",
-    "full_entry": "comenzar"
+    "full_entry": "pasear"
   },
   {
-    "word": "cómodo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "cómodo"
-  },
-  {
-    "word": "compartir",
+    "word": "correr",
     "article": "",
     "pos": "verb",
-    "full_entry": "compartir"
+    "full_entry": "correr"
   },
   {
-    "word": "completo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "completo"
-  },
-  {
-    "word": "comunicar",
+    "word": "subir",
     "article": "",
     "pos": "verb",
-    "full_entry": "comunicar"
+    "full_entry": "subir"
   },
   {
-    "word": "concierto",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el concierto"
-  },
-  {
-    "word": "conducir",
+    "word": "bajar",
     "article": "",
     "pos": "verb",
-    "full_entry": "conducir"
+    "full_entry": "bajar"
   },
   {
-    "word": "construir",
+    "word": "sentarse",
     "article": "",
     "pos": "verb",
-    "full_entry": "construir"
+    "full_entry": "sentarse"
   },
   {
-    "word": "contacto",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el contacto"
-  },
-  {
-    "word": "contento",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "contento"
-  },
-  {
-    "word": "continuar",
+    "word": "coger",
     "article": "",
     "pos": "verb",
-    "full_entry": "continuar"
+    "full_entry": "coger"
   },
   {
-    "word": "corazón",
-    "article": "el",
+    "word": "ejercicio",
+    "article": "",
     "pos": "noun",
-    "full_entry": "el corazón"
+    "full_entry": "ejercicio"
   },
   {
-    "word": "correo",
-    "article": "el",
+    "word": "gimnasia",
+    "article": "",
     "pos": "noun",
-    "full_entry": "el correo"
+    "full_entry": "gimnasia"
   },
   {
-    "word": "crecer",
+    "word": "deporte",
     "article": "",
-    "pos": "verb",
-    "full_entry": "crecer"
-  },
-  {
-    "word": "creer",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "creer"
-  },
-  {
-    "word": "cuadro",
-    "article": "el",
     "pos": "noun",
-    "full_entry": "el cuadro"
+    "full_entry": "deporte"
   },
   {
-    "word": "cuenta",
-    "article": "la",
+    "word": "sexo",
+    "article": "",
     "pos": "noun",
-    "full_entry": "la cuenta"
-  },
-  {
-    "word": "cuerpo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el cuerpo"
-  },
-  {
-    "word": "cultura",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la cultura"
-  },
-  {
-    "word": "curioso",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "curioso"
-  },
-  {
-    "word": "debajo",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "debajo"
-  },
-  {
-    "word": "decidir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "decidir"
-  },
-  {
-    "word": "dejar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "dejar"
-  },
-  {
-    "word": "delante",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "delante"
-  },
-  {
-    "word": "delgado",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "delgado"
-  },
-  {
-    "word": "dentista",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el dentista"
-  },
-  {
-    "word": "describir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "describir"
-  },
-  {
-    "word": "descubrir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "descubrir"
-  },
-  {
-    "word": "desear",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "desear"
-  },
-  {
-    "word": "detrás",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "detrás"
-  },
-  {
-    "word": "dificultad",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la dificultad"
-  },
-  {
-    "word": "directo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "directo"
-  },
-  {
-    "word": "disfrutar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "disfrutar"
-  },
-  {
-    "word": "distancia",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la distancia"
-  },
-  {
-    "word": "divertido",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "divertido"
-  },
-  {
-    "word": "dolor",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el dolor"
-  },
-  {
-    "word": "dormirse",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "dormirse"
-  },
-  {
-    "word": "economía",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la economía"
-  },
-  {
-    "word": "edificio",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el edificio"
-  },
-  {
-    "word": "elegante",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "elegante"
-  },
-  {
-    "word": "empleo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el empleo"
-  },
-  {
-    "word": "empresa",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la empresa"
-  },
-  {
-    "word": "encontrar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "encontrar"
-  },
-  {
-    "word": "enfermo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "enfermo"
-  },
-  {
-    "word": "enorme",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "enorme"
-  },
-  {
-    "word": "enseñar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "enseñar"
-  },
-  {
-    "word": "enviar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "enviar"
-  },
-  {
-    "word": "equipo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el equipo"
-  },
-  {
-    "word": "escalera",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la escalera"
-  },
-  {
-    "word": "especial",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "especial"
-  },
-  {
-    "word": "estilo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el estilo"
-  },
-  {
-    "word": "exactamente",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "exactamente"
-  },
-  {
-    "word": "examen",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el examen"
-  },
-  {
-    "word": "explicar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "explicar"
-  },
-  {
-    "word": "famoso",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "famoso"
-  },
-  {
-    "word": "feliz",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "feliz"
-  },
-  {
-    "word": "fiesta",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la fiesta"
-  },
-  {
-    "word": "fin",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el fin"
-  },
-  {
-    "word": "flor",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la flor"
-  },
-  {
-    "word": "foto",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la foto"
-  },
-  {
-    "word": "fresco",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "fresco"
-  },
-  {
-    "word": "frontera",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la frontera"
-  },
-  {
-    "word": "fuerte",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "fuerte"
-  },
-  {
-    "word": "funcionar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "funcionar"
-  },
-  {
-    "word": "ganar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "ganar"
-  },
-  {
-    "word": "gente",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la gente"
-  },
-  {
-    "word": "gordo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "gordo"
-  },
-  {
-    "word": "gratis",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "gratis"
-  },
-  {
-    "word": "grupo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el grupo"
-  },
-  {
-    "word": "guardar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "guardar"
-  },
-  {
-    "word": "historia",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la historia"
-  },
-  {
-    "word": "hoja",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la hoja"
-  },
-  {
-    "word": "horrible",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "horrible"
-  },
-  {
-    "word": "igualmente",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "igualmente"
-  },
-  {
-    "word": "imaginar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "imaginar"
-  },
-  {
-    "word": "individual",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "individual"
-  },
-  {
-    "word": "instalación",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la instalación"
-  },
-  {
-    "word": "instrucción",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la instrucción"
-  },
-  {
-    "word": "intentar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "intentar"
-  },
-  {
-    "word": "interés",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el interés"
-  },
-  {
-    "word": "isla",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la isla"
-  },
-  {
-    "word": "jardín",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el jardín"
-  },
-  {
-    "word": "joven",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "joven"
-  },
-  {
-    "word": "lago",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el lago"
-  },
-  {
-    "word": "lavar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "lavar"
-  },
-  {
-    "word": "libre",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "libre"
-  },
-  {
-    "word": "limpio",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "limpio"
-  },
-  {
-    "word": "listo",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "listo"
-  },
-  {
-    "word": "lleno",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "lleno"
-  },
-  {
-    "word": "luego",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "luego"
-  },
-  {
-    "word": "luna",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la luna"
-  },
-  {
-    "word": "mandar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "mandar"
-  },
-  {
-    "word": "mar",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el mar"
-  },
-  {
-    "word": "mayor",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "mayor"
-  },
-  {
-    "word": "medio",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el medio"
-  },
-  {
-    "word": "mejor",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "mejor"
-  },
-  {
-    "word": "menú",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el menú"
-  },
-  {
-    "word": "mente",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la mente"
-  },
-  {
-    "word": "mentir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "mentir"
-  },
-  {
-    "word": "moda",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la moda"
-  },
-  {
-    "word": "moderno",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "moderno"
-  },
-  {
-    "word": "morir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "morir"
-  },
-  {
-    "word": "mostrar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "mostrar"
-  },
-  {
-    "word": "mujer",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la mujer"
+    "full_entry": "sexo"
   },
   {
     "word": "nacer",
@@ -840,538 +198,40 @@
     "full_entry": "nacer"
   },
   {
-    "word": "natural",
+    "word": "crecer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "crecer"
+  },
+  {
+    "word": "morir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "morir"
+  },
+  {
+    "word": "carácter",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "carácter"
+  },
+  {
+    "word": "optimista",
     "article": "",
     "pos": "adjective",
-    "full_entry": "natural"
+    "full_entry": "optimista"
   },
   {
-    "word": "naturaleza",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la naturaleza"
-  },
-  {
-    "word": "negocio",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el negocio"
-  },
-  {
-    "word": "nervioso",
+    "word": "abierto",
     "article": "",
     "pos": "adjective",
-    "full_entry": "nervioso"
+    "full_entry": "abierto"
   },
   {
-    "word": "normalmente",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "normalmente"
-  },
-  {
-    "word": "noticias",
-    "article": "las",
-    "pos": "noun",
-    "full_entry": "las noticias"
-  },
-  {
-    "word": "nube",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la nube"
-  },
-  {
-    "word": "obra",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la obra"
-  },
-  {
-    "word": "ocupado",
+    "word": "reservado",
     "article": "",
     "pos": "adjective",
-    "full_entry": "ocupado"
-  },
-  {
-    "word": "olvidar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "olvidar"
-  },
-  {
-    "word": "opinión",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la opinión"
-  },
-  {
-    "word": "ordenar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "ordenar"
-  },
-  {
-    "word": "pagar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "pagar"
-  },
-  {
-    "word": "palabra",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la palabra"
-  },
-  {
-    "word": "pared",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la pared"
-  },
-  {
-    "word": "participar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "participar"
-  },
-  {
-    "word": "pasado",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "pasado"
-  },
-  {
-    "word": "pasar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "pasar"
-  },
-  {
-    "word": "paseo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el paseo"
-  },
-  {
-    "word": "peligroso",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "peligroso"
-  },
-  {
-    "word": "pensar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "pensar"
-  },
-  {
-    "word": "perder",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "perder"
-  },
-  {
-    "word": "perfecto",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "perfecto"
-  },
-  {
-    "word": "periodo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el periodo"
-  },
-  {
-    "word": "permitir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "permitir"
-  },
-  {
-    "word": "persona",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la persona"
-  },
-  {
-    "word": "piso",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el piso"
-  },
-  {
-    "word": "placer",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el placer"
-  },
-  {
-    "word": "plato",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el plato"
-  },
-  {
-    "word": "plaza",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la plaza"
-  },
-  {
-    "word": "pobre",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "pobre"
-  },
-  {
-    "word": "población",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la población"
-  },
-  {
-    "word": "política",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la política"
-  },
-  {
-    "word": "popular",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "popular"
-  },
-  {
-    "word": "posible",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "posible"
-  },
-  {
-    "word": "practicar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "practicar"
-  },
-  {
-    "word": "preparar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "preparar"
-  },
-  {
-    "word": "presentar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "presentar"
-  },
-  {
-    "word": "principal",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "principal"
-  },
-  {
-    "word": "privado",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "privado"
-  },
-  {
-    "word": "probablemente",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "probablemente"
-  },
-  {
-    "word": "probar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "probar"
-  },
-  {
-    "word": "producto",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el producto"
-  },
-  {
-    "word": "profesión",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la profesión"
-  },
-  {
-    "word": "programar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "programar"
-  },
-  {
-    "word": "proyecto",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el proyecto"
-  },
-  {
-    "word": "público",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "público"
-  },
-  {
-    "word": "pueblo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el pueblo"
-  },
-  {
-    "word": "puntual",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "puntual"
-  },
-  {
-    "word": "quedar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "quedar"
-  },
-  {
-    "word": "quizás",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "quizás"
-  },
-  {
-    "word": "recibir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "recibir"
-  },
-  {
-    "word": "recordar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "recordar"
-  },
-  {
-    "word": "región",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la región"
-  },
-  {
-    "word": "regular",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "regular"
-  },
-  {
-    "word": "reservar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "reservar"
-  },
-  {
-    "word": "resultado",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el resultado"
-  },
-  {
-    "word": "reunión",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la reunión"
-  },
-  {
-    "word": "rico",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "rico"
-  },
-  {
-    "word": "río",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el río"
-  },
-  {
-    "word": "rodilla",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la rodilla"
-  },
-  {
-    "word": "roto",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "roto"
-  },
-  {
-    "word": "ruido",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el ruido"
-  },
-  {
-    "word": "sección",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la sección"
-  },
-  {
-    "word": "seguro",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "seguro"
-  },
-  {
-    "word": "sensación",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la sensación"
-  },
-  {
-    "word": "señal",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la señal"
-  },
-  {
-    "word": "simpático",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "simpático"
-  },
-  {
-    "word": "situación",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la situación"
-  },
-  {
-    "word": "sociedad",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la sociedad"
-  },
-  {
-    "word": "solicitar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "solicitar"
-  },
-  {
-    "word": "solución",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la solución"
-  },
-  {
-    "word": "suceder",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "suceder"
-  },
-  {
-    "word": "suficiente",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "suficiente"
-  },
-  {
-    "word": "sugerir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "sugerir"
-  },
-  {
-    "word": "suelo",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el suelo"
-  },
-  {
-    "word": "sueño",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el sueño"
-  },
-  {
-    "word": "sufrir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "sufrir"
-  },
-  {
-    "word": "tarjeta",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la tarjeta"
-  },
-  {
-    "word": "teatro",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el teatro"
-  },
-  {
-    "word": "tema",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el tema"
-  },
-  {
-    "word": "temperatura",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la temperatura"
-  },
-  {
-    "word": "tener",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "tener"
-  },
-  {
-    "word": "típico",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "típico"
-  },
-  {
-    "word": "tocar",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "tocar"
-  },
-  {
-    "word": "todavía",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "todavía"
-  },
-  {
-    "word": "total",
-    "article": "",
-    "pos": "adjective",
-    "full_entry": "total"
-  },
-  {
-    "word": "totalmente",
-    "article": "",
-    "pos": "adverb",
-    "full_entry": "totalmente"
-  },
-  {
-    "word": "traducir",
-    "article": "",
-    "pos": "verb",
-    "full_entry": "traducir"
+    "full_entry": "reservado"
   },
   {
     "word": "tranquilo",
@@ -1380,10 +240,40 @@
     "full_entry": "tranquilo"
   },
   {
-    "word": "transporte",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el transporte"
+    "word": "nervioso",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "nervioso"
+  },
+  {
+    "word": "generoso",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "generoso"
+  },
+  {
+    "word": "egoísta",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "egoísta"
+  },
+  {
+    "word": "amable",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "amable"
+  },
+  {
+    "word": "agradable",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "agradable"
+  },
+  {
+    "word": "tolerante",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "tolerante"
   },
   {
     "word": "triste",
@@ -1392,64 +282,232 @@
     "full_entry": "triste"
   },
   {
-    "word": "turista",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el turista"
-  },
-  {
-    "word": "último",
+    "word": "contento",
     "article": "",
     "pos": "adjective",
-    "full_entry": "último"
+    "full_entry": "contento"
   },
   {
-    "word": "único",
+    "word": "enfadado",
     "article": "",
     "pos": "adjective",
-    "full_entry": "único"
+    "full_entry": "enfadado"
   },
   {
-    "word": "útil",
+    "word": "preocupado",
     "article": "",
     "pos": "adjective",
-    "full_entry": "útil"
+    "full_entry": "preocupado"
   },
   {
-    "word": "vacaciones",
-    "article": "las",
-    "pos": "noun",
-    "full_entry": "las vacaciones"
-  },
-  {
-    "word": "vender",
+    "word": "gustar",
     "article": "",
     "pos": "verb",
-    "full_entry": "vender"
+    "full_entry": "gustar"
   },
   {
-    "word": "verdad",
-    "article": "la",
-    "pos": "noun",
-    "full_entry": "la verdad"
-  },
-  {
-    "word": "vestido",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el vestido"
-  },
-  {
-    "word": "viaje",
-    "article": "el",
-    "pos": "noun",
-    "full_entry": "el viaje"
-  },
-  {
-    "word": "viajar",
+    "word": "encantar",
     "article": "",
     "pos": "verb",
-    "full_entry": "viajar"
+    "full_entry": "encantar"
+  },
+  {
+    "word": "odiar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "odiar"
+  },
+  {
+    "word": "calor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "calor"
+  },
+  {
+    "word": "frío",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "frío"
+  },
+  {
+    "word": "sueño",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sueño"
+  },
+  {
+    "word": "sed",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sed"
+  },
+  {
+    "word": "hambre",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hambre"
+  },
+  {
+    "word": "dolor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dolor"
+  },
+  {
+    "word": "mirar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "mirar"
+  },
+  {
+    "word": "escuchar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "escuchar"
+  },
+  {
+    "word": "apellidarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "apellidarse"
+  },
+  {
+    "word": "presentar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "presentar"
+  },
+  {
+    "word": "dirección",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dirección"
+  },
+  {
+    "word": "prefijo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "prefijo"
+  },
+  {
+    "word": "extensión",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "extensión"
+  },
+  {
+    "word": "nacionalidad",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nacionalidad"
+  },
+  {
+    "word": "bebé",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bebé"
+  },
+  {
+    "word": "adolescente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "adolescente"
+  },
+  {
+    "word": "persona",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "persona"
+  },
+  {
+    "word": "casarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "casarse"
+  },
+  {
+    "word": "separarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "separarse"
+  },
+  {
+    "word": "divorciarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "divorciarse"
+  },
+  {
+    "word": "paragua",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "paragua"
+  },
+  {
+    "word": "agenda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "agenda"
+  },
+  {
+    "word": "tarjeta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tarjeta"
+  },
+  {
+    "word": "maletín",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "maletín"
+  },
+  {
+    "word": "papá",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "papá"
+  },
+  {
+    "word": "mamá",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mamá"
+  },
+  {
+    "word": "hijo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hijo"
+  },
+  {
+    "word": "gemelo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gemelo"
+  },
+  {
+    "word": "junto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "junto"
+  },
+  {
+    "word": "vecino",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vecino"
+  },
+  {
+    "word": "reunión",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "reunión"
+  },
+  {
+    "word": "cita",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cita"
   },
   {
     "word": "visitar",
@@ -1458,27 +516,2319 @@
     "full_entry": "visitar"
   },
   {
-    "word": "volar",
+    "word": "invitar",
     "article": "",
     "pos": "verb",
-    "full_entry": "volar"
+    "full_entry": "invitar"
   },
   {
-    "word": "voluntad",
-    "article": "la",
+    "word": "regalo",
+    "article": "",
     "pos": "noun",
-    "full_entry": "la voluntad"
+    "full_entry": "regalo"
   },
   {
-    "word": "voz",
-    "article": "la",
+    "word": "regalar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "regalar"
+  },
+  {
+    "word": "hielo",
+    "article": "",
     "pos": "noun",
-    "full_entry": "la voz"
+    "full_entry": "hielo"
+  },
+  {
+    "word": "infusión",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "infusión"
+  },
+  {
+    "word": "ron",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ron"
+  },
+  {
+    "word": "ginebra",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ginebra"
+  },
+  {
+    "word": "cava",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cava"
+  },
+  {
+    "word": "champán",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "champán"
+  },
+  {
+    "word": "botella",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "botella"
+  },
+  {
+    "word": "lata",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lata"
+  },
+  {
+    "word": "tomar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "tomar"
+  },
+  {
+    "word": "lechuga",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lechuga"
+  },
+  {
+    "word": "tomate",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tomate"
+  },
+  {
+    "word": "zanahoria",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zanahoria"
+  },
+  {
+    "word": "plátano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plátano"
+  },
+  {
+    "word": "manzana",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "manzana"
+  },
+  {
+    "word": "naranja",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "naranja"
+  },
+  {
+    "word": "patata",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "patata"
+  },
+  {
+    "word": "ajo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ajo"
+  },
+  {
+    "word": "cebolla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cebolla"
+  },
+  {
+    "word": "perejil",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "perejil"
+  },
+  {
+    "word": "queso",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "queso"
+  },
+  {
+    "word": "yogur",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "yogur"
+  },
+  {
+    "word": "mantequilla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mantequilla"
+  },
+  {
+    "word": "mayonesa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mayonesa"
+  },
+  {
+    "word": "salsa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "salsa"
+  },
+  {
+    "word": "merluza",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "merluza"
+  },
+  {
+    "word": "salmón",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "salmón"
+  },
+  {
+    "word": "sardina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sardina"
+  },
+  {
+    "word": "atún",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "atún"
+  },
+  {
+    "word": "gamba",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gamba"
+  },
+  {
+    "word": "pasta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pasta"
+  },
+  {
+    "word": "arroz",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "arroz"
+  },
+  {
+    "word": "chocolate",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chocolate"
+  },
+  {
+    "word": "galleta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "galleta"
+  },
+  {
+    "word": "cereal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cereal"
+  },
+  {
+    "word": "azúcar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "azúcar"
+  },
+  {
+    "word": "sal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sal"
+  },
+  {
+    "word": "pimienta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pimienta"
+  },
+  {
+    "word": "aceite",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aceite"
+  },
+  {
+    "word": "ternera",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ternera"
+  },
+  {
+    "word": "cerdo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cerdo"
+  },
+  {
+    "word": "cordero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cordero"
+  },
+  {
+    "word": "pollo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pollo"
+  },
+  {
+    "word": "filete",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "filete"
+  },
+  {
+    "word": "serrano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "serrano"
+  },
+  {
+    "word": "York",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "York"
+  },
+  {
+    "word": "fresa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fresa"
+  },
+  {
+    "word": "vainilla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vainilla"
+  },
+  {
+    "word": "crema",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "crema"
+  },
+  {
+    "word": "receta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "receta"
+  },
+  {
+    "word": "ingrediente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ingrediente"
+  },
+  {
+    "word": "cocinar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cocinar"
+  },
+  {
+    "word": "plato",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plato"
+  },
+  {
+    "word": "tapa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tapa"
+  },
+  {
+    "word": "aperitivo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aperitivo"
+  },
+  {
+    "word": "bueno",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "bueno"
+  },
+  {
+    "word": "rico",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "rico"
+  },
+  {
+    "word": "vaso",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vaso"
+  },
+  {
+    "word": "taza",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "taza"
+  },
+  {
+    "word": "servilleta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "servilleta"
+  },
+  {
+    "word": "chino",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chino"
+  },
+  {
+    "word": "italiano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "italiano"
+  },
+  {
+    "word": "mexicano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mexicano"
+  },
+  {
+    "word": "vegetariano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vegetariano"
+  },
+  {
+    "word": "china",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "china"
+  },
+  {
+    "word": "japonesa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "japonesa"
+  },
+  {
+    "word": "rápida",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rápida"
+  },
+  {
+    "word": "cocinero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cocinero"
+  },
+  {
+    "word": "chef",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chef"
+  },
+  {
+    "word": "reservar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "reservar"
+  },
+  {
+    "word": "algo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "algo"
+  },
+  {
+    "word": "carta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "carta"
+  },
+  {
+    "word": "municipal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "municipal"
+  },
+  {
+    "word": "pública",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pública"
+  },
+  {
+    "word": "aula",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aula"
+  },
+  {
+    "word": "del",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "del"
+  },
+  {
+    "word": "programa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "programa"
+  },
+  {
+    "word": "pagar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pagar"
+  },
+  {
+    "word": "diploma",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "diploma"
+  },
+  {
+    "word": "certificado",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "certificado"
+  },
+  {
+    "word": "aprobar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "aprobar"
+  },
+  {
+    "word": "suspender",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "suspender"
+  },
+  {
+    "word": "Matemática",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Matemática"
+  },
+  {
+    "word": "Historia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Historia"
+  },
+  {
+    "word": "Medicina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Medicina"
+  },
+  {
+    "word": "Derecho",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Derecho"
+  },
+  {
+    "word": "preguntar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "preguntar"
+  },
+  {
+    "word": "contestar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "contestar"
+  },
+  {
+    "word": "completar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "completar"
+  },
+  {
+    "word": "dibujar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dibujar"
+  },
+  {
+    "word": "jugar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "jugar"
+  },
+  {
+    "word": "adivinar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "adivinar"
+  },
+  {
+    "word": "redacción",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "redacción"
+  },
+  {
+    "word": "regla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "regla"
+  },
+  {
+    "word": "cometer",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cometer"
+  },
+  {
+    "word": "buena",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "buena"
+  },
+  {
+    "word": "mala",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mala"
+  },
+  {
+    "word": "cuaderno",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cuaderno"
+  },
+  {
+    "word": "hoja",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hoja"
+  },
+  {
+    "word": "impresora",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "impresora"
+  },
+  {
+    "word": "fotocopiadora",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fotocopiadora"
+  },
+  {
+    "word": "dependiente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dependiente"
+  },
+  {
+    "word": "funcionario",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "funcionario"
+  },
+  {
+    "word": "comercial",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "comercial"
+  },
+  {
+    "word": "empresario",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "empresario"
+  },
+  {
+    "word": "tienda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tienda"
+  },
+  {
+    "word": "Lugar",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Lugar"
+  },
+  {
+    "word": "negocio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "negocio"
+  },
+  {
+    "word": "fábrica",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fábrica"
+  },
+  {
+    "word": "multinacional",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "multinacional"
+  },
+  {
+    "word": "librería",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "librería"
+  },
+  {
+    "word": "despacho",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "despacho"
+  },
+  {
+    "word": "panadería",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "panadería"
+  },
+  {
+    "word": "mesa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mesa"
+  },
+  {
+    "word": "traje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "traje"
+  },
+  {
+    "word": "corbata",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "corbata"
+  },
+  {
+    "word": "uniforme",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "uniforme"
+  },
+  {
+    "word": "cliente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cliente"
+  },
+  {
+    "word": "comprar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "comprar"
+  },
+  {
+    "word": "preparar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "preparar"
+  },
+  {
+    "word": "fax",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fax"
+  },
+  {
+    "word": "currículum",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "currículum"
+  },
+  {
+    "word": "ganar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ganar"
+  },
+  {
+    "word": "tiempo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tiempo"
+  },
+  {
+    "word": "afición",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "afición"
+  },
+  {
+    "word": "hobby",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "hobby"
+  },
+  {
+    "word": "zoológico",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zoológico"
+  },
+  {
+    "word": "zoo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "zoo"
+  },
+  {
+    "word": "quedar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "quedar"
+  },
+  {
+    "word": "caminar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "caminar"
+  },
+  {
+    "word": "plan",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plan"
+  },
+  {
+    "word": "salir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "salir"
+  },
+  {
+    "word": "entrada",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "entrada"
+  },
+  {
+    "word": "invitación",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "invitación"
+  },
+  {
+    "word": "gimnasio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gimnasio"
+  },
+  {
+    "word": "piscina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "piscina"
+  },
+  {
+    "word": "practicar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "practicar"
+  },
+  {
+    "word": "montar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "montar"
+  },
+  {
+    "word": "postal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "postal"
+  },
+  {
+    "word": "enviar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "enviar"
+  },
+  {
+    "word": "recibir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "recibir"
+  },
+  {
+    "word": "responder",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "responder"
+  },
+  {
+    "word": "nota",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nota"
+  },
+  {
+    "word": "cabina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cabina"
+  },
+  {
+    "word": "dejar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "dejar"
+  },
+  {
+    "word": "entrevista",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "entrevista"
+  },
+  {
+    "word": "periodista",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "periodista"
+  },
+  {
+    "word": "anuncio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "anuncio"
+  },
+  {
+    "word": "publicidad",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "publicidad"
+  },
+  {
+    "word": "presentador",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "presentador"
+  },
+  {
+    "word": "foro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "foro"
+  },
+  {
+    "word": "chat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chat"
+  },
+  {
+    "word": "virus",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "virus"
+  },
+  {
+    "word": "mensaje",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mensaje"
+  },
+  {
+    "word": "piso",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "piso"
+  },
+  {
+    "word": "alojamiento",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "alojamiento"
+  },
+  {
+    "word": "compartir",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "compartir"
+  },
+  {
+    "word": "cambiarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cambiarse"
+  },
+  {
+    "word": "edificio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "edificio"
+  },
+  {
+    "word": "chalé",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "chalé"
+  },
+  {
+    "word": "pasillo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pasillo"
+  },
+  {
+    "word": "suelo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "suelo"
+  },
+  {
+    "word": "techo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "techo"
+  },
+  {
+    "word": "pared",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pared"
+  },
+  {
+    "word": "dormitorio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dormitorio"
+  },
+  {
+    "word": "propietario",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "propietario"
+  },
+  {
+    "word": "estado",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "estado"
+  },
+  {
+    "word": "limpio",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "limpio"
+  },
+  {
+    "word": "sucio",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "sucio"
+  },
+  {
+    "word": "casa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "casa"
+  },
+  {
+    "word": "eléctrica",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "eléctrica"
+  },
+  {
+    "word": "nevera",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nevera"
+  },
+  {
+    "word": "lavadora",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lavadora"
+  },
+  {
+    "word": "lavaplato",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lavaplato"
+  },
+  {
+    "word": "microonda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "microonda"
+  },
+  {
+    "word": "cocina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cocina"
+  },
+  {
+    "word": "correo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "correo"
+  },
+  {
+    "word": "moneda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "moneda"
+  },
+  {
+    "word": "billete",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "billete"
+  },
+  {
+    "word": "cajero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cajero"
+  },
+  {
+    "word": "Seguridad",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Seguridad"
+  },
+  {
+    "word": "ambulancia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ambulancia"
+  },
+  {
+    "word": "Cruz",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Cruz"
+  },
+  {
+    "word": "comisaría",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "comisaría"
+  },
+  {
+    "word": "socorro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "socorro"
+  },
+  {
+    "word": "teléfono",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "teléfono"
+  },
+  {
+    "word": "centro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "centro"
+  },
+  {
+    "word": "papelería",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "papelería"
+  },
+  {
+    "word": "peluquería",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "peluquería"
+  },
+  {
+    "word": "quiosco",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "quiosco"
+  },
+  {
+    "word": "estanco",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "estanco"
+  },
+  {
+    "word": "frutería",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "frutería"
+  },
+  {
+    "word": "carnicería",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "carnicería"
+  },
+  {
+    "word": "ropa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ropa"
+  },
+  {
+    "word": "agencia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "agencia"
+  },
+  {
+    "word": "frutero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "frutero"
+  },
+  {
+    "word": "carnicero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "carnicero"
+  },
+  {
+    "word": "panadero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "panadero"
+  },
+  {
+    "word": "devolver",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "devolver"
+  },
+  {
+    "word": "cambiar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cambiar"
+  },
+  {
+    "word": "blusa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "blusa"
+  },
+  {
+    "word": "pijama",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pijama"
+  },
+  {
+    "word": "cazadora",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cazadora"
+  },
+  {
+    "word": "sombrero",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sombrero"
+  },
+  {
+    "word": "pañuelo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pañuelo"
+  },
+  {
+    "word": "guant",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "guant"
+  },
+  {
+    "word": "bufanda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bufanda"
+  },
+  {
+    "word": "sujetador",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "sujetador"
+  },
+  {
+    "word": "braga",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "braga"
+  },
+  {
+    "word": "calzoncillo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "calzoncillo"
+  },
+  {
+    "word": "media",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "media"
+  },
+  {
+    "word": "calcetin",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "calcetin"
+  },
+  {
+    "word": "bañador",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bañador"
+  },
+  {
+    "word": "biquini",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "biquini"
+  },
+  {
+    "word": "bota",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bota"
+  },
+  {
+    "word": "probador",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "probador"
+  },
+  {
+    "word": "ponerse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "ponerse"
+  },
+  {
+    "word": "quitarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "quitarse"
+  },
+  {
+    "word": "probarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "probarse"
+  },
+  {
+    "word": "paquete",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "paquete"
+  },
+  {
+    "word": "caja",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "caja"
+  },
+  {
+    "word": "bote",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bote"
+  },
+  {
+    "word": "litro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "litro"
+  },
+  {
+    "word": "kilo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "kilo"
+  },
+  {
+    "word": "cien",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cien"
+  },
+  {
+    "word": "pesar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pesar"
+  },
+  {
+    "word": "propina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "propina"
+  },
+  {
+    "word": "IVA",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "IVA"
+  },
+  {
+    "word": "bien",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bien"
+  },
+  {
+    "word": "gripe",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gripe"
+  },
+  {
+    "word": "alergia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "alergia"
+  },
+  {
+    "word": "fiebre",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fiebre"
+  },
+  {
+    "word": "tos",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tos"
+  },
+  {
+    "word": "llevar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "llevar"
+  },
+  {
+    "word": "doler",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "doler"
+  },
+  {
+    "word": "urgencia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "urgencia"
+  },
+  {
+    "word": "ducha",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ducha"
+  },
+  {
+    "word": "bañera",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bañera"
+  },
+  {
+    "word": "toalla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "toalla"
+  },
+  {
+    "word": "champú",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "champú"
+  },
+  {
+    "word": "gel",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gel"
+  },
+  {
+    "word": "colonia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "colonia"
+  },
+  {
+    "word": "desodorante",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "desodorante"
+  },
+  {
+    "word": "cepillarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "cepillarse"
+  },
+  {
+    "word": "liso",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "liso"
+  },
+  {
+    "word": "plano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plano"
+  },
+  {
+    "word": "guía",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "guía"
   },
   {
     "word": "vuelo",
-    "article": "el",
+    "article": "",
     "pos": "noun",
-    "full_entry": "el vuelo"
+    "full_entry": "vuelo"
+  },
+  {
+    "word": "excursión",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "excursión"
+  },
+  {
+    "word": "gafa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gafa"
+  },
+  {
+    "word": "bañarse",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "bañarse"
+  },
+  {
+    "word": "mochila",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mochila"
+  },
+  {
+    "word": "abrigo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "abrigo"
+  },
+  {
+    "word": "gorro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gorro"
+  },
+  {
+    "word": "pensión",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pensión"
+  },
+  {
+    "word": "carretera",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "carretera"
+  },
+  {
+    "word": "calle",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "calle"
+  },
+  {
+    "word": "boca",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "boca"
+  },
+  {
+    "word": "ciclista",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ciclista"
+  },
+  {
+    "word": "taxi",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "taxi"
+  },
+  {
+    "word": "Transporte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Transporte"
+  },
+  {
+    "word": "avión",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "avión"
+  },
+  {
+    "word": "piloto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "piloto"
+  },
+  {
+    "word": "azafata",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "azafata"
+  },
+  {
+    "word": "viajar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "viajar"
+  },
+  {
+    "word": "rueda",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rueda"
+  },
+  {
+    "word": "mecánico",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mecánico"
+  },
+  {
+    "word": "lavar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "lavar"
+  },
+  {
+    "word": "cheque",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cheque"
+  },
+  {
+    "word": "pobre",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "pobre"
+  },
+  {
+    "word": "presidente",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "presidente"
+  },
+  {
+    "word": "empleado",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "empleado"
+  },
+  {
+    "word": "agricultor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "agricultor"
+  },
+  {
+    "word": "vaca",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "vaca"
+  },
+  {
+    "word": "ciencia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ciencia"
+  },
+  {
+    "word": "tecnología",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tecnología"
+  },
+  {
+    "word": "científico",
+    "article": "",
+    "pos": "adjective",
+    "full_entry": "científico"
+  },
+  {
+    "word": "portátil",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "portátil"
+  },
+  {
+    "word": "informática",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "informática"
+  },
+  {
+    "word": "informático",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "informático"
+  },
+  {
+    "word": "CD-ROM",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "CD-ROM"
+  },
+  {
+    "word": "DVD",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "DVD"
+  },
+  {
+    "word": "navegar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "navegar"
+  },
+  {
+    "word": "chatear",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "chatear"
+  },
+  {
+    "word": "educación",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "educación"
+  },
+  {
+    "word": "gobierno",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gobierno"
+  },
+  {
+    "word": "política",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "política"
+  },
+  {
+    "word": "partido",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "partido"
+  },
+  {
+    "word": "ministro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ministro"
+  },
+  {
+    "word": "príncipe",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "príncipe"
+  },
+  {
+    "word": "princesa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "princesa"
+  },
+  {
+    "word": "Ayuntamiento",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Ayuntamiento"
+  },
+  {
+    "word": "juez",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "juez"
+  },
+  {
+    "word": "ejército",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ejército"
+  },
+  {
+    "word": "guerra",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "guerra"
+  },
+  {
+    "word": "paz",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "paz"
+  },
+  {
+    "word": "arte",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "arte"
+  },
+  {
+    "word": "artista",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "artista"
+  },
+  {
+    "word": "fotografía",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fotografía"
+  },
+  {
+    "word": "literatura",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "literatura"
+  },
+  {
+    "word": "monumento",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "monumento"
+  },
+  {
+    "word": "estatua",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "estatua"
+  },
+  {
+    "word": "novela",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "novela"
+  },
+  {
+    "word": "poesía",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "poesía"
+  },
+  {
+    "word": "obra",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "obra"
+  },
+  {
+    "word": "cuadro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cuadro"
+  },
+  {
+    "word": "músico",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "músico"
+  },
+  {
+    "word": "canción",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "canción"
+  },
+  {
+    "word": "guitarra",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "guitarra"
+  },
+  {
+    "word": "piano",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "piano"
+  },
+  {
+    "word": "violín",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "violín"
+  },
+  {
+    "word": "flamenco",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "flamenco"
+  },
+  {
+    "word": "ópera",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ópera"
+  },
+  {
+    "word": "rock",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rock"
+  },
+  {
+    "word": "pop",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pop"
+  },
+  {
+    "word": "jazz",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jazz"
+  },
+  {
+    "word": "tango",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tango"
+  },
+  {
+    "word": "musical",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "musical"
+  },
+  {
+    "word": "clásica",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "clásica"
+  },
+  {
+    "word": "moderna",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "moderna"
+  },
+  {
+    "word": "arquitecto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "arquitecto"
+  },
+  {
+    "word": "pintor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pintor"
+  },
+  {
+    "word": "dibujo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "dibujo"
+  },
+  {
+    "word": "palacio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "palacio"
+  },
+  {
+    "word": "castillo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "castillo"
+  },
+  {
+    "word": "pintar",
+    "article": "",
+    "pos": "verb",
+    "full_entry": "pintar"
+  },
+  {
+    "word": "escritor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "escritor"
+  },
+  {
+    "word": "cuento",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cuento"
+  },
+  {
+    "word": "fotógrafo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "fotógrafo"
+  },
+  {
+    "word": "cámara",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cámara"
+  },
+  {
+    "word": "foto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "foto"
+  },
+  {
+    "word": "director",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "director"
+  },
+  {
+    "word": "Iglesia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Iglesia"
+  },
+  {
+    "word": "Navidad",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Navidad"
+  },
+  {
+    "word": "Ramadán",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Ramadán"
+  },
+  {
+    "word": "Sabbat",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Sabbat"
+  },
+  {
+    "word": "mundo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mundo"
+  },
+  {
+    "word": "cielo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cielo"
+  },
+  {
+    "word": "luna",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "luna"
+  },
+  {
+    "word": "estrella",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "estrella"
+  },
+  {
+    "word": "planeta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "planeta"
+  },
+  {
+    "word": "región",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "región"
+  },
+  {
+    "word": "Noroeste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Noroeste"
+  },
+  {
+    "word": "Nordeste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Nordeste"
+  },
+  {
+    "word": "Suroeste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Suroeste"
+  },
+  {
+    "word": "Sudeste",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "Sudeste"
+  },
+  {
+    "word": "isla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "isla"
+  },
+  {
+    "word": "desierto",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "desierto"
+  },
+  {
+    "word": "bosque",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "bosque"
+  },
+  {
+    "word": "costa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "costa"
+  },
+  {
+    "word": "interior",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "interior"
+  },
+  {
+    "word": "habitante",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "habitante"
+  },
+  {
+    "word": "barrio",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "barrio"
+  },
+  {
+    "word": "esquina",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "esquina"
+  },
+  {
+    "word": "catedral",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "catedral"
+  },
+  {
+    "word": "plaza",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "plaza"
+  },
+  {
+    "word": "peatonal",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "peatonal"
+  },
+  {
+    "word": "mayor",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mayor"
+  },
+  {
+    "word": "cosmopolita",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "cosmopolita"
+  },
+  {
+    "word": "abierta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "abierta"
+  },
+  {
+    "word": "industrial",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "industrial"
+  },
+  {
+    "word": "antigua",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "antigua"
+  },
+  {
+    "word": "universitaria",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "universitaria"
+  },
+  {
+    "word": "naturaleza",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "naturaleza"
+  },
+  {
+    "word": "jardín",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "jardín"
+  },
+  {
+    "word": "lluvia",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "lluvia"
+  },
+  {
+    "word": "nieve",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nieve"
+  },
+  {
+    "word": "niebla",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "niebla"
+  },
+  {
+    "word": "tormenta",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "tormenta"
+  },
+  {
+    "word": "nube",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "nube"
+  },
+  {
+    "word": "aire",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "aire"
+  },
+  {
+    "word": "perro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "perro"
+  },
+  {
+    "word": "gato",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "gato"
+  },
+  {
+    "word": "pájaro",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pájaro"
+  },
+  {
+    "word": "pez",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pez"
+  },
+  {
+    "word": "caballo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "caballo"
+  },
+  {
+    "word": "mosca",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mosca"
+  },
+  {
+    "word": "mosquito",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "mosquito"
+  },
+  {
+    "word": "araña",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "araña"
+  },
+  {
+    "word": "rosa",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "rosa"
+  },
+  {
+    "word": "margarita",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "margarita"
+  },
+  {
+    "word": "pino",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "pino"
+  },
+  {
+    "word": "olivo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "olivo"
+  },
+  {
+    "word": "ramo",
+    "article": "",
+    "pos": "noun",
+    "full_entry": "ramo"
   }
 ]

@@ -16,7 +16,7 @@ const LANGUAGE_CONFIG = {
       A2: 'nl_a2_vocabulary.json',
       B1: 'nl_b1_vocabulary.json',
     },
-    tts: { VoiceId: 'Ruben', Engine: 'neural', LanguageCode: 'nl-NL' },
+    tts: { VoiceId: 'Ruben', Engine: 'standard', LanguageCode: 'nl-NL' },
     parsePlurals: false,
     articlePrompt: 'This word is a noun with no article. Also determine the correct Dutch article (de or het) and prefix your response with it followed by a pipe character, e.g. "het|house" or "de|street".',
     normalizeArticle: (raw) => raw.toLowerCase() === 'het' ? 'het' : 'de',
@@ -43,7 +43,7 @@ const LANGUAGE_CONFIG = {
     levels: {
       A1: 'es_a1_vocabulary.json',
       A2: 'es_a2_vocabulary.json',
-      B2: 'es_b2_vocabulary.json',
+      B1: 'es_b1_vocabulary.json',
     },
     tts: { VoiceId: 'Sergio', Engine: 'neural', LanguageCode: 'es-ES' },
     parsePlurals: false,
