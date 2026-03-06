@@ -5,7 +5,7 @@ set -e
 SSH_KEY="$HOME/Documents/lenovo-ideapad.pem"
 EC2_HOST="ubuntu@35.88.113.219"
 REMOTE_DIR="/home/ubuntu/language-app"
-LOCAL_DIR="/Users/georgebalch/language-app"
+LOCAL_DIR="/Users/georgebalch/lenguas"
 SSH_CMD="ssh -i $SSH_KEY -o StrictHostKeyChecking=no"
 SCP_CMD="scp -i $SSH_KEY -o StrictHostKeyChecking=no"
 RSYNC_CMD="rsync -avz -e \"ssh -i $SSH_KEY -o StrictHostKeyChecking=no\""

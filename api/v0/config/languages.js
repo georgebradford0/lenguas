@@ -45,7 +45,7 @@ const LANGUAGE_CONFIG = {
       A2: 'es_a2_vocabulary.json',
       B2: 'es_b2_vocabulary.json',
     },
-    tts: { VoiceId: 'Lucia', Engine: 'neural', LanguageCode: 'es-ES' },
+    tts: { VoiceId: 'Sergio', Engine: 'neural', LanguageCode: 'es-ES' },
     parsePlurals: false,
     normalizeArticle: (raw) => {
       const r = raw.toLowerCase();
