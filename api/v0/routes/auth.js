@@ -4,6 +4,8 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 const LoginCode = require('../models/LoginCode');
+const Progress = require('../models/Progress');
+const requireAuth = require('../middleware/authMiddleware');
 
 const sesClient = new SESClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const FROM_EMAIL = 'noreply@lenguas.directto.link';
@@ -83,6 +85,22 @@ router.post('/verify', async (req, res) => {
   } catch (error) {
     console.error('Error verifying code:', error);
     res.status(500).json({ error: 'Failed to verify code' });
+  }
+});
+
+// DELETE /auth/account — permanently delete account and all associated data
+router.delete('/account', requireAuth, async (req, res) => {
+  try {
+    const { userId } = req.user;
+    await Promise.all([
+      Progress.deleteMany({ userId }),
+      LoginCode.deleteMany({ userId }),
+    ]);
+    console.log(`Account deleted for userId: ${userId.slice(0, 8)}...`);
+    res.json({ message: 'Account deleted' });
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
   }
 });
 

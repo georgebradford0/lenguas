@@ -166,6 +166,17 @@ export async function getTierStats(): Promise<TierStatsResponse> {
   return response.json();
 }
 
+export async function deleteAccount(): Promise<void> {
+  const response = await fetch(`${API_BASE}/auth/account`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.error || 'Failed to delete account');
+  }
+}
+
 // Compare user's pronunciation against Polly TTS reference using MFCC + DTW
 export async function comparePronunciation(
   audioBase64: string,

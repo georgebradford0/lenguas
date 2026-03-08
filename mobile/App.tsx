@@ -6,7 +6,7 @@ import {
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { QuizScreen } from './src/screens/QuizScreen';
 import { colors, spacing, fontSize, borderRadius } from './src/styles/theme';
-import { loginRequest, verifyCode, setAuthToken } from './src/api/client';
+import { loginRequest, verifyCode, setAuthToken, deleteAccount } from './src/api/client';
 import { saveAuthData, loadAuthData, clearAuthData } from './src/utils/auth';
 import type { Language } from './src/types';
 
@@ -20,6 +20,29 @@ const LANGUAGES: { code: Language; flag: string; label: string; sublabel: string
 function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Language) => void; onLogout: () => void }) {
   const [pressed, setPressed] = useState<Language | null>(null);
   const [menuVisible, setMenuVisible] = useState(false);
+
+  function handleDeleteAccount() {
+    setMenuVisible(false);
+    Alert.alert(
+      'Delete Account',
+      'This will permanently delete your account and all progress. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              onLogout();
+            } catch (e: any) {
+              Alert.alert('Error', e.message || 'Failed to delete account. Please try again.');
+            }
+          },
+        },
+      ]
+    );
+  }
 
   return (
     <View style={langStyles.container}>
@@ -35,6 +58,12 @@ function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Languag
               onPress={() => { setMenuVisible(false); onLogout(); }}
             >
               <Text style={langStyles.menuItemText}>Logout</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[langStyles.menuItem, langStyles.menuItemBorderTop]}
+              onPress={handleDeleteAccount}
+            >
+              <Text style={langStyles.menuItemText}>Delete Account</Text>
             </TouchableOpacity>
           </View>
         </Pressable>
@@ -374,6 +403,10 @@ const langStyles = StyleSheet.create({
   menuItem: {
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
+  },
+  menuItemBorderTop: {
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
   },
   menuItemText: {
     fontSize: fontSize.xs,
