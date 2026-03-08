@@ -10,8 +10,7 @@ import type {
   TaskType,
 } from '../types';
 
-// Remote API server on AWS EC2
-const API_BASE = 'http://35.88.113.219:3000';
+const API_BASE = 'https://lenguas.directto.link';
 
 // Auth token holder — set after login
 let _authToken: string | null = null;
