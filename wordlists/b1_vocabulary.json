@@ -51,7 +51,7 @@
     "word": "abhängen",
     "article": "",
     "pos": "verb",
-    "full_entry": "abhängen, hängt ab, hing ab, hat abgehangen (von)"
+    "full_entry": "abhängen, hängt ab, hing ab, hat abgehangen"
   },
   {
     "word": "abheben",
@@ -147,7 +147,7 @@
     "word": "Abwartin",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Abwartin, -nen (CH)"
+    "full_entry": "die Abwartin, -nen"
   },
   {
     "word": "abwesend",
@@ -159,7 +159,7 @@
     "word": "achten",
     "article": "",
     "pos": "verb",
-    "full_entry": "achten, achtet, achtete, hat geachtet (auf)"
+    "full_entry": "achten, achtet, achtete, hat geachtet"
   },
   {
     "word": "Adresse",
@@ -315,7 +315,7 @@
     "word": "Angebot",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Angebot, -e 1. Ich habe in der Zeitung ein paar"
+    "full_entry": "das Angebot, -e"
   },
   {
     "word": "ander-",
@@ -375,7 +375,7 @@
     "word": "Anfang",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Anfang, ¨-e 1. Wie war der Film? – Ich habe nur den"
+    "full_entry": "der Anfang, ¨-e"
   },
   {
     "word": "angeben",
@@ -399,7 +399,7 @@
     "word": "Anmeldung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Anmeldung, -en 1. Wo bekomme ich die Formulare für die"
+    "full_entry": "die Anmeldung, -en"
   },
   {
     "word": "Annonce",
@@ -483,7 +483,7 @@
     "word": "ansehen",
     "article": "",
     "pos": "verb",
-    "full_entry": "ansehen, sieht an, sah an, 1. Warum siehst du mich so erschrocken hat angesehen"
+    "full_entry": "ansehen, sieht an, sah an, hat angesehen"
   },
   {
     "word": "Anspruch",
@@ -549,7 +549,7 @@
     "word": "Anzeige",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Anzeige, -n 1. Ich habe alle Anzeigen gelesen, aber"
+    "full_entry": "die Anzeige, -n"
   },
   {
     "word": "Anzug",
@@ -585,7 +585,7 @@
     "word": "Aprikose",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Aprikose, -n (D, CH)"
+    "full_entry": "die Aprikose, -n"
   },
   {
     "word": "arbeiten",
@@ -597,7 +597,7 @@
     "word": "Arbeit",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Arbeit, -en 1. Wie gefällt dir deine Arbeit?"
+    "full_entry": "die Arbeit, -en"
   },
   {
     "word": "Arbeiter",
@@ -783,7 +783,7 @@
     "word": "Ausdruck",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Ausdruck, ¨-e 1. Diesen Ausdruck habe ich noch nie"
+    "full_entry": "der Ausdruck, ¨-e"
   },
   {
     "word": "auseinander",
@@ -837,7 +837,7 @@
     "word": "Aufzug",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Aufzug, ¨-e (D, A)"
+    "full_entry": "der Aufzug, ¨-e"
   },
   {
     "word": "Augenblick",
@@ -921,13 +921,13 @@
     "word": "Ausstellung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Ausstellung, -en 1. Wir waren mit der Lehrerin in einer"
+    "full_entry": "die Ausstellung, -en"
   },
   {
     "word": "Auswahl",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Auswahl, -en 1. Wir müssen eine Auswahl aus den"
+    "full_entry": "die Auswahl, -en"
   },
   {
     "word": "Ausweis",
@@ -1005,7 +1005,7 @@
     "word": "baden",
     "article": "",
     "pos": "verb",
-    "full_entry": "baden, badet, badete, hat 1. Wenn du baden möchtest: Das Badezimmer ist dort hinten links."
+    "full_entry": "baden, badet, badete, hat gebadet"
   },
   {
     "word": "gebadet",
@@ -1017,7 +1017,7 @@
     "word": "Bad",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Bad, ¨-er 1. Nach einem warmen Bad fühlt man"
+    "full_entry": "das Bad, ¨-er"
   },
   {
     "word": "Badewanne",
@@ -1089,13 +1089,13 @@
     "word": "Bahnsteig",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Bahnsteig, -e (D, A)"
+    "full_entry": "der Bahnsteig, -e"
   },
   {
     "word": "Bau",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Bau, Bauten 1. Ich wohne in einer Neubauwohnung."
+    "full_entry": "der Bau, Bauten"
   },
   {
     "word": "Baustelle",
@@ -1203,7 +1203,7 @@
     "word": "Bedienungsanleitung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Bedienungsanleitung,"
+    "full_entry": "die Bedienungsanleitung"
   },
   {
     "word": "Bedingung",
@@ -1581,7 +1581,7 @@
     "word": "Besuch",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Besuch, -e 1. Wir bekommen Besuch."
+    "full_entry": "der Besuch, -e"
   },
   {
     "word": "bestellen",
@@ -1599,7 +1599,7 @@
     "word": "betrügen",
     "article": "",
     "pos": "verb",
-    "full_entry": "betrügen, betrügt, betrog, 1. Ich würde meine Familie niemals hat betrogen"
+    "full_entry": "betrügen, betrügt, betrog, hat betrogen"
   },
   {
     "word": "bestehen",
@@ -1629,7 +1629,7 @@
     "word": "Bewerbung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Bewerbung, -en 1. Wohin soll ich meine Bewerbung"
+    "full_entry": "die Bewerbung, -en"
   },
   {
     "word": "Bewohner",
@@ -1743,7 +1743,7 @@
     "word": "Blitz",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Blitz, -e 1. Was für ein Gewitter, hast du den Blitz"
+    "full_entry": "der Blitz, -e"
   },
   {
     "word": "blond",
@@ -1815,7 +1815,7 @@
     "word": "Briefkasten",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Briefkasten, ¨- 1. Ist hier in der Nähe ein Briefkasten?"
+    "full_entry": "der Briefkasten, ¨-"
   },
   {
     "word": "Briefmarke",
@@ -1827,7 +1827,7 @@
     "word": "Briefträger",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Briefträger,"
+    "full_entry": "der Briefträger"
   },
   {
     "word": "Briefumschlag",
@@ -1881,7 +1881,7 @@
     "word": "Braten",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Braten, Nehmen Sie noch etwas Soße zum"
+    "full_entry": "der Braten"
   },
   {
     "word": "brauchen",
@@ -1917,13 +1917,13 @@
     "word": "Brötchen",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Brötchen, - (D)"
+    "full_entry": "das Brötchen, -"
   },
   {
     "word": "Brötli",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Brötli, - (CH)"
+    "full_entry": "das Brötli, -"
   },
   {
     "word": "Bruder",
@@ -1935,7 +1935,7 @@
     "word": "Bub",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Bub, -en (A, CH)"
+    "full_entry": "der Bub, -en"
   },
   {
     "word": "Buch",
@@ -2007,7 +2007,7 @@
     "word": "Buchstabe",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Buchstabe, -n 1. Gibt es diesen Buchstaben auch in"
+    "full_entry": "der Buchstabe, -n"
   },
   {
     "word": "Cousin",
@@ -2025,7 +2025,7 @@
     "word": "Büchse",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Büchse, -n (D, CH)"
+    "full_entry": "die Büchse, -n"
   },
   {
     "word": "Buffet",
@@ -2037,7 +2037,7 @@
     "word": "Couvert",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Couvert, -s (CH)"
+    "full_entry": "das Couvert, -s"
   },
   {
     "word": "Bühne",
@@ -2151,7 +2151,7 @@
     "word": "Coiffeuse",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Coiffeuse, -n (CH)"
+    "full_entry": "die Coiffeuse, -n"
   },
   {
     "word": "Dame",
@@ -2241,7 +2241,7 @@
     "word": "Gedanke",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Gedanke, -n 1. Ich muss zuerst meine Gedanken"
+    "full_entry": "der Gedanke, -n"
   },
   {
     "word": "Denkmal",
@@ -2427,7 +2427,7 @@
     "word": "Diskothek",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Diskothek, -en/Disko,"
+    "full_entry": "die Diskothek, -en/Disko"
   },
   {
     "word": "dies-",
@@ -2523,7 +2523,7 @@
     "word": "dürfen",
     "article": "",
     "pos": "verb",
-    "full_entry": "dürfen, darf, durfte, hat gedurft (hat dürfen"
+    "full_entry": "dürfen, darf, durfte, hat gedurft"
   },
   {
     "word": "durstig",
@@ -2535,7 +2535,7 @@
     "word": "Dusche",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Dusche, -n 1. Wir haben leider nur noch ein Zimmer"
+    "full_entry": "die Dusche, -n"
   },
   {
     "word": "geduzt",
@@ -2583,13 +2583,13 @@
     "word": "Ecke",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Ecke, -n (D, CH)"
+    "full_entry": "die Ecke, -n"
   },
   {
     "word": "Eck",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Eck, -en (A)"
+    "full_entry": "das Eck, -en"
   },
   {
     "word": "eckig",
@@ -2769,7 +2769,7 @@
     "word": "Einkauf",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Einkauf, ¨-e 1. Achten Sie beim Einkauf auf"
+    "full_entry": "der Einkauf, ¨-e"
   },
   {
     "word": "Einkommen",
@@ -2817,7 +2817,7 @@
     "word": "einsteigen",
     "article": "",
     "pos": "verb",
-    "full_entry": "einsteigen, steigt ein, stieg 1. Ab 20 Uhr vorne beim Fahrer ein, ist eingestiegen"
+    "full_entry": "einsteigen, steigt ein, stieg ein, ist eingestiegen"
   },
   {
     "word": "eintragen",
@@ -2949,7 +2949,7 @@
     "word": "Empfang",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Empfang, ¨-e 1. Bitte den Empfang bestätigen!"
+    "full_entry": "der Empfang, ¨-e"
   },
   {
     "word": "Empfänger",
@@ -3045,7 +3045,7 @@
     "word": "Erdapfel",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Erdapfel, ¨- (A)"
+    "full_entry": "der Erdapfel, ¨-"
   },
   {
     "word": "Ereignis",
@@ -3081,7 +3081,7 @@
     "word": "Erfahrung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Erfahrung, -en 1. Ich habe zehn Jahre Erfahrung in"
+    "full_entry": "die Erfahrung, -en"
   },
   {
     "word": "erfinden",
@@ -3153,7 +3153,7 @@
     "word": "erhöhen",
     "article": "",
     "pos": "verb",
-    "full_entry": "erhöhen, erhöht, erhöhte, 1. Die Regierung wird sicher bald wieder hat erhöht"
+    "full_entry": "erhöhen, erhöht, erhöhte, hat erhöht"
   },
   {
     "word": "Erhöhung",
@@ -3255,13 +3255,13 @@
     "word": "erklären",
     "article": "",
     "pos": "verb",
-    "full_entry": "erklären, erklärt, erklärte, 1. Kannst du mir erklären, wie man hat erklärt"
+    "full_entry": "erklären, erklärt, erklärte, hat erklärt"
   },
   {
     "word": "Erklärung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Erklärung, -en 1. Hast du schon die Steuererklärung"
+    "full_entry": "die Erklärung, -en"
   },
   {
     "word": "erlauben",
@@ -3285,7 +3285,7 @@
     "word": "ersetzen",
     "article": "",
     "pos": "verb",
-    "full_entry": "ersetzen, ersetzt, ersetzte, 1. Wir ersetzen Ihnen die Kosten. hat ersetzt"
+    "full_entry": "ersetzen, ersetzt, ersetzte, hat ersetzt"
   },
   {
     "word": "erst",
@@ -3417,19 +3417,19 @@
     "word": "Essen",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Essen, - 1. Darf ich Sie zum Essen einladen?"
+    "full_entry": "das Essen, -"
   },
   {
     "word": "Etage",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Etage, -n (D, CH)"
+    "full_entry": "die Etage, -n"
   },
   {
     "word": "fahren",
     "article": "",
     "pos": "verb",
-    "full_entry": "fahren, fährt, fuhr, ist/hat 1. Wir sind mit dem Zug gefahren."
+    "full_entry": "fahren, fährt, fuhr, ist/hat gefahren"
   },
   {
     "word": "gefahren",
@@ -3465,7 +3465,7 @@
     "word": "Fahrer",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Fahrer, - 1. Die Fahrerin des Wagens wurde nicht"
+    "full_entry": "der Fahrer, -"
   },
   {
     "word": "Fahrkarte",
@@ -3477,7 +3477,7 @@
     "word": "Fahrplan",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Fahrplan, ¨-e 1. Der Fahrplan hat sich geändert."
+    "full_entry": "der Fahrplan, ¨-e"
   },
   {
     "word": "Fahrrad",
@@ -3501,7 +3501,7 @@
     "word": "Fasching",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Fasching, - (D, A)"
+    "full_entry": "der Fasching, -"
   },
   {
     "word": "fassen",
@@ -3573,7 +3573,7 @@
     "word": "Fauteuil",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Fauteuil, -s (A, CH)"
+    "full_entry": "der Fauteuil, -s"
   },
   {
     "word": "fehlen",
@@ -3603,7 +3603,7 @@
     "word": "Feiertag",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Feiertag, -e 1. Am Montag ist Feiertag."
+    "full_entry": "der Feiertag, -e"
   },
   {
     "word": "Feld",
@@ -3735,7 +3735,7 @@
     "word": "festhalten",
     "article": "",
     "pos": "verb",
-    "full_entry": "festhalten, hält fest, hielt fest, hat festgehalten 2. Halt die Flasche gut fest."
+    "full_entry": "festhalten, hält fest, hielt fest, hat festgehalten"
   },
   {
     "word": "festlegen",
@@ -3969,7 +3969,7 @@
     "word": "Frage",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Frage, -n 1. Ich habe Ihre Frage leider nicht"
+    "full_entry": "die Frage, -n"
   },
   {
     "word": "Fotoapparat",
@@ -4059,7 +4059,7 @@
     "word": "Friseurin",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Friseurin, -nen (D, A)"
+    "full_entry": "die Friseurin, -nen"
   },
   {
     "word": "Frisur",
@@ -4083,13 +4083,13 @@
     "word": "Führerschein",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Führerschein, -e (D, A) 1. Hast du einen Führerschein?"
+    "full_entry": "der Führerschein, -e"
   },
   {
     "word": "Führung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Führung, -en 1. Die nächste Führung beginnt um"
+    "full_entry": "die Führung, -en"
   },
   {
     "word": "Fundbüro",
@@ -4107,7 +4107,7 @@
     "word": "Führerausweis",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Führerausweis, -e (CH)"
+    "full_entry": "der Führerausweis, -e"
   },
   {
     "word": "Frist",
@@ -4149,7 +4149,7 @@
     "word": "Fußball",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Fußball, ¨-e 1. Spielt ihr gerne Fußball?"
+    "full_entry": "der Fußball, ¨-e"
   },
   {
     "word": "Fußgänger",
@@ -4173,13 +4173,13 @@
     "word": "Gasthaus",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Gasthaus, ¨-er (A)"
+    "full_entry": "das Gasthaus, ¨-er"
   },
   {
     "word": "Gaststätte",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Gaststätte, -n (D)"
+    "full_entry": "die Gaststätte, -n"
   },
   {
     "word": "Gebäude",
@@ -4245,7 +4245,7 @@
     "word": "Gebrauchsanweisung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Gebrauchsanweisung,"
+    "full_entry": "die Gebrauchsanweisung"
   },
   {
     "word": "Gebühr",
@@ -4341,7 +4341,7 @@
     "word": "Gegner",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Gegner, - 1. Sie ist eine Gegnerin von"
+    "full_entry": "der Gegner, -"
   },
   {
     "word": "Gegend",
@@ -4383,13 +4383,13 @@
     "word": "Geldautomat",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Geldautomat, -en (D)"
+    "full_entry": "der Geldautomat, -en"
   },
   {
     "word": "Geldbörse",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Geldbörse, -n (A)"
+    "full_entry": "die Geldbörse, -n"
   },
   {
     "word": "Gelegenheit",
@@ -4731,13 +4731,13 @@
     "word": "grillen",
     "article": "",
     "pos": "verb",
-    "full_entry": "grillen, grillt, grillte, hat gegrillt (D, A)"
+    "full_entry": "grillen, grillt, grillte, hat gegrillt"
   },
   {
     "word": "grillieren",
     "article": "",
     "pos": "verb",
-    "full_entry": "grillieren, grilliert, grillierte, hat grilliert (CH)"
+    "full_entry": "grillieren, grilliert, grillierte, hat grilliert"
   },
   {
     "word": "Grundstück",
@@ -4755,7 +4755,7 @@
     "word": "Größe",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Größe, -n 1. Welche Größe haben Sie?"
+    "full_entry": "die Größe, -n"
   },
   {
     "word": "gründen",
@@ -4773,7 +4773,7 @@
     "word": "Gruß",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Gruß, ¨-e 1. Schönen Gruß an Ihren Mann."
+    "full_entry": "der Gruß, ¨-e"
   },
   {
     "word": "gucken",
@@ -5307,7 +5307,7 @@
     "word": "Information",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Information, -en 1. Bitte lesen Sie diese Informationen"
+    "full_entry": "die Information, -en"
   },
   {
     "word": "Ingenieur",
@@ -5355,7 +5355,7 @@
     "word": "Imbiss",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Imbiss, -e (D)"
+    "full_entry": "der Imbiss, -e"
   },
   {
     "word": "inner-",
@@ -5421,7 +5421,7 @@
     "word": "integrieren",
     "article": "",
     "pos": "verb",
-    "full_entry": "integrieren, integriert, in- 1. Sie ist schon sehr gut im Team tegrierte, hat integriert"
+    "full_entry": "integrieren, integriert, integrierte, hat integriert"
   },
   {
     "word": "Integration",
@@ -5469,7 +5469,7 @@
     "word": "Jause",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Jause, -n (A)"
+    "full_entry": "die Jause, -n"
   },
   {
     "word": "je",
@@ -5553,13 +5553,13 @@
     "word": "Junge",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Junge, -n (D)"
+    "full_entry": "der Junge, -n"
   },
   {
     "word": "Kaffeehaus",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Kaffeehaus, ¨-er (A)"
+    "full_entry": "das Kaffeehaus, ¨-er"
   },
   {
     "word": "Kakao",
@@ -5655,7 +5655,7 @@
     "word": "Karneval",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Karneval, -s/-e (D)"
+    "full_entry": "der Karneval, -s/-e"
   },
   {
     "word": "Karotte",
@@ -5739,7 +5739,7 @@
     "word": "Kasten",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Kasten, ¨- (D)"
+    "full_entry": "der Kasten, ¨-"
   },
   {
     "word": "Kind",
@@ -5787,7 +5787,7 @@
     "word": "Kiste",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Kiste, -n (A, D)"
+    "full_entry": "die Kiste, -n"
   },
   {
     "word": "Kissen",
@@ -5901,7 +5901,7 @@
     "word": "Kloß",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Kloß, ¨-e (D)"
+    "full_entry": "der Kloß, ¨-e"
   },
   {
     "word": "Klimaanlage",
@@ -5925,7 +5925,7 @@
     "word": "Kneipe",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Kneipe, -n (D)"
+    "full_entry": "die Kneipe, -n"
   },
   {
     "word": "Knie",
@@ -5943,7 +5943,7 @@
     "word": "Knödel",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Knödel, - (D, A)"
+    "full_entry": "der Knödel, -"
   },
   {
     "word": "Knopf",
@@ -5985,7 +5985,7 @@
     "word": "Klassenarbeit",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Klassenarbeit, -en (D)"
+    "full_entry": "die Klassenarbeit, -en"
   },
   {
     "word": "Kollege",
@@ -6033,7 +6033,7 @@
     "word": "Konfitüre",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Konfitüre, -n (CH)"
+    "full_entry": "die Konfitüre, -n"
   },
   {
     "word": "Konflikt",
@@ -6051,7 +6051,7 @@
     "word": "können",
     "article": "",
     "pos": "verb",
-    "full_entry": "können, kann, konnte, hat gekonnt (hat können"
+    "full_entry": "können, kann, konnte, hat gekonnt"
   },
   {
     "word": "Kontakt",
@@ -6087,7 +6087,7 @@
     "word": "Kontrolle",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Kontrolle, -n 1. An den Grenzen gibt es kaum noch"
+    "full_entry": "die Kontrolle, -n"
   },
   {
     "word": "Konzert",
@@ -6141,13 +6141,13 @@
     "word": "Korridor",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Korridor, -e (D, CH)"
+    "full_entry": "der Korridor, -e"
   },
   {
     "word": "korrigieren",
     "article": "",
     "pos": "verb",
-    "full_entry": "korrigieren, korrigiert, ko- 1. Können Sie bitte meinen Brief rrigierte, hat korrigiert"
+    "full_entry": "korrigieren, korrigiert, korrigierte, hat korrigiert"
   },
   {
     "word": "kosten",
@@ -6291,7 +6291,7 @@
     "word": "Kritik",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Kritik, -en 1. Es gibt viel Kritik an der Politik der"
+    "full_entry": "die Kritik, -en"
   },
   {
     "word": "kritisch",
@@ -6345,7 +6345,7 @@
     "word": "Krankheit",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Krankheit, -en 1. Gegen welche Krankheiten sollte ich"
+    "full_entry": "die Krankheit, -en"
   },
   {
     "word": "Krieg",
@@ -6429,7 +6429,7 @@
     "word": "Kuvert",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Kuvert, -s (A)"
+    "full_entry": "das Kuvert, -s"
   },
   {
     "word": "lächeln",
@@ -6519,7 +6519,7 @@
     "word": "landen",
     "article": "",
     "pos": "verb",
-    "full_entry": "landen, landet, landete, ist 1. Wir sind erst um 20 Uhr in München"
+    "full_entry": "landen, landet, landete, ist gelandet"
   },
   {
     "word": "gelandet",
@@ -6753,7 +6753,7 @@
     "word": "Leser",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Leser, - 1. Die Leserinnen und Leser sind mit der"
+    "full_entry": "der Leser, -"
   },
   {
     "word": "Leserin",
@@ -6765,7 +6765,7 @@
     "word": "Leitung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Leitung, -en 1. Ab 1. Juli übernimmt Herr Meier die"
+    "full_entry": "die Leitung, -en"
   },
   {
     "word": "Lerner",
@@ -6957,7 +6957,7 @@
     "word": "Maler",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Maler, - 1. Wir haben die Maler im Haus. Wir"
+    "full_entry": "der Maler, -"
   },
   {
     "word": "Malerin",
@@ -6993,7 +6993,7 @@
     "word": "Marmelade",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Marmelade, -n (D, A)"
+    "full_entry": "die Marmelade, -n"
   },
   {
     "word": "Maschine",
@@ -7059,7 +7059,7 @@
     "word": "Marille",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Marille, -n (A)"
+    "full_entry": "die Marille, -n"
   },
   {
     "word": "Marke",
@@ -7167,7 +7167,7 @@
     "word": "Miete",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Miete, -n 1. Unsere Miete ist sehr hoch."
+    "full_entry": "die Miete, -n"
   },
   {
     "word": "Mieter",
@@ -7257,7 +7257,7 @@
     "word": "mischen",
     "article": "",
     "pos": "verb",
-    "full_entry": "mischen, mischt, mischte, 1. Ich möchte ein gemischtes Eis mit hat gemischt"
+    "full_entry": "mischen, mischt, mischte, hat gemischt"
   },
   {
     "word": "miss-",
@@ -7341,7 +7341,7 @@
     "word": "Möhre",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Möhre, -n (D)"
+    "full_entry": "die Möhre, -n"
   },
   {
     "word": "Moment",
@@ -7479,7 +7479,7 @@
     "word": "müssen",
     "article": "",
     "pos": "verb",
-    "full_entry": "müssen, muss, musste, hat gemusst (hat müssen"
+    "full_entry": "müssen, muss, musste, hat gemusst"
   },
   {
     "word": "mutig",
@@ -7779,7 +7779,7 @@
     "word": "Notfall",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Notfall, ¨-e 1. Wir haben einen Notfall. Bitte schicken"
+    "full_entry": "der Notfall, ¨-e"
   },
   {
     "word": "ober-",
@@ -7791,7 +7791,7 @@
     "word": "Ober",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Ober, - (D, A)"
+    "full_entry": "der Ober, -"
   },
   {
     "word": "öffnen",
@@ -7911,7 +7911,7 @@
     "word": "Ordination",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Ordination, -en (A)"
+    "full_entry": "die Ordination, -en"
   },
   {
     "word": "ordnen",
@@ -7929,7 +7929,7 @@
     "word": "Organisation",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Organisation, -en 1. Die Organisation des Festes war sehr"
+    "full_entry": "die Organisation, -en"
   },
   {
     "word": "Original",
@@ -7977,7 +7977,7 @@
     "word": "Paradeiser",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Paradeiser, - (A)"
+    "full_entry": "der Paradeiser, -"
   },
   {
     "word": "parallel",
@@ -8217,7 +8217,7 @@
     "word": "Perron",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Perron, -s (CH)"
+    "full_entry": "der Perron, -s"
   },
   {
     "word": "Person",
@@ -8229,7 +8229,7 @@
     "word": "Plan",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Plan, ¨-e 1. Was macht ihr im Sommer? – Ich weiß"
+    "full_entry": "der Plan, ¨-e"
   },
   {
     "word": "Planung",
@@ -8247,7 +8247,7 @@
     "word": "Pfanne",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Pfanne, -n (CH)"
+    "full_entry": "die Pfanne, -n"
   },
   {
     "word": "plötzlich",
@@ -8307,13 +8307,13 @@
     "word": "Pöstler",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Pöstler, - / die Pöstlerin, -nen (CH)"
+    "full_entry": "der Pöstler, - / die Pöstlerin, -nen"
   },
   {
     "word": "Poulet",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Poulet, -s (CH)"
+    "full_entry": "das Poulet, -s"
   },
   {
     "word": "Praktikum",
@@ -8361,7 +8361,7 @@
     "word": "Produkt",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Produkt, -e 1. Unsere Produkte haben eine hohe"
+    "full_entry": "das Produkt, -e"
   },
   {
     "word": "praktisch",
@@ -8445,7 +8445,7 @@
     "word": "Quartier",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Quartier, -e (CH)"
+    "full_entry": "das Quartier, -e"
   },
   {
     "word": "quer",
@@ -8583,13 +8583,13 @@
     "word": "Raucher",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Raucher, - 1. Gibt es hier ein Zimmer für Raucher?"
+    "full_entry": "der Raucher, -"
   },
   {
     "word": "Raucherin",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Raucherin, -nen 2. Ich bin keine Raucherin. Ich bin"
+    "full_entry": "die Raucherin, -nen"
   },
   {
     "word": "Raum",
@@ -8721,7 +8721,7 @@
     "word": "Rechnung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Rechnung, -en 1. Bitte, die Rechnung!"
+    "full_entry": "die Rechnung, -en"
   },
   {
     "word": "Recht",
@@ -8811,7 +8811,7 @@
     "word": "Reinigung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Reinigung, -en 1. Die Reinigung des Büros ist nicht"
+    "full_entry": "die Reinigung, -en"
   },
   {
     "word": "reisen",
@@ -8841,7 +8841,7 @@
     "word": "Reise",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Reise, -n 1. Wir haben eine Reise nach Österreich"
+    "full_entry": "die Reise, -n"
   },
   {
     "word": "Reisebüro",
@@ -8919,7 +8919,7 @@
     "word": "Rente",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Rente, -n (D, CH)"
+    "full_entry": "die Rente, -n"
   },
   {
     "word": "riechen",
@@ -9051,7 +9051,7 @@
     "word": "Rüebli",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Rüebli, - (CH)"
+    "full_entry": "das Rüebli, -"
   },
   {
     "word": "rufen",
@@ -9225,7 +9225,7 @@
     "word": "Schalter",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Schalter, - 1. Der Lichtschalter ist rechts neben der"
+    "full_entry": "der Schalter, -"
   },
   {
     "word": "scharf",
@@ -9267,7 +9267,7 @@
     "word": "scheinen",
     "article": "",
     "pos": "verb",
-    "full_entry": "scheinen, scheint, schien, 1. Gestern hat es geregnet. Heute scheint hat geschienen"
+    "full_entry": "scheinen, scheint, schien, hat geschienen"
   },
   {
     "word": "schenken",
@@ -9285,7 +9285,7 @@
     "word": "schicken",
     "article": "",
     "pos": "verb",
-    "full_entry": "schicken, schickt, schickte, 1. Ich habe meinen Freunden eine Einhat geschickt"
+    "full_entry": "schicken, schickt, schickte, hat geschickt"
   },
   {
     "word": "schieben",
@@ -9435,7 +9435,7 @@
     "word": "Schrank",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Schrank, ¨-e (D, CH)"
+    "full_entry": "der Schrank, ¨-e"
   },
   {
     "word": "schreiben",
@@ -9501,7 +9501,7 @@
     "word": "Schularbeit",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Schularbeit, -en (A)"
+    "full_entry": "die Schularbeit, -en"
   },
   {
     "word": "Schüler",
@@ -9543,7 +9543,7 @@
     "word": "Schwammerl",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Schwammerl, -n (A)"
+    "full_entry": "das Schwammerl, -n"
   },
   {
     "word": "schwanger",
@@ -9585,7 +9585,7 @@
     "word": "sein",
     "article": "",
     "pos": "verb",
-    "full_entry": "sein, ist, war, ist gewesen 1. Ich bin Mechaniker."
+    "full_entry": "sein, ist, war, ist gewesen"
   },
   {
     "word": "seitdem",
@@ -9699,7 +9699,7 @@
     "word": "Semmel",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Semmel, -n (A)"
+    "full_entry": "die Semmel, -n"
   },
   {
     "word": "siegen",
@@ -9717,13 +9717,13 @@
     "word": "Sender",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Sender, - 1. Welchen Sender siehst du am liebsten?"
+    "full_entry": "der Sender, -"
   },
   {
     "word": "Sendung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Sendung, -en 1. Wir wiederholen die Sendung am"
+    "full_entry": "die Sendung, -en"
   },
   {
     "word": "senkrecht",
@@ -9753,7 +9753,7 @@
     "word": "Sessel",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Sessel, - (D, CH)"
+    "full_entry": "der Sessel, -"
   },
   {
     "word": "Sieger",
@@ -9879,7 +9879,7 @@
     "word": "sollen",
     "article": "",
     "pos": "verb",
-    "full_entry": "sollen, soll, sollte, hat gesollt (hat sollen als"
+    "full_entry": "sollen, soll, sollte, hat gesollt"
   },
   {
     "word": "sozial",
@@ -9993,13 +9993,13 @@
     "word": "Spiel",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Spiel, -e 1. Monopoly ist ein ganz bekanntes Spiel."
+    "full_entry": "das Spiel, -e"
   },
   {
     "word": "Spieler",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Spieler, - 1. Für dieses Spiel braucht man zwei bis"
+    "full_entry": "der Spieler, -"
   },
   {
     "word": "Spielerin",
@@ -10029,7 +10029,7 @@
     "word": "springen",
     "article": "",
     "pos": "verb",
-    "full_entry": "springen, springt, sprang, 1. Wir waren im Schwimmbad. Mein Sohn ist gesprungen ist immer wieder ins Wasser"
+    "full_entry": "springen, springt, sprang, ist gesprungen"
   },
   {
     "word": "Spritze",
@@ -10329,13 +10329,13 @@
     "word": "Stiege",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Stiege, -n (A)"
+    "full_entry": "die Stiege, -n"
   },
   {
     "word": "Stiegenhaus",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Stiegenhaus, ¨-er (A)"
+    "full_entry": "das Stiegenhaus, ¨-er"
   },
   {
     "word": "Stimme",
@@ -10359,7 +10359,7 @@
     "word": "stimmen",
     "article": "",
     "pos": "verb",
-    "full_entry": "stimmen, stimmt, stimmte, 1. Meine Adresse stimmt nicht mehr. hat gestimmt"
+    "full_entry": "stimmen, stimmt, stimmte, hat gestimmt"
   },
   {
     "word": "Stimmung",
@@ -10761,7 +10761,7 @@
     "word": "Telefon",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Telefon, -e 1. Darf ich bitte Ihr Telefon benutzen?"
+    "full_entry": "das Telefon, -e"
   },
   {
     "word": "Temperatur",
@@ -10875,7 +10875,7 @@
     "word": "Teil",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Teil, -e 1. Was steht in dem Brief? Ich habe den"
+    "full_entry": "der Teil, -e"
   },
   {
     "word": "Terrasse",
@@ -11007,7 +11007,7 @@
     "word": "Topf",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Topf, ¨-e (D, A)"
+    "full_entry": "der Topf, ¨-e"
   },
   {
     "word": "Tor",
@@ -11049,7 +11049,7 @@
     "word": "träumen",
     "article": "",
     "pos": "verb",
-    "full_entry": "träumen, träumt, träumte, 1. Ich habe schlecht geträumt. hat geträumt"
+    "full_entry": "träumen, träumt, träumte, hat geträumt"
   },
   {
     "word": "Traum",
@@ -11115,13 +11115,13 @@
     "word": "Trennung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Trennung, -en 1. Die Trennung von der Familie war"
+    "full_entry": "die Trennung, -en"
   },
   {
     "word": "Training",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Training, -s 1. Jeden Dienstag ist Training."
+    "full_entry": "das Training, -s"
   },
   {
     "word": "Transport",
@@ -11151,13 +11151,13 @@
     "word": "Treppe",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Treppe, -n (D, CH)"
+    "full_entry": "die Treppe, -n"
   },
   {
     "word": "Treppenhaus",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Treppenhaus, ¨-er (D,"
+    "full_entry": "das Treppenhaus, ¨-er"
   },
   {
     "word": "treten",
@@ -11205,7 +11205,7 @@
     "word": "Trottoir",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Trottoir, -s (CH)"
+    "full_entry": "das Trottoir, -s"
   },
   {
     "word": "trotz",
@@ -11229,7 +11229,7 @@
     "word": "Übung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Übung, -en 1. Diese Übung war sehr schwer."
+    "full_entry": "die Übung, -en"
   },
   {
     "word": "überfahren",
@@ -11331,7 +11331,7 @@
     "word": "Überraschung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Überraschung,-en 1. Ich habe eine Überraschung für dich."
+    "full_entry": "die Überraschung,-en"
   },
   {
     "word": "überreden",
@@ -11385,7 +11385,7 @@
     "word": "überweisen",
     "article": "",
     "pos": "verb",
-    "full_entry": "überweisen, überweist, überwies, hat überwiesen 2. Der Arzt hat mich ins Krankenhaus"
+    "full_entry": "überweisen, überweist, überwies, hat überwiesen"
   },
   {
     "word": "Umfrage",
@@ -11433,7 +11433,7 @@
     "word": "Überweisung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Überweisung, - en 1. Sie können bar oder per Überweisung"
+    "full_entry": "die Überweisung, - en"
   },
   {
     "word": "umsteigen",
@@ -11631,7 +11631,7 @@
     "word": "Velo",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Velo, -s (CH)"
+    "full_entry": "das Velo, -s"
   },
   {
     "word": "Unterstützung",
@@ -11667,7 +11667,7 @@
     "word": "Urlaub",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Urlaub, -e (D, A)"
+    "full_entry": "der Urlaub, -e"
   },
   {
     "word": "Ursache",
@@ -11733,7 +11733,7 @@
     "word": "Verbindung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Verbindung, -en 1. Die Verbindung ist sehr gut. Ich kann"
+    "full_entry": "die Verbindung, -en"
   },
   {
     "word": "Verbrecher",
@@ -11751,7 +11751,7 @@
     "word": "Vergnügen",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Vergnügen, - 1. Es ist ein Vergnügen, den Kindern"
+    "full_entry": "das Vergnügen, -"
   },
   {
     "word": "vergnügt",
@@ -11829,7 +11829,7 @@
     "word": "Verlag",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Verlag, -e (A: ¨-e)"
+    "full_entry": "der Verlag, -e"
   },
   {
     "word": "verlangen",
@@ -11847,7 +11847,7 @@
     "word": "Vergleich",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Vergleich, -e 1. Ein Vergleich ist schwer möglich."
+    "full_entry": "der Vergleich, -e"
   },
   {
     "word": "Verletzung",
@@ -11895,7 +11895,7 @@
     "word": "verlieren",
     "article": "",
     "pos": "verb",
-    "full_entry": "verlieren, verliert, verlor, 1. Ich habe meine Brieftasche verloren. hat verloren"
+    "full_entry": "verlieren, verliert, verlor, hat verloren"
   },
   {
     "word": "Verlierer",
@@ -11991,7 +11991,7 @@
     "word": "vermieten",
     "article": "",
     "pos": "verb",
-    "full_entry": "vermieten, vermietet, ver- 1. Bei uns im Haus ist ein Zimmer zu mietete, hat vermietet"
+    "full_entry": "vermieten, vermietet, vermietete, hat vermietet"
   },
   {
     "word": "vermuten",
@@ -12009,7 +12009,7 @@
     "word": "Versicherung",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Versicherung, -en 1. Sie sollten eine Versicherung für Ihr"
+    "full_entry": "die Versicherung, -en"
   },
   {
     "word": "Verspätung",
@@ -12033,7 +12033,7 @@
     "word": "Versuch",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Versuch, -e 1. In der Forschung werden viele Versuche gemacht."
+    "full_entry": "der Versuch, -e"
   },
   {
     "word": "verteilen",
@@ -12087,7 +12087,7 @@
     "word": "Viertel",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Viertel, - (D, A)"
+    "full_entry": "das Viertel, -"
   },
   {
     "word": "virtuell",
@@ -12165,7 +12165,7 @@
     "word": "Vertreter",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Vertreter, - 1. Als Herr Dr. Müller in Urlaub war, bin"
+    "full_entry": "der Vertreter, -"
   },
   {
     "word": "Vertreterin",
@@ -12273,7 +12273,7 @@
     "word": "Vorstellungsgespräch",
     "article": "das",
     "pos": "noun",
-    "full_entry": "das Vorstellungsgespräch,"
+    "full_entry": "das Vorstellungsgespräch"
   },
   {
     "word": "Vorteil",
@@ -12351,7 +12351,7 @@
     "word": "Wahl",
     "article": "die",
     "pos": "noun",
-    "full_entry": "die Wahl, -en 1. Sie haben die Wahl: mit Vollpension"
+    "full_entry": "die Wahl, -en"
   },
   {
     "word": "wahnsinnig",
@@ -12447,7 +12447,7 @@
     "word": "wehtun",
     "article": "",
     "pos": "verb",
-    "full_entry": "wehtun, tut weh, tat weh, 1. Wo tut es weh? hat wehgetan"
+    "full_entry": "wehtun, tut weh, tat weh, hat wehgetan"
   },
   {
     "word": "weiblich",
@@ -12747,13 +12747,13 @@
     "word": "Wunsch",
     "article": "der",
     "pos": "noun",
-    "full_entry": "der Wunsch, ¨-e 1. Haben Sie sonst noch einen Wunsch?"
+    "full_entry": "der Wunsch, ¨-e"
   },
   {
     "word": "wollen",
     "article": "",
     "pos": "verb",
-    "full_entry": "wollen, will, wollte, hat gewollt (hat wollen als"
+    "full_entry": "wollen, will, wollte, hat gewollt"
   },
   {
     "word": "worüber",
