@@ -810,17 +810,44 @@ router.get('/tier-stats', async (req, res) => {
   }
 });
 
+// Normalise a word/phrase for comparison: lowercase, strip articles, strip punctuation
+function _normaliseForComparison(text) {
+  return text
+    .toLowerCase()
+    .replace(/^(der|die|das|ein|eine|den|dem|des)\s+/i, '') // strip German articles
+    .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')              // strip punctuation
+    .trim();
+}
+
+// Levenshtein-based similarity in [0, 1]
+function _stringSimilarity(a, b) {
+  if (a === b) return 1;
+  const m = a.length, n = b.length;
+  if (!m || !n) return 0;
+  const dp = Array.from({ length: m + 1 }, (_, i) =>
+    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  );
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1] === b[j-1]
+        ? dp[i-1][j-1]
+        : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+  return 1 - dp[m][n] / Math.max(m, n);
+}
+
 /**
  * POST /compare-pronunciation
- * Compare user's spoken German against a Polly TTS reference using MFCC + DTW.
+ * Transcribe the user's audio with Whisper, then compare the transcript to the
+ * target word using normalised Levenshtein similarity.
  *
  * Body:
  *   audio:      string  – base64-encoded m4a recording
  *   targetWord: string  – the German word/phrase to compare against
+ *   language:   string  – BCP-47 language code (default: 'de')
  *
  * Returns:
  *   similarity: number  – 0..1
- *   isCorrect:  boolean – similarity >= CORRECT_THRESHOLD
+ *   isCorrect:  boolean – similarity >= 0.75
  */
 router.post('/compare-pronunciation', async (req, res) => {
   const tmpFiles = [];
@@ -831,61 +858,33 @@ router.post('/compare-pronunciation', async (req, res) => {
       return res.status(400).json({ error: 'Missing audio or targetWord' });
     }
 
-    console.log('[Pronunciation] Comparing pronunciation for:', targetWord);
+    console.log('[Pronunciation] Transcribing for target:', targetWord);
 
-    const id      = Date.now();
-    const tmpDir  = os.tmpdir();
-    const userM4a = path.join(tmpDir, `user_${id}.m4a`);
-    const userPcm = path.join(tmpDir, `user_${id}.f32`);
-    const refMp3  = path.join(tmpDir, `ref_${id}.mp3`);
-    const refPcm  = path.join(tmpDir, `ref_${id}.f32`);
-    tmpFiles.push(userM4a, userPcm, refMp3, refPcm);
-
-    // 1. Write user audio to disk
+    const userM4a = path.join(os.tmpdir(), `user_${Date.now()}.m4a`);
+    tmpFiles.push(userM4a);
     fs.writeFileSync(userM4a, Buffer.from(audio, 'base64'));
 
-    // 2. Get Polly TTS reference for the target word (match the app's voice for this language)
-    const ttsConfig = (LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG['de']).tts;
-    const pollyResp = await pollyClient.send(new SynthesizeSpeechCommand({
-      Text:         targetWord,
-      OutputFormat: 'mp3',
-      ...ttsConfig,
-    }));
-    const refBytes = await pollyResp.AudioStream.transformToByteArray();
-    fs.writeFileSync(refMp3, Buffer.from(refBytes));
+    // Transcribe with Whisper
+    const transcription = await openai.audio.transcriptions.create({
+      file: fs.createReadStream(userM4a),
+      model: 'whisper-1',
+      language,
+      response_format: 'text',
+    });
 
-    // 3. Convert both to 16 kHz mono float32 PCM with leading/trailing silence trimmed
-    await Promise.all([
-      convertToPcm(userM4a, userPcm),
-      convertToPcm(refMp3,  refPcm),
-    ]);
+    const spoken = _normaliseForComparison((transcription || '').trim());
+    const target = _normaliseForComparison(targetWord);
 
-    // 4. Read PCM buffers
-    const userBuf = fs.readFileSync(userPcm);
-    const refBuf  = fs.readFileSync(refPcm);
+    console.log(`[Pronunciation] target="${target}" spoken="${spoken}"`);
 
-    if (userBuf.length < FRAME_SIZE * 4) {
-      console.warn('[Pronunciation] User audio too short after silence removal');
+    if (!spoken) {
       return res.json({ similarity: 0, isCorrect: false });
     }
 
-    const userSamples = new Float32Array(userBuf.buffer.slice(userBuf.byteOffset, userBuf.byteOffset + userBuf.byteLength));
-    const refSamples  = new Float32Array(refBuf.buffer.slice(refBuf.byteOffset,   refBuf.byteOffset  + refBuf.byteLength));
+    const similarity = _stringSimilarity(spoken, target);
+    const isCorrect  = similarity >= 0.75;
 
-    // 5. Extract MFCC matrices
-    const userMFCCs = extractMFCCs(userSamples);
-    const refMFCCs  = extractMFCCs(refSamples);
-
-    if (!userMFCCs.length || !refMFCCs.length) {
-      return res.json({ similarity: 0, isCorrect: false });
-    }
-
-    // 6. DTW comparison → similarity score
-    const dist       = _dtw(userMFCCs, refMFCCs);
-    const similarity = dtwDistToSimilarity(dist);
-    const isCorrect  = similarity >= CORRECT_THRESHOLD;
-
-    console.log(`[Pronunciation] "${targetWord}" DTW=${dist.toFixed(2)} similarity=${(similarity * 100).toFixed(1)}% isCorrect=${isCorrect}`);
+    console.log(`[Pronunciation] similarity=${(similarity * 100).toFixed(1)}% isCorrect=${isCorrect}`);
 
     res.json({ similarity, isCorrect });
 
