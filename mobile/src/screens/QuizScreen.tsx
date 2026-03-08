@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Animated, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Animated, useWindowDimensions } from 'react-native';
 import { colors, spacing } from '../styles/theme';
 import { useCards } from '../hooks/useCards';
 import { StatsBar } from '../components/StatsBar';
@@ -10,12 +10,11 @@ import { SpeechRecognitionTask } from '../components/SpeechRecognitionTask';
 import { TierUnlockCelebration } from '../components/TierUnlockCelebration';
 import type { MultipleChoiceTaskData, ReverseTranslationTaskData, AudioMultipleChoiceTaskData, SpeechRecognitionTaskData, Language } from '../types';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
 /**
  * Main quiz screen with dynamic task generation
  */
 export function QuizScreen({ language = 'de', onBack }: { language?: Language; onBack?: () => void }) {
+  const { width: SCREEN_WIDTH } = useWindowDimensions();
   const {
     stats,
     currentTask,

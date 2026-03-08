@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { colors, spacing, fontSize } from '../styles/theme';
+import { useIsTablet } from '../hooks/useIsTablet';
 import type { WordProgress, LevelStats } from '../types';
 
 interface TierStat {
@@ -37,6 +38,7 @@ export function StatsBar({
   wordProgress,
   onBack,
 }: StatsBarProps) {
+  const isTablet = useIsTablet();
   // Determine if we're using the new level system or old tier system
   const isLevelBased = !!currentLevel && !!levelStats;
 
@@ -89,10 +91,10 @@ export function StatsBar({
         </TouchableOpacity>
       )}
       <View style={styles.centeredContent}>
-        <Text style={[styles.levelText, { color: displayColor }]}>
+        <Text style={[styles.levelText, isTablet && styles.levelTextTablet, { color: displayColor }]}>
           {displayText}
         </Text>
-        <Text style={styles.percentageText}>
+        <Text style={[styles.percentageText, isTablet && styles.percentageTextTablet]}>
           {masteryPercentage}%
         </Text>
       </View>
@@ -135,9 +137,15 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: spacing.sm,
   },
+  levelTextTablet: {
+    fontSize: fontSize.xl * 1.4,
+  },
   percentageText: {
     fontSize: fontSize.xxl,
     color: colors.primary,
     fontWeight: '700',
+  },
+  percentageTextTablet: {
+    fontSize: fontSize.xxl * 1.4,
   },
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { SpeakButton } from './SpeakButton';
+import { useIsTablet } from '../hooks/useIsTablet';
 
 interface WordCardProps {
   word: string;
@@ -9,10 +10,11 @@ interface WordCardProps {
 }
 
 export function WordCard({ word, onSpeak }: WordCardProps) {
+  const isTablet = useIsTablet();
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, isTablet && styles.cardTablet]}>
       <View style={styles.wordRow}>
-        <Text style={styles.word}>{word}</Text>
+        <Text style={[styles.word, isTablet && styles.wordTablet]}>{word}</Text>
         <SpeakButton onPress={onSpeak} />
       </View>
     </View>
@@ -38,6 +40,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
+  cardTablet: {
+    minHeight: 360,
+    paddingVertical: spacing.xxl * 2,
+  },
   wordRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,5 +55,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.text,
     textAlign: 'center',
+  },
+  wordTablet: {
+    fontSize: fontSize.word * 1.5,
   },
 });

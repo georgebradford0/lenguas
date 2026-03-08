@@ -3,6 +3,7 @@ import {
   StyleSheet, StatusBar, Platform, View, Text, TouchableOpacity,
   TextInput, ActivityIndicator, KeyboardAvoidingView, Alert, Modal, Pressable,
 } from 'react-native';
+import { useIsTablet } from './src/hooks/useIsTablet';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { QuizScreen } from './src/screens/QuizScreen';
 import { colors, spacing, fontSize, borderRadius } from './src/styles/theme';
@@ -20,6 +21,7 @@ const LANGUAGES: { code: Language; flag: string; label: string; sublabel: string
 function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Language) => void; onLogout: () => void }) {
   const [pressed, setPressed] = useState<Language | null>(null);
   const [menuVisible, setMenuVisible] = useState(false);
+  const isTablet = useIsTablet();
 
   function handleDeleteAccount() {
     setMenuVisible(false);
@@ -70,23 +72,27 @@ function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Languag
       </Modal>
 
       <View style={langStyles.header}>
-        <Text style={langStyles.title}>Language Learning</Text>
-        <Text style={langStyles.subtitle}>Which language would you like to learn?</Text>
+        <Text style={[langStyles.title, isTablet && langStyles.titleTablet]}>Language Learning</Text>
+        <Text style={[langStyles.subtitle, isTablet && langStyles.subtitleTablet]}>Which language would you like to learn?</Text>
       </View>
 
-      <View style={langStyles.buttons}>
+      <View style={[langStyles.buttons, isTablet && langStyles.buttonsTablet]}>
         {LANGUAGES.map(({ code, flag, label, sublabel }) => (
           <TouchableOpacity
             key={code}
-            style={[langStyles.langButton, pressed === code && langStyles.langButtonPressed]}
+            style={[
+              langStyles.langButton,
+              isTablet && langStyles.langButtonTablet,
+              pressed === code && langStyles.langButtonPressed,
+            ]}
             onPressIn={() => setPressed(code)}
             onPressOut={() => setPressed(null)}
             onPress={() => onSelect(code)}
             activeOpacity={0.85}
           >
-            <Text style={langStyles.flag}>{flag}</Text>
-            <Text style={langStyles.langLabel}>{label}</Text>
-            <Text style={langStyles.langSublabel}>{sublabel}</Text>
+            <Text style={[langStyles.flag, isTablet && langStyles.flagTablet]}>{flag}</Text>
+            <Text style={[langStyles.langLabel, isTablet && langStyles.langLabelTablet]}>{label}</Text>
+            <Text style={[langStyles.langSublabel, isTablet && langStyles.langSublabelTablet]}>{sublabel}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -103,6 +109,7 @@ function LoginScreen({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const codeInputRef = useRef<TextInput>(null);
+  const isTablet = useIsTablet();
 
   async function handleSendCode() {
     const trimmed = email.trim().toLowerCase();
@@ -148,7 +155,7 @@ function LoginScreen({ onAuthenticated }: { onAuthenticated: () => void }) {
       style={loginStyles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={loginStyles.card}>
+      <View style={[loginStyles.card, isTablet && loginStyles.cardTablet]}>
         <Text style={loginStyles.title}>Lenguas</Text>
         <Text style={loginStyles.subtitle}>
           {step === 'email' ? 'Enter your email to continue' : `Code sent to ${email}`}
@@ -294,6 +301,9 @@ const loginStyles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 380,
+  },
+  cardTablet: {
+    maxWidth: 560,
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
     padding: spacing.xl,
@@ -433,6 +443,12 @@ const langStyles = StyleSheet.create({
     maxWidth: 360,
     gap: spacing.md,
   },
+  buttonsTablet: {
+    maxWidth: 720,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   langButton: {
     backgroundColor: colors.cardBackground,
     borderWidth: 2,
@@ -447,6 +463,10 @@ const langStyles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
+
+  langButtonTablet: {
+    width: '48%',
+  },
   langButtonPressed: {
     borderColor: colors.primary,
     backgroundColor: '#f0f7ff',
@@ -455,15 +475,30 @@ const langStyles = StyleSheet.create({
     fontSize: 52,
     marginBottom: spacing.sm,
   },
+  flagTablet: {
+    fontSize: 72,
+  },
   langLabel: {
     fontSize: fontSize.md,
     fontWeight: '700',
     color: colors.text,
   },
+  langLabelTablet: {
+    fontSize: fontSize.xl,
+  },
   langSublabel: {
     fontSize: fontSize.xs,
     color: colors.muted,
     marginTop: 2,
+  },
+  langSublabelTablet: {
+    fontSize: fontSize.sm,
+  },
+  titleTablet: {
+    fontSize: fontSize.xxl,
+  },
+  subtitleTablet: {
+    fontSize: fontSize.sm,
   },
 });
 

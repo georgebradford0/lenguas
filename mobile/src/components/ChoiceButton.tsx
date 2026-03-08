@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import type { ChoiceState } from '../types';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
+import { useIsTablet } from '../hooks/useIsTablet';
 
 interface ChoiceButtonProps {
   text: string;
@@ -11,15 +12,16 @@ interface ChoiceButtonProps {
 
 export function ChoiceButton({ text, state, onPress }: ChoiceButtonProps) {
   const isDisabled = state === 'disabled' || state === 'correct' || state === 'wrong' || state === 'reveal';
+  const isTablet = useIsTablet();
 
   return (
     <TouchableOpacity
-      style={[styles.button, stateStyles[state]]}
+      style={[styles.button, stateStyles[state], isTablet && styles.buttonTablet]}
       onPress={onPress}
       disabled={isDisabled}
       activeOpacity={0.7}
     >
-      <Text style={[styles.text, textStateStyles[state]]}>{text}</Text>
+      <Text style={[styles.text, textStateStyles[state], isTablet && styles.textTablet]}>{text}</Text>
     </TouchableOpacity>
   );
 }
@@ -35,6 +37,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 80,
   },
+  buttonTablet: {
+    minHeight: 120,
+    padding: spacing.xl,
+  },
   text: {
     fontSize: fontSize.lg,
     color: colors.text,
@@ -42,6 +48,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     width: '100%',
     textAlignVertical: 'center',
+  },
+  textTablet: {
+    fontSize: fontSize.xl,
   },
 });
 

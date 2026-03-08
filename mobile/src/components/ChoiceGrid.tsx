@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import type { Choice, ChoiceState } from '../types';
 import { colors, spacing } from '../styles/theme';
 import { ChoiceButton } from './ChoiceButton';
+import { useIsTablet } from '../hooks/useIsTablet';
 
 interface ChoiceGridProps {
   choices: Choice[] | null;
@@ -12,6 +13,8 @@ interface ChoiceGridProps {
 }
 
 export function ChoiceGrid({ choices, selectedIndex, answered, onSelect }: ChoiceGridProps) {
+  const isTablet = useIsTablet();
+
   if (!choices) {
     return (
       <View style={styles.loading}>
@@ -38,7 +41,7 @@ export function ChoiceGrid({ choices, selectedIndex, answered, onSelect }: Choic
   return (
     <View style={styles.grid}>
       {choices.map((choice, index) => (
-        <View key={index} style={styles.buttonWrapper}>
+        <View key={index} style={[styles.buttonWrapper, isTablet && styles.buttonWrapperTablet]}>
           <ChoiceButton
             text={choice.text}
             state={getState(index)}
@@ -60,6 +63,9 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     width: '48%',
     marginBottom: spacing.sm + spacing.xs,
+  },
+  buttonWrapperTablet: {
+    marginBottom: spacing.md,
   },
   loading: {
     padding: spacing.md,
