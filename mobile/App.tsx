@@ -71,11 +71,6 @@ function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Languag
         </Pressable>
       </Modal>
 
-      <View style={langStyles.header}>
-        <Text style={[langStyles.title, isTablet && langStyles.titleTablet]}>Language Learning</Text>
-        <Text style={[langStyles.subtitle, isTablet && langStyles.subtitleTablet]}>Which language would you like to learn?</Text>
-      </View>
-
       <View style={[langStyles.buttons, isTablet && langStyles.buttonsTablet]}>
         {LANGUAGES.map(({ code, flag, label, sublabel }) => (
           <TouchableOpacity
@@ -381,7 +376,8 @@ const langStyles = StyleSheet.create({
     backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: spacing.xl,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
   },
   settingsButton: {
     position: 'absolute',
@@ -425,37 +421,48 @@ const langStyles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  headerTablet: {
     marginBottom: spacing.xxl,
   },
   title: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.md,
     fontWeight: '700',
     color: colors.text,
+    marginBottom: spacing.xs,
+  },
+  titleTablet: {
+    fontSize: fontSize.xxl,
     marginBottom: spacing.sm,
   },
   subtitle: {
-    fontSize: fontSize.xs,
+    fontSize: 13,
     color: colors.muted,
     textAlign: 'center',
   },
+  subtitleTablet: {
+    fontSize: fontSize.xs,
+  },
   buttons: {
     width: '100%',
-    maxWidth: 360,
-    gap: spacing.md,
+    maxWidth: 400,
+    gap: spacing.xs,
   },
   buttonsTablet: {
     maxWidth: 720,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: spacing.md,
   },
   langButton: {
     backgroundColor: colors.cardBackground,
     borderWidth: 2,
     borderColor: colors.border,
     borderRadius: borderRadius.lg,
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -463,42 +470,38 @@ const langStyles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-
   langButtonTablet: {
     width: '48%',
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.xl,
   },
   langButtonPressed: {
     borderColor: colors.primary,
     backgroundColor: '#f0f7ff',
   },
   flag: {
+    fontSize: 36,
+    marginBottom: spacing.xs,
+  },
+  flagTablet: {
     fontSize: 52,
     marginBottom: spacing.sm,
   },
-  flagTablet: {
-    fontSize: 72,
-  },
   langLabel: {
-    fontSize: fontSize.md,
+    fontSize: fontSize.xs,
     fontWeight: '700',
     color: colors.text,
   },
   langLabelTablet: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.md,
   },
   langSublabel: {
-    fontSize: fontSize.xs,
+    fontSize: 13,
     color: colors.muted,
     marginTop: 2,
   },
   langSublabelTablet: {
-    fontSize: fontSize.sm,
-  },
-  titleTablet: {
-    fontSize: fontSize.xxl,
-  },
-  subtitleTablet: {
-    fontSize: fontSize.sm,
+    fontSize: fontSize.xs,
   },
 });
 
