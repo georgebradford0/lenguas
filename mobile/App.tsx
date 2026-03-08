@@ -301,9 +301,6 @@ const loginStyles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 380,
-  },
-  cardTablet: {
-    maxWidth: 560,
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
     padding: spacing.xl,
@@ -313,6 +310,9 @@ const loginStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
+  },
+  cardTablet: {
+    maxWidth: 560,
     elevation: 4,
   },
   title: {

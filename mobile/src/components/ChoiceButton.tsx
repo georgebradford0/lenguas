@@ -28,21 +28,21 @@ export function ChoiceButton({ text, state, onPress }: ChoiceButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    padding: spacing.lg,
+    padding: spacing.sm,
     backgroundColor: colors.cardBackground,
     borderWidth: 3,
     borderColor: colors.border,
     borderRadius: borderRadius.md,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 80,
+    minHeight: 64,
   },
   buttonTablet: {
-    minHeight: 120,
-    padding: spacing.xl,
+    minHeight: 100,
+    padding: spacing.lg,
   },
   text: {
-    fontSize: fontSize.lg,
+    fontSize: fontSize.xs,
     color: colors.text,
     textAlign: 'center',
     fontWeight: '500',
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   textTablet: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.lg,
   },
 });
 

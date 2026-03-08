@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.cardBackground,
     width: '100%',
-    paddingVertical: spacing.xl,
+    paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
@@ -133,19 +133,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   levelText: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.xs,
     fontWeight: '700',
-    marginBottom: spacing.sm,
+    marginBottom: 2,
   },
   levelTextTablet: {
-    fontSize: fontSize.xl * 1.4,
+    fontSize: fontSize.xl,
+    marginBottom: spacing.sm,
   },
   percentageText: {
-    fontSize: fontSize.xxl,
+    fontSize: fontSize.lg,
     color: colors.primary,
     fontWeight: '700',
   },
   percentageTextTablet: {
-    fontSize: fontSize.xxl * 1.4,
+    fontSize: fontSize.xxl,
   },
 });

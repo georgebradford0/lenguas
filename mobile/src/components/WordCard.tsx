@@ -13,10 +13,8 @@ export function WordCard({ word, onSpeak }: WordCardProps) {
   const isTablet = useIsTablet();
   return (
     <View style={[styles.card, isTablet && styles.cardTablet]}>
-      <View style={styles.wordRow}>
-        <Text style={[styles.word, isTablet && styles.wordTablet]}>{word}</Text>
-        <SpeakButton onPress={onSpeak} />
-      </View>
+      <Text style={[styles.word, isTablet && styles.wordTablet]}>{word}</Text>
+      <SpeakButton onPress={onSpeak} />
     </View>
   );
 }
@@ -25,10 +23,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
-    paddingVertical: spacing.xxl * 1.5,
-    paddingHorizontal: spacing.xxl,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.xl,
     width: '100%',
-    minHeight: 240,
+    minHeight: 160,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -36,27 +34,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 4,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
+    gap: spacing.sm,
   },
   cardTablet: {
-    minHeight: 360,
-    paddingVertical: spacing.xxl * 2,
-  },
-  wordRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.sm + spacing.xs,
+    minHeight: 280,
+    paddingVertical: spacing.xxl,
+    marginBottom: spacing.xl,
   },
   word: {
-    fontSize: fontSize.word,
+    fontSize: fontSize.xl,
     fontWeight: '700',
     color: colors.text,
     textAlign: 'center',
   },
   wordTablet: {
-    fontSize: fontSize.word * 1.5,
+    fontSize: fontSize.word,
   },
 });
