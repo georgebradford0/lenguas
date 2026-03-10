@@ -431,6 +431,7 @@ router.post('/generate-task', async (req, res) => {
     // For speechRecognition, only select words the user has already answered correctly
     // a minimum number of times through other task types.
     const MIN_CORRECT_FOR_SPEECH = 3;
+    const MIN_SPEECH_POOL_SIZE   = 100;
     let effectiveTaskType = taskType;
     let wordPool = vocabulary;
 
@@ -440,11 +441,11 @@ router.post('/generate-task', async (req, res) => {
         return prog && prog.correctCount >= MIN_CORRECT_FOR_SPEECH;
       });
 
-      if (qualifiedWords.length > 0) {
+      if (qualifiedWords.length >= MIN_SPEECH_POOL_SIZE) {
         wordPool = qualifiedWords;
       } else {
         effectiveTaskType = 'multipleChoice';
-        console.log('[generate-task] No words qualify for speechRecognition yet, falling back to multipleChoice');
+        console.log(`[generate-task] Only ${qualifiedWords.length} qualified words, need ${MIN_SPEECH_POOL_SIZE} for speechRecognition, falling back to multipleChoice`);
       }
     }
 
