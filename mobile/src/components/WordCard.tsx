@@ -13,7 +13,13 @@ export function WordCard({ word, onSpeak }: WordCardProps) {
   const isTablet = useIsTablet();
   return (
     <View style={[styles.card, isTablet && styles.cardTablet]}>
-      <Text style={[styles.word, isTablet && styles.wordTablet]}>{word}</Text>
+      <Text
+        style={[styles.word, isTablet && styles.wordTablet]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+      >
+        {word}
+      </Text>
       <SpeakButton onPress={onSpeak} />
     </View>
   );

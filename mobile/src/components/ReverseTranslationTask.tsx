@@ -145,7 +145,9 @@ export function ReverseTranslationTask({
     <>
       <View style={styles.promptContainer}>
         <Text style={styles.promptLabel}>Select the German translation for:</Text>
-        <Text style={styles.englishWord}>{taskData.english}</Text>
+        <Text style={styles.englishWord} numberOfLines={1} adjustsFontSizeToFit>
+          {taskData.english}
+        </Text>
       </View>
       <ChoiceGrid
         choices={choices}
