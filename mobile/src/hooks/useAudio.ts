@@ -39,9 +39,10 @@ export function useAudio(language = 'de') {
           });
         } else {
           if (soundRef.current) {
-            await soundRef.current.stopPlayer();
-          } else {
-            soundRef.current = createSound();
+            try {
+              await soundRef.current.stopPlayer();
+            } catch {}
+            soundRef.current = null;
           }
 
           const sanitizedWord = word.replace(/[^a-zA-Z0-9]/g, '_');
@@ -60,14 +61,18 @@ export function useAudio(language = 'de') {
             return;
           }
 
+          const sound = createSound();
+          soundRef.current = sound;
+
           await new Promise<void>((resolve, reject) => {
-            const sound = soundRef.current!;
             sound.addPlaybackEndListener(() => {
               sound.removePlaybackEndListener();
+              soundRef.current = null;
               resolve();
             });
             sound.startPlayer(tempPath).catch((err) => {
               sound.removePlaybackEndListener();
+              soundRef.current = null;
               reject(err);
             });
           });
