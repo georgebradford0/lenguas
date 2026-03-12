@@ -1,3 +1,4 @@
+import { fromByteArray } from 'base64-js';
 import type {
   TranslationResult,
   ProgressRecord,
@@ -71,11 +72,7 @@ export async function speak(text: string, language = 'de'): Promise<string> {
   }
   const arrayBuffer = await response.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
+  return fromByteArray(bytes);
 }
 
 export async function loadProgress(): Promise<Record<string, ProgressRecord>> {
