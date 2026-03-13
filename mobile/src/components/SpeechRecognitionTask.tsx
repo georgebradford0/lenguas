@@ -68,6 +68,7 @@ export function SpeechRecognitionTask({
         setIsCorrect(result.isCorrect);
         setSimilarity(result.similarity);
         setTaskState('feedback');
+        playAudio(taskData.correctGermanAudio);
 
         // Auto-advance after delay
         setTimeout(async () => {
@@ -86,7 +87,7 @@ export function SpeechRecognitionTask({
       await startRecording();
       console.log('[SpeechRecognitionTask] startRecording() returned, isRecording should be true');
     }
-  }, [isRecording, stopRecording, startRecording, taskData.correctGerman, onAnswer]);
+  }, [isRecording, stopRecording, startRecording, taskData.correctGerman, taskData.correctGermanAudio, onAnswer, playAudio]);
 
   // Handle "give up" button - play correct answer and mark as incorrect
   const handleGiveUp = useCallback(async () => {
