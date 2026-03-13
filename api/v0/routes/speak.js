@@ -13,7 +13,7 @@ router.get('/:text', async (req, res) => {
     const ttsConfig = (LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG['de']).tts;
 
     const mp3 = await openai.audio.speech.create({
-      model: 'tts-1',
+      model: 'gpt-4o-mini-tts',
       voice: ttsConfig.voice,
       input: req.params.text,
       response_format: 'mp3',
