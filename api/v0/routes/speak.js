@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const OpenAI = require('openai');
+const { PollyClient, SynthesizeSpeechCommand } = require('@aws-sdk/client-polly');
 const { LANGUAGE_CONFIG } = require('../config/languages');
 
-const openai = new OpenAI();
+const polly = new PollyClient();
 
 // GET /speak/:text - synthesize speech, returns mp3 audio
 // Query param: ?language=de (default) or ?language=nl
@@ -12,17 +12,15 @@ router.get('/:text', async (req, res) => {
     const language = req.query.language || 'de';
     const ttsConfig = (LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG['de']).tts;
 
-    const mp3 = await openai.audio.speech.create({
-      model: 'gpt-4o-mini-tts',
-      voice: ttsConfig.voice,
-      input: req.params.text,
-      response_format: 'mp3',
-      language: ttsConfig.language,
-      speed: 1.75,
+    const command = new SynthesizeSpeechCommand({
+      Text: req.params.text,
+      OutputFormat: 'mp3',
+      ...ttsConfig,
     });
-    const buffer = Buffer.from(await mp3.arrayBuffer());
+    const response = await polly.send(command);
+    const bytes = await response.AudioStream.transformToByteArray();
     res.set('Content-Type', 'audio/mpeg');
-    res.send(buffer);
+    res.send(Buffer.from(bytes));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
