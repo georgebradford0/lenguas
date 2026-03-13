@@ -178,6 +178,34 @@ The app parses German plural markers to display both singular and plural forms:
 
 **Implementation:** `parsePluralForm()` function in generateTask.js
 
+## Mobile Deployment (Google Play)
+
+### Deploy to Google Play (Closed / Alpha Track)
+
+```bash
+cd mobile/android && bundle exec fastlane closed
+```
+
+**What it does:**
+1. Builds a release AAB (`bundleRelease` via Gradle)
+2. Uploads to the **alpha** (closed testing) track on Google Play
+
+**Requirements:**
+- Release keystore configured in `mobile/android/gradle.properties` (`LENGUAS_RELEASE_*` keys)
+- Google Play service account JSON key (`zotik-456123-a116e792e9e6.json`) in `mobile/android/fastlane/`
+- `bundle` (Bundler) available: `gem install bundler` if missing
+
+**Before deploying:**
+1. Bump `versionCode` (integer, increment by 1) and `versionName` (semver) in `mobile/android/app/build.gradle`
+2. Commit the version bump and any other changes
+3. Run `bundle exec fastlane closed` from `mobile/android/`
+
+**Fastfile location:** `mobile/android/fastlane/Fastfile`
+
+**Version history convention:** commit message format `Mobile Version X.Y.Z`
+
+---
+
 ## Docker Container Management
 
 ### View Logs (Remote)
@@ -254,7 +282,7 @@ When committing:
 1. Run `git status` and `git diff` to see changes
 2. Stage specific files (avoid `git add -A`)
 3. Write clear commit messages explaining WHY, not just WHAT
-4. Include co-author line: `Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`
+4. Include co-author line: `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
 5. Use heredoc format for commit messages
 
 **Never use:**
