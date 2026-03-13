@@ -182,8 +182,9 @@ function formatWordForTask(fullEntry, pos, language = 'de') {
 // Returns { translation, article } — article is '' when not applicable.
 async function translateWord(word, { needsArticle = false, language = 'de' } = {}) {
   try {
-    let systemContent = 'You are a translator. Translate the given word or phrase to English. Give ONLY the English translation, nothing else. Keep it brief (1-5 words).';
     const langConfig = LANGUAGE_CONFIG[language];
+    const langName = langConfig?.name ?? language;
+    let systemContent = `You are a translator. Translate the given ${langName} word or phrase to English. Give ONLY the English translation, nothing else. Keep it brief (1-5 words).`;
     if (needsArticle && langConfig?.articlePrompt) {
       systemContent += ' ' + langConfig.articlePrompt;
     }
@@ -210,9 +211,9 @@ async function translateWord(word, { needsArticle = false, language = 'de' } = {
 }
 
 // Translate multiple words in parallel — returns array of translation strings
-async function translateWords(germanWords) {
+async function translateWords(words, language = 'de') {
   const results = await Promise.all(
-    germanWords.map(word => translateWord(word))
+    words.map(word => translateWord(word, { language }))
   );
   return results.map(r => r.translation);
 }
@@ -475,8 +476,8 @@ router.post('/generate-task', async (req, res) => {
     });
 
     // Translate to English (use audio version without plural notation)
-    const { translation: correctEnglish } = await translateWord(targetFormatted.audio);
-    const wrongEnglishOptions = await translateWords(distractorsFormatted.map(d => d.audio));
+    const { translation: correctEnglish } = await translateWord(targetFormatted.audio, { language });
+    const wrongEnglishOptions = await translateWords(distractorsFormatted.map(d => d.audio), language);
 
     console.log(`Formatted: "${targetWord.full_entry}" → "${targetFormatted.display}"`);
     console.log(`Audio: "${targetFormatted.audio}"`);
