@@ -6,7 +6,7 @@ const LANGUAGE_CONFIG = {
       A2: 'a2_vocabulary.json',
       B1: 'b1_vocabulary.json',
     },
-    tts: { VoiceId: 'Daniel', Engine: 'generative', LanguageCode: 'de-DE' },
+    tts: { voice: 'marin', language: 'de' },
     parsePlurals: true,
   },
   nl: {
@@ -16,7 +16,7 @@ const LANGUAGE_CONFIG = {
       A2: 'nl_a2_vocabulary.json',
       B1: 'nl_b1_vocabulary.json',
     },
-    tts: { VoiceId: 'Ruben', Engine: 'standard', LanguageCode: 'nl-NL' },
+    tts: { voice: 'marin', language: 'nl' },
     parsePlurals: false,
     articlePrompt: 'This word is a noun with no article. Also determine the correct Dutch article (de or het) and prefix your response with it followed by a pipe character, e.g. "het|house" or "de|street".',
     normalizeArticle: (raw) => raw.toLowerCase() === 'het' ? 'het' : 'de',
@@ -28,7 +28,7 @@ const LANGUAGE_CONFIG = {
       A2: 'fr_a2_vocabulary.json',
       B1: 'fr_b1_vocabulary.json',
     },
-    tts: { VoiceId: 'Remi', Engine: 'generative', LanguageCode: 'fr-FR' },
+    tts: { voice: 'marin', language: 'fr' },
     parsePlurals: false,
     articlePrompt: "This word is a French noun with no article. Also determine the correct French article (le, la, or l') and prefix your response with it followed by a pipe character, e.g. \"le|cat\" or \"la|house\" or \"l'|school\".",
     normalizeArticle: (raw) => {
@@ -45,7 +45,7 @@ const LANGUAGE_CONFIG = {
       A2: 'es_a2_vocabulary.json',
       B1: 'es_b1_vocabulary.json',
     },
-    tts: { VoiceId: 'Sergio', Engine: 'neural', LanguageCode: 'es-ES' },
+    tts: { voice: 'marin', language: 'es' },
     parsePlurals: false,
     normalizeArticle: (raw) => {
       const r = raw.toLowerCase();

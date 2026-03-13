@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { PollyClient, SynthesizeSpeechCommand } = require('@aws-sdk/client-polly');
+const OpenAI = require('openai');
 const { LANGUAGE_CONFIG } = require('../config/languages');
 
-const polly = new PollyClient();
+const openai = new OpenAI();
 
 // GET /speak/:text - synthesize speech, returns mp3 audio
 // Query param: ?language=de (default) or ?language=nl
@@ -12,15 +12,16 @@ router.get('/:text', async (req, res) => {
     const language = req.query.language || 'de';
     const ttsConfig = (LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG['de']).tts;
 
-    const command = new SynthesizeSpeechCommand({
-      Text: req.params.text,
-      OutputFormat: 'mp3',
-      ...ttsConfig,
+    const mp3 = await openai.audio.speech.create({
+      model: 'tts-1',
+      voice: ttsConfig.voice,
+      input: req.params.text,
+      response_format: 'mp3',
+      language: ttsConfig.language,
     });
-    const response = await polly.send(command);
-    const bytes = await response.AudioStream.transformToByteArray();
+    const buffer = Buffer.from(await mp3.arrayBuffer());
     res.set('Content-Type', 'audio/mpeg');
-    res.send(Buffer.from(bytes));
+    res.send(buffer);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
