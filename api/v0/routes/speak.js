@@ -18,7 +18,7 @@ router.get('/:text', async (req, res) => {
       input: req.params.text,
       response_format: 'mp3',
       language: ttsConfig.language,
-      speed: 1.5,
+      speed: 2.0,
     });
     const buffer = Buffer.from(await mp3.arrayBuffer());
     res.set('Content-Type', 'audio/mpeg');
