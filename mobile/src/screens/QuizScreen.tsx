@@ -256,6 +256,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
       case 'speechRecognition':
         return (
           <SpeechRecognitionTask
+            key={`${currentTask.targetWord}-${currentTask.taskType}`}
             taskData={currentTask.task as SpeechRecognitionTaskData}
             onAnswer={onAnswerSpeechRecognition}
             language={language}
