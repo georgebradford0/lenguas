@@ -25,7 +25,7 @@ export function MultipleChoiceTask({
   onTaskReady,
   language = 'de',
 }: MultipleChoiceTaskProps) {
-  const { playAudio, prefetchAudio } = useAudio(language);
+  const { playAudio, prefetchAudio, clearAudio } = useAudio(language);
 
   const [choices, setChoices] = useState<Choice[] | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -73,7 +73,7 @@ export function MultipleChoiceTask({
     // Clear any previous validation errors
     setValidationError(null);
 
-    // Prefetch audio for German text (use audio version without plural)
+    // Prefetch audio for the upcoming task word
     prefetchAudio(taskData.germanAudio || taskData.german);
 
     // Create shuffled choices
@@ -109,11 +109,12 @@ export function MultipleChoiceTask({
 
       // Auto-advance after delay
       setTimeout(async () => {
+        clearAudio(taskData.germanAudio || taskData.german);
         taskIdRef.current = null; // Allow loading next task
         await onAnswer(userAnswer, correctAnswer);
       }, ADVANCE_DELAY);
     },
-    [answered, choices, taskData.correctEnglish, onAnswer]
+    [answered, choices, taskData.correctEnglish, taskData.germanAudio, taskData.german, clearAudio, onAnswer]
   );
 
   const handleSpeak = useCallback(() => {

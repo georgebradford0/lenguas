@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { createSound } from 'react-native-nitro-sound';
 import type { Sound } from 'react-native-nitro-sound';
@@ -10,12 +10,35 @@ export function useAudio(language = 'de') {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const soundRef = useRef<Sound | null>(null);
 
+  // Delete any leftover audio files from previous sessions on startup
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      RNFS.readDir(RNFS.CachesDirectoryPath)
+        .then(items =>
+          items
+            .filter(item => item.name.startsWith('audio_'))
+            .forEach(item => RNFS.unlink(item.path).catch(() => {}))
+        )
+        .catch(() => {});
+    }
+  }, []);
+
   const prefetchAudio = useCallback((word: string) => {
     const key = `${language}:${word}`;
     if (!cacheRef.current[key]) {
       cacheRef.current[key] = speak(word, language);
     }
     return cacheRef.current[key];
+  }, [language]);
+
+  const clearAudio = useCallback((word: string) => {
+    const key = `${language}:${word}`;
+    delete cacheRef.current[key];
+    if (Platform.OS !== 'web') {
+      const sanitizedWord = word.replace(/[^a-zA-Z0-9]/g, '_');
+      const tempPath = `${RNFS.CachesDirectoryPath}/audio_${language}_${sanitizedWord}.mp3`;
+      RNFS.unlink(tempPath).catch(() => {});
+    }
   }, [language]);
 
   const playAudio = useCallback(
@@ -37,6 +60,8 @@ export function useAudio(language = 'de') {
             audio.onerror = (err) => reject(err);
             audio.play().catch(reject);
           });
+
+          audioRef.current = null;
         } else {
           if (soundRef.current) {
             try {
@@ -46,8 +71,7 @@ export function useAudio(language = 'de') {
           }
 
           const sanitizedWord = word.replace(/[^a-zA-Z0-9]/g, '_');
-          const fileName = `audio_${language}_${sanitizedWord}.mp3`;
-          const tempPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+          const tempPath = `${RNFS.CachesDirectoryPath}/audio_${language}_${sanitizedWord}.mp3`;
 
           if (!base64 || base64.length === 0) {
             console.error('Empty base64 audio data for word:', word);
@@ -84,5 +108,5 @@ export function useAudio(language = 'de') {
     [prefetchAudio, language]
   );
 
-  return { playAudio, prefetchAudio };
+  return { playAudio, prefetchAudio, clearAudio };
 }
