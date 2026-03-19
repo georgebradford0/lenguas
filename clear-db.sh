@@ -8,7 +8,7 @@ EC2_HOST="ubuntu@35.88.113.219"
 # Parse language argument
 LANGUAGE_NAME="${1:-}"
 
-case "${LANGUAGE_NAME,,}" in
+case "$(echo "$LANGUAGE_NAME" | tr '[:upper:]' '[:lower:]')" in
   dutch)    LANG_CODE="nl" ;;
   german)   LANG_CODE="de" ;;
   french)   LANG_CODE="fr" ;;
