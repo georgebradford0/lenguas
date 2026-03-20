@@ -67,6 +67,7 @@ export function useAudio(language = 'de') {
             try {
               await soundRef.current.stopPlayer();
             } catch {}
+            try { soundRef.current.dispose(); } catch {}
             soundRef.current = null;
           }
 
@@ -92,11 +93,13 @@ export function useAudio(language = 'de') {
             sound.addPlaybackEndListener(() => {
               sound.removePlaybackEndListener();
               soundRef.current = null;
+              try { sound.dispose(); } catch {}
               resolve();
             });
             sound.startPlayer(tempPath).catch((err) => {
               sound.removePlaybackEndListener();
               soundRef.current = null;
+              try { sound.dispose(); } catch {}
               reject(err);
             });
           });
