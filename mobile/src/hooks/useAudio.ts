@@ -93,12 +93,17 @@ export function useAudio(language = 'de') {
             sound.addPlaybackEndListener(() => {
               sound.removePlaybackEndListener();
               soundRef.current = null;
+              // stopPlayer() releases the native MediaPlayer/AVAudioPlayer — must be called
+              // even after natural completion, otherwise native audio resources leak and
+              // Android exhausts its player limit (~32) after enough tasks.
+              try { sound.stopPlayer().catch(() => {}); } catch {}
               try { sound.dispose(); } catch {}
               resolve();
             });
             sound.startPlayer(tempPath).catch((err) => {
               sound.removePlaybackEndListener();
               soundRef.current = null;
+              try { sound.stopPlayer().catch(() => {}); } catch {}
               try { sound.dispose(); } catch {}
               reject(err);
             });
