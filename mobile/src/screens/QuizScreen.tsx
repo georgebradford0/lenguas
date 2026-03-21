@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   taskContainer: {
+    flex: 1,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',

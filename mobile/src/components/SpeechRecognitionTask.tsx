@@ -126,7 +126,7 @@ export function SpeechRecognitionTask({
   };
 
   return (
-    <>
+    <View style={styles.wrapper}>
       <EnglishCard english={taskData.english} />
 
       {/* Show recorder error if any */}
@@ -170,15 +170,22 @@ export function SpeechRecognitionTask({
 
       {/* Feedback state */}
       {taskState === 'feedback' && renderFeedback()}
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.sm,
+  },
   controlsContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: spacing.lg,
+    marginTop: spacing.md,
   },
   hint: {
     fontSize: fontSize.sm,
