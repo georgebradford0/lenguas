@@ -178,6 +178,36 @@ The app parses German plural markers to display both singular and plural forms:
 
 **Implementation:** `parsePluralForm()` function in generateTask.js
 
+## Mobile Deployment (iOS / TestFlight)
+
+### Deploy to TestFlight
+
+```bash
+cd mobile/ios && bundle exec fastlane beta
+```
+
+**What it does:**
+1. Builds a release IPA (`build_app` via Xcode)
+2. Uploads to TestFlight on App Store Connect
+
+**Requirements:**
+- App Store Connect team API key (`AuthKey_7XMT6777TY.p8`) in `mobile/ios/fastlane/`
+- `bundle` (Bundler) available: `gem install bundler` if missing
+
+**Before deploying:**
+1. Bump `CURRENT_PROJECT_VERSION` (integer, increment by 1) and `MARKETING_VERSION` (semver) in `mobile/ios/Lenguas.xcodeproj/project.pbxproj`
+2. Commit the version bump and any other changes
+3. Run `bundle exec fastlane beta` from `mobile/ios/`
+
+**Upload only (skip rebuild):**
+```bash
+cd mobile/ios && bundle exec fastlane upload
+```
+
+**Fastfile location:** `mobile/ios/fastlane/Fastfile`
+
+---
+
 ## Mobile Deployment (Google Play)
 
 ### Deploy to Google Play (Closed / Alpha Track)

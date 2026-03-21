@@ -1,0 +1,39 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build release IPA and upload to TestFlight"
+  lane :beta do
+    api_key = app_store_connect_api_key(
+      key_id: "7XMT6777TY",
+      issuer_id: "6d3b36f3-dda1-4403-88a4-1e09b6cd9e89",
+      key_filepath: File.expand_path("../fastlane/AuthKey_7XMT6777TY.p8", __dir__)
+    )
+
+    build_app(
+      workspace: "Lenguas.xcworkspace",
+      scheme: "Lenguas",
+      configuration: "Release",
+      export_method: "app-store"
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Upload existing Lenguas.ipa to TestFlight (no rebuild)"
+  lane :upload do
+    api_key = app_store_connect_api_key(
+      key_id: "7XMT6777TY",
+      issuer_id: "6d3b36f3-dda1-4403-88a4-1e09b6cd9e89",
+      key_filepath: File.expand_path("../fastlane/AuthKey_7XMT6777TY.p8", __dir__)
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: "Lenguas.ipa",
+      skip_waiting_for_build_processing: true
+    )
+  end
+end

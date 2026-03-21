@@ -92,3 +92,6 @@ typings/
 out/
 
 sandbox/
+
+# Apple API keys
+*.p8
