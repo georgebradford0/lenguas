@@ -18,4 +18,22 @@ platform :android do
       skip_upload_screenshots: true
     )
   end
+
+  desc "Build release AAB and upload to Production on Google Play"
+  lane :production do
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "./"
+    )
+
+    upload_to_play_store(
+      track: "production",
+      release_status: "completed",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_apk: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
 end
