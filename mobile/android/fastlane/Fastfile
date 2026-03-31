@@ -10,6 +10,7 @@ platform :android do
     )
 
     upload_to_play_store(
+      json_key: ENV["SUPPLY_JSON_KEY"],
       track: "alpha",
       release_status: "completed",
       aab: "app/build/outputs/bundle/release/app-release.aab",
@@ -28,6 +29,7 @@ platform :android do
     )
 
     upload_to_play_store(
+      json_key: ENV["SUPPLY_JSON_KEY"],
       track: "production",
       release_status: "completed",
       aab: "app/build/outputs/bundle/release/app-release.aab",
