@@ -1,0 +1,194 @@
+name: iOS Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      testflight:
+        description: 'Upload to TestFlight'
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    name: Build iOS (Simulator)
+    runs-on: macos-26
+
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Install xcpretty
+        run: gem install xcpretty --no-document
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: mobile/ios/Pods
+          key: pods-${{ hashFiles('mobile/ios/Podfile.lock') }}
+          restore-keys: pods-
+
+      - name: Install CocoaPods
+        run: cd ios && pod install --repo-update
+
+      - name: Build for simulator (no signing)
+        run: |
+          xcodebuild \
+            -workspace ios/Lenguas.xcworkspace \
+            -scheme Lenguas \
+            -configuration Debug \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -derivedDataPath ios/build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty
+
+  distribute:
+    name: TestFlight
+    runs-on: macos-26
+    needs: build
+    if: ${{ inputs.testflight }}
+
+    defaults:
+      run:
+        working-directory: mobile
+
+    # Required GitHub Secrets:
+    #   DISTRIBUTION_CERTIFICATE_P12       — base64: base64 -i cert.p12 | pbcopy
+    #   DISTRIBUTION_CERTIFICATE_PASSWORD  — password for the .p12
+    #   PROVISIONING_PROFILE               — base64: base64 -i profile.mobileprovision | pbcopy
+    #   APP_STORE_CONNECT_API_KEY_ID        — key ID (7XMT6777TY)
+    #   APP_STORE_CONNECT_API_KEY_ISSUER_ID — issuer ID (6d3b36f3-dda1-4403-88a4-1e09b6cd9e89)
+    #   APP_STORE_CONNECT_API_KEY_CONTENT   — base64: base64 -i AuthKey_7XMT6777TY.p8 | pbcopy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Install xcpretty
+        run: gem install xcpretty --no-document
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: mobile/ios/Pods
+          key: pods-${{ hashFiles('mobile/ios/Podfile.lock') }}
+          restore-keys: pods-
+
+      - name: Install CocoaPods
+        run: cd ios && pod install --repo-update
+
+      - name: Import signing certificate
+        env:
+          CERT_P12: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
+          CERT_PASSWORD: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
+        run: |
+          echo "$CERT_P12" | base64 --decode > /tmp/cert.p12
+          security create-keychain -p "" build.keychain
+          security import /tmp/cert.p12 -k build.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign
+          security list-keychains -s build.keychain
+          security set-keychain-settings build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+      - name: Install provisioning profile
+        env:
+          PROFILE: ${{ secrets.PROVISIONING_PROFILE }}
+        run: |
+          echo "$PROFILE" | base64 --decode > /tmp/profile.mobileprovision
+          UUID=$(security cms -D -i /tmp/profile.mobileprovision | plutil -extract UUID raw -)
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/${UUID}.mobileprovision
+          echo "PROFILE_UUID=$UUID" >> $GITHUB_ENV
+
+      - name: Install Ruby gems
+        run: cd ios && bundle install --jobs 4 --retry 3
+
+      - name: Set build number
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          APP_STORE_CONNECT_API_KEY_PATH: /tmp/api_key.p8
+        run: |
+          echo "$APP_STORE_CONNECT_API_KEY_CONTENT" | base64 --decode > /tmp/api_key.p8
+          cd ios && bundle exec fastlane ios bump_build_number
+
+      - name: Archive
+        run: |
+          xcodebuild archive \
+            -workspace ios/Lenguas.xcworkspace \
+            -scheme Lenguas \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath ios/build/Lenguas.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            PROVISIONING_PROFILE="$PROFILE_UUID"
+
+      - name: Export IPA
+        run: |
+          cat > /tmp/ExportOptions.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>teamID</key>
+            <string>Y9M847D6NV</string>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>compileBitcode</key>
+            <false/>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.lenguas</key>
+              <string>${PROFILE_UUID}</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+          set -o pipefail
+          xcodebuild -exportArchive \
+            -archivePath ios/build/Lenguas.xcarchive \
+            -exportPath ios/build/ipa \
+            -exportOptionsPlist /tmp/ExportOptions.plist \
+            | xcpretty
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          APP_STORE_CONNECT_API_KEY_PATH: /tmp/api_key.p8
+        run: |
+          echo "$APP_STORE_CONNECT_API_KEY_CONTENT" | base64 --decode > /tmp/api_key.p8
+          IPA_PATH=$(find ios/build/ipa -name "*.ipa" | head -1)
+          echo "Uploading: $IPA_PATH"
+          export IPA_PATH
+          cd ios && bundle exec fastlane ios upload_tf
