@@ -179,22 +179,21 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingHorizontal: spacing.sm,
+    gap: spacing.md,
   },
   controlsContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: spacing.md,
+    gap: spacing.md,
   },
   hint: {
     fontSize: fontSize.sm,
     color: colors.muted,
     textAlign: 'center',
-    marginTop: spacing.md,
   },
   giveUpButton: {
-    marginTop: spacing.lg,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
     borderRadius: borderRadius.md,
@@ -208,13 +207,11 @@ const styles = StyleSheet.create({
   processingText: {
     fontSize: fontSize.md,
     color: colors.muted,
-    marginTop: spacing.md,
   },
   errorContainer: {
     padding: spacing.md,
     backgroundColor: colors.wrongBackground,
     borderRadius: borderRadius.md,
-    marginTop: spacing.md,
   },
   errorText: {
     fontSize: fontSize.sm,
@@ -224,7 +221,6 @@ const styles = StyleSheet.create({
   feedbackContainer: {
     width: '100%',
     alignItems: 'center',
-    marginTop: spacing.lg,
   },
   feedbackCard: {
     width: '100%',
