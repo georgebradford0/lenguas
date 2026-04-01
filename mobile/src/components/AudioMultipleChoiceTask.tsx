@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import type { AudioMultipleChoiceTaskData, Choice, Language } from '../types';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
@@ -128,20 +128,20 @@ export function AudioMultipleChoiceTask({
   if (validationError) {
     console.log('[AudioMultipleChoice] Rendering error state');
     return (
-      <>
+      <View style={styles.taskGroup}>
         <AudioCard onSpeak={handleSpeak} />
         <View style={{ padding: 20, alignItems: 'center' }}>
           <Text style={{ color: '#e74c3c', fontSize: 16, textAlign: 'center' }}>
             {validationError}
           </Text>
         </View>
-      </>
+      </View>
     );
   }
 
   console.log('[AudioMultipleChoice] Rendering normal state');
   return (
-    <>
+    <View style={styles.taskGroup}>
       <AudioCard onSpeak={handleSpeak} />
       <ChoiceGrid
         choices={choices}
@@ -149,6 +149,14 @@ export function AudioMultipleChoiceTask({
         answered={answered}
         onSelect={handleSelect}
       />
-    </>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  taskGroup: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
