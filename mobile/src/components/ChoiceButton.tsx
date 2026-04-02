@@ -21,7 +21,7 @@ export function ChoiceButton({ text, state, onPress }: ChoiceButtonProps) {
       disabled={isDisabled}
       activeOpacity={0.7}
     >
-      <Text style={[styles.text, textStateStyles[state], isTablet && styles.textTablet]}>{text}</Text>
+      <Text style={[styles.text, textStateStyles[state], isTablet && styles.textTablet]} numberOfLines={2} adjustsFontSizeToFit>{text}</Text>
     </TouchableOpacity>
   );
 }

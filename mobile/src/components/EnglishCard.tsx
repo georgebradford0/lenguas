@@ -14,7 +14,7 @@ export function EnglishCard({ english }: EnglishCardProps) {
   return (
     <View style={styles.card}>
       <Text style={styles.prompt}>Say this in German:</Text>
-      <Text style={styles.english}>{english}</Text>
+      <Text style={styles.english} numberOfLines={1} adjustsFontSizeToFit>{english}</Text>
     </View>
   );
 }
@@ -23,10 +23,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.lg,
-    paddingVertical: spacing.xl,
+    paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
     width: '100%',
-    minHeight: 160,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 4,
-    marginBottom: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
   },

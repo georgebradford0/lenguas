@@ -112,7 +112,7 @@ export function SpeechRecognitionTask({
 
           <View style={styles.correctAnswerSection}>
             <Text style={styles.correctAnswerLabel}>Correct answer:</Text>
-            <Text style={styles.correctAnswerText}>{taskData.correctGerman}</Text>
+            <Text style={styles.correctAnswerText} numberOfLines={1} adjustsFontSizeToFit>{taskData.correctGerman}</Text>
           </View>
 
           {similarity !== null && (
@@ -179,14 +179,14 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     paddingHorizontal: spacing.sm,
-    gap: spacing.md,
+    gap: spacing.sm,
   },
   controlsContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.md,
+    gap: spacing.sm,
   },
   hint: {
     fontSize: fontSize.sm,
