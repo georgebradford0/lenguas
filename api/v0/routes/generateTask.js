@@ -816,8 +816,7 @@ router.get('/tier-stats', async (req, res) => {
 function _normaliseForComparison(text) {
   return text
     .toLowerCase()
-    .replace(/^(der|die|das|ein|eine|den|dem|des)\s+/i, '') // strip German articles
-    .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')              // strip punctuation
+    .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // strip punctuation
     .trim();
 }
 
