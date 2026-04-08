@@ -7,7 +7,7 @@ import type {
   Level,
   Language,
 } from '../types';
-import { generateTask, submitAnswer, getLevelStats } from '../api/client';
+import { generateTask, submitAnswer, getLevelStats, blockWord as blockWordApi } from '../api/client';
 
 /**
  * Hook for level-based learning (A1/A2/B1) with simple word translation tasks
@@ -165,6 +165,14 @@ export function useCards(language: Language = 'de', userId?: string) {
     [currentTask, submitting, stats]
   );
 
+  // Block current word — excludes it from future tasks and level totals
+  const blockWord = useCallback(async () => {
+    if (!currentTask || !stats) return;
+    await blockWordApi(currentTask.targetWord, currentTask.level, language);
+    const updatedStats = await getLevelStats(language);
+    setStats(updatedStats);
+  }, [currentTask, stats, language]);
+
   // Dismiss level unlock celebration
   const dismissLevelUnlock = useCallback(() => {
     setLevelJustUnlocked(null);
@@ -185,6 +193,7 @@ export function useCards(language: Language = 'de', userId?: string) {
     // Actions
     handleAnswer,
     loadNextTask,
+    blockWord,
     dismissLevelUnlock, // Changed from dismissTierUnlock
 
     // Computed stats

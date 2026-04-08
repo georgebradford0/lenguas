@@ -9,6 +9,7 @@ const progressSchema = new mongoose.Schema({
   timesShown:       { type: Number, default: 0 },
   correctCount:     { type: Number, default: 0 },
   lastSeenTaskType: { type: String, default: null },
+  blocked:          { type: Boolean, default: false },
 }, { timestamps: true });
 
 progressSchema.index({ userId: 1, word: 1, language: 1 }, { unique: true });

@@ -416,18 +416,19 @@ router.post('/generate-task', async (req, res) => {
       });
     }
 
-    // Load vocabulary for the level
-    const vocabulary = loadVocabulary(level, language);
-
     // Load progress for all words in this language for this user
     const progressRecords = {};
     const allProgress = await Progress.find({ userId, language });
     allProgress.forEach(p => {
       progressRecords[p.word] = {
         timesShown: p.timesShown,
-        correctCount: p.correctCount
+        correctCount: p.correctCount,
+        blocked: p.blocked,
       };
     });
+
+    // Load vocabulary for the level, excluding blocked words
+    const vocabulary = loadVocabulary(level, language).filter(w => !progressRecords[w.word]?.blocked);
 
     // For speechRecognition, only select words the user has already answered correctly
     // a minimum number of times through other task types.
@@ -748,17 +749,19 @@ router.get('/level-stats', async (req, res) => {
       };
     };
 
-    // Load vocabs and stats for all levels
-    const vocabs = levels.map(l => loadVocabulary(l, language));
+    // Load vocabs for all levels, excluding blocked words
+    const vocabs = levels.map(l =>
+      loadVocabulary(l, language).filter(w => !progressMap[w.word]?.blocked)
+    );
     const levelStatsArray = vocabs.map((v, i) => calculateLevelStats(v, levels[i]));
 
     // Determine unlocking: first level always unlocked, each subsequent
-    // unlocks when previous is 100% mastered
+    // unlocks when all unblocked words in the previous level are mastered
     levelStatsArray[0].unlocked = true;
     let currentLevel = levels[0];
     for (let i = 1; i < levels.length; i++) {
       const prevUnlocked = levelStatsArray[i - 1].unlocked;
-      const prevFullyMastered = levelStatsArray[i - 1].mastered >= vocabs[i - 1].length;
+      const prevFullyMastered = levelStatsArray[i - 1].mastered >= levelStatsArray[i - 1].total;
       levelStatsArray[i].unlocked = prevUnlocked && prevFullyMastered;
       if (levelStatsArray[i].unlocked) currentLevel = levels[i];
     }
@@ -813,7 +816,35 @@ router.get('/tier-stats', async (req, res) => {
   }
 });
 
-/// Normalise a word/phrase for comparison: lowercase, strip punctuation
+//**
+ * POST /block-word
+ * Mark a word as blocked for this user — it will be excluded from task
+ * generation and level-stats totals.
+ */
+router.post('/block-word', async (req, res) => {
+  try {
+    const { targetWord, level, language = 'de' } = req.body;
+    const userId = req.user.userId;
+
+    if (!targetWord || !level) {
+      return res.status(400).json({ error: 'Missing targetWord or level' });
+    }
+
+    await Progress.findOneAndUpdate(
+      { userId, word: targetWord, language },
+      { $set: { blocked: true, level } },
+      { upsert: true }
+    );
+
+    console.log(`[block-word] Blocked "${targetWord}" for user ${userId}`);
+    res.json({ success: true, word: targetWord });
+  } catch (error) {
+    console.error('Error blocking word:', error);
+    res.status(500).json({ error: 'Failed to block word' });
+  }
+});
+
+// Normalise a word/phrase for comparison: lowercase, strip punctuation
 function _normaliseForComparison(text) {
   return text
     .toLowerCase()

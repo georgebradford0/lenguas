@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import type { MultipleChoiceTaskData, Choice, Language } from '../types';
+import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
 import { WordCard } from './WordCard';
@@ -9,6 +10,7 @@ import { ChoiceGrid } from './ChoiceGrid';
 interface MultipleChoiceTaskProps {
   taskData: MultipleChoiceTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
+  onBlock?: () => void;
   onTaskReady?: () => void;
   language?: Language;
 }
@@ -22,6 +24,7 @@ const ADVANCE_DELAY = 1200;
 export function MultipleChoiceTask({
   taskData,
   onAnswer,
+  onBlock,
   onTaskReady,
   language = 'de',
 }: MultipleChoiceTaskProps) {
@@ -151,6 +154,26 @@ export function MultipleChoiceTask({
         answered={answered}
         onSelect={handleSelect}
       />
+      {!answered && onBlock && (
+        <TouchableOpacity style={styles.blockButton} onPress={onBlock}>
+          <Text style={styles.blockButtonText}>Block word</Text>
+        </TouchableOpacity>
+      )}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  blockButton: {
+    marginTop: spacing.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  blockButtonText: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+  },
+});

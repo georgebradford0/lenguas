@@ -193,3 +193,12 @@ export async function comparePronunciation(
 
   return response.json();
 }
+
+export async function blockWord(targetWord: string, level: string, language: string): Promise<void> {
+  const response = await fetch(`${API_BASE}/block-word`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ targetWord, level, language }),
+  });
+  if (!response.ok) throw new Error('Failed to block word');
+}

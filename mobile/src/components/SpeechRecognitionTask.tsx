@@ -11,6 +11,7 @@ import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 interface SpeechRecognitionTaskProps {
   taskData: SpeechRecognitionTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
+  onBlock?: () => void;
   onTaskReady?: () => void;
   language?: Language;
 }
@@ -26,6 +27,7 @@ const ADVANCE_DELAY = 2000;
 export function SpeechRecognitionTask({
   taskData,
   onAnswer,
+  onBlock,
   onTaskReady,
   language = 'de',
 }: SpeechRecognitionTaskProps) {
@@ -153,6 +155,11 @@ export function SpeechRecognitionTask({
           <TouchableOpacity style={styles.giveUpButton} onPress={handleGiveUp}>
             <Text style={styles.giveUpText}>Hear answer</Text>
           </TouchableOpacity>
+          {onBlock && (
+            <TouchableOpacity style={styles.blockButton} onPress={onBlock}>
+              <Text style={styles.blockButtonText}>Block word</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
 
@@ -260,6 +267,18 @@ const styles = StyleSheet.create({
     fontSize: fontSize.lg,
     fontWeight: '700',
     color: colors.text,
+  },
+  blockButton: {
+    marginTop: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  blockButtonText: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
   },
   articleHint: {
     fontSize: fontSize.md,

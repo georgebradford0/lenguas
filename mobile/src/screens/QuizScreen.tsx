@@ -27,6 +27,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
     tierJustUnlocked, // Legacy tier unlock (for compatibility)
     handleAnswer,
     loadNextTask,
+    blockWord,
     dismissLevelUnlock,
     dismissTierUnlock,
     levelStatsArray, // New level stats
@@ -68,6 +69,20 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
       console.log('[QuizScreen] Skipping animation - task ID unchanged');
     }
   }, [currentTask, slideAnim]);
+
+  // Slide out, block the current word, then load the next task
+  const handleBlock = useCallback(async () => {
+    await new Promise<void>((resolve) => {
+      Animated.timing(slideAnim, {
+        toValue: -SCREEN_WIDTH,
+        duration: 250,
+        useNativeDriver: true,
+      }).start(() => resolve());
+    });
+    taskIdRef.current = null;
+    await blockWord();
+    await loadNextTask();
+  }, [blockWord, loadNextTask, slideAnim, SCREEN_WIDTH]);
 
   // Handle answer submission with slide animation
   const onAnswerMultipleChoice = useCallback(
@@ -234,6 +249,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           <MultipleChoiceTask
             taskData={currentTask.task as MultipleChoiceTaskData}
             onAnswer={onAnswerMultipleChoice}
+            onBlock={handleBlock}
             language={language}
           />
         );
@@ -242,6 +258,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           <ReverseTranslationTask
             taskData={currentTask.task as ReverseTranslationTaskData}
             onAnswer={onAnswerReverseTranslation}
+            onBlock={handleBlock}
             language={language}
           />
         );
@@ -250,6 +267,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           <AudioMultipleChoiceTask
             taskData={currentTask.task as AudioMultipleChoiceTaskData}
             onAnswer={onAnswerAudioMultipleChoice}
+            onBlock={handleBlock}
             language={language}
           />
         );
@@ -259,6 +277,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
             key={`${currentTask.targetWord}-${currentTask.taskType}`}
             taskData={currentTask.task as SpeechRecognitionTaskData}
             onAnswer={onAnswerSpeechRecognition}
+            onBlock={handleBlock}
             language={language}
           />
         );
