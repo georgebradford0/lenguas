@@ -35,11 +35,12 @@ export function SpeechRecognitionTask({
   const [taskState, setTaskState] = useState<TaskState>('ready');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [similarity, setSimilarity] = useState<number | null>(null);
+  const [articleMissing, setArticleMissing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Notify parent when task is ready
   useEffect(() => {
-    console.log('[SpeechRecognitionTask] Mounted, word:', taskData.correctGerman);
+    console.log('[SpeechRecognitionTask] Mounted, word:', taskData.correctTarget);
     onTaskReady?.();
   }, [onTaskReady]);
 
@@ -62,17 +63,18 @@ export function SpeechRecognitionTask({
 
       try {
         console.log('[SpeechRecognitionTask] Sending to compare-pronunciation API...');
-        const result = await comparePronunciation(audioBase64, taskData.correctGerman, language);
+        const result = await comparePronunciation(audioBase64, taskData.correctTarget, language, taskData.pos);
 
         console.log('[SpeechRecognitionTask] Comparison result:', result);
         setIsCorrect(result.isCorrect);
         setSimilarity(result.similarity);
+        setArticleMissing(result.articleMissing ?? false);
         setTaskState('feedback');
-        playAudio(taskData.correctGermanAudio);
+        playAudio(taskData.correctTargetAudio);
 
         // Auto-advance after delay
         setTimeout(async () => {
-          await onAnswer(result.isCorrect ? taskData.correctGerman : '', taskData.correctGerman);
+          await onAnswer(result.isCorrect ? taskData.correctTarget : '', taskData.correctTarget);
         }, ADVANCE_DELAY);
       } catch (err) {
         console.error('[SpeechRecognitionTask] Comparison error:', err);
@@ -87,16 +89,16 @@ export function SpeechRecognitionTask({
       await startRecording();
       console.log('[SpeechRecognitionTask] startRecording() returned, isRecording should be true');
     }
-  }, [isRecording, stopRecording, startRecording, taskData.correctGerman, taskData.correctGermanAudio, onAnswer, playAudio]);
+  }, [isRecording, stopRecording, startRecording, taskData.correctTarget, taskData.correctTargetAudio, onAnswer, playAudio]);
 
   // Handle "give up" button - play correct answer and mark as incorrect
   const handleGiveUp = useCallback(async () => {
     // Play correct German audio
-    await playAudio(taskData.correctGermanAudio);
+    await playAudio(taskData.correctTargetAudio);
 
     // Mark as incorrect (user gave up)
-    await onAnswer('', taskData.correctGerman);
-  }, [playAudio, taskData.correctGermanAudio, taskData.correctGerman, onAnswer]);
+    await onAnswer('', taskData.correctTarget);
+  }, [playAudio, taskData.correctTargetAudio, taskData.correctTarget, onAnswer]);
 
   // Render feedback state
   const renderFeedback = () => {
@@ -110,9 +112,13 @@ export function SpeechRecognitionTask({
             {isCorrect ? '✓ Good pronunciation!' : '✗ Keep practicing'}
           </Text>
 
+          {articleMissing && (
+            <Text style={styles.articleHint}>Don't forget the article!</Text>
+          )}
+
           <View style={styles.correctAnswerSection}>
             <Text style={styles.correctAnswerLabel}>Correct answer:</Text>
-            <Text style={styles.correctAnswerText} numberOfLines={1} adjustsFontSizeToFit>{taskData.correctGerman}</Text>
+            <Text style={styles.correctAnswerText} numberOfLines={1} adjustsFontSizeToFit>{taskData.correctTarget}</Text>
           </View>
 
           {similarity !== null && (
@@ -254,6 +260,13 @@ const styles = StyleSheet.create({
     fontSize: fontSize.lg,
     fontWeight: '700',
     color: colors.text,
+  },
+  articleHint: {
+    fontSize: fontSize.md,
+    color: colors.wrong,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+    fontWeight: '600',
   },
   similarityText: {
     fontSize: fontSize.sm,

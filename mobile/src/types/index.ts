@@ -49,28 +49,29 @@ export interface VocabWord {
 }
 
 export interface MultipleChoiceTaskData {
-  german: string;
-  germanAudio: string; // Singular form for audio (no plural notation)
+  target: string;
+  targetAudio: string; // Singular form for audio (no plural notation)
   correctEnglish: string;
   wrongOptions: string[];
 }
 
 export interface AudioMultipleChoiceTaskData {
-  germanAudio: string; // Audio only (no visual German text)
+  targetAudio: string; // Audio only (no visual target text)
   correctEnglish: string;
   wrongOptions: string[];
 }
 
 export interface SpeechRecognitionTaskData {
-  english: string;              // English word to display
-  correctGerman: string;        // Expected German answer
-  correctGermanAudio: string;   // Audio for "give up" button
+  english: string;               // English word to display
+  correctTarget: string;         // Expected target language answer
+  correctTargetAudio: string;    // Audio for "give up" button
+  pos?: string;                  // Part of speech (e.g. 'noun') — used to enforce article
 }
 
 export interface ReverseTranslationTaskData {
   english: string;
-  correctGerman: string;
-  correctGermanAudio: string; // Singular form for audio (no plural notation)
+  correctTarget: string;
+  correctTargetAudio: string; // Singular form for audio (no plural notation)
   wrongOptions: string[];
   wrongOptionsAudio: string[]; // Singular forms for audio
 }

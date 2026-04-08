@@ -35,7 +35,7 @@ export function MultipleChoiceTask({
   const taskIdRef = useRef<string | null>(null);
 
   // Create unique ID for this task
-  const taskId = `${taskData.german}-${taskData.correctEnglish}`;
+  const taskId = `${taskData.target}-${taskData.correctEnglish}`;
 
   // Load choices when task changes
   useEffect(() => {
@@ -74,7 +74,7 @@ export function MultipleChoiceTask({
     setValidationError(null);
 
     // Prefetch audio for the upcoming task word
-    prefetchAudio(taskData.germanAudio || taskData.german);
+    prefetchAudio(taskData.targetAudio || taskData.target);
 
     // Create shuffled choices
     const options = shuffle([
@@ -91,7 +91,7 @@ export function MultipleChoiceTask({
     taskIdRef.current = taskId;
 
     // Auto-play audio only after successful validation (use audio version)
-    playAudio(taskData.germanAudio || taskData.german);
+    playAudio(taskData.targetAudio || taskData.target);
 
     // Notify parent
     onTaskReady?.();
@@ -109,29 +109,29 @@ export function MultipleChoiceTask({
 
       // Auto-advance after delay
       setTimeout(async () => {
-        clearAudio(taskData.germanAudio || taskData.german);
+        clearAudio(taskData.targetAudio || taskData.target);
         taskIdRef.current = null; // Allow loading next task
         await onAnswer(userAnswer, correctAnswer);
       }, ADVANCE_DELAY);
     },
-    [answered, choices, taskData.correctEnglish, taskData.germanAudio, taskData.german, clearAudio, onAnswer]
+    [answered, choices, taskData.correctEnglish, taskData.targetAudio, taskData.target, clearAudio, onAnswer]
   );
 
   const handleSpeak = useCallback(() => {
     // Use audio version without plural notation
-    playAudio(taskData.germanAudio || taskData.german);
-  }, [taskData.germanAudio, taskData.german, playAudio]);
+    playAudio(taskData.targetAudio || taskData.target);
+  }, [taskData.targetAudio, taskData.target, playAudio]);
 
   console.log('[MultipleChoice] Render - validationError:', validationError);
   console.log('[MultipleChoice] Render - choices:', choices ? 'exists' : 'null');
-  console.log('[MultipleChoice] Render - german word:', taskData.german);
+  console.log('[MultipleChoice] Render - target word:', taskData.target);
 
   // Show error if validation failed
   if (validationError) {
     console.log('[MultipleChoice] Rendering error state');
     return (
       <>
-        <WordCard word={taskData.german || 'Error'} onSpeak={handleSpeak} />
+        <WordCard word={taskData.target || 'Error'} onSpeak={handleSpeak} />
         <View style={{ padding: 20, alignItems: 'center' }}>
           <Text style={{ color: '#e74c3c', fontSize: 16, textAlign: 'center' }}>
             {validationError}
@@ -144,7 +144,7 @@ export function MultipleChoiceTask({
   console.log('[MultipleChoice] Rendering normal state');
   return (
     <>
-      <WordCard word={taskData.german} onSpeak={handleSpeak} />
+      <WordCard word={taskData.target} onSpeak={handleSpeak} />
       <ChoiceGrid
         choices={choices}
         selectedIndex={selectedIndex}

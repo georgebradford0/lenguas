@@ -487,35 +487,36 @@ router.post('/generate-task', async (req, res) => {
     let taskData;
 
     if (effectiveTaskType === 'multipleChoice') {
-      // Show German word, ask for English translation
+      // Show target word, ask for English translation
       taskData = {
-        german: targetFormatted.display,
-        germanAudio: targetFormatted.audio,
+        target: targetFormatted.display,
+        targetAudio: targetFormatted.audio,
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
       };
     } else if (effectiveTaskType === 'audioMultipleChoice') {
-      // Audio only: play German audio, ask for English translation
-      // Don't show the German text
+      // Audio only: play target audio, ask for English translation
+      // Don't show the target text
       taskData = {
-        germanAudio: targetFormatted.audio,
+        targetAudio: targetFormatted.audio,
         correctEnglish: correctEnglish,
         wrongOptions: wrongEnglishOptions,
       };
     } else if (effectiveTaskType === 'speechRecognition') {
-      // Speech recognition: show English, user speaks German
+      // Speech recognition: show English, user speaks target language
       taskData = {
         english: correctEnglish,
-        correctGerman: targetFormatted.audio,
-        correctGermanAudio: targetFormatted.audio,
+        correctTarget: targetFormatted.audio,
+        correctTargetAudio: targetFormatted.audio,
+        pos: targetWord.pos,
       };
     } else {
-      // Reverse: show English, ask for German
+      // Reverse: show English, ask for target language word
       // Use singular forms (audio versions) for cleaner choice display
       taskData = {
         english: correctEnglish,
-        correctGerman: targetFormatted.audio, // Singular only for clean UI
-        correctGermanAudio: targetFormatted.audio,
+        correctTarget: targetFormatted.audio, // Singular only for clean UI
+        correctTargetAudio: targetFormatted.audio,
         wrongOptions: distractorsFormatted.map(d => d.audio), // Singular only
         wrongOptionsAudio: distractorsFormatted.map(d => d.audio),
       };
@@ -812,7 +813,7 @@ router.get('/tier-stats', async (req, res) => {
   }
 });
 
-// Normalise a word/phrase for comparison: lowercase, strip articles, strip punctuation
+/// Normalise a word/phrase for comparison: lowercase, strip punctuation
 function _normaliseForComparison(text) {
   return text
     .toLowerCase()
@@ -853,13 +854,13 @@ function _stringSimilarity(a, b) {
 router.post('/compare-pronunciation', async (req, res) => {
   const tmpFiles = [];
   try {
-    const { audio, targetWord, language = 'de' } = req.body;
+    const { audio, targetWord, language = 'de', pos } = req.body;
 
     if (!audio || typeof audio !== 'string' || !targetWord) {
       return res.status(400).json({ error: 'Missing audio or targetWord' });
     }
 
-    console.log('[Pronunciation] Transcribing for target:', targetWord);
+    console.log('[Pronunciation] Transcribing for target:', targetWord, 'pos:', pos);
 
     const userM4a = path.join(os.tmpdir(), `user_${Date.now()}.m4a`);
     tmpFiles.push(userM4a);
@@ -879,15 +880,24 @@ router.post('/compare-pronunciation', async (req, res) => {
     console.log(`[Pronunciation] target="${target}" spoken="${spoken}"`);
 
     if (!spoken) {
-      return res.json({ similarity: 0, isCorrect: false });
+      return res.json({ similarity: 0, isCorrect: false, articleMissing: false });
+    }
+
+    // For nouns, explicitly check the article is spoken (first word of target)
+    let articleMissing = false;
+    if (pos === 'noun') {
+      const expectedArticle = target.split(/\s+/)[0];
+      const spokenWords = spoken.split(/\s+/);
+      articleMissing = !spokenWords.includes(expectedArticle);
+      console.log(`[Pronunciation] noun article check: expected="${expectedArticle}" articleMissing=${articleMissing}`);
     }
 
     const similarity = _stringSimilarity(spoken, target);
-    const isCorrect  = similarity >= 0.75;
+    const isCorrect  = !articleMissing && similarity >= 0.75;
 
-    console.log(`[Pronunciation] similarity=${(similarity * 100).toFixed(1)}% isCorrect=${isCorrect}`);
+    console.log(`[Pronunciation] similarity=${(similarity * 100).toFixed(1)}% articleMissing=${articleMissing} isCorrect=${isCorrect}`);
 
-    res.json({ similarity, isCorrect });
+    res.json({ similarity, isCorrect, articleMissing });
 
   } catch (err) {
     console.error('[Pronunciation] Error:', err.message);

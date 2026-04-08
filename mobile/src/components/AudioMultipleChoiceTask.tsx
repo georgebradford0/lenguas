@@ -35,7 +35,7 @@ export function AudioMultipleChoiceTask({
   const taskIdRef = useRef<string | null>(null);
 
   // Create unique ID for this task
-  const taskId = `${taskData.germanAudio}-${taskData.correctEnglish}`;
+  const taskId = `${taskData.targetAudio}-${taskData.correctEnglish}`;
 
   // Load choices when task changes
   useEffect(() => {
@@ -74,7 +74,7 @@ export function AudioMultipleChoiceTask({
     setValidationError(null);
 
     // Prefetch audio for the upcoming task word
-    prefetchAudio(taskData.germanAudio);
+    prefetchAudio(taskData.targetAudio);
 
     // Create shuffled choices
     const options = shuffle([
@@ -91,7 +91,7 @@ export function AudioMultipleChoiceTask({
     taskIdRef.current = taskId;
 
     // Auto-play audio after successful validation
-    playAudio(taskData.germanAudio);
+    playAudio(taskData.targetAudio);
 
     // Notify parent
     onTaskReady?.();
@@ -109,17 +109,17 @@ export function AudioMultipleChoiceTask({
 
       // Auto-advance after delay
       setTimeout(async () => {
-        clearAudio(taskData.germanAudio);
+        clearAudio(taskData.targetAudio);
         taskIdRef.current = null; // Allow loading next task
         await onAnswer(userAnswer, correctAnswer);
       }, ADVANCE_DELAY);
     },
-    [answered, choices, taskData.correctEnglish, taskData.germanAudio, clearAudio, onAnswer]
+    [answered, choices, taskData.correctEnglish, taskData.targetAudio, clearAudio, onAnswer]
   );
 
   const handleSpeak = useCallback(() => {
-    playAudio(taskData.germanAudio);
-  }, [taskData.germanAudio, playAudio]);
+    playAudio(taskData.targetAudio);
+  }, [taskData.targetAudio, playAudio]);
 
   console.log('[AudioMultipleChoice] Render - validationError:', validationError);
   console.log('[AudioMultipleChoice] Render - choices:', choices ? 'exists' : 'null');

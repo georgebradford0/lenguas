@@ -35,7 +35,7 @@ export function ReverseTranslationTask({
   const taskIdRef = useRef<string | null>(null);
 
   // Create unique ID for this task
-  const taskId = `${taskData.english}-${taskData.correctGerman}`;
+  const taskId = `${taskData.english}-${taskData.correctTarget}`;
 
   // Load choices when task changes
   useEffect(() => {
@@ -58,7 +58,7 @@ export function ReverseTranslationTask({
     }
 
     // Validate that all options have text
-    const hasValidOptions = taskData.correctGerman &&
+    const hasValidOptions = taskData.correctTarget &&
                            taskData.wrongOptions.every(opt => opt && typeof opt === 'string');
 
     if (!hasValidOptions) {
@@ -75,7 +75,7 @@ export function ReverseTranslationTask({
 
     // Create shuffled choices with German words
     const options = shuffle([
-      { text: taskData.correctGerman, correct: true },
+      { text: taskData.correctTarget, correct: true },
       { text: taskData.wrongOptions[0], correct: false },
       { text: taskData.wrongOptions[1], correct: false },
       { text: taskData.wrongOptions[2], correct: false },
@@ -99,10 +99,10 @@ export function ReverseTranslationTask({
       setAnswered(true);
 
       const userAnswer = choices[index].text;
-      const correctAnswer = taskData.correctGerman;
+      const correctAnswer = taskData.correctTarget;
 
-      // Always play audio of the correct German word/phrase for learning (use audio version)
-      await playAudio(taskData.correctGermanAudio || taskData.correctGerman);
+      // Always play audio of the correct target word/phrase for learning (use audio version)
+      await playAudio(taskData.correctTargetAudio || taskData.correctTarget);
 
       // Short pause after audio finishes
       await new Promise((resolve) => setTimeout(resolve, PAUSE_AFTER_AUDIO));
@@ -111,7 +111,7 @@ export function ReverseTranslationTask({
       taskIdRef.current = null;
       await onAnswer(userAnswer, correctAnswer);
     },
-    [answered, choices, taskData.correctGerman, onAnswer, playAudio]
+    [answered, choices, taskData.correctTarget, onAnswer, playAudio]
   );
 
   console.log('[ReverseTranslation] Render - validationError:', validationError);
