@@ -158,7 +158,7 @@ export function ReverseTranslationTask({
         onSelect={handleSelect}
       />
       {onBlock && (
-        <TouchableOpacity style={[styles.blockButton, answered && styles.blockButtonDisabled]} onPress={onBlock} disabled={answered}>
+        <TouchableOpacity style={styles.blockButton} onPress={onBlock} disabled={answered}>
           <Text style={styles.blockButtonText}>Block word</Text>
         </TouchableOpacity>
       )}
@@ -211,8 +211,5 @@ const styles = StyleSheet.create({
   blockButtonText: {
     fontSize: fontSize.sm,
     color: colors.muted,
-  },
-  blockButtonDisabled: {
-    opacity: 0.4,
   },
 });
