@@ -152,8 +152,8 @@ export function AudioMultipleChoiceTask({
         answered={answered}
         onSelect={handleSelect}
       />
-      {!answered && onBlock && (
-        <TouchableOpacity style={styles.blockButton} onPress={onBlock}>
+      {onBlock && (
+        <TouchableOpacity style={[styles.blockButton, answered && styles.blockButtonHidden]} onPress={onBlock} disabled={answered}>
           <Text style={styles.blockButtonText}>Block word</Text>
         </TouchableOpacity>
       )}
@@ -178,5 +178,8 @@ const styles = StyleSheet.create({
   blockButtonText: {
     fontSize: fontSize.sm,
     color: colors.muted,
+  },
+  blockButtonHidden: {
+    opacity: 0,
   },
 });
