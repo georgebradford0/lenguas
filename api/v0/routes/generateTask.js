@@ -721,6 +721,10 @@ router.get('/level-stats', async (req, res) => {
     const progressMap = {};
     allProgress.forEach(p => { progressMap[p.word] = p; });
 
+    const vocabs = levels.map(l =>
+      loadVocabulary(l, language).filter(w => !progressMap[w.word]?.blocked)
+    );
+
     // Calculate stats for each level
     const calculateLevelStats = (vocab, levelName) => {
       let totalAttempts = 0;
@@ -749,10 +753,6 @@ router.get('/level-stats', async (req, res) => {
       };
     };
 
-    // Load vocabs for all levels, excluding blocked words
-    const vocabs = levels.map(l =>
-      loadVocabulary(l, language).filter(w => !progressMap[w.word]?.blocked)
-    );
     const levelStatsArray = vocabs.map((v, i) => calculateLevelStats(v, levels[i]));
 
     // Determine unlocking: first level always unlocked, each subsequent
@@ -816,7 +816,7 @@ router.get('/tier-stats', async (req, res) => {
   }
 });
 
-//**
+/**
  * POST /block-word
  * Mark a word as blocked for this user — it will be excluded from task
  * generation and level-stats totals.
