@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Platform,
+  View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
+  FlatList, Platform, ListRenderItemInfo,
 } from 'react-native';
 import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
-import { getEpubTitle } from '../utils/epub';
+import { parseEpub, loadChapter } from '../utils/epubParser';
+import { EpubReader } from '../components/EpubReader';
+import { TranslationCard } from '../components/TranslationCard';
+import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
 import type { Language } from '../types';
 
-export function ReadAlongScreen({ onBack }: { language: Language; onBack: () => void }) {
-  const [epubTitle, setEpubTitle] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+type Phase = 'idle' | 'parsing' | 'toc' | 'chapterLoading' | 'reading';
+
+const CARD_HEIGHT = 230;
+
+interface SelectedWord {
+  wordId: string;
+  word: string;
+  sentence: string;
+}
+
+export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
+  const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
+  const epubRef = useRef<EpubHandle | null>(null);
+  const [epubTitle, setEpubTitle] = useState<string | null>(null);
+  const [toc, setToc] = useState<TocEntry[]>([]);
+  const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
+  const [currentTocIdx, setCurrentTocIdx] = useState(0);
+  const [selected, setSelected] = useState<SelectedWord | null>(null);
+
+  // ── File picker ─────────────────────────────────────────────────────────────
 
   async function handleSelectEpub() {
     try {
@@ -19,66 +40,208 @@ export function ReadAlongScreen({ onBack }: { language: Language; onBack: () => 
         type: Platform.OS === 'ios' ? 'org.idpf.epub-container' : 'application/epub+zip',
       });
 
-      setLoading(true);
+      setPhase('parsing');
       const copies = await keepLocalCopy({
         files: [{ uri: result.uri, fileName: result.name ?? 'book.epub' }],
         destination: 'cachesDirectory',
       });
-
       const copy = copies[0];
-      if (copy.status !== 'success') {
-        setError('Failed to read file.');
-        return;
-      }
+      if (copy.status !== 'success') throw new Error('Failed to copy file');
 
-      const title = await getEpubTitle(copy.localUri);
-      setEpubTitle(title ?? result.name?.replace(/\.epub$/i, '') ?? 'Unknown Title');
+      const handle = await parseEpub(copy.localUri);
+      epubRef.current = handle;
+      setEpubTitle(handle.title);
+      setToc(handle.toc);
+      setSelected(null);
+      setPhase('toc');
     } catch (e: any) {
-      if (!isErrorWithCode(e, errorCodes.OPERATION_CANCELED)) {
-        setError('Failed to open file.');
+      if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
+        setError('Failed to open epub.');
+        console.error(e);
       }
-    } finally {
-      setLoading(false);
+      setPhase('idle');
     }
   }
 
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={onBack}>
-        <Text style={styles.backText}>←</Text>
-      </TouchableOpacity>
+  // ── Chapter loading ──────────────────────────────────────────────────────────
 
-      <Text style={styles.screenTitle}>Read Along</Text>
+  async function openChapter(tocIdx: number) {
+    const handle = epubRef.current;
+    if (!handle) return;
+    const entry = handle.toc[tocIdx];
+    if (!entry) return;
 
-      {epubTitle ? (
-        <View style={styles.bookCard}>
-          <Text style={styles.bookIcon}>📖</Text>
-          <Text style={styles.bookTitle}>{epubTitle}</Text>
-        </View>
-      ) : null}
+    setPhase('chapterLoading');
+    setSelected(null);
+    try {
+      // Find spine index for this href (strip anchor for matching)
+      const spineIdx = handle.spineHrefs.findIndex(h => h === entry.href);
+      const chapterIdx = spineIdx >= 0 ? spineIdx : tocIdx;
+      const chapter = await loadChapter(handle.zip, entry.href, chapterIdx, entry.title);
+      setCurrentChapter(chapter);
+      setCurrentTocIdx(tocIdx);
+      setPhase('reading');
+    } catch (e: any) {
+      setError('Failed to load chapter.');
+      setPhase('toc');
+    }
+  }
 
-      {loading ? (
-        <ActivityIndicator color={colors.primary} style={styles.loader} />
-      ) : (
-        <TouchableOpacity style={styles.selectButton} onPress={handleSelectEpub} activeOpacity={0.85}>
-          <Text style={styles.selectButtonText}>
-            {epubTitle ? 'Change Book' : 'Select EPUB'}
-          </Text>
+  // ── Word press ───────────────────────────────────────────────────────────────
+
+  const handleWordPress = useCallback((wordId: string, word: string, sentence: Sentence) => {
+    setSelected({ wordId, word, sentence: sentence.raw });
+  }, []);
+
+  // ── Rendering ────────────────────────────────────────────────────────────────
+
+  if (phase === 'idle') {
+    return (
+      <View style={styles.centeredContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+          <Text style={styles.backText}>←</Text>
         </TouchableOpacity>
-      )}
+        <Text style={styles.screenTitle}>Read Along</Text>
+        {epubTitle && (
+          <View style={styles.bookCard}>
+            <Text style={styles.bookIcon}>📖</Text>
+            <Text style={styles.bookTitle}>{epubTitle}</Text>
+          </View>
+        )}
+        <TouchableOpacity style={styles.primaryButton} onPress={handleSelectEpub} activeOpacity={0.85}>
+          <Text style={styles.primaryButtonText}>{epubTitle ? 'Change Book' : 'Select EPUB'}</Text>
+        </TouchableOpacity>
+        {epubTitle && (
+          <TouchableOpacity style={styles.secondaryButton} onPress={() => setPhase('toc')} activeOpacity={0.85}>
+            <Text style={styles.secondaryButtonText}>Open Table of Contents</Text>
+          </TouchableOpacity>
+        )}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      </View>
+    );
+  }
 
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-    </View>
-  );
+  if (phase === 'parsing') {
+    return (
+      <View style={styles.centeredContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={styles.loadingText}>Parsing epub…</Text>
+      </View>
+    );
+  }
+
+  if (phase === 'toc') {
+    return (
+      <View style={styles.fullContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.headerBack} onPress={() => setPhase('idle')}>
+            <Text style={styles.headerBackText}>←</Text>
+          </TouchableOpacity>
+          <Text style={styles.headerTitle} numberOfLines={1}>{epubTitle}</Text>
+          <View style={styles.headerRight} />
+        </View>
+        <FlatList
+          data={toc}
+          keyExtractor={e => e.id}
+          renderItem={({ item, index }: ListRenderItemInfo<TocEntry>) => (
+            <TouchableOpacity
+              style={[styles.tocItem, item.level > 0 && { paddingLeft: spacing.md + item.level * 16 }]}
+              onPress={() => openChapter(index)}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.tocItemText, item.level > 0 && styles.tocItemSubText]} numberOfLines={2}>
+                {item.title}
+              </Text>
+              <Text style={styles.tocChevron}>›</Text>
+            </TouchableOpacity>
+          )}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          contentContainerStyle={{ paddingBottom: spacing.xl }}
+        />
+      </View>
+    );
+  }
+
+  if (phase === 'chapterLoading') {
+    return (
+      <View style={styles.centeredContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={styles.loadingText}>Loading chapter…</Text>
+      </View>
+    );
+  }
+
+  // ── Reading ──────────────────────────────────────────────────────────────────
+
+  if (phase === 'reading' && currentChapter) {
+    const prevIdx = currentTocIdx > 0 ? currentTocIdx - 1 : null;
+    const nextIdx = currentTocIdx < toc.length - 1 ? currentTocIdx + 1 : null;
+
+    return (
+      <View style={styles.fullContainer}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.headerBack} onPress={() => { setSelected(null); setPhase('toc'); }}>
+            <Text style={styles.headerBackText}>←</Text>
+          </TouchableOpacity>
+          <Text style={styles.headerTitle} numberOfLines={1}>{currentChapter.title}</Text>
+          <Text style={styles.chapterCounter}>{currentTocIdx + 1}/{toc.length}</Text>
+        </View>
+
+        {/* Chapter content */}
+        <EpubReader
+          chapter={currentChapter}
+          selectedWordId={selected?.wordId ?? null}
+          onWordPress={handleWordPress}
+          bottomPadding={selected ? CARD_HEIGHT : 0}
+        />
+
+        {/* Chapter navigation */}
+        <View style={styles.chapterNav}>
+          <TouchableOpacity
+            style={[styles.navButton, !prevIdx && prevIdx !== 0 && styles.navButtonDisabled]}
+            onPress={prevIdx !== null ? () => openChapter(prevIdx) : undefined}
+            disabled={prevIdx === null}
+          >
+            <Text style={styles.navButtonText}>‹ Prev</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.navButton, nextIdx === null && styles.navButtonDisabled]}
+            onPress={nextIdx !== null ? () => openChapter(nextIdx) : undefined}
+            disabled={nextIdx === null}
+          >
+            <Text style={styles.navButtonText}>Next ›</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Translation card */}
+        {selected && (
+          <TranslationCard
+            wordId={selected.wordId}
+            word={selected.word}
+            sentence={selected.sentence}
+            language={language}
+            onDismiss={() => setSelected(null)}
+          />
+        )}
+      </View>
+    );
+  }
+
+  return null;
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centeredContainer: {
     flex: 1,
     backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
+  },
+  fullContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
   },
   backButton: {
     position: 'absolute',
@@ -105,43 +268,92 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.xl,
     marginBottom: spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 3,
     width: '100%',
     maxWidth: 400,
   },
-  bookIcon: {
-    fontSize: 40,
-    marginBottom: spacing.xs,
-  },
+  bookIcon: { fontSize: 40, marginBottom: spacing.xs },
   bookTitle: {
     fontSize: fontSize.sm,
     fontWeight: '600',
     color: colors.text,
     textAlign: 'center',
   },
-  loader: {
-    marginTop: spacing.md,
-  },
-  selectButton: {
+  primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: borderRadius.md,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.xl,
     alignItems: 'center',
+    marginBottom: spacing.xs,
   },
-  selectButtonText: {
-    color: '#fff',
+  primaryButtonText: { color: '#fff', fontSize: fontSize.xs, fontWeight: '600' },
+  secondaryButton: {
+    borderRadius: borderRadius.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.xl,
+    alignItems: 'center',
+  },
+  secondaryButtonText: { color: colors.primary, fontSize: fontSize.xs, fontWeight: '500' },
+  errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center', marginTop: spacing.sm },
+  loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm },
+
+  // Header
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    backgroundColor: colors.cardBackground,
+  },
+  headerBack: { padding: spacing.xs, marginRight: spacing.xs },
+  headerBackText: { fontSize: fontSize.md, color: colors.text },
+  headerTitle: {
+    flex: 1,
     fontSize: fontSize.xs,
     fontWeight: '600',
+    color: colors.text,
   },
-  error: {
-    color: colors.wrong,
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: spacing.sm,
+  headerRight: { width: 36 },
+  chapterCounter: { fontSize: 13, color: colors.muted, marginLeft: spacing.xs },
+
+  // TOC
+  tocItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.cardBackground,
   },
+  tocItemText: {
+    flex: 1,
+    fontSize: fontSize.xs,
+    color: colors.text,
+    fontWeight: '500',
+  },
+  tocItemSubText: {
+    fontWeight: '400',
+    color: colors.muted,
+    fontSize: 15,
+  },
+  tocChevron: { fontSize: fontSize.md, color: colors.muted, marginLeft: spacing.xs },
+  separator: { height: 1, backgroundColor: colors.border },
+
+  // Chapter navigation
+  chapterNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    backgroundColor: colors.cardBackground,
+  },
+  navButton: {
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+  },
+  navButtonDisabled: { opacity: 0.3 },
+  navButtonText: { color: colors.primary, fontSize: fontSize.xs, fontWeight: '500' },
 });
