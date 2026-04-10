@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import type { ReverseTranslationTaskData, Choice, Language } from '../types';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
@@ -9,7 +9,6 @@ import { ChoiceGrid } from './ChoiceGrid';
 interface ReverseTranslationTaskProps {
   taskData: ReverseTranslationTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
-  onBlock?: () => void;
   onTaskReady?: () => void;
   language?: Language;
 }
@@ -23,7 +22,6 @@ const PAUSE_AFTER_AUDIO = 500;
 export function ReverseTranslationTask({
   taskData,
   onAnswer,
-  onBlock,
   onTaskReady,
   language = 'de',
 }: ReverseTranslationTaskProps) {
@@ -157,11 +155,6 @@ export function ReverseTranslationTask({
         answered={answered}
         onSelect={handleSelect}
       />
-      {onBlock && (
-        <TouchableOpacity style={styles.blockButton} onPress={onBlock} disabled={answered}>
-          <Text style={styles.blockButtonText}>Remove word</Text>
-        </TouchableOpacity>
-      )}
     </>
   );
 }
@@ -198,18 +191,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: colors.muted,
-  },
-  blockButton: {
-    marginTop: spacing.md,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  blockButtonText: {
-    fontSize: fontSize.sm,
     color: colors.muted,
   },
 });
