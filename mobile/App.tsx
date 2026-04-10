@@ -6,6 +6,7 @@ import {
 import { useIsTablet } from './src/hooks/useIsTablet';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { QuizScreen } from './src/screens/QuizScreen';
+import { ReadAlongScreen } from './src/screens/ReadAlongScreen';
 import { colors, spacing, fontSize, borderRadius } from './src/styles/theme';
 import { loginRequest, verifyCode, setAuthToken, deleteAccount } from './src/api/client';
 import { saveAuthData, loadAuthData, clearAuthData } from './src/utils/auth';
@@ -136,16 +137,6 @@ function ModeSelectScreen({ language, onSelect, onBack }: {
   );
 }
 
-function ReadAlongScreen({ onBack }: { language: Language; onBack: () => void }) {
-  return (
-    <View style={readAlongStyles.container}>
-      <TouchableOpacity style={readAlongStyles.backButton} onPress={onBack}>
-        <Text style={readAlongStyles.backText}>←</Text>
-      </TouchableOpacity>
-      <Text style={readAlongStyles.title}>Read Along</Text>
-    </View>
-  );
-}
 
 function LoginScreen({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [step, setStep] = useState<'email' | 'code'>('email');
@@ -643,29 +634,5 @@ const modeStyles = StyleSheet.create({
   },
 });
 
-const readAlongStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.md,
-  },
-  backButton: {
-    position: 'absolute',
-    top: spacing.md,
-    left: spacing.md,
-    padding: spacing.xs,
-  },
-  backText: {
-    fontSize: fontSize.md,
-    color: colors.text,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: '700',
-    color: colors.text,
-  },
-});
 
 export default App;
