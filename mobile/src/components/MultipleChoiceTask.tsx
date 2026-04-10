@@ -156,7 +156,7 @@ export function MultipleChoiceTask({
       />
       {onBlock && (
         <TouchableOpacity style={styles.blockButton} onPress={onBlock} disabled={answered}>
-          <Text style={styles.blockButtonText}>Block word</Text>
+          <Text style={styles.blockButtonText}>Remove word</Text>
         </TouchableOpacity>
       )}
     </>

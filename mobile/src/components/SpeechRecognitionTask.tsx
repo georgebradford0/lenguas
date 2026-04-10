@@ -157,7 +157,7 @@ export function SpeechRecognitionTask({
           </TouchableOpacity>
           {onBlock && (
             <TouchableOpacity style={styles.blockButton} onPress={onBlock}>
-              <Text style={styles.blockButtonText}>Block word</Text>
+              <Text style={styles.blockButtonText}>Remove word</Text>
             </TouchableOpacity>
           )}
         </View>
