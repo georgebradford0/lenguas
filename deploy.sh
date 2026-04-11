@@ -12,6 +12,13 @@ RSYNC_CMD="rsync -avz -e \"ssh -i $SSH_KEY -o StrictHostKeyChecking=no\""
 
 echo "🚀 Deploying Language App to AWS EC2..."
 
+# Load .env file if present (overrides shell environment)
+if [ -f "$LOCAL_DIR/.env" ]; then
+    set -a
+    source "$LOCAL_DIR/.env"
+    set +a
+fi
+
 # Check if OPENAI_API_KEY is set
 if [ -z "$OPENAI_API_KEY" ]; then
     echo "❌ Error: OPENAI_API_KEY environment variable is not set"
