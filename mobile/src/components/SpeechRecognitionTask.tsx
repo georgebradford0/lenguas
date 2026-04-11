@@ -30,7 +30,7 @@ export function SpeechRecognitionTask({
   language = 'de',
 }: SpeechRecognitionTaskProps) {
   const { playAudio } = useAudio(language);
-  const { startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder();
+  const { startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder(language);
 
   const [taskState, setTaskState] = useState<TaskState>('ready');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -133,7 +133,7 @@ export function SpeechRecognitionTask({
 
   return (
     <View style={styles.wrapper}>
-      <EnglishCard english={taskData.english} />
+      <EnglishCard english={taskData.english} language={language} />
 
       {/* Show recorder error if any */}
       {(error || recorderError) && (

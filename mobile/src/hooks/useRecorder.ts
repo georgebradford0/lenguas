@@ -3,6 +3,8 @@ import { Platform, PermissionsAndroid } from 'react-native';
 import { createSound } from 'react-native-nitro-sound';
 import type { Sound } from 'react-native-nitro-sound';
 import RNFS from 'react-native-fs';
+import type { Language } from '../types';
+import { getLanguageName } from '../types';
 
 export interface RecorderHook {
   startRecording: () => Promise<void>;
@@ -14,7 +16,7 @@ export interface RecorderHook {
 
 const MAX_RECORDING_TIME = 5000; // 5 seconds in milliseconds
 
-export function useRecorder(): RecorderHook {
+export function useRecorder(language: Language = 'de'): RecorderHook {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +35,7 @@ export function useRecorder(): RecorderHook {
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
           {
             title: 'Microphone Permission',
-            message: 'This app needs microphone access to practice German pronunciation',
+            message: `This app needs microphone access to practice ${getLanguageName(language)} pronunciation`,
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',

@@ -1,31 +1,36 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
+import type { Language } from '../types';
+import { getLanguageName } from '../types';
 
 interface TierUnlockCelebrationProps {
   tier: number;
   onDismiss: () => void;
+  language?: Language;
 }
 
-const TIER_MESSAGES = {
-  2: {
-    title: 'Tier 2 Unlocked! 🎉',
-    message: 'Amazing progress! You\'ve mastered 75% of Tier 1 vocabulary.\nYou\'re ready for more advanced words and patterns!',
-    milestone: '75% of Tier 1 words mastered (7+ attempts, 75%+ accuracy)',
-  },
-  3: {
-    title: 'Tier 3 Unlocked! 🚀',
-    message: 'Incredible! You\'re building strong German foundations.\nTime for modal verbs and complex sentences.',
-    milestone: '75% of Tier 2 words mastered',
-  },
-  4: {
-    title: 'Tier 4 Unlocked! 🌟',
-    message: 'Outstanding! You\'re approaching fluency.\nAdvanced grammar and refinement ahead!',
-    milestone: '75% of Tier 3 words mastered',
-  },
-};
+function getTierMessages(languageName: string) {
+  return {
+    2: {
+      title: 'Tier 2 Unlocked! 🎉',
+      message: `Amazing progress! You\'ve mastered 75% of Tier 1 vocabulary.\nYou\'re ready for more advanced words and patterns!`,
+      milestone: '75% of Tier 1 words mastered (7+ attempts, 75%+ accuracy)',
+    },
+    3: {
+      title: 'Tier 3 Unlocked! 🚀',
+      message: `Incredible! You\'re building strong ${languageName} foundations.\nTime for more complex words and sentences.`,
+      milestone: '75% of Tier 2 words mastered',
+    },
+    4: {
+      title: 'Tier 4 Unlocked! 🌟',
+      message: 'Outstanding! You\'re approaching fluency.\nAdvanced grammar and refinement ahead!',
+      milestone: '75% of Tier 3 words mastered',
+    },
+  };
+}
 
-export function TierUnlockCelebration({ tier, onDismiss }: TierUnlockCelebrationProps) {
+export function TierUnlockCelebration({ tier, onDismiss, language = 'de' }: TierUnlockCelebrationProps) {
   const scaleAnim = new Animated.Value(0);
   const opacityAnim = new Animated.Value(0);
 
@@ -46,7 +51,8 @@ export function TierUnlockCelebration({ tier, onDismiss }: TierUnlockCelebration
     ]).start();
   }, []);
 
-  const tierInfo = TIER_MESSAGES[tier as keyof typeof TIER_MESSAGES] || {
+  const tierMessages = getTierMessages(getLanguageName(language));
+  const tierInfo = tierMessages[tier as keyof typeof tierMessages] || {
     title: `Tier ${tier} Unlocked!`,
     message: 'Keep up the great work!',
     milestone: 'Achievement unlocked',

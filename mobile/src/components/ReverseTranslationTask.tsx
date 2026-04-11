@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { ReverseTranslationTaskData, Choice, Language } from '../types';
+import { getLanguageName } from '../types';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
@@ -144,7 +145,7 @@ export function ReverseTranslationTask({
   return (
     <>
       <View style={styles.promptContainer}>
-        <Text style={styles.promptLabel}>Select the German translation for:</Text>
+        <Text style={styles.promptLabel}>Select the {getLanguageName(language)} translation for:</Text>
         <Text style={styles.englishWord} numberOfLines={1} adjustsFontSizeToFit>
           {taskData.english}
         </Text>

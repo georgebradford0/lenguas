@@ -1,19 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
+import type { Language } from '../types';
+import { getLanguageName } from '../types';
 
 interface EnglishCardProps {
   english: string;
+  language?: Language;
 }
 
 /**
  * Card showing English word (for speech recognition task)
  * Similar to WordCard but without speaker button
  */
-export function EnglishCard({ english }: EnglishCardProps) {
+export function EnglishCard({ english, language = 'de' }: EnglishCardProps) {
   return (
     <View style={styles.card}>
-      <Text style={styles.prompt}>Say this in German:</Text>
+      <Text style={styles.prompt}>Say this in {getLanguageName(language)}:</Text>
       <Text style={styles.english} numberOfLines={1} adjustsFontSizeToFit>{english}</Text>
     </View>
   );

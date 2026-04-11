@@ -40,6 +40,17 @@ export type TaskType = 'multipleChoice' | 'reverseTranslation' | 'audioMultipleC
 export type Level = 'A1' | 'A2' | 'B1';
 export type Language = 'de' | 'nl' | 'fr' | 'es';
 
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  de: 'German',
+  nl: 'Dutch',
+  fr: 'French',
+  es: 'Spanish',
+};
+
+export function getLanguageName(language: Language): string {
+  return LANGUAGE_NAMES[language] ?? language;
+}
+
 // Word vocabulary entry (from JSON files)
 export interface VocabWord {
   word: string;

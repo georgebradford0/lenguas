@@ -319,6 +319,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
         <TierUnlockCelebration
           tier={tierJustUnlocked || (levelJustUnlocked === 'A1' ? 1 : levelJustUnlocked === 'A2' ? 2 : 3)}
           onDismiss={dismissLevelUnlock || dismissTierUnlock}
+          language={language}
         />
       )}
     </View>
