@@ -58,7 +58,7 @@ export async function loadWords(): Promise<WordData[]> {
 }
 
 export async function translate(word: string): Promise<TranslationResult> {
-  const response = await fetch(`${API_BASE}/translate/${encodeURIComponent(word)}`);
+  const response = await fetch(`${API_BASE}/translate/${encodeURIComponent(word)}`, { headers: authHeaders() });
   if (!response.ok) {
     throw new Error('Failed to translate word');
   }
@@ -200,7 +200,7 @@ export async function translatePhrase(text: string, language: string): Promise<s
     headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify({ text, language }),
   });
-  if (!response.ok) throw new Error('Translation failed');
+  if (!response.ok) throw new Error(`Translation failed: ${response.status}`);
   const { translation } = await response.json();
   return translation as string;
 }
