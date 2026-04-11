@@ -194,6 +194,20 @@ export async function comparePronunciation(
   return response.json();
 }
 
+export async function translateWord(
+  word: string,
+  sentence: string,
+  language: string,
+): Promise<{ translation: string; explanation: string | null }> {
+  const response = await fetch(`${API_BASE}/translate/word`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ word, sentence, language }),
+  });
+  if (!response.ok) throw new Error(`Word translation failed: ${response.status}`);
+  return response.json();
+}
+
 export async function translatePhrase(text: string, language: string): Promise<string> {
   const response = await fetch(`${API_BASE}/translate/phrase`, {
     method: 'POST',

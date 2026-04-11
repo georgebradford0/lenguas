@@ -6,6 +6,37 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish' };
 
+// POST /translate/word - translate a single word with sentence context; explains difficult grammar
+router.post('/word', async (req, res) => {
+  try {
+    const { word, sentence, language = 'de' } = req.body;
+    if (!word?.trim()) return res.status(400).json({ error: 'word is required' });
+    const fromLanguage = LANGUAGE_NAMES[language] || 'German';
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: `You are a ${fromLanguage}-English language expert. Given a ${fromLanguage} word and the sentence it appears in, return a JSON object with:
+- "translation": a concise English translation of the word as used in this sentence (1-6 words)
+- "explanation": if the word is a preposition, conjunction, article, particle, auxiliary verb, reflexive pronoun, or its meaning is non-obvious or highly context-dependent, provide one clear English sentence explaining its grammatical role or usage here. Otherwise null.`,
+        },
+        {
+          role: 'user',
+          content: `Word: "${word.trim()}"\nSentence: "${(sentence || '').trim()}"`,
+        },
+      ],
+      temperature: 0.1,
+      max_tokens: 200,
+      response_format: { type: 'json_object' },
+    });
+    const result = JSON.parse(response.choices[0].message.content || '{}');
+    res.json({ translation: result.translation || '', explanation: result.explanation || null });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /translate/phrase - translate a word or phrase from any supported language to English
 router.post('/phrase', async (req, res) => {
   try {

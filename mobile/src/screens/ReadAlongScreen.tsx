@@ -8,6 +8,8 @@ import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { parseEpub, loadChapter } from '../utils/epubParser';
 import { EpubReader } from '../components/EpubReader';
 import { TranslationCard } from '../components/TranslationCard';
+import { WordContextMenu } from '../components/WordContextMenu';
+import { SentenceModePanel, PANEL_HEIGHT } from '../components/SentenceModePanel';
 import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
 import type { Language } from '../types';
 
@@ -21,6 +23,13 @@ interface SelectedWord {
   sentence: string;
 }
 
+interface ContextMenuState {
+  visible: boolean;
+  wordId: string;
+  word: string;
+  sentence: Sentence | null;
+}
+
 export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +39,11 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [currentTocIdx, setCurrentTocIdx] = useState(0);
   const [selected, setSelected] = useState<SelectedWord | null>(null);
+  const [contextMenu, setContextMenu] = useState<ContextMenuState>({
+    visible: false, wordId: '', word: '', sentence: null,
+  });
+  const [sentenceModeActive, setSentenceModeActive] = useState(false);
+  const [sentenceModeIdx, setSentenceModeIdx] = useState(0);
 
   // ── File picker ─────────────────────────────────────────────────────────────
 
@@ -90,7 +104,12 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   // ── Word press ───────────────────────────────────────────────────────────────
 
   const handleWordPress = useCallback((wordId: string, word: string, sentence: Sentence) => {
+    if (sentenceModeActive) return;
     setSelected({ wordId, word, sentence: sentence.raw });
+  }, [sentenceModeActive]);
+
+  const handleWordLongPress = useCallback((wordId: string, word: string, sentence: Sentence) => {
+    setContextMenu({ visible: true, wordId, word, sentence });
   }, []);
 
   // ── Rendering ────────────────────────────────────────────────────────────────
@@ -177,11 +196,14 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     const prevIdx = currentTocIdx > 0 ? currentTocIdx - 1 : null;
     const nextIdx = currentTocIdx < toc.length - 1 ? currentTocIdx + 1 : null;
 
+    const allSentences = currentChapter.paragraphs.flatMap(p => p.sentences);
+    const highlightedSentenceId = sentenceModeActive ? (allSentences[sentenceModeIdx]?.id ?? null) : null;
+
     return (
       <View style={styles.fullContainer}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerBack} onPress={() => { setSelected(null); setPhase('toc'); }}>
+          <TouchableOpacity style={styles.headerBack} onPress={() => { setSelected(null); setSentenceModeActive(false); setPhase('toc'); }}>
             <Text style={styles.headerBackText}>←</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle} numberOfLines={1}>{currentChapter.title}</Text>
@@ -191,37 +213,66 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
         {/* Chapter content */}
         <EpubReader
           chapter={currentChapter}
-          selectedWordId={selected?.wordId ?? null}
+          selectedWordId={sentenceModeActive ? null : (selected?.wordId ?? null)}
+          highlightedSentenceId={highlightedSentenceId}
           onWordPress={handleWordPress}
-          bottomPadding={selected ? CARD_HEIGHT : 0}
+          onWordLongPress={handleWordLongPress}
+          bottomPadding={sentenceModeActive ? PANEL_HEIGHT : (selected ? CARD_HEIGHT : 0)}
         />
 
-        {/* Chapter navigation */}
-        <View style={styles.chapterNav}>
-          <TouchableOpacity
-            style={[styles.navButton, !prevIdx && prevIdx !== 0 && styles.navButtonDisabled]}
-            onPress={prevIdx !== null ? () => openChapter(prevIdx) : undefined}
-            disabled={prevIdx === null}
-          >
-            <Text style={styles.navButtonText}>‹ Prev</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.navButton, nextIdx === null && styles.navButtonDisabled]}
-            onPress={nextIdx !== null ? () => openChapter(nextIdx) : undefined}
-            disabled={nextIdx === null}
-          >
-            <Text style={styles.navButtonText}>Next ›</Text>
-          </TouchableOpacity>
-        </View>
+        {/* Chapter navigation — hidden during sentence mode */}
+        {!sentenceModeActive && (
+          <View style={styles.chapterNav}>
+            <TouchableOpacity
+              style={[styles.navButton, !prevIdx && prevIdx !== 0 && styles.navButtonDisabled]}
+              onPress={prevIdx !== null ? () => openChapter(prevIdx) : undefined}
+              disabled={prevIdx === null}
+            >
+              <Text style={styles.navButtonText}>‹ Prev</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.navButton, nextIdx === null && styles.navButtonDisabled]}
+              onPress={nextIdx !== null ? () => openChapter(nextIdx) : undefined}
+              disabled={nextIdx === null}
+            >
+              <Text style={styles.navButtonText}>Next ›</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-        {/* Translation card */}
-        {selected && (
+        {/* Translation card — hidden during sentence mode */}
+        {selected && !sentenceModeActive && (
           <TranslationCard
             wordId={selected.wordId}
             word={selected.word}
             sentence={selected.sentence}
             language={language}
             onDismiss={() => setSelected(null)}
+          />
+        )}
+
+        {/* Word context menu (long-press popup) */}
+        <WordContextMenu
+          visible={contextMenu.visible}
+          onDismiss={() => setContextMenu(prev => ({ ...prev, visible: false }))}
+          onSentenceBysentence={() => {
+            if (!contextMenu.sentence) return;
+            const idx = allSentences.findIndex(s => s.id === contextMenu.sentence!.id);
+            setSentenceModeIdx(idx >= 0 ? idx : 0);
+            setSelected(null);
+            setSentenceModeActive(true);
+          }}
+        />
+
+        {/* Sentence-by-sentence panel */}
+        {sentenceModeActive && (
+          <SentenceModePanel
+            sentences={allSentences}
+            currentIdx={sentenceModeIdx}
+            language={language}
+            onClose={() => { setSentenceModeActive(false); setSentenceModeIdx(0); }}
+            onNext={() => setSentenceModeIdx(i => Math.min(i + 1, allSentences.length - 1))}
+            onPrev={() => setSentenceModeIdx(i => Math.max(i - 1, 0))}
           />
         )}
       </View>
