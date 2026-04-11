@@ -1,3 +1,5 @@
+name: lenguas
+
 services:
   mongo:
     image: mongo:7

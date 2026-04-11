@@ -4,7 +4,7 @@ set -e
 # Configuration
 SSH_KEY="$HOME/Documents/lenovo-ideapad.pem"
 EC2_HOST="ubuntu@35.88.113.219"
-REMOTE_DIR="/home/ubuntu/language-app"
+REMOTE_DIR="/home/ubuntu/lenguas"
 LOCAL_DIR="/Users/georgebalch/lenguas"
 SSH_CMD="ssh -i $SSH_KEY -o StrictHostKeyChecking=no"
 SCP_CMD="scp -i $SSH_KEY -o StrictHostKeyChecking=no"
