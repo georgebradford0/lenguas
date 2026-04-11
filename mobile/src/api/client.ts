@@ -58,7 +58,7 @@ export async function loadWords(): Promise<WordData[]> {
 }
 
 export async function translate(word: string): Promise<TranslationResult> {
-  const response = await fetch(`${API_BASE}/translate/${encodeURIComponent(word)}`);
+  const response = await fetch(`${API_BASE}/translate/${encodeURIComponent(word)}`, { headers: authHeaders() });
   if (!response.ok) {
     throw new Error('Failed to translate word');
   }
@@ -192,6 +192,31 @@ export async function comparePronunciation(
   }
 
   return response.json();
+}
+
+export async function translateWord(
+  word: string,
+  sentence: string,
+  language: string,
+): Promise<{ translation: string; explanation: string | null }> {
+  const response = await fetch(`${API_BASE}/translate/word`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ word, sentence, language }),
+  });
+  if (!response.ok) throw new Error(`Word translation failed: ${response.status}`);
+  return response.json();
+}
+
+export async function translatePhrase(text: string, language: string): Promise<string> {
+  const response = await fetch(`${API_BASE}/translate/phrase`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ text, language }),
+  });
+  if (!response.ok) throw new Error(`Translation failed: ${response.status}`);
+  const { translation } = await response.json();
+  return translation as string;
 }
 
 export async function blockWord(targetWord: string, level: string, language: string): Promise<void> {

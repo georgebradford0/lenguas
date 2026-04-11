@@ -6,6 +6,7 @@ import {
 import { useIsTablet } from './src/hooks/useIsTablet';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { QuizScreen } from './src/screens/QuizScreen';
+import { ReadAlongScreen } from './src/screens/ReadAlongScreen';
 import { colors, spacing, fontSize, borderRadius } from './src/styles/theme';
 import { loginRequest, verifyCode, setAuthToken, deleteAccount } from './src/api/client';
 import { saveAuthData, loadAuthData, clearAuthData } from './src/utils/auth';
@@ -96,6 +97,46 @@ function LanguageSelectScreen({ onSelect, onLogout }: { onSelect: (lang: Languag
 }
 
 type AuthStep = 'loading' | 'email' | 'code' | 'language' | 'quiz';
+type Mode = 'wordplay' | 'readalong';
+
+function ModeSelectScreen({ language, onSelect, onBack }: {
+  language: Language;
+  onSelect: (mode: Mode) => void;
+  onBack: () => void;
+}) {
+  const isTablet = useIsTablet();
+  const langInfo = LANGUAGES.find(l => l.code === language);
+
+  return (
+    <View style={modeStyles.container}>
+      <TouchableOpacity style={modeStyles.backButton} onPress={onBack}>
+        <Text style={modeStyles.backText}>←</Text>
+      </TouchableOpacity>
+      <Text style={[modeStyles.flag, isTablet && modeStyles.flagTablet]}>{langInfo?.flag}</Text>
+      <View style={[modeStyles.buttons, isTablet && modeStyles.buttonsTablet]}>
+        <TouchableOpacity
+          style={[modeStyles.modeButton, isTablet && modeStyles.modeButtonTablet]}
+          onPress={() => onSelect('wordplay')}
+          activeOpacity={0.85}
+        >
+          <Text style={[modeStyles.modeIcon, isTablet && modeStyles.modeIconTablet]}>🎯</Text>
+          <Text style={[modeStyles.modeLabel, isTablet && modeStyles.modeLabelTablet]}>Word Play</Text>
+          <Text style={[modeStyles.modeSublabel, isTablet && modeStyles.modeSublabelTablet]}>Practice vocabulary</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[modeStyles.modeButton, isTablet && modeStyles.modeButtonTablet]}
+          onPress={() => onSelect('readalong')}
+          activeOpacity={0.85}
+        >
+          <Text style={[modeStyles.modeIcon, isTablet && modeStyles.modeIconTablet]}>📖</Text>
+          <Text style={[modeStyles.modeLabel, isTablet && modeStyles.modeLabelTablet]}>Read Along</Text>
+          <Text style={[modeStyles.modeSublabel, isTablet && modeStyles.modeSublabelTablet]}>Read with translations</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
 
 function LoginScreen({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [step, setStep] = useState<'email' | 'code'>('email');
@@ -226,6 +267,7 @@ function AppContent() {
   const insets = useSafeAreaInsets();
   const [authStep, setAuthStep] = useState<AuthStep>('loading');
   const [language, setLanguage] = useState<Language | null>(null);
+  const [mode, setMode] = useState<Mode | null>(null);
 
   useEffect(() => {
     loadAuthData().then(data => {
@@ -242,6 +284,7 @@ function AppContent() {
     clearAuthData();
     setAuthToken(null);
     setLanguage(null);
+    setMode(null);
     setAuthStep('email');
   }
 
@@ -260,7 +303,11 @@ function AppContent() {
         ? <LoginScreen onAuthenticated={() => setAuthStep('language')} />
         : language === null
           ? <LanguageSelectScreen onSelect={setLanguage} onLogout={handleLogout} />
-          : <QuizScreen language={language} onBack={() => setLanguage(null)} />
+          : mode === null
+            ? <ModeSelectScreen language={language} onSelect={setMode} onBack={() => setLanguage(null)} />
+            : mode === 'wordplay'
+              ? <QuizScreen language={language} onBack={() => setMode(null)} />
+              : <ReadAlongScreen language={language} onBack={() => setMode(null)} />
       }
     </View>
   );
@@ -504,5 +551,88 @@ const langStyles = StyleSheet.create({
     fontSize: fontSize.xs,
   },
 });
+
+const modeStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  backButton: {
+    position: 'absolute',
+    top: spacing.md,
+    left: spacing.md,
+    padding: spacing.xs,
+  },
+  backText: {
+    fontSize: fontSize.md,
+    color: colors.text,
+  },
+  flag: {
+    fontSize: 48,
+    marginBottom: spacing.lg,
+  },
+  flagTablet: {
+    fontSize: 64,
+    marginBottom: spacing.xl,
+  },
+  buttons: {
+    width: '100%',
+    maxWidth: 400,
+    gap: spacing.sm,
+  },
+  buttonsTablet: {
+    maxWidth: 720,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
+  modeButton: {
+    backgroundColor: colors.cardBackground,
+    borderWidth: 2,
+    borderColor: colors.border,
+    borderRadius: borderRadius.lg,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.md,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  modeButtonTablet: {
+    flex: 1,
+    paddingVertical: spacing.xl,
+  },
+  modeIcon: {
+    fontSize: 40,
+    marginBottom: spacing.xs,
+  },
+  modeIconTablet: {
+    fontSize: 56,
+    marginBottom: spacing.sm,
+  },
+  modeLabel: {
+    fontSize: fontSize.sm,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  modeLabelTablet: {
+    fontSize: fontSize.md,
+  },
+  modeSublabel: {
+    fontSize: 13,
+    color: colors.muted,
+    marginTop: 2,
+  },
+  modeSublabelTablet: {
+    fontSize: fontSize.xs,
+  },
+});
+
 
 export default App;
