@@ -23,6 +23,22 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Build release IPA and upload to TestFlight
 
+### ios bump_build_number
+
+```sh
+[bundle exec] fastlane ios bump_build_number
+```
+
+Bump build number to one above the highest build across all versions
+
+### ios upload_tf
+
+```sh
+[bundle exec] fastlane ios upload_tf
+```
+
+Upload IPA to TestFlight (CI use, reads IPA_PATH env var)
+
 ### ios upload
 
 ```sh
