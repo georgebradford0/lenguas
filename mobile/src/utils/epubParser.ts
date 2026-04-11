@@ -56,7 +56,7 @@ const xmlParser = new XMLParser({
 // ── Public API ────────────────────────────────────────────────────────────────
 
 export async function parseEpub(localUri: string): Promise<EpubHandle> {
-  const filePath = localUri.replace(/^file:\/\//, '');
+  const filePath = decodeURIComponent(localUri.replace(/^file:\/\//, ''));
   const base64 = await RNFS.readFile(filePath, 'base64');
   const zip = await JSZip.loadAsync(base64, { base64: true });
 
