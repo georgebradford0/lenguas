@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import { colors, spacing, fontSize } from '../styles/theme';
 import { useIsTablet } from '../hooks/useIsTablet';
 import type { WordProgress, LevelStats } from '../types';
@@ -20,6 +20,7 @@ interface StatsBarProps {
   currentLevel?: string; // A1, A2, or B1
   wordProgress: WordProgress[];
   onBack?: () => void;
+  onBlock?: () => void;
 }
 
 const TIER_COLORS = [colors.tier1, colors.tier2, colors.tier3, colors.tier4];
@@ -37,8 +38,61 @@ export function StatsBar({
   currentLevel,
   wordProgress,
   onBack,
+  onBlock,
 }: StatsBarProps) {
   const isTablet = useIsTablet();
+  const [menuVisible, setMenuVisible] = useState(false);
+  const menuButtonRef = useRef<View>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
+
+  const handleMenuPress = () => {
+    if (menuButtonRef.current) {
+      menuButtonRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
+        setMenuPosition({ top: pageY + height, right: spacing.lg });
+        setMenuVisible(true);
+      });
+    } else {
+      setMenuVisible(true);
+    }
+  };
+
+  const handleRemoveWord = () => {
+    setMenuVisible(false);
+    onBlock?.();
+  };
+
+  const renderMenuButton = () => (
+    <>
+      <View ref={menuButtonRef} collapsable={false} style={styles.menuButtonWrapper}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={handleMenuPress}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Text style={styles.menuButtonText}>⋮</Text>
+        </TouchableOpacity>
+      </View>
+      <Modal
+        transparent
+        visible={menuVisible}
+        animationType="fade"
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={[styles.dropdown, { top: menuPosition.top, right: menuPosition.right }]}>
+                <TouchableOpacity style={styles.dropdownItem} onPress={handleRemoveWord}>
+                  <Text style={styles.dropdownItemText}>Remove word</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    </>
+  );
+
   // Determine if we're using the new level system or old tier system
   const isLevelBased = !!currentLevel && !!levelStats;
 
@@ -60,12 +114,15 @@ export function StatsBar({
   }
 
   if (!currentStats || !wordProgress || wordProgress.length === 0) {
-    if (onBack) {
+    if (onBack || onBlock) {
       return (
         <View style={styles.container}>
-          <TouchableOpacity style={styles.backButton} onPress={onBack} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-            <Text style={styles.backButtonText}>‹</Text>
-          </TouchableOpacity>
+          {onBack && (
+            <TouchableOpacity style={styles.backButton} onPress={onBack} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Text style={styles.backButtonText}>‹</Text>
+            </TouchableOpacity>
+          )}
+          {onBlock && renderMenuButton()}
         </View>
       );
     }
@@ -98,6 +155,7 @@ export function StatsBar({
           {masteryPercentage}%
         </Text>
       </View>
+      {onBlock && renderMenuButton()}
     </View>
   );
 }
@@ -127,6 +185,48 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontWeight: '300',
     lineHeight: 40,
+  },
+  menuButtonWrapper: {
+    position: 'absolute',
+    right: spacing.lg,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuButton: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  menuButtonText: {
+    fontSize: 22,
+    color: colors.muted,
+    fontWeight: '700',
+    lineHeight: 26,
+  },
+  modalOverlay: {
+    flex: 1,
+  },
+  dropdown: {
+    position: 'absolute',
+    backgroundColor: colors.cardBackground,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
+    minWidth: 150,
+  },
+  dropdownItem: {
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  dropdownItemText: {
+    fontSize: fontSize.md,
+    color: colors.text,
   },
   centeredContent: {
     alignItems: 'center',

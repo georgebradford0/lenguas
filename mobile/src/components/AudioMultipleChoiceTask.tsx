@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import type { AudioMultipleChoiceTaskData, Choice, Language } from '../types';
 import { shuffle } from '../utils/shuffle';
 import { useAudio } from '../hooks/useAudio';
 import { AudioCard } from './AudioCard';
 import { ChoiceGrid } from './ChoiceGrid';
-import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 
 interface AudioMultipleChoiceTaskProps {
   taskData: AudioMultipleChoiceTaskData;
   onAnswer: (userAnswer: string, correctAnswer: string) => Promise<void>;
-  onBlock?: () => void;
   onTaskReady?: () => void;
   language?: Language;
 }
@@ -24,7 +22,6 @@ const ADVANCE_DELAY = 1200;
 export function AudioMultipleChoiceTask({
   taskData,
   onAnswer,
-  onBlock,
   onTaskReady,
   language = 'de',
 }: AudioMultipleChoiceTaskProps) {
@@ -152,11 +149,6 @@ export function AudioMultipleChoiceTask({
         answered={answered}
         onSelect={handleSelect}
       />
-      {onBlock && (
-        <TouchableOpacity style={styles.blockButton} onPress={onBlock} disabled={answered}>
-          <Text style={styles.blockButtonText}>Block word</Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 }
@@ -166,17 +158,5 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  blockButton: {
-    marginTop: spacing.md,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  blockButtonText: {
-    fontSize: fontSize.sm,
-    color: colors.muted,
   },
 });

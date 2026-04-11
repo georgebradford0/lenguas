@@ -229,9 +229,9 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           currentTier={currentTier}
           wordProgress={wordProgress}
           onBack={onBack}
+          onBlock={handleBlock}
         />
         <View style={styles.centerContent}>
-          <ActivityIndicator size="large" color={colors.primary} />
           <Text style={styles.loadingText}>Generating your next task...</Text>
           <Text style={styles.tierIndicator}>Tier {currentTier}</Text>
         </View>
@@ -249,7 +249,6 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           <MultipleChoiceTask
             taskData={currentTask.task as MultipleChoiceTaskData}
             onAnswer={onAnswerMultipleChoice}
-            onBlock={handleBlock}
             language={language}
           />
         );
@@ -258,7 +257,6 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           <ReverseTranslationTask
             taskData={currentTask.task as ReverseTranslationTaskData}
             onAnswer={onAnswerReverseTranslation}
-            onBlock={handleBlock}
             language={language}
           />
         );
@@ -267,7 +265,6 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
           <AudioMultipleChoiceTask
             taskData={currentTask.task as AudioMultipleChoiceTaskData}
             onAnswer={onAnswerAudioMultipleChoice}
-            onBlock={handleBlock}
             language={language}
           />
         );
@@ -277,7 +274,6 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
             key={`${currentTask.targetWord}-${currentTask.taskType}`}
             taskData={currentTask.task as SpeechRecognitionTaskData}
             onAnswer={onAnswerSpeechRecognition}
-            onBlock={handleBlock}
             language={language}
           />
         );
@@ -296,6 +292,7 @@ export function QuizScreen({ language = 'de', onBack }: { language?: Language; o
         currentTier={currentTier}
         wordProgress={wordProgress}
         onBack={onBack}
+        onBlock={handleBlock}
       />
       <View style={styles.content}>
         {submitting && !hasPreloadedTask ? (
