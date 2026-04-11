@@ -96,3 +96,5 @@ sandbox/
 # Apple API keys
 *.p8
 *.mobileprovision
+
+.claude
