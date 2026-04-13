@@ -36,6 +36,7 @@ export function SpeechRecognitionTask({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [similarity, setSimilarity] = useState<number | null>(null);
   const [articleMissing, setArticleMissing] = useState<boolean>(false);
+  const [recognizedText, setRecognizedText] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Notify parent when task is ready
@@ -69,6 +70,7 @@ export function SpeechRecognitionTask({
         setIsCorrect(result.isCorrect);
         setSimilarity(result.similarity);
         setArticleMissing(result.articleMissing ?? false);
+        setRecognizedText(result.recognizedText ?? null);
         setTaskState('feedback');
         playAudio(taskData.correctTargetAudio);
 
@@ -114,6 +116,13 @@ export function SpeechRecognitionTask({
 
           {articleMissing && (
             <Text style={styles.articleHint}>Don't forget the article!</Text>
+          )}
+
+          {recognizedText != null && recognizedText.length > 0 && (
+            <View style={styles.recognizedSection}>
+              <Text style={styles.recognizedLabel}>You said:</Text>
+              <Text style={styles.recognizedText}>{recognizedText}</Text>
+            </View>
           )}
 
           <View style={styles.correctAnswerSection}>
@@ -273,5 +282,19 @@ const styles = StyleSheet.create({
     color: colors.muted,
     textAlign: 'center',
     marginTop: spacing.sm,
+  },
+  recognizedSection: {
+    marginBottom: spacing.md,
+  },
+  recognizedLabel: {
+    fontSize: fontSize.sm,
+    color: colors.muted,
+    marginBottom: spacing.xs,
+  },
+  recognizedText: {
+    fontSize: fontSize.md,
+    fontWeight: '500',
+    color: colors.text,
+    fontStyle: 'italic',
   },
 });

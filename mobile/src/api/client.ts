@@ -180,7 +180,7 @@ export async function comparePronunciation(
   targetWord: string,
   language = 'de',
   pos?: string,
-): Promise<{ similarity: number; isCorrect: boolean; articleMissing?: boolean }> {
+): Promise<{ similarity: number; isCorrect: boolean; articleMissing?: boolean; recognizedText?: string }> {
   const response = await fetch(`${API_BASE}/compare-pronunciation`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeaders() },

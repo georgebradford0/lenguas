@@ -911,7 +911,7 @@ router.post('/compare-pronunciation', async (req, res) => {
     console.log(`[Pronunciation] target="${target}" spoken="${spoken}"`);
 
     if (!spoken) {
-      return res.json({ similarity: 0, isCorrect: false, articleMissing: false });
+      return res.json({ similarity: 0, isCorrect: false, articleMissing: false, recognizedText: '' });
     }
 
     // For nouns, explicitly check the article is spoken (first word of target)
@@ -928,7 +928,7 @@ router.post('/compare-pronunciation', async (req, res) => {
 
     console.log(`[Pronunciation] similarity=${(similarity * 100).toFixed(1)}% articleMissing=${articleMissing} isCorrect=${isCorrect}`);
 
-    res.json({ similarity, isCorrect, articleMissing });
+    res.json({ similarity, isCorrect, articleMissing, recognizedText: (transcription || '').trim() });
 
   } catch (err) {
     console.error('[Pronunciation] Error:', err.message);
