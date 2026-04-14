@@ -129,16 +129,8 @@ export function StatsBar({
     return null;
   }
 
-  // Calculate mastery threshold line position (fixed at 7 attempts)
-  const MASTERY_ATTEMPTS = 7;
-
-  // Calculate progress percentage: (total correct attempts) / (total words × 7 required)
-  const totalCorrectAttempts = wordProgress.reduce(
-    (sum, w) => sum + Math.round(w.attempts * (w.accuracy / 100)),
-    0
-  );
-  const requiredAttempts = wordProgress.length * MASTERY_ATTEMPTS;
-  const masteryPercentage = Math.min(100, Math.round((totalCorrectAttempts / requiredAttempts) * 100));
+  // Use the backend's mastery percentage so 100% = level actually unlocks
+  const masteryPercentage = currentStats.percentage;
 
   return (
     <View style={styles.container}>

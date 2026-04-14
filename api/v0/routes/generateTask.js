@@ -675,7 +675,7 @@ async function determineCurrentLevel(language = 'de', userId) {
 
   let currentLevel = levels[0];
   for (let i = 0; i < levels.length - 1; i++) {
-    const vocab = loadVocabulary(levels[i], language);
+    const vocab = loadVocabulary(levels[i], language).filter(w => !progressMap[w.word]?.blocked);
     const mastered = vocab.filter(w => {
       const prog = progressMap[w.word];
       if (!prog) return false;
