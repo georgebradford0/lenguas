@@ -454,6 +454,12 @@ router.post('/generate-task', async (req, res) => {
     // Select a word using weighted selection (spaced repetition)
     const targetWord = selectWord(wordPool, progressRecords);
 
+    // For new words (seen fewer than 2 times), always show the word text first
+    const wordProgress = progressRecords[targetWord.word] || { timesShown: 0, correctCount: 0 };
+    if (wordProgress.timesShown < 2) {
+      effectiveTaskType = 'multipleChoice';
+    }
+
     console.log(`Selected word: "${targetWord.word}" (${targetWord.pos}) for Level ${level} [taskType: ${effectiveTaskType}]`);
 
     // If the word has no article (e.g. Dutch nouns), look one up via OpenAI
