@@ -70,7 +70,7 @@ export function SpeechRecognitionTask({
         setIsCorrect(result.isCorrect);
         setSimilarity(result.similarity);
         setArticleMissing(result.articleMissing ?? false);
-        setRecognizedText(result.recognizedText ?? null);
+        setRecognizedText(result.recognizedText ? result.recognizedText.replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, '').trim() : null);
         setTaskState('feedback');
         playAudio(taskData.correctTargetAudio);
 
