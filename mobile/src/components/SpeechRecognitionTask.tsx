@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, InteractionManager } from 'react-native';
 import type { SpeechRecognitionTaskData, Language } from '../types';
 import { useRecorder } from '../hooks/useRecorder';
 import { useAudio } from '../hooks/useAudio';
@@ -44,7 +44,10 @@ export function SpeechRecognitionTask({
   useEffect(() => {
     console.log('[SpeechRecognitionTask] Mounted, word:', taskData.correctTarget);
     onTaskReady?.();
-    prepareRecording();
+    const task = InteractionManager.runAfterInteractions(() => {
+      prepareRecording();
+    });
+    return () => task.cancel();
   }, [onTaskReady]);
 
   const processRecording = useCallback(async () => {
