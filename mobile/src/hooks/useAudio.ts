@@ -9,6 +9,9 @@ export function useAudio(language = 'de') {
   const cacheRef = useRef<Record<string, Promise<string>>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const soundRef = useRef<Sound | null>(null);
+  // Per-word generation counter: incremented on each new playAudio call and on clearAudio.
+  // Lets a stale in-flight playAudio detect it has been superseded and bail out.
+  const playGenRef = useRef<Record<string, number>>({});
 
   // Delete any leftover audio files from previous sessions on startup
   useEffect(() => {
@@ -34,6 +37,7 @@ export function useAudio(language = 'de') {
   const clearAudio = useCallback((word: string) => {
     const key = `${language}:${word}`;
     delete cacheRef.current[key];
+    playGenRef.current[key] = (playGenRef.current[key] ?? 0) + 1;
     if (Platform.OS !== 'web') {
       const sanitizedWord = word.replace(/[^a-zA-Z0-9]/g, '_');
       const tempPath = `${RNFS.CachesDirectoryPath}/audio_${language}_${sanitizedWord}.mp3`;
@@ -44,7 +48,13 @@ export function useAudio(language = 'de') {
   const playAudio = useCallback(
     async (word: string): Promise<void> => {
       try {
+        const key = `${language}:${word}`;
+        const myGen = (playGenRef.current[key] ?? 0) + 1;
+        playGenRef.current[key] = myGen;
+
         const base64 = await prefetchAudio(word);
+
+        if (playGenRef.current[key] !== myGen) return;
 
         if (Platform.OS === 'web') {
           if (audioRef.current) {
