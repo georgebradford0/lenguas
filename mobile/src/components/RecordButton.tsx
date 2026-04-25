@@ -1,39 +1,39 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View, Animated } from 'react-native';
+import { Pressable, Text, StyleSheet, View } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 
 interface RecordButtonProps {
-  onPress: () => void;
+  onPressIn: () => void;
+  onPressOut: () => void;
   isRecording: boolean;
   recordingTime?: number;
   disabled?: boolean;
 }
 
 export function RecordButton({
-  onPress,
+  onPressIn,
+  onPressOut,
   isRecording,
   recordingTime = 0,
   disabled = false,
 }: RecordButtonProps) {
-  // Format recording time as seconds
   const seconds = Math.floor(recordingTime / 1000);
   const milliseconds = Math.floor((recordingTime % 1000) / 100);
   const timeDisplay = `${seconds}.${milliseconds}s`;
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <Pressable
         style={[
           styles.button,
           isRecording && styles.buttonRecording,
           disabled && styles.buttonDisabled,
         ]}
-        onPress={onPress}
-        activeOpacity={0.7}
-        disabled={disabled}
+        onPressIn={disabled ? undefined : onPressIn}
+        onPressOut={disabled ? undefined : onPressOut}
       >
         <Text style={styles.icon}>{isRecording ? '⏹' : '🎤'}</Text>
-      </TouchableOpacity>
+      </Pressable>
       {isRecording && (
         <View style={styles.recordingIndicator}>
           <View style={styles.recordingDot} />

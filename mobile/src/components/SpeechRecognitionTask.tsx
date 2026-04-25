@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import type { SpeechRecognitionTaskData, Language } from '../types';
 import { useRecorder } from '../hooks/useRecorder';
@@ -33,6 +33,7 @@ export function SpeechRecognitionTask({
   const { prepareRecording, startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder(language);
 
   const [taskState, setTaskState] = useState<TaskState>('ready');
+  const autoStopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [similarity, setSimilarity] = useState<number | null>(null);
   const [articleMissing, setArticleMissing] = useState<boolean>(false);
@@ -46,53 +47,63 @@ export function SpeechRecognitionTask({
     prepareRecording();
   }, [onTaskReady]);
 
-  // Handle microphone button press
-  const handleMicPress = useCallback(async () => {
-    if (isRecording) {
-      console.log('[SpeechRecognitionTask] Stopping recording...');
-      // Stop recording and process
-      setTaskState('processing');
-      const audioBase64 = await stopRecording();
-
-      console.log('[SpeechRecognitionTask] Audio captured, base64 length:', audioBase64?.length ?? 0);
-
-      if (!audioBase64) {
-        console.warn('[SpeechRecognitionTask] No audio data returned from stopRecording');
-        setError('Failed to capture audio. Please try again.');
-        setTaskState('ready');
-        return;
-      }
-
-      try {
-        console.log('[SpeechRecognitionTask] Sending to compare-pronunciation API...');
-        const result = await comparePronunciation(audioBase64, taskData.correctTarget, language, taskData.pos);
-
-        console.log('[SpeechRecognitionTask] Comparison result:', result);
-        setIsCorrect(result.isCorrect);
-        setSimilarity(result.similarity);
-        setArticleMissing(result.articleMissing ?? false);
-        setRecognizedText(result.recognizedText ? result.recognizedText.replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, '').trim() : null);
-        setTaskState('feedback');
-        playAudio(taskData.correctTargetAudio);
-
-        // Auto-advance after delay
-        setTimeout(async () => {
-          await onAnswer(result.isCorrect ? taskData.correctTarget : '', taskData.correctTarget);
-        }, ADVANCE_DELAY);
-      } catch (err) {
-        console.error('[SpeechRecognitionTask] Comparison error:', err);
-        setError('Failed to analyze pronunciation. Please try again.');
-        setTaskState('ready');
-      }
-    } else {
-      console.log('[SpeechRecognitionTask] Starting recording...');
-      // Start recording
-      setError(null);
-      setTaskState('recording');
-      await startRecording();
-      console.log('[SpeechRecognitionTask] startRecording() returned, isRecording should be true');
+  const processRecording = useCallback(async () => {
+    if (autoStopRef.current) {
+      clearTimeout(autoStopRef.current);
+      autoStopRef.current = null;
     }
-  }, [isRecording, stopRecording, startRecording, taskData.correctTarget, taskData.correctTargetAudio, onAnswer, playAudio]);
+    console.log('[SpeechRecognitionTask] Stopping recording...');
+    setTaskState('processing');
+    const audioBase64 = await stopRecording();
+
+    console.log('[SpeechRecognitionTask] Audio captured, base64 length:', audioBase64?.length ?? 0);
+
+    if (!audioBase64) {
+      console.warn('[SpeechRecognitionTask] No audio data returned from stopRecording');
+      setError('Failed to capture audio. Please try again.');
+      setTaskState('ready');
+      return;
+    }
+
+    try {
+      console.log('[SpeechRecognitionTask] Sending to compare-pronunciation API...');
+      const result = await comparePronunciation(audioBase64, taskData.correctTarget, language, taskData.pos);
+
+      console.log('[SpeechRecognitionTask] Comparison result:', result);
+      setIsCorrect(result.isCorrect);
+      setSimilarity(result.similarity);
+      setArticleMissing(result.articleMissing ?? false);
+      setRecognizedText(result.recognizedText ? result.recognizedText.replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, '').trim() : null);
+      setTaskState('feedback');
+      playAudio(taskData.correctTargetAudio);
+
+      setTimeout(async () => {
+        await onAnswer(result.isCorrect ? taskData.correctTarget : '', taskData.correctTarget);
+      }, ADVANCE_DELAY);
+    } catch (err) {
+      console.error('[SpeechRecognitionTask] Comparison error:', err);
+      setError('Failed to analyze pronunciation. Please try again.');
+      setTaskState('ready');
+    }
+  }, [stopRecording, taskData.correctTarget, taskData.correctTargetAudio, language, taskData.pos, onAnswer, playAudio]);
+
+  const handleMicPressIn = useCallback(async () => {
+    console.log('[SpeechRecognitionTask] Hold started, starting recording...');
+    setError(null);
+    setTaskState('recording');
+    await startRecording();
+    // Auto-process after 5 seconds if still holding
+    autoStopRef.current = setTimeout(() => {
+      console.log('[SpeechRecognitionTask] Auto-stopping after 5 seconds');
+      processRecording();
+    }, 5000);
+  }, [startRecording, processRecording]);
+
+  const handleMicPressOut = useCallback(async () => {
+    if (taskState !== 'recording') return;
+    console.log('[SpeechRecognitionTask] Hold released, processing...');
+    await processRecording();
+  }, [taskState, processRecording]);
 
   // Handle "give up" button - play correct answer and mark as incorrect
   const handleGiveUp = useCallback(async () => {
@@ -153,27 +164,22 @@ export function SpeechRecognitionTask({
       )}
 
       {/* Recording / Processing / Ready state */}
-      {taskState === 'ready' && (
+      {(taskState === 'ready' || taskState === 'recording') && (
         <View style={styles.controlsContainer}>
           <RecordButton
-            onPress={handleMicPress}
-            isRecording={false}
-          />
-          <Text style={styles.hint}>Tap to record (max 5 seconds)</Text>
-          <TouchableOpacity style={styles.giveUpButton} onPress={handleGiveUp}>
-            <Text style={styles.giveUpText}>Hear answer</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {taskState === 'recording' && (
-        <View style={styles.controlsContainer}>
-          <RecordButton
-            onPress={handleMicPress}
-            isRecording={true}
+            onPressIn={handleMicPressIn}
+            onPressOut={handleMicPressOut}
+            isRecording={taskState === 'recording'}
             recordingTime={recordingTime}
           />
-          <Text style={styles.hint}>Speak now... (tap to stop)</Text>
+          <Text style={styles.hint}>
+            {taskState === 'recording' ? 'Speak now...' : 'Hold to record'}
+          </Text>
+          {taskState === 'ready' && (
+            <TouchableOpacity style={styles.giveUpButton} onPress={handleGiveUp}>
+              <Text style={styles.giveUpText}>Hear answer</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
 

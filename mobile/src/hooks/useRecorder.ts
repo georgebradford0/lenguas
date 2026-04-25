@@ -15,7 +15,6 @@ export interface RecorderHook {
   error: string | null;
 }
 
-const MAX_RECORDING_TIME = 5000; // 5 seconds in milliseconds
 
 export function useRecorder(language: Language = 'de'): RecorderHook {
   const [isRecording, setIsRecording] = useState(false);
@@ -25,7 +24,6 @@ export function useRecorder(language: Language = 'de'): RecorderHook {
   const recordingPathRef = useRef<string | null>(null);
   const isRecordingRef = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const autoStopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   // iOS pre-warm state: start+pause on mount so AVAudioSession is active before user taps
   const preparedSoundRef = useRef<Sound | null>(null);
   const preparedPathRef = useRef<string | null>(null);
@@ -63,11 +61,6 @@ export function useRecorder(language: Language = 'de'): RecorderHook {
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
-      if (autoStopTimeoutRef.current) {
-        clearTimeout(autoStopTimeoutRef.current);
-        autoStopTimeoutRef.current = null;
-      }
-
       if (!isRecordingRef.current || !soundRef.current || !recordingPathRef.current) {
         console.log('[Recorder] stopRecording called but not recording, skipping');
         return null;
@@ -183,12 +176,6 @@ export function useRecorder(language: Language = 'de'): RecorderHook {
         setRecordingTime((prev) => prev + 100);
       }, 100);
 
-      // Auto-stop after 5 seconds
-      autoStopTimeoutRef.current = setTimeout(async () => {
-        console.log('[Recorder] Auto-stopping after 5 seconds');
-        await stopRecording();
-      }, MAX_RECORDING_TIME);
-
     } catch (err) {
       console.error('[Recorder] Start error:', err);
       console.error('[Recorder] Error details:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
@@ -203,7 +190,6 @@ export function useRecorder(language: Language = 'de'): RecorderHook {
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
-      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
       if (soundRef.current && isRecordingRef.current) {
         soundRef.current.stopRecorder().catch(console.error);
         soundRef.current = null;
