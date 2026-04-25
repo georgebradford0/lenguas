@@ -30,7 +30,7 @@ export function SpeechRecognitionTask({
   language = 'de',
 }: SpeechRecognitionTaskProps) {
   const { playAudio } = useAudio(language);
-  const { startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder(language);
+  const { prepareRecording, startRecording, stopRecording, isRecording, recordingTime, error: recorderError } = useRecorder(language);
 
   const [taskState, setTaskState] = useState<TaskState>('ready');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -39,10 +39,11 @@ export function SpeechRecognitionTask({
   const [recognizedText, setRecognizedText] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Notify parent when task is ready
+  // Notify parent when task is ready, and pre-warm AVAudioSession on iOS
   useEffect(() => {
     console.log('[SpeechRecognitionTask] Mounted, word:', taskData.correctTarget);
     onTaskReady?.();
+    prepareRecording();
   }, [onTaskReady]);
 
   // Handle microphone button press
