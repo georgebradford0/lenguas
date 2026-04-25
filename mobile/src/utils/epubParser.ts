@@ -1,6 +1,8 @@
 import JSZip from 'jszip';
 import RNFS from 'react-native-fs';
 import { XMLParser } from 'fast-xml-parser';
+import { parseDocument, DomUtils, ElementType } from 'htmlparser2';
+import he from 'he';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -52,6 +54,22 @@ const xmlParser = new XMLParser({
   isArray: (name) => ['item', 'itemref', 'navPoint', 'li', 'a'].includes(name),
   processEntities: true,
 });
+
+// ── Path resolution ───────────────────────────────────────────────────────────
+
+/** Resolve a relative href against a base directory path, collapsing `..` segments. */
+function resolveEpubPath(base: string, relative: string): string {
+  if (!relative) return base;
+  if (relative.startsWith('/')) return relative.replace(/^\/+/, '');
+  const dir = base.endsWith('/') ? base : base.slice(0, base.lastIndexOf('/') + 1);
+  const parts = (dir + relative).split('/');
+  const resolved: string[] = [];
+  for (const p of parts) {
+    if (p === '..') resolved.pop();
+    else if (p !== '.') resolved.push(p);
+  }
+  return resolved.join('/');
+}
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -110,7 +128,7 @@ export async function parseEpub(localUri: string): Promise<EpubHandle> {
   const spineHrefs = spineItems
     .map((ref: any) => {
       const href = manifest[ref['@_idref']]?.href;
-      return href ? opfDir + href : null;
+      return href ? resolveEpubPath(opfDir, href) : null;
     })
     .filter((h): h is string => !!h);
 
@@ -119,7 +137,7 @@ export async function parseEpub(localUri: string): Promise<EpubHandle> {
 
   const navEntry = Object.values(manifest).find(m => m.properties?.includes('nav'));
   if (navEntry) {
-    const navXml = await zip.file(opfDir + navEntry.href)?.async('string');
+    const navXml = await zip.file(resolveEpubPath(opfDir, navEntry.href))?.async('string');
     if (navXml) toc = parseNavXhtml(navXml, opfDir);
   }
 
@@ -129,7 +147,7 @@ export async function parseEpub(localUri: string): Promise<EpubHandle> {
       ? manifest[ncxId]?.href
       : Object.values(manifest).find(m => m.mediaType === 'application/x-dtbncx+xml')?.href;
     if (ncxHref) {
-      const ncxXml = await zip.file(opfDir + ncxHref)?.async('string');
+      const ncxXml = await zip.file(resolveEpubPath(opfDir, ncxHref))?.async('string');
       if (ncxXml) toc = parseNcx(ncxXml, opfDir);
     }
   }
@@ -163,32 +181,61 @@ export async function loadChapter(
 
 /** Strip punctuation from word edges so we send clean text to translation. */
 export function cleanWord(text: string): string {
-  return text.replace(/^[^a-zA-Z\u00C0-\u024F\u0400-\u04FF]+|[^a-zA-Z\u00C0-\u024F\u0400-\u04FF]+$/g, '').trim();
+  return text.replace(/^[^a-zA-ZÀ-ɏЀ-ӿ]+|[^a-zA-ZÀ-ɏЀ-ӿ]+$/g, '').trim();
 }
 
 // ── TOC parsers ───────────────────────────────────────────────────────────────
 
 function parseNavXhtml(navXml: string, opfDir: string): TocEntry[] {
   const entries: TocEntry[] = [];
-  // Find the toc <nav> element
-  const tocNavMatch = navXml.match(/<nav[^>]*epub:type="toc"[^>]*>([\s\S]*?)<\/nav>/);
-  if (!tocNavMatch) return entries;
+  const doc = parseDocument(navXml, { xmlMode: false });
 
-  const aRegex = /<a[^>]*href="([^"#]*)(?:#([^"]*))?"[^>]*>([^<]*)<\/a>/g;
-  let match: RegExpExecArray | null;
-  let idx = 0;
-  while ((match = aRegex.exec(tocNavMatch[1])) !== null) {
-    const title = decodeEntities(match[3]).trim();
-    if (title) {
-      entries.push({
-        id: `toc${idx++}`,
-        title,
-        href: opfDir + match[1],
-        anchor: match[2] || undefined,
-        level: 0,
-      });
+  const navElements = DomUtils.findAll(
+    (el: any) => el.type === ElementType.Tag && el.name === 'nav',
+    doc.children as any[],
+  );
+
+  const tocNav = navElements.find((el: any) => {
+    const epubType: string = el.attribs?.['epub:type'] ?? '';
+    return epubType.split(/\s+/).includes('toc');
+  });
+
+  if (!tocNav) return entries;
+
+  function walkList(nodes: any[], level: number) {
+    for (const node of nodes) {
+      if (node.type !== ElementType.Tag) continue;
+      if (node.name === 'li') {
+        const anchor = DomUtils.findOne(
+          (n: any) => n.type === ElementType.Tag && n.name === 'a',
+          node.children,
+        ) as any;
+        if (anchor) {
+          const rawHref: string = anchor.attribs?.href ?? '';
+          const [hrefRel, fragment] = rawHref.split('#');
+          const linkText = he.decode(DomUtils.getText(anchor)).trim();
+          if (linkText && hrefRel) {
+            entries.push({
+              id: `toc${entries.length}`,
+              title: linkText,
+              href: resolveEpubPath(opfDir, hrefRel),
+              anchor: fragment || undefined,
+              level,
+            });
+          }
+        }
+        const subList = DomUtils.findOne(
+          (n: any) => n.type === ElementType.Tag && (n.name === 'ol' || n.name === 'ul'),
+          node.children,
+        ) as any;
+        if (subList) walkList(subList.children, level + 1);
+      } else if (node.name === 'ol' || node.name === 'ul') {
+        walkList(node.children, level);
+      }
     }
   }
+
+  walkList((tocNav as any).children, 0);
   return entries;
 }
 
@@ -208,7 +255,7 @@ function parseNcx(ncxXml: string, opfDir: string): TocEntry[] {
         entries.push({
           id: pt['@_id'] ?? `ncx${entries.length}`,
           title: text,
-          href: opfDir + hrefRel,
+          href: resolveEpubPath(opfDir, hrefRel),
           anchor: anchor || undefined,
           level,
         });
@@ -223,50 +270,98 @@ function parseNcx(ncxXml: string, opfDir: string): TocEntry[] {
 
 // ── Chapter content extraction ────────────────────────────────────────────────
 
+// epub:type values whose subtrees should be omitted from extracted text
+const SKIP_EPUB_TYPES = new Set([
+  'footnote', 'endnote', 'footnotes', 'endnotes',
+  'noteref', 'aside', 'annotation', 'glossary',
+]);
+
+// Tags that introduce a paragraph boundary
+const BLOCK_TAGS = new Set([
+  'p', 'div', 'li', 'dd', 'dt', 'td', 'th',
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'blockquote', 'section', 'article', 'figcaption', 'caption',
+]);
+
+function shouldSkipElement(el: any): boolean {
+  const epubType: string = el.attribs?.['epub:type'] ?? '';
+  return epubType.split(/\s+/).some((t: string) => SKIP_EPUB_TYPES.has(t));
+}
+
+function collectText(node: any, parts: string[]) {
+  if (node.type === ElementType.Text) {
+    parts.push(node.data as string);
+    return;
+  }
+  if (node.type !== ElementType.Tag) return;
+  if (shouldSkipElement(node)) return;
+  if (node.name === 'script' || node.name === 'style') return;
+  if (node.name === 'br') { parts.push('\n'); return; }
+
+  const isBlock = BLOCK_TAGS.has(node.name as string);
+  if (isBlock) parts.push('\n');
+  for (const child of node.children ?? []) collectText(child, parts);
+  if (isBlock) parts.push('\n');
+}
+
 function extractParagraphs(xhtml: string, chapterIdx: number): Paragraph[] {
-  // Strip scripts and styles
-  let content = xhtml
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+  const doc = parseDocument(xhtml, { xmlMode: false });
 
-  // Convert block elements to newline boundaries
-  content = content
-    .replace(/<\/(p|div|li|h[1-6]|blockquote|section|article|tr)[^>]*>/gi, '\n')
-    .replace(/<(br|hr)[^>]*\/?>/gi, '\n')
-    .replace(/<(p|div|li|h[1-6]|blockquote|section|article)[^>]*>/gi, '\n');
+  const body = DomUtils.findOne(
+    (el: any) => el.type === ElementType.Tag && el.name === 'body',
+    doc.children as any[],
+  ) as any;
 
-  // Strip remaining tags
-  content = content.replace(/<[^>]+>/g, '');
-  content = decodeEntities(content);
+  const root = body ?? doc;
+  const parts: string[] = [];
+  for (const child of root.children ?? []) collectText(child, parts);
 
-  const lines = content
+  const raw = he.decode(parts.join(''));
+
+  const lines = raw
     .split('\n')
-    .map(l => l.replace(/\s+/g, ' ').trim())
-    .filter(l => l.length > 2);
+    .map((l: string) => l.replace(/\s+/g, ' ').trim())
+    .filter((l: string) => l.length > 0);
 
   const paragraphs: Paragraph[] = [];
   for (let pIdx = 0; pIdx < lines.length; pIdx++) {
     const pid = `${chapterIdx}_p${pIdx}`;
     const sents = splitSentences(lines[pIdx]);
-    const sentences: Sentence[] = sents.map((raw, sIdx) => ({
+    const sentences: Sentence[] = sents.map((s, sIdx) => ({
       id: `${pid}_s${sIdx}`,
-      words: tokenize(raw, `${pid}_s${sIdx}`),
-      raw,
+      words: tokenize(s, `${pid}_s${sIdx}`),
+      raw: s,
     }));
     if (sentences.length > 0) paragraphs.push({ id: pid, sentences });
   }
   return paragraphs;
 }
 
+// ── Sentence splitting ────────────────────────────────────────────────────────
+
+// Known German and general abbreviations — don't split sentences after these
+const ABBREV_RE = /\b(Dr|Prof|Hr|Fr|Hrn|Frn|St|ca|bzw|usw|usf|etc|ggf|ggfs|evtl|inkl|exkl|zB|dh|vgl|Abb|Nr|Str|Tel|Fax|Jh|Jt|Mrd|Mio|Abs|Art|Kap|Sek|Min|Std|Jan|Feb|M[äa]r|Apr|Mai|Jun|Jul|Aug|Sep|Okt|Nov|Dez|[a-z])\.\s*$/;
+
 function splitSentences(text: string): string[] {
-  return text
-    .split(/(?<=[.!?…])\s+/)
-    .map(s => s.trim())
-    .filter(s => s.length > 0);
+  // Normalize ASCII ellipsis to Unicode so it doesn't cause spurious splits
+  const normalized = text.replace(/\.{3}/g, '…');
+
+  const raw = normalized.split(/(?<=[.!?…])\s+/);
+
+  // Merge back any fragment that was split after an abbreviation
+  const merged: string[] = [];
+  for (const token of raw) {
+    if (merged.length > 0 && ABBREV_RE.test(merged[merged.length - 1])) {
+      merged[merged.length - 1] += ' ' + token;
+    } else {
+      merged.push(token);
+    }
+  }
+
+  return merged.map(s => s.trim()).filter(s => s.length > 0);
 }
 
 function tokenize(sentence: string, prefix: string): Word[] {
-  // Split on whitespace, keeping whitespace as separate (non-word) tokens
   const parts = sentence.split(/(\s+)/);
   return parts
     .filter(p => p.length > 0)
@@ -275,16 +370,4 @@ function tokenize(sentence: string, prefix: string): Word[] {
       text,
       isWord: !/^\s+$/.test(text),
     }));
-}
-
-function decodeEntities(text: string): string {
-  return text
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)));
 }
