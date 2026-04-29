@@ -1,3 +1,5 @@
+name: lenguas-dev
+
 services:
   mongo:
     image: mongo:7
@@ -5,21 +7,33 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - language-app-network
 
   api:
     build: ./api/v0
     ports:
       - "3000:3000"
     volumes:
-      - ./german_words.csv:/german_words.csv:ro
+      - ./wordlists:/app/wordlists:ro
     environment:
       - MONGO_URI=mongodb://mongo:27017/language-app
       - PORT=3000
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION:-us-east-1}
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-local}
+      - DEV_BYPASS_AUTH=true
     depends_on:
       - mongo
+    networks:
+      - language-app-network
 
 volumes:
   mongo-data:
+    driver: local
+
+networks:
+  language-app-network:
+    driver: bridge

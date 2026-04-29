@@ -270,6 +270,11 @@ function AppContent() {
   const [mode, setMode] = useState<Mode | null>(null);
 
   useEffect(() => {
+    if (__DEV__) {
+      setAuthToken('dev');
+      setAuthStep('language');
+      return;
+    }
     loadAuthData().then(data => {
       if (data?.token) {
         setAuthToken(data.token);

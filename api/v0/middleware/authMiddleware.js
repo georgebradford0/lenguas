@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function requireAuth(req, res, next) {
+  if (process.env.DEV_BYPASS_AUTH === 'true') {
+    req.user = { userId: 'dev-user', email: 'dev@local' };
+    return next();
+  }
+
   const header = req.headers.authorization;
   if (!header || !header.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Authentication required' });

@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { fromByteArray } from 'base64-js';
 import type {
   TranslationResult,
@@ -11,7 +12,8 @@ import type {
   TaskType,
 } from '../types';
 
-const API_BASE = 'https://lenguas.directto.link';
+const DEV_API_BASE = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
+const API_BASE = __DEV__ ? DEV_API_BASE : 'https://lenguas.directto.link';
 
 // Auth token holder — set after login
 let _authToken: string | null = null;
