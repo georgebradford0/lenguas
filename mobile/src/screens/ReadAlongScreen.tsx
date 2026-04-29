@@ -1,11 +1,16 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
-  FlatList, Platform, ListRenderItemInfo,
+  FlatList, Platform, ListRenderItemInfo, Alert,
 } from 'react-native';
 import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
-import { parseEpub } from '../utils/epubParser';
+import { parseEpub, serializeEpubHandle, hydrateSerializedBook } from '../utils/epubParser';
+import {
+  saveBook, loadBook, listBooks, deleteBook,
+  getState, setCurrentBook, setPosition,
+} from '../utils/bookStorage';
+import type { BookSummary } from '../utils/bookStorage';
 import { EpubReader } from '../components/EpubReader';
 import { TranslationCard } from '../components/TranslationCard';
 import { WordContextMenu } from '../components/WordContextMenu';
@@ -13,7 +18,7 @@ import { SentenceModePanel, PANEL_HEIGHT } from '../components/SentenceModePanel
 import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
 import type { Language } from '../types';
 
-type Phase = 'idle' | 'parsing' | 'toc' | 'reading';
+type Phase = 'loading' | 'library' | 'parsing' | 'toc' | 'reading';
 
 const CARD_HEIGHT = 230;
 
@@ -31,12 +36,13 @@ interface ContextMenuState {
 }
 
 export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
-  const [phase, setPhase] = useState<Phase>('idle');
+  const [phase, setPhase] = useState<Phase>('loading');
   const [parseProgress, setParseProgress] = useState<{ done: number; total: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const epubRef = useRef<EpubHandle | null>(null);
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
   const [toc, setToc] = useState<TocEntry[]>([]);
+  const [library, setLibrary] = useState<BookSummary[]>([]);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [currentTocIdx, setCurrentTocIdx] = useState(0);
   const [selected, setSelected] = useState<SelectedWord | null>(null);
@@ -45,6 +51,47 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   });
   const [sentenceModeActive, setSentenceModeActive] = useState(false);
   const [sentenceModeIdx, setSentenceModeIdx] = useState(0);
+
+  // ── Init: load library + auto-resume current book ────────────────────────────
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [state, books] = await Promise.all([getState(language), listBooks(language)]);
+        if (cancelled) return;
+        setLibrary(books);
+        if (state.currentBookId) {
+          const stored = await loadBook(state.currentBookId);
+          if (stored && !cancelled) {
+            const handle = hydrateSerializedBook(stored);
+            epubRef.current = handle;
+            setEpubTitle(handle.title);
+            setToc(handle.toc);
+            const tocIdx = state.positions[stored.id] ?? 0;
+            const entry = handle.toc[tocIdx];
+            const chapter = entry ? handle.chapters[entry.href] : undefined;
+            if (chapter) {
+              setCurrentChapter(chapter);
+              setCurrentTocIdx(tocIdx);
+              setPhase('reading');
+              return;
+            }
+          }
+        }
+        setPhase('library');
+      } catch (e) {
+        console.error('[ReadAlong] init failed', e);
+        if (!cancelled) setPhase('library');
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [language]);
+
+  async function refreshLibrary() {
+    const books = await listBooks(language);
+    setLibrary(books);
+  }
 
   // ── File picker ─────────────────────────────────────────────────────────────
 
@@ -71,14 +118,89 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       setEpubTitle(handle.title);
       setToc(handle.toc);
       setSelected(null);
-      setPhase('toc');
+
+      // Persist parsed book + mark as current
+      try {
+        await saveBook(serializeEpubHandle(handle));
+        await setCurrentBook(language, handle.id);
+        await refreshLibrary();
+      } catch (e) {
+        console.error('[ReadAlong] failed to persist book', e);
+      }
+
+      // Open at chapter 0 (or saved position if reopening the same book)
+      const state = await getState(language);
+      const tocIdx = state.positions[handle.id] ?? 0;
+      openChapter(tocIdx);
     } catch (e: any) {
       if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
         setError('Failed to open epub.');
         console.error(e);
       }
-      setPhase('idle');
+      setPhase(epubRef.current ? 'reading' : 'library');
     }
+  }
+
+  // ── Open a saved book from the library ──────────────────────────────────────
+
+  async function handleOpenSavedBook(summary: BookSummary) {
+    try {
+      setError(null);
+      setPhase('parsing');
+      setParseProgress(null);
+      const stored = await loadBook(summary.id);
+      if (!stored) {
+        await deleteBook(summary.id, language);
+        await refreshLibrary();
+        setError('Saved book is missing or corrupt — removed from library.');
+        setPhase('library');
+        return;
+      }
+      const handle = hydrateSerializedBook(stored);
+      epubRef.current = handle;
+      setEpubTitle(handle.title);
+      setToc(handle.toc);
+      setSelected(null);
+      await setCurrentBook(language, handle.id);
+      const state = await getState(language);
+      const tocIdx = state.positions[handle.id] ?? 0;
+      openChapter(tocIdx);
+    } catch (e) {
+      console.error('[ReadAlong] failed to open saved book', e);
+      setError('Failed to open saved book.');
+      setPhase('library');
+    }
+  }
+
+  function handleDeleteBook(summary: BookSummary) {
+    Alert.alert(
+      'Delete Book',
+      `Remove "${summary.title}" from your library?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await deleteBook(summary.id, language);
+            await refreshLibrary();
+          },
+        },
+      ],
+    );
+  }
+
+  async function handleCloseCurrentBook() {
+    await setCurrentBook(language, null);
+    epubRef.current = null;
+    setEpubTitle(null);
+    setToc([]);
+    setCurrentChapter(null);
+    setCurrentTocIdx(0);
+    setSelected(null);
+    setSentenceModeActive(false);
+    await refreshLibrary();
+    setPhase('library');
   }
 
   // ── Chapter loading ──────────────────────────────────────────────────────────
@@ -94,6 +216,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     setCurrentChapter(chapter);
     setCurrentTocIdx(tocIdx);
     setPhase('reading');
+    setPosition(language, handle.id, tocIdx).catch(() => {});
   }
 
   // ── Word press ───────────────────────────────────────────────────────────────
@@ -109,28 +232,64 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
 
   // ── Rendering ────────────────────────────────────────────────────────────────
 
-  if (phase === 'idle') {
+  if (phase === 'loading') {
     return (
       <View style={styles.centeredContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Text style={styles.backText}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.screenTitle}>Read Along</Text>
-        {epubTitle && (
-          <View style={styles.bookCard}>
-            <Text style={styles.bookIcon}>📖</Text>
-            <Text style={styles.bookTitle}>{epubTitle}</Text>
-          </View>
-        )}
-        <TouchableOpacity style={styles.primaryButton} onPress={handleSelectEpub} activeOpacity={0.85}>
-          <Text style={styles.primaryButtonText}>{epubTitle ? 'Change Book' : 'Select EPUB'}</Text>
-        </TouchableOpacity>
-        {epubTitle && (
-          <TouchableOpacity style={styles.secondaryButton} onPress={() => setPhase('toc')} activeOpacity={0.85}>
-            <Text style={styles.secondaryButtonText}>Open Table of Contents</Text>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (phase === 'library') {
+    return (
+      <View style={styles.fullContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.headerBack} onPress={onBack}>
+            <Text style={styles.headerBackText}>←</Text>
           </TouchableOpacity>
+          <Text style={styles.headerTitle}>Read Along</Text>
+          <View style={styles.headerRight} />
+        </View>
+
+        <View style={styles.libraryActions}>
+          <TouchableOpacity style={styles.primaryButton} onPress={handleSelectEpub} activeOpacity={0.85}>
+            <Text style={styles.primaryButtonText}>+ Add Book</Text>
+          </TouchableOpacity>
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        </View>
+
+        {library.length === 0 ? (
+          <View style={styles.libraryEmpty}>
+            <Text style={styles.libraryEmptyIcon}>📚</Text>
+            <Text style={styles.libraryEmptyText}>Your library is empty.{'\n'}Add an EPUB to get started.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={library}
+            keyExtractor={b => b.id}
+            renderItem={({ item }: ListRenderItemInfo<BookSummary>) => (
+              <View style={styles.libraryRow}>
+                <TouchableOpacity
+                  style={styles.libraryRowBody}
+                  onPress={() => handleOpenSavedBook(item)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.libraryRowIcon}>📖</Text>
+                  <Text style={styles.libraryRowTitle} numberOfLines={2}>{item.title}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.libraryRowDelete}
+                  onPress={() => handleDeleteBook(item)}
+                  hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                >
+                  <Text style={styles.libraryRowDeleteText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            contentContainerStyle={{ paddingBottom: spacing.xl }}
+          />
         )}
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     );
   }
@@ -151,11 +310,13 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     return (
       <View style={styles.fullContainer}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerBack} onPress={() => setPhase('idle')}>
+          <TouchableOpacity style={styles.headerBack} onPress={() => currentChapter ? setPhase('reading') : handleCloseCurrentBook()}>
             <Text style={styles.headerBackText}>←</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle} numberOfLines={1}>{epubTitle}</Text>
-          <View style={styles.headerRight} />
+          <TouchableOpacity style={styles.headerLibraryButton} onPress={handleCloseCurrentBook}>
+            <Text style={styles.headerLibraryText}>Library</Text>
+          </TouchableOpacity>
         </View>
         <FlatList
           data={toc}
@@ -283,57 +444,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  backButton: {
-    position: 'absolute',
-    top: spacing.md,
-    left: spacing.md,
-    padding: spacing.xs,
-  },
-  backText: {
-    fontSize: fontSize.md,
-    color: colors.text,
-  },
-  screenTitle: {
-    fontSize: fontSize.xl,
-    fontWeight: '700',
-    color: colors.text,
-    marginBottom: spacing.lg,
-  },
-  bookCard: {
-    alignItems: 'center',
-    backgroundColor: colors.cardBackground,
-    borderWidth: 2,
-    borderColor: colors.border,
-    borderRadius: borderRadius.lg,
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.xl,
-    marginBottom: spacing.md,
-    width: '100%',
-    maxWidth: 400,
-  },
-  bookIcon: { fontSize: 40, marginBottom: spacing.xs },
-  bookTitle: {
-    fontSize: fontSize.sm,
-    fontWeight: '600',
-    color: colors.text,
-    textAlign: 'center',
-  },
   primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: borderRadius.md,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.xl,
     alignItems: 'center',
-    marginBottom: spacing.xs,
   },
   primaryButtonText: { color: '#fff', fontSize: fontSize.xs, fontWeight: '600' },
-  secondaryButton: {
-    borderRadius: borderRadius.md,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.xl,
-    alignItems: 'center',
-  },
-  secondaryButtonText: { color: colors.primary, fontSize: fontSize.xs, fontWeight: '500' },
   errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center', marginTop: spacing.sm },
   loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm },
 
@@ -356,7 +474,57 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   headerRight: { width: 36 },
+  headerLibraryButton: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
+  headerLibraryText: { color: colors.primary, fontSize: 13, fontWeight: '600' },
   chapterCounter: { fontSize: 13, color: colors.muted, marginLeft: spacing.xs },
+
+  // Library
+  libraryActions: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+  libraryEmpty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.xl,
+  },
+  libraryEmptyIcon: { fontSize: 48, marginBottom: spacing.sm, opacity: 0.6 },
+  libraryEmptyText: {
+    color: colors.muted,
+    fontSize: fontSize.xs,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  libraryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.cardBackground,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  libraryRowBody: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  libraryRowIcon: { fontSize: 22, marginRight: spacing.sm },
+  libraryRowTitle: {
+    flex: 1,
+    fontSize: fontSize.xs,
+    color: colors.text,
+    fontWeight: '500',
+  },
+  libraryRowDelete: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  libraryRowDeleteText: {
+    fontSize: fontSize.md,
+    color: colors.muted,
+    fontWeight: '300',
+  },
 
   // TOC
   tocItem: {

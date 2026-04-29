@@ -39,12 +39,32 @@ export interface Chapter {
 }
 
 export interface EpubHandle {
+  id: string;
   title: string;
   language: string;
   toc: TocEntry[];
   spineHrefs: string[]; // chapter files in reading order
-  zip: JSZip;
+  zip?: JSZip; // present after a fresh parse; absent when hydrated from storage
   chapters: Record<string, Chapter>; // href → pre-parsed chapter
+}
+
+export interface SerializedBook {
+  id: string;
+  title: string;
+  language: string;
+  toc: TocEntry[];
+  spineHrefs: string[];
+  // For each spine href: chapter title + sentences as nested string arrays.
+  // Word arrays are regenerated on hydrate to keep storage compact.
+  chapterContent: Record<string, { title: string; paragraphs: string[][] }>;
+  savedAt: number;
+}
+
+function computeBookId(title: string, spineHrefs: string[]): string {
+  const s = `${title}|${spineHrefs.join(',')}`;
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
 }
 
 // ── XML parser ────────────────────────────────────────────────────────────────
@@ -202,7 +222,49 @@ export async function parseEpub(
     );
   }
 
-  return { title, language, toc, spineHrefs, zip, chapters };
+  const id = computeBookId(title, spineHrefs);
+  return { id, title, language, toc, spineHrefs, zip, chapters };
+}
+
+/** Serialize an EpubHandle into a compact JSON-friendly shape for storage. */
+export function serializeEpubHandle(handle: EpubHandle): SerializedBook {
+  const chapterContent: Record<string, { title: string; paragraphs: string[][] }> = {};
+  for (const href of handle.spineHrefs) {
+    const ch = handle.chapters[href];
+    if (!ch) continue;
+    chapterContent[href] = {
+      title: ch.title,
+      paragraphs: ch.paragraphs.map(p => p.sentences.map(s => s.raw)),
+    };
+  }
+  return {
+    id: handle.id,
+    title: handle.title,
+    language: handle.language,
+    toc: handle.toc,
+    spineHrefs: handle.spineHrefs,
+    chapterContent,
+    savedAt: Date.now(),
+  };
+}
+
+/** Rebuild an EpubHandle from a SerializedBook (no zip — chapters are pre-parsed). */
+export function hydrateSerializedBook(stored: SerializedBook): EpubHandle {
+  const chapters: Record<string, Chapter> = {};
+  stored.spineHrefs.forEach((href, idx) => {
+    const ch = stored.chapterContent[href];
+    if (!ch) return;
+    const paragraphs = buildParagraphsFromStructured(ch.paragraphs, idx);
+    chapters[href] = { id: `ch${idx}`, title: ch.title, paragraphs };
+  });
+  return {
+    id: stored.id,
+    title: stored.title,
+    language: stored.language,
+    toc: stored.toc,
+    spineHrefs: stored.spineHrefs,
+    chapters,
+  };
 }
 
 /** Parse a single chapter's XHTML and return a Chapter ready for rendering. */
