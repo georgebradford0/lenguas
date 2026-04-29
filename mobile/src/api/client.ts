@@ -14,6 +14,7 @@ import type {
 
 const DEV_API_BASE = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 const API_BASE = __DEV__ ? DEV_API_BASE : 'https://lenguas.directto.link';
+console.log('[DEBUG client] API_BASE', { API_BASE, dev: __DEV__, platform: Platform.OS });
 
 // Auth token holder — set after login
 let _authToken: string | null = null;
@@ -201,24 +202,53 @@ export async function translateWord(
   sentence: string,
   language: string,
 ): Promise<{ translation: string; explanation: string | null }> {
-  const response = await fetch(`${API_BASE}/translate/word`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ word, sentence, language }),
-  });
-  if (!response.ok) throw new Error(`Word translation failed: ${response.status}`);
-  return response.json();
+  const url = `${API_BASE}/translate/word`;
+  console.log('[DEBUG translateWord] request', { url, word, sentence, language, hasAuthToken: !!_authToken });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ word, sentence, language }),
+    });
+  } catch (err: any) {
+    console.log('[DEBUG translateWord] network error', { url, error: err?.message });
+    throw err;
+  }
+  console.log(`[DEBUG translateWord] response status=${response.status} ok=${response.ok}`);
+  if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    console.log(`[DEBUG translateWord] NON-OK status=${response.status} body=${body}`);
+    throw new Error(`Word translation failed: ${response.status}`);
+  }
+  const json = await response.json();
+  console.log(`[DEBUG translateWord] json=${JSON.stringify(json)}`);
+  return json;
 }
 
 export async function translatePhrase(text: string, language: string): Promise<string> {
-  const response = await fetch(`${API_BASE}/translate/phrase`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ text, language }),
-  });
-  if (!response.ok) throw new Error(`Translation failed: ${response.status}`);
-  const { translation } = await response.json();
-  return translation as string;
+  const url = `${API_BASE}/translate/phrase`;
+  console.log('[DEBUG translatePhrase] request', { url, text, language, hasAuthToken: !!_authToken });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ text, language }),
+    });
+  } catch (err: any) {
+    console.log('[DEBUG translatePhrase] network error', { url, error: err?.message });
+    throw err;
+  }
+  console.log(`[DEBUG translatePhrase] response status=${response.status} ok=${response.ok}`);
+  if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    console.log(`[DEBUG translatePhrase] NON-OK status=${response.status} body=${body}`);
+    throw new Error(`Translation failed: ${response.status}`);
+  }
+  const json = await response.json();
+  console.log(`[DEBUG translatePhrase] json=${JSON.stringify(json)}`);
+  return json.translation as string;
 }
 
 export async function parseChapterText(

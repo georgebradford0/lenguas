@@ -44,14 +44,22 @@ export function SentenceModePanel({
 
   // On sentence change: fetch translation + auto-play
   useEffect(() => {
+    console.log('[DEBUG SentenceModePanel] sentence change', { currentIdx, sentenceId: sentence?.id, raw: sentence?.raw, language });
     if (!sentence) return;
     setWordResult(null);
     setSentenceTranslation(null);
     setTranslating(true);
 
+    console.log('[DEBUG SentenceModePanel] calling translatePhrase', { text: sentence.raw, language });
     translatePhrase(sentence.raw, language)
-      .then(t => setSentenceTranslation(t))
-      .catch(() => setSentenceTranslation('—'))
+      .then(t => {
+        console.log('[DEBUG SentenceModePanel] translatePhrase success', { translation: t });
+        setSentenceTranslation(t);
+      })
+      .catch(err => {
+        console.log('[DEBUG SentenceModePanel] translatePhrase error', { error: err?.message });
+        setSentenceTranslation('—');
+      })
       .finally(() => setTranslating(false));
 
     playAudio(sentence.raw);
@@ -103,15 +111,23 @@ export function SentenceModePanel({
   }
 
   const handleWordTap = useCallback(async (rawWord: string) => {
+    console.log('[DEBUG SentenceModePanel] handleWordTap', { rawWord, sentenceId: sentence?.id });
     if (!sentence) return;
     const clean = cleanWord(rawWord);
-    if (!clean) return;
+    console.log('[DEBUG SentenceModePanel] cleaned word', { rawWord, clean });
+    if (!clean) {
+      console.log('[DEBUG SentenceModePanel] cleaned word empty, skipping');
+      return;
+    }
     setWordResult(null);
     setWordLoading(true);
     try {
+      console.log('[DEBUG SentenceModePanel] calling translateWord', { clean, sentence: sentence.raw, language });
       const result = await translateWord(clean, sentence.raw, language);
+      console.log('[DEBUG SentenceModePanel] translateWord success', { clean, result });
       setWordResult({ word: clean, ...result });
-    } catch {
+    } catch (err: any) {
+      console.log('[DEBUG SentenceModePanel] translateWord error', { clean, error: err?.message });
       setWordResult({ word: clean, translation: '—', explanation: null });
     } finally {
       setWordLoading(false);

@@ -16,12 +16,11 @@ services:
       - "3000:3000"
     volumes:
       - ./wordlists:/app/wordlists:ro
+    env_file:
+      - .env
     environment:
       - MONGO_URI=mongodb://mongo:27017/language-app
       - PORT=3000
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - JWT_SECRET=${JWT_SECRET:-dev-secret-local}
       - DEV_BYPASS_AUTH=true

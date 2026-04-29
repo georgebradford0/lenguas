@@ -43,14 +43,25 @@ export function TranslationCard({ wordId, word, sentence, language, onDismiss }:
 
   // Fetch translation whenever the word changes
   useEffect(() => {
-    if (!clean) return;
+    console.log('[DEBUG TranslationCard] effect', { wordId, word, clean, language, sentence });
+    if (!clean) {
+      console.log('[DEBUG TranslationCard] clean is empty, skipping translate');
+      return;
+    }
     setTranslation(null);
     setTranslating(true);
+    console.log('[DEBUG TranslationCard] calling translatePhrase', { clean, language });
     translatePhrase(clean, language)
-      .then(t => setTranslation(t))
-      .catch(() => setTranslation('—'))
+      .then(t => {
+        console.log('[DEBUG TranslationCard] translatePhrase success', { clean, translation: t });
+        setTranslation(t);
+      })
+      .catch(err => {
+        console.log('[DEBUG TranslationCard] translatePhrase error', { clean, error: err?.message, stack: err?.stack });
+        setTranslation('—');
+      })
       .finally(() => setTranslating(false));
-  }, [wordId, clean, language]);
+  }, [wordId, clean, language, sentence, word]);
 
   async function handlePlay() {
     if (!clean || playing) return;
