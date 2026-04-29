@@ -3,6 +3,7 @@ import RNFS from 'react-native-fs';
 import { XMLParser } from 'fast-xml-parser';
 import { parseDocument, DomUtils, ElementType } from 'htmlparser2';
 import he from 'he';
+import { parseChapterText } from '../api/client';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -43,6 +44,7 @@ export interface EpubHandle {
   toc: TocEntry[];
   spineHrefs: string[]; // chapter files in reading order
   zip: JSZip;
+  chapters: Record<string, Chapter>; // href → pre-parsed chapter
 }
 
 // ── XML parser ────────────────────────────────────────────────────────────────
@@ -73,7 +75,10 @@ function resolveEpubPath(base: string, relative: string): string {
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
-export async function parseEpub(localUri: string): Promise<EpubHandle> {
+export async function parseEpub(
+  localUri: string,
+  onProgress?: (done: number, total: number) => void,
+): Promise<EpubHandle> {
   const filePath = decodeURIComponent(localUri.replace(/^file:\/\//, ''));
   const base64 = await RNFS.readFile(filePath, 'base64');
   const zip = await JSZip.loadAsync(base64, { base64: true });
@@ -162,7 +167,42 @@ export async function parseEpub(localUri: string): Promise<EpubHandle> {
     }));
   }
 
-  return { title, language, toc, spineHrefs, zip };
+  // Build a title lookup from TOC (first matching entry wins)
+  const hrefToTitle: Record<string, string> = {};
+  for (const entry of toc) {
+    if (!hrefToTitle[entry.href]) hrefToTitle[entry.href] = entry.title;
+  }
+
+  // Pre-parse all chapters in batches of 5 (parallel within each batch)
+  const BATCH_SIZE = 5;
+  const chapters: Record<string, Chapter> = {};
+  let done = 0;
+
+  for (let i = 0; i < spineHrefs.length; i += BATCH_SIZE) {
+    const batch = spineHrefs.slice(i, i + BATCH_SIZE);
+    await Promise.all(
+      batch.map(async (href, offset) => {
+        const chapterIdx = i + offset;
+        const file = zip.file(href);
+        if (!file) return;
+        const xhtml = await file.async('string');
+        const rawLines = extractRawLines(xhtml);
+        let paragraphs: Paragraph[];
+        try {
+          const structured = await parseChapterText(rawLines, language);
+          paragraphs = buildParagraphsFromStructured(structured, chapterIdx);
+        } catch {
+          paragraphs = buildParagraphsFromLines(rawLines, chapterIdx);
+        }
+        const chapterTitle = hrefToTitle[href] ?? `Chapter ${chapterIdx + 1}`;
+        chapters[href] = { id: `ch${chapterIdx}`, title: chapterTitle, paragraphs };
+        done++;
+        onProgress?.(done, spineHrefs.length);
+      }),
+    );
+  }
+
+  return { title, language, toc, spineHrefs, zip, chapters };
 }
 
 /** Parse a single chapter's XHTML and return a Chapter ready for rendering. */
@@ -171,11 +211,22 @@ export async function loadChapter(
   href: string,
   chapterIdx: number,
   title: string,
+  language = 'de',
 ): Promise<Chapter> {
   const file = zip.file(href);
   if (!file) throw new Error(`Chapter file not found: ${href}`);
   const xhtml = await file.async('string');
-  const paragraphs = extractParagraphs(xhtml, chapterIdx);
+
+  const rawLines = extractRawLines(xhtml);
+
+  let paragraphs: Paragraph[];
+  try {
+    const structured = await parseChapterText(rawLines, language);
+    paragraphs = buildParagraphsFromStructured(structured, chapterIdx);
+  } catch {
+    paragraphs = buildParagraphsFromLines(rawLines, chapterIdx);
+  }
+
   return { id: `ch${chapterIdx}`, title, paragraphs };
 }
 
@@ -304,7 +355,8 @@ function collectText(node: any, parts: string[]) {
   if (isBlock) parts.push('\n');
 }
 
-function extractParagraphs(xhtml: string, chapterIdx: number): Paragraph[] {
+/** Extract raw text lines from XHTML, one per block element. */
+function extractRawLines(xhtml: string): string[] {
   const doc = parseDocument(xhtml, { xmlMode: false });
 
   const body = DomUtils.findOne(
@@ -318,11 +370,29 @@ function extractParagraphs(xhtml: string, chapterIdx: number): Paragraph[] {
 
   const raw = he.decode(parts.join(''));
 
-  const lines = raw
+  return raw
     .split('\n')
     .map((l: string) => l.replace(/\s+/g, ' ').trim())
     .filter((l: string) => l.length > 0);
+}
 
+/** Convert OpenAI-structured paragraphs into the Paragraph type. */
+function buildParagraphsFromStructured(structured: string[][], chapterIdx: number): Paragraph[] {
+  const paragraphs: Paragraph[] = [];
+  for (let pIdx = 0; pIdx < structured.length; pIdx++) {
+    const pid = `${chapterIdx}_p${pIdx}`;
+    const sentences: Sentence[] = structured[pIdx].map((s, sIdx) => ({
+      id: `${pid}_s${sIdx}`,
+      words: tokenize(s, `${pid}_s${sIdx}`),
+      raw: s,
+    }));
+    if (sentences.length > 0) paragraphs.push({ id: pid, sentences });
+  }
+  return paragraphs;
+}
+
+/** Fallback: build paragraphs from raw lines using regex sentence splitting. */
+function buildParagraphsFromLines(lines: string[], chapterIdx: number): Paragraph[] {
   const paragraphs: Paragraph[] = [];
   for (let pIdx = 0; pIdx < lines.length; pIdx++) {
     const pid = `${chapterIdx}_p${pIdx}`;

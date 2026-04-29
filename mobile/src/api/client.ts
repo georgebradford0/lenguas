@@ -219,6 +219,20 @@ export async function translatePhrase(text: string, language: string): Promise<s
   return translation as string;
 }
 
+export async function parseChapterText(
+  rawLines: string[],
+  language: string,
+): Promise<string[][]> {
+  const response = await fetch(`${API_BASE}/translate/chapter`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ rawLines, language }),
+  });
+  if (!response.ok) throw new Error(`Chapter parsing failed: ${response.status}`);
+  const { paragraphs } = await response.json();
+  return paragraphs as string[][];
+}
+
 export async function blockWord(targetWord: string, level: string, language: string): Promise<void> {
   const response = await fetch(`${API_BASE}/block-word`, {
     method: 'POST',

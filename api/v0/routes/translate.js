@@ -61,6 +61,74 @@ router.post('/phrase', async (req, res) => {
   }
 });
 
+// POST /translate/chapter - structure raw epub text into clean paragraphs and sentences
+router.post('/chapter', async (req, res) => {
+  try {
+    const { rawLines, language = 'de' } = req.body;
+    if (!Array.isArray(rawLines) || rawLines.length === 0) {
+      return res.status(400).json({ error: 'rawLines array is required' });
+    }
+
+    const fromLanguage = LANGUAGE_NAMES[language] || 'German';
+    const CHUNK_CHARS = 6000;
+
+    // Group lines into chunks without splitting mid-line
+    const chunks = [];
+    let currentChunk = [];
+    let currentLen = 0;
+    for (const line of rawLines) {
+      if (currentLen + line.length > CHUNK_CHARS && currentChunk.length > 0) {
+        chunks.push(currentChunk.join('\n'));
+        currentChunk = [line];
+        currentLen = line.length + 1;
+      } else {
+        currentChunk.push(line);
+        currentLen += line.length + 1;
+      }
+    }
+    if (currentChunk.length > 0) chunks.push(currentChunk.join('\n'));
+
+    const systemPrompt = `You are processing ${fromLanguage} text extracted from an EPUB file. Each line of input is one HTML block element (paragraph, heading, list item, etc.). Some lines may be non-content: page numbers, running headers, chapter labels, navigation text.
+
+Return ONLY valid JSON with this exact shape:
+{"paragraphs": [["sentence1", "sentence2"], ["sentence3"]]}
+
+Rules:
+- Remove non-content lines (page numbers, "Kapitel X", repeated headers, navigation)
+- Merge consecutive lines that form one literary paragraph into a single inner array
+- Split each paragraph into individual sentences correctly
+- Preserve all original ${fromLanguage} text exactly — do not translate, correct, or rewrite
+- Return {"paragraphs": []} if the chunk has no readable content`;
+
+    const results = await Promise.all(
+      chunks.map(async (chunk) => {
+        const response = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: chunk },
+          ],
+          temperature: 0,
+          max_tokens: 4096,
+          response_format: { type: 'json_object' },
+        });
+        try {
+          const parsed = JSON.parse(response.choices[0].message.content || '{}');
+          return Array.isArray(parsed.paragraphs)
+            ? parsed.paragraphs.filter(p => Array.isArray(p) && p.length > 0)
+            : [];
+        } catch {
+          return [];
+        }
+      })
+    );
+
+    res.json({ paragraphs: results.flat() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /translate/:word - translate a German word to English with wrong options
 router.get('/:word', async (req, res) => {
   try {

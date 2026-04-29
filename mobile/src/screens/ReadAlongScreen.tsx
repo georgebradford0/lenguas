@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
-import { parseEpub, loadChapter } from '../utils/epubParser';
+import { parseEpub } from '../utils/epubParser';
 import { EpubReader } from '../components/EpubReader';
 import { TranslationCard } from '../components/TranslationCard';
 import { WordContextMenu } from '../components/WordContextMenu';
@@ -13,7 +13,7 @@ import { SentenceModePanel, PANEL_HEIGHT } from '../components/SentenceModePanel
 import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
 import type { Language } from '../types';
 
-type Phase = 'idle' | 'parsing' | 'toc' | 'chapterLoading' | 'reading';
+type Phase = 'idle' | 'parsing' | 'toc' | 'reading';
 
 const CARD_HEIGHT = 230;
 
@@ -32,6 +32,7 @@ interface ContextMenuState {
 
 export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>('idle');
+  const [parseProgress, setParseProgress] = useState<{ done: number; total: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const epubRef = useRef<EpubHandle | null>(null);
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
@@ -55,6 +56,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       });
 
       setPhase('parsing');
+      setParseProgress(null);
       const copies = await keepLocalCopy({
         files: [{ uri: result.uri, fileName: result.name ?? 'book.epub' }],
         destination: 'cachesDirectory',
@@ -62,7 +64,9 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       const copy = copies[0];
       if (copy.status !== 'success') throw new Error('Failed to copy file');
 
-      const handle = await parseEpub(copy.localUri);
+      const handle = await parseEpub(copy.localUri, (done, total) => {
+        setParseProgress({ done, total });
+      });
       epubRef.current = handle;
       setEpubTitle(handle.title);
       setToc(handle.toc);
@@ -79,26 +83,17 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
 
   // ── Chapter loading ──────────────────────────────────────────────────────────
 
-  async function openChapter(tocIdx: number) {
+  function openChapter(tocIdx: number) {
     const handle = epubRef.current;
     if (!handle) return;
     const entry = handle.toc[tocIdx];
     if (!entry) return;
-
-    setPhase('chapterLoading');
+    const chapter = handle.chapters[entry.href];
+    if (!chapter) { setError('Chapter not available.'); return; }
     setSelected(null);
-    try {
-      // Find spine index for this href (strip anchor for matching)
-      const spineIdx = handle.spineHrefs.findIndex(h => h === entry.href);
-      const chapterIdx = spineIdx >= 0 ? spineIdx : tocIdx;
-      const chapter = await loadChapter(handle.zip, entry.href, chapterIdx, entry.title);
-      setCurrentChapter(chapter);
-      setCurrentTocIdx(tocIdx);
-      setPhase('reading');
-    } catch (e: any) {
-      setError('Failed to load chapter.');
-      setPhase('toc');
-    }
+    setCurrentChapter(chapter);
+    setCurrentTocIdx(tocIdx);
+    setPhase('reading');
   }
 
   // ── Word press ───────────────────────────────────────────────────────────────
@@ -141,10 +136,13 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   }
 
   if (phase === 'parsing') {
+    const progressText = parseProgress
+      ? `Parsing chapter ${parseProgress.done} of ${parseProgress.total}…`
+      : 'Opening epub…';
     return (
       <View style={styles.centeredContainer}>
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.loadingText}>Parsing epub…</Text>
+        <Text style={styles.loadingText}>{progressText}</Text>
       </View>
     );
   }
@@ -177,15 +175,6 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
           ItemSeparatorComponent={() => <View style={styles.separator} />}
           contentContainerStyle={{ paddingBottom: spacing.xl }}
         />
-      </View>
-    );
-  }
-
-  if (phase === 'chapterLoading') {
-    return (
-      <View style={styles.centeredContainer}>
-        <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.loadingText}>Loading chapter…</Text>
       </View>
     );
   }
