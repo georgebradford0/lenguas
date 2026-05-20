@@ -14,8 +14,6 @@ services:
     build: ./api/v0
     ports:
       - "3000:3000"
-    volumes:
-      - ./wordlists:/app/wordlists:ro
     env_file:
       - .env
     environment:
