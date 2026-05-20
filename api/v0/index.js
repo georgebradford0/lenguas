@@ -2,11 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const progressRoutes = require('./routes/progress');
 const speakRoutes = require('./routes/speak');
 const translateRoutes = require('./routes/translate');
-const wordsRoutes = require('./routes/words');
-const generateTaskRoutes = require('./routes/generateTask');
 const authRoutes = require('./routes/auth');
 const requireAuth = require('./middleware/authMiddleware');
 
@@ -41,11 +38,8 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/progress', requireAuth, progressRoutes);
 app.use('/speak', requireAuth, speakRoutes);
 app.use('/translate', requireAuth, translateRoutes);
-app.use('/words', requireAuth, wordsRoutes);
-app.use('/', requireAuth, generateTaskRoutes);
 
 mongoose.connect(MONGO_URI)
   .then(() => {

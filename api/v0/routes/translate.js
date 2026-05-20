@@ -6,56 +6,71 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish' };
 
-// POST /translate/word - translate a single word with sentence context; explains difficult grammar
-router.post('/word', async (req, res) => {
+// POST /translate/sentence
+// Translate a full sentence into English and identify every noun and verb in
+// the sentence, returning a short English translation and (when grammar is
+// non-obvious) an explanation for each. Single round-trip used by the reader.
+//
+// Body: { sentence: string, language: 'de' | 'nl' | 'fr' | 'es' }
+// Response: {
+//   translation: string,
+//   words: Array<{
+//     word: string,        // exactly as it appears in the sentence
+//     pos: 'noun' | 'verb',
+//     translation: string, // 1-6 word English gloss in this context
+//     explanation: string | null,
+//   }>
+// }
+router.post('/sentence', async (req, res) => {
   try {
-    const { word, sentence, language = 'de' } = req.body;
-    if (!word?.trim()) return res.status(400).json({ error: 'word is required' });
+    const { sentence, language = 'de' } = req.body;
+    if (!sentence || !sentence.trim()) {
+      return res.status(400).json({ error: 'sentence is required' });
+    }
     const fromLanguage = LANGUAGE_NAMES[language] || 'German';
+
+    const systemPrompt = `You are a ${fromLanguage}-English language expert. Given one ${fromLanguage} sentence, return ONLY valid JSON with this exact shape:
+
+{
+  "translation": "<natural English translation of the whole sentence>",
+  "words": [
+    { "word": "<word as it appears in the sentence>", "pos": "noun" | "verb", "translation": "<1-6 word English gloss in this context>", "explanation": "<one short English sentence or null>" }
+  ]
+}
+
+Rules:
+- "words" contains every noun and every verb in the sentence (including auxiliary, modal, participle, and infinitive verb forms). Exclude articles, prepositions, pronouns, conjunctions, adjectives, adverbs, particles, and numbers.
+- "word" must match exactly how the word appears in the sentence — preserve case and inflection. Do NOT lemmatize.
+- Include each surface occurrence at most once, in the order they appear.
+- "explanation" is a short English sentence only when the word's meaning here is non-obvious or context-dependent (e.g. separable-prefix verb, idiomatic noun usage). Otherwise null.`;
+
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
-        {
-          role: 'system',
-          content: `You are a ${fromLanguage}-English language expert. Given a ${fromLanguage} word and the sentence it appears in, return a JSON object with:
-- "translation": a concise English translation of the word as used in this sentence (1-6 words)
-- "explanation": if the word is a preposition, conjunction, article, particle, auxiliary verb, reflexive pronoun, or its meaning is non-obvious or highly context-dependent, provide one clear English sentence explaining its grammatical role or usage here. Otherwise null.`,
-        },
-        {
-          role: 'user',
-          content: `Word: "${word.trim()}"\nSentence: "${(sentence || '').trim()}"`,
-        },
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: sentence.trim() },
       ],
       temperature: 0.1,
-      max_tokens: 200,
+      max_tokens: 800,
       response_format: { type: 'json_object' },
     });
-    const result = JSON.parse(response.choices[0].message.content || '{}');
-    res.json({ translation: result.translation || '', explanation: result.explanation || null });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
-// POST /translate/phrase - translate a word or phrase from any supported language to English
-router.post('/phrase', async (req, res) => {
-  try {
-    const { text, language = 'de' } = req.body;
-    if (!text || !text.trim()) return res.status(400).json({ error: 'text is required' });
-    const fromLanguage = LANGUAGE_NAMES[language] || 'German';
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: `You are a ${fromLanguage}-English translator. Translate the given text naturally and accurately. Return only the English translation, no explanation, no quotes.`,
-        },
-        { role: 'user', content: text.trim() },
-      ],
-      temperature: 0.1,
-      max_tokens: 150,
+    const parsed = JSON.parse(response.choices[0].message.content || '{}');
+    const words = Array.isArray(parsed.words)
+      ? parsed.words
+          .filter(w => w && typeof w.word === 'string' && (w.pos === 'noun' || w.pos === 'verb'))
+          .map(w => ({
+            word: w.word,
+            pos: w.pos,
+            translation: typeof w.translation === 'string' ? w.translation : '',
+            explanation: typeof w.explanation === 'string' && w.explanation.trim() ? w.explanation : null,
+          }))
+      : [];
+
+    res.json({
+      translation: typeof parsed.translation === 'string' ? parsed.translation : '',
+      words,
     });
-    res.json({ translation: response.choices[0].message.content?.trim() ?? '' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -124,44 +139,6 @@ Rules:
     );
 
     res.json({ paragraphs: results.flat() });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// GET /translate/:word - translate a German word to English with wrong options
-router.get('/:word', async (req, res) => {
-  try {
-    const word = req.params.word;
-    const response = await openai.responses.create({
-      model: 'gpt-4o-mini',
-      input: [
-        {
-          role: 'system',
-          content:
-            'You are a German-English dictionary. Given a German word, return a JSON object with "word" (the German word), "translation" (brief English translation, 1-5 words), and "wrong" (an array of exactly 3 plausible but incorrect English translations that could trick a learner).',
-        },
-        { role: 'user', content: word },
-      ],
-      text: {
-        format: {
-          type: 'json_schema',
-          name: 'translation',
-          schema: {
-            type: 'object',
-            properties: {
-              word: { type: 'string' },
-              translation: { type: 'string' },
-              wrong: { type: 'array', items: { type: 'string' }, minItems: 3, maxItems: 3 },
-            },
-            required: ['word', 'translation', 'wrong'],
-            additionalProperties: false,
-          },
-          strict: true,
-        },
-      },
-    });
-    res.json(JSON.parse(response.output_text));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

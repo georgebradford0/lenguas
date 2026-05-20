@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 const LoginCode = require('../models/LoginCode');
-const Progress = require('../models/Progress');
 const requireAuth = require('../middleware/authMiddleware');
 
 const sesClient = new SESClient({ region: process.env.AWS_REGION || 'us-east-1' });
@@ -92,10 +91,7 @@ router.post('/verify', async (req, res) => {
 router.delete('/account', requireAuth, async (req, res) => {
   try {
     const { userId } = req.user;
-    await Promise.all([
-      Progress.deleteMany({ userId }),
-      LoginCode.deleteMany({ userId }),
-    ]);
+    await LoginCode.deleteMany({ userId });
     console.log(`Account deleted for userId: ${userId.slice(0, 8)}...`);
     res.json({ message: 'Account deleted' });
   } catch (error) {

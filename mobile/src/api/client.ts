@@ -1,16 +1,5 @@
 import { Platform } from 'react-native';
 import { fromByteArray } from 'base64-js';
-import type {
-  TranslationResult,
-  ProgressRecord,
-  WordData,
-  GenerateTaskResponse,
-  SubmitAnswerRequest,
-  SubmitAnswerResponse,
-  TierStatsResponse,
-  LevelStatsResponse,
-  TaskType,
-} from '../types';
 
 const DEV_API_BASE = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 const API_BASE = __DEV__ ? DEV_API_BASE : 'https://lenguas.directto.link';
@@ -52,22 +41,6 @@ export async function verifyCode(email: string, code: string): Promise<{ token: 
   return response.json();
 }
 
-export async function loadWords(): Promise<WordData[]> {
-  const response = await fetch(`${API_BASE}/words`, { headers: authHeaders() });
-  if (!response.ok) {
-    throw new Error('Failed to load words');
-  }
-  return response.json();
-}
-
-export async function translate(word: string): Promise<TranslationResult> {
-  const response = await fetch(`${API_BASE}/translate/${encodeURIComponent(word)}`, { headers: authHeaders() });
-  if (!response.ok) {
-    throw new Error('Failed to translate word');
-  }
-  return response.json();
-}
-
 export async function speak(text: string, language = 'de'): Promise<string> {
   const response = await fetch(`${API_BASE}/speak/${encodeURIComponent(text)}?language=${language}`, { headers: authHeaders() });
   if (!response.ok) {
@@ -76,94 +49,6 @@ export async function speak(text: string, language = 'de'): Promise<string> {
   const arrayBuffer = await response.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
   return fromByteArray(bytes);
-}
-
-export async function loadProgress(): Promise<Record<string, ProgressRecord>> {
-  const response = await fetch(`${API_BASE}/progress`, { headers: authHeaders() });
-  if (!response.ok) {
-    throw new Error('Failed to load progress');
-  }
-  const records: ProgressRecord[] = await response.json();
-  const progress: Record<string, ProgressRecord> = {};
-  for (const r of records) {
-    progress[r.word] = {
-      word: r.word,
-      timesShown: r.timesShown,
-      correctCount: r.correctCount,
-      tier: r.tier,
-      lastSeenTaskType: r.lastSeenTaskType,
-    };
-  }
-  return progress;
-}
-
-export async function saveProgress(
-  word: string,
-  data: { timesShown: number; correctCount: number; tier?: number; lastSeenTaskType?: string }
-): Promise<void> {
-  await fetch(`${API_BASE}/progress/${encodeURIComponent(word)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify(data),
-  });
-}
-
-// New level-based task generation API
-
-export async function generateTask(
-  level: string, // A1, A2, or B1
-  taskType: TaskType,
-  language = 'de',
-): Promise<GenerateTaskResponse> {
-  const response = await fetch(`${API_BASE}/generate-task`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ level, taskType, language }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to generate task');
-  }
-
-  return response.json();
-}
-
-export async function submitAnswer(
-  request: SubmitAnswerRequest
-): Promise<SubmitAnswerResponse> {
-  const response = await fetch(`${API_BASE}/submit-answer`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify(request),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to submit answer');
-  }
-
-  return response.json();
-}
-
-// Get level-based stats (new)
-export async function getLevelStats(language = 'de'): Promise<LevelStatsResponse> {
-  const response = await fetch(`${API_BASE}/level-stats?language=${language}`, { headers: authHeaders() });
-
-  if (!response.ok) {
-    throw new Error('Failed to load level stats');
-  }
-
-  return response.json();
-}
-
-// Legacy tier stats (for backward compatibility)
-export async function getTierStats(): Promise<TierStatsResponse> {
-  const response = await fetch(`${API_BASE}/tier-stats`, { headers: authHeaders() });
-
-  if (!response.ok) {
-    throw new Error('Failed to load tier stats');
-  }
-
-  return response.json();
 }
 
 export async function deleteAccount(): Promise<void> {
@@ -177,78 +62,42 @@ export async function deleteAccount(): Promise<void> {
   }
 }
 
-// Compare user's pronunciation against Polly TTS reference using MFCC + DTW
-export async function comparePronunciation(
-  audioBase64: string,
-  targetWord: string,
-  language = 'de',
-  pos?: string,
-): Promise<{ similarity: number; isCorrect: boolean; articleMissing?: boolean; recognizedText?: string }> {
-  const response = await fetch(`${API_BASE}/compare-pronunciation`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ audio: audioBase64, targetWord, language, pos }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Pronunciation comparison failed');
-  }
-
-  return response.json();
+export interface SentenceWord {
+  word: string;
+  pos: 'noun' | 'verb';
+  translation: string;
+  explanation: string | null;
 }
 
-export async function translateWord(
-  word: string,
+export interface SentenceTranslation {
+  translation: string;
+  words: SentenceWord[];
+}
+
+export async function translateSentence(
   sentence: string,
   language: string,
-): Promise<{ translation: string; explanation: string | null }> {
-  const url = `${API_BASE}/translate/word`;
-  console.log('[DEBUG translateWord] request', { url, word, sentence, language, hasAuthToken: !!_authToken });
+): Promise<SentenceTranslation> {
+  const url = `${API_BASE}/translate/sentence`;
+  console.log('[DEBUG translateSentence] request', { url, sentence, language, hasAuthToken: !!_authToken });
   let response: Response;
   try {
     response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...authHeaders() },
-      body: JSON.stringify({ word, sentence, language }),
+      body: JSON.stringify({ sentence, language }),
     });
   } catch (err: any) {
-    console.log('[DEBUG translateWord] network error', { url, error: err?.message });
+    console.log('[DEBUG translateSentence] network error', { url, error: err?.message });
     throw err;
   }
-  console.log(`[DEBUG translateWord] response status=${response.status} ok=${response.ok}`);
+  console.log(`[DEBUG translateSentence] response status=${response.status} ok=${response.ok}`);
   if (!response.ok) {
     const body = await response.text().catch(() => '');
-    console.log(`[DEBUG translateWord] NON-OK status=${response.status} body=${body}`);
-    throw new Error(`Word translation failed: ${response.status}`);
+    console.log(`[DEBUG translateSentence] NON-OK status=${response.status} body=${body}`);
+    throw new Error(`Sentence translation failed: ${response.status}`);
   }
-  const json = await response.json();
-  console.log(`[DEBUG translateWord] json=${JSON.stringify(json)}`);
-  return json;
-}
-
-export async function translatePhrase(text: string, language: string): Promise<string> {
-  const url = `${API_BASE}/translate/phrase`;
-  console.log('[DEBUG translatePhrase] request', { url, text, language, hasAuthToken: !!_authToken });
-  let response: Response;
-  try {
-    response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...authHeaders() },
-      body: JSON.stringify({ text, language }),
-    });
-  } catch (err: any) {
-    console.log('[DEBUG translatePhrase] network error', { url, error: err?.message });
-    throw err;
-  }
-  console.log(`[DEBUG translatePhrase] response status=${response.status} ok=${response.ok}`);
-  if (!response.ok) {
-    const body = await response.text().catch(() => '');
-    console.log(`[DEBUG translatePhrase] NON-OK status=${response.status} body=${body}`);
-    throw new Error(`Translation failed: ${response.status}`);
-  }
-  const json = await response.json();
-  console.log(`[DEBUG translatePhrase] json=${JSON.stringify(json)}`);
-  return json.translation as string;
+  return response.json();
 }
 
 export async function parseChapterText(
@@ -263,13 +112,4 @@ export async function parseChapterText(
   if (!response.ok) throw new Error(`Chapter parsing failed: ${response.status}`);
   const { paragraphs } = await response.json();
   return paragraphs as string[][];
-}
-
-export async function blockWord(targetWord: string, level: string, language: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/block-word`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ targetWord, level, language }),
-  });
-  if (!response.ok) throw new Error('Failed to block word');
 }

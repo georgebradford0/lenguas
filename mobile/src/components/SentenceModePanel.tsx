@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
-  ScrollView, Dimensions,
+  View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
-import { speak, translatePhrase, translateWord } from '../api/client';
+import { speak, translateSentence } from '../api/client';
+import type { SentenceWord } from '../api/client';
 import { cleanWord } from '../utils/epubParser';
 import type { Sentence } from '../utils/epubParser';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
@@ -13,59 +13,67 @@ import type { Language } from '../types';
 
 type Sound = ReturnType<typeof createSound>;
 
-export const PANEL_HEIGHT = Math.round(Dimensions.get('window').height * 0.58);
-
-interface WordResult {
-  word: string;
-  translation: string;
-  explanation: string | null;
-}
-
 interface Props {
-  sentences: Sentence[];
-  currentIdx: number;
+  sentence: Sentence;
   language: Language;
-  onClose: () => void;
-  onNext: () => void;
+  position: { current: number; total: number };
+  chapterTitle: string;
+  canPrev: boolean;
+  canNext: boolean;
   onPrev: () => void;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 export function SentenceModePanel({
-  sentences, currentIdx, language, onClose, onNext, onPrev,
+  sentence, language, position, chapterTitle, canPrev, canNext, onPrev, onNext, onBack,
 }: Props) {
-  const [sentenceTranslation, setSentenceTranslation] = useState<string | null>(null);
+  const [translation, setTranslation] = useState<string | null>(null);
+  const [contentWords, setContentWords] = useState<SentenceWord[]>([]);
   const [translating, setTranslating] = useState(false);
-  const [wordResult, setWordResult] = useState<WordResult | null>(null);
-  const [wordLoading, setWordLoading] = useState(false);
+  const [selectedWord, setSelectedWord] = useState<SentenceWord | null>(null);
   const [audioLoading, setAudioLoading] = useState(false);
   const soundRef = useRef<Sound | null>(null);
 
-  const sentence = sentences[currentIdx];
+  // Map cleaned-lowercased surface form → word entry, so taps look up data we already fetched.
+  const contentLookup = useMemo(() => {
+    const m = new Map<string, SentenceWord>();
+    for (const w of contentWords) {
+      const key = cleanWord(w.word).toLowerCase();
+      if (key && !m.has(key)) m.set(key, w);
+    }
+    return m;
+  }, [contentWords]);
 
-  // On sentence change: fetch translation + auto-play
+  // On sentence change: fetch translation + content words, auto-play audio.
   useEffect(() => {
-    console.log('[DEBUG SentenceModePanel] sentence change', { currentIdx, sentenceId: sentence?.id, raw: sentence?.raw, language });
     if (!sentence) return;
-    setWordResult(null);
-    setSentenceTranslation(null);
+    setSelectedWord(null);
+    setTranslation(null);
+    setContentWords([]);
     setTranslating(true);
 
-    console.log('[DEBUG SentenceModePanel] calling translatePhrase', { text: sentence.raw, language });
-    translatePhrase(sentence.raw, language)
-      .then(t => {
-        console.log('[DEBUG SentenceModePanel] translatePhrase success', { translation: t });
-        setSentenceTranslation(t);
+    let cancelled = false;
+    translateSentence(sentence.raw, language)
+      .then(res => {
+        if (cancelled) return;
+        setTranslation(res.translation || '—');
+        setContentWords(res.words || []);
       })
       .catch(err => {
-        console.log('[DEBUG SentenceModePanel] translatePhrase error', { error: err?.message });
-        setSentenceTranslation('—');
+        console.log('[SentenceMode] translateSentence error', err?.message);
+        if (!cancelled) {
+          setTranslation('—');
+          setContentWords([]);
+        }
       })
-      .finally(() => setTranslating(false));
+      .finally(() => { if (!cancelled) setTranslating(false); });
 
     playAudio(sentence.raw);
-  }, [currentIdx, sentence?.id]);
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sentence.id, language]);
 
-  // Cleanup audio on unmount
   useEffect(() => () => { stopAudio(); }, []);
 
   async function stopAudio() {
@@ -110,96 +118,78 @@ export function SentenceModePanel({
     }
   }
 
-  const handleWordTap = useCallback(async (rawWord: string) => {
-    console.log('[DEBUG SentenceModePanel] handleWordTap', { rawWord, sentenceId: sentence?.id });
-    if (!sentence) return;
-    const clean = cleanWord(rawWord);
-    console.log('[DEBUG SentenceModePanel] cleaned word', { rawWord, clean });
-    if (!clean) {
-      console.log('[DEBUG SentenceModePanel] cleaned word empty, skipping');
-      return;
-    }
-    setWordResult(null);
-    setWordLoading(true);
-    try {
-      console.log('[DEBUG SentenceModePanel] calling translateWord', { clean, sentence: sentence.raw, language });
-      const result = await translateWord(clean, sentence.raw, language);
-      console.log('[DEBUG SentenceModePanel] translateWord success', { clean, result });
-      setWordResult({ word: clean, ...result });
-    } catch (err: any) {
-      console.log('[DEBUG SentenceModePanel] translateWord error', { clean, error: err?.message });
-      setWordResult({ word: clean, translation: '—', explanation: null });
-    } finally {
-      setWordLoading(false);
-    }
-  }, [sentence, language]);
-
-  if (!sentence) return null;
+  function handleWordTap(rawWord: string) {
+    const entry = contentLookup.get(cleanWord(rawWord).toLowerCase());
+    if (entry) setSelectedWord(entry);
+  }
 
   return (
-    <View style={styles.panel}>
+    <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-          <Text style={styles.closeText}>✕</Text>
+        <TouchableOpacity style={styles.headerBtn} onPress={onBack}>
+          <Text style={styles.headerBtnText}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.counter}>{currentIdx + 1} / {sentences.length}</Text>
+        <View style={styles.headerCenter}>
+          <Text style={styles.headerTitle} numberOfLines={1}>{chapterTitle}</Text>
+          <Text style={styles.headerCounter}>{position.current} / {position.total}</Text>
+        </View>
         <TouchableOpacity
-          style={styles.audioButton}
+          style={styles.headerBtn}
           onPress={() => playAudio(sentence.raw)}
           disabled={audioLoading}
         >
-          <Text style={styles.audioIcon}>{audioLoading ? '⌛' : '🔊'}</Text>
+          <Text style={styles.headerBtnText}>{audioLoading ? '⌛' : '🔊'}</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Scrollable content */}
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.contentInner}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Sentence text with tappable words */}
-        <Text style={styles.sentenceText}>
-          {sentence.words.map(word =>
-            word.isWord ? (
-              <Text
-                key={word.id}
-                onPress={() => handleWordTap(word.text)}
-                style={[
-                  styles.sentenceWord,
-                  wordResult?.word === cleanWord(word.text) && styles.sentenceWordActive,
-                ]}
-              >
-                {word.text}
-              </Text>
-            ) : (
-              <Text key={word.id}>{word.text}</Text>
-            ),
-          )}
-        </Text>
-
-        {/* Sentence translation */}
-        <View style={styles.divider} />
+      {/* Body */}
+      <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
+        {/* Translation first (native language) */}
         {translating ? (
           <ActivityIndicator color={colors.primary} style={styles.loader} />
         ) : (
-          <Text style={styles.translationText}>{sentenceTranslation ?? '—'}</Text>
+          <Text style={styles.translation}>{translation ?? '—'}</Text>
         )}
 
-        {/* Word translation card */}
-        {(wordLoading || wordResult) && (
+        <View style={styles.divider} />
+
+        {/* Original sentence — only nouns/verbs tappable */}
+        <Text style={styles.original}>
+          {sentence.words.map(word => {
+            if (!word.isWord) {
+              return <Text key={word.id} style={styles.nonContent}>{word.text}</Text>;
+            }
+            const clean = cleanWord(word.text).toLowerCase();
+            const entry = contentLookup.get(clean);
+            const isPressable = !!entry;
+            const isActive = selectedWord
+              && cleanWord(selectedWord.word).toLowerCase() === clean;
+            if (isPressable) {
+              return (
+                <Text
+                  key={word.id}
+                  onPress={() => handleWordTap(word.text)}
+                  style={[styles.contentWord, isActive && styles.contentWordActive]}
+                >
+                  {word.text}
+                </Text>
+              );
+            }
+            return <Text key={word.id} style={styles.nonContent}>{word.text}</Text>;
+          })}
+        </Text>
+
+        {/* Selected word card */}
+        {selectedWord && (
           <View style={styles.wordCard}>
-            {wordLoading ? (
-              <ActivityIndicator color={colors.primary} />
-            ) : wordResult ? (
-              <>
-                <Text style={styles.wordCardLabel}>{wordResult.word}</Text>
-                <Text style={styles.wordCardTranslation}>{wordResult.translation}</Text>
-                {wordResult.explanation ? (
-                  <Text style={styles.wordCardExplanation}>{wordResult.explanation}</Text>
-                ) : null}
-              </>
+            <View style={styles.wordCardHeader}>
+              <Text style={styles.wordCardWord}>{selectedWord.word}</Text>
+              <Text style={styles.wordCardPos}>{selectedWord.pos}</Text>
+            </View>
+            <Text style={styles.wordCardTranslation}>{selectedWord.translation || '—'}</Text>
+            {selectedWord.explanation ? (
+              <Text style={styles.wordCardExplanation}>{selectedWord.explanation}</Text>
             ) : null}
           </View>
         )}
@@ -208,16 +198,16 @@ export function SentenceModePanel({
       {/* Navigation */}
       <View style={styles.nav}>
         <TouchableOpacity
-          style={[styles.navBtn, currentIdx === 0 && styles.navBtnDisabled]}
+          style={[styles.navBtn, !canPrev && styles.navBtnDisabled]}
           onPress={onPrev}
-          disabled={currentIdx === 0}
+          disabled={!canPrev}
         >
           <Text style={styles.navBtnText}>‹ Prev</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.navBtn, styles.navBtnNext, currentIdx >= sentences.length - 1 && styles.navBtnDisabled]}
+          style={[styles.navBtn, styles.navBtnNext, !canNext && styles.navBtnDisabled]}
           onPress={onNext}
-          disabled={currentIdx >= sentences.length - 1}
+          disabled={!canNext}
         >
           <Text style={[styles.navBtnText, styles.navBtnNextText]}>Next ›</Text>
         </TouchableOpacity>
@@ -227,121 +217,96 @@ export function SentenceModePanel({
 }
 
 const styles = StyleSheet.create({
-  panel: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: PANEL_HEIGHT,
-    backgroundColor: colors.cardBackground,
-    borderTopLeftRadius: borderRadius.lg,
-    borderTopRightRadius: borderRadius.lg,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: colors.border,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 16,
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
   },
+
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+    backgroundColor: colors.cardBackground,
   },
-  closeButton: { padding: spacing.xs },
-  closeText: { fontSize: fontSize.xs, color: colors.muted },
-  counter: { fontSize: 13, color: colors.muted, fontWeight: '500' },
-  audioButton: { padding: spacing.xs },
-  audioIcon: { fontSize: 20 },
+  headerBtn: { padding: spacing.xs, minWidth: 36, alignItems: 'center' },
+  headerBtnText: { fontSize: fontSize.md, color: colors.text },
+  headerCenter: { flex: 1, alignItems: 'center' },
+  headerTitle: { fontSize: fontSize.xs, fontWeight: '600', color: colors.text },
+  headerCounter: { fontSize: 12, color: colors.muted, marginTop: 2 },
 
-  content: { flex: 1 },
-  contentInner: {
+  body: {
     paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.md,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.lg,
+    flexGrow: 1,
   },
+  loader: { marginVertical: spacing.lg },
 
-  sentenceText: {
-    fontSize: fontSize.sm,
+  translation: {
+    fontSize: fontSize.md,
     color: colors.text,
-    lineHeight: fontSize.sm * 1.6,
-    fontWeight: '500',
-  },
-  sentenceWord: {
-    color: colors.text,
-  },
-  sentenceWordActive: {
-    color: colors.primary,
-    backgroundColor: '#dbeafe',
-    borderRadius: 2,
+    fontWeight: '600',
+    lineHeight: fontSize.md * 1.4,
   },
 
   divider: {
     height: 1,
     backgroundColor: colors.border,
-    marginVertical: spacing.sm,
+    marginVertical: spacing.md,
   },
-  translationText: {
-    fontSize: fontSize.xs,
-    color: colors.primary,
-    fontWeight: '500',
-    lineHeight: fontSize.xs * 1.5,
-  },
-  loader: { marginVertical: spacing.xs },
 
-  wordCard: {
-    marginTop: spacing.sm,
-    backgroundColor: colors.background,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.sm,
-    gap: 4,
-  },
-  wordCardLabel: {
-    fontSize: 13,
+  original: {
+    fontSize: fontSize.sm,
     color: colors.muted,
-    fontWeight: '500',
+    lineHeight: fontSize.sm * 1.7,
   },
-  wordCardTranslation: {
-    fontSize: fontSize.xs,
+  nonContent: { color: colors.muted },
+  contentWord: {
     color: colors.text,
     fontWeight: '600',
   },
-  wordCardExplanation: {
-    fontSize: 13,
-    color: colors.muted,
-    lineHeight: 18,
-    marginTop: 2,
+  contentWordActive: {
+    color: colors.primary,
+    backgroundColor: '#dbeafe',
+    borderRadius: 2,
   },
+
+  wordCard: {
+    marginTop: spacing.lg,
+    backgroundColor: colors.cardBackground,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
+    gap: 6,
+  },
+  wordCardHeader: { flexDirection: 'row', alignItems: 'baseline', gap: spacing.sm },
+  wordCardWord: { fontSize: fontSize.sm, color: colors.text, fontWeight: '700' },
+  wordCardPos: { fontSize: 12, color: colors.muted, textTransform: 'uppercase' },
+  wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
+  wordCardExplanation: { fontSize: 13, color: colors.muted, lineHeight: 18 },
 
   nav: {
     flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: colors.border,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    paddingVertical: spacing.sm,
     gap: spacing.sm,
+    backgroundColor: colors.cardBackground,
   },
   navBtn: {
     flex: 1,
-    paddingVertical: spacing.xs,
+    paddingVertical: spacing.sm,
     alignItems: 'center',
     borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
   },
-  navBtnNext: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
+  navBtnNext: { backgroundColor: colors.primary, borderColor: colors.primary },
   navBtnDisabled: { opacity: 0.3 },
   navBtnText: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
   navBtnNextText: { color: '#fff' },

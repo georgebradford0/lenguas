@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
   FlatList, Platform, ListRenderItemInfo, Alert,
@@ -11,29 +11,11 @@ import {
   getState, setCurrentBook, setPosition,
 } from '../utils/bookStorage';
 import type { BookSummary } from '../utils/bookStorage';
-import { EpubReader } from '../components/EpubReader';
-import { TranslationCard } from '../components/TranslationCard';
-import { WordContextMenu } from '../components/WordContextMenu';
-import { SentenceModePanel, PANEL_HEIGHT } from '../components/SentenceModePanel';
+import { SentenceModePanel } from '../components/SentenceModePanel';
 import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
 import type { Language } from '../types';
 
 type Phase = 'loading' | 'library' | 'parsing' | 'toc' | 'reading';
-
-const CARD_HEIGHT = 230;
-
-interface SelectedWord {
-  wordId: string;
-  word: string;
-  sentence: string;
-}
-
-interface ContextMenuState {
-  visible: boolean;
-  wordId: string;
-  word: string;
-  sentence: Sentence | null;
-}
 
 export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>('loading');
@@ -45,12 +27,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   const [library, setLibrary] = useState<BookSummary[]>([]);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [currentTocIdx, setCurrentTocIdx] = useState(0);
-  const [selected, setSelected] = useState<SelectedWord | null>(null);
-  const [contextMenu, setContextMenu] = useState<ContextMenuState>({
-    visible: false, wordId: '', word: '', sentence: null,
-  });
-  const [sentenceModeActive, setSentenceModeActive] = useState(false);
-  const [sentenceModeIdx, setSentenceModeIdx] = useState(0);
+  const [sentenceIdx, setSentenceIdx] = useState(0);
 
   // ── Init: load library + auto-resume current book ────────────────────────────
 
@@ -74,6 +51,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
             if (chapter) {
               setCurrentChapter(chapter);
               setCurrentTocIdx(tocIdx);
+              setSentenceIdx(0);
               setPhase('reading');
               return;
             }
@@ -117,9 +95,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       epubRef.current = handle;
       setEpubTitle(handle.title);
       setToc(handle.toc);
-      setSelected(null);
 
-      // Persist parsed book + mark as current
       try {
         await saveBook(serializeEpubHandle(handle));
         await setCurrentBook(language, handle.id);
@@ -128,7 +104,6 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
         console.error('[ReadAlong] failed to persist book', e);
       }
 
-      // Open at chapter 0 (or saved position if reopening the same book)
       const state = await getState(language);
       const tocIdx = state.positions[handle.id] ?? 0;
       openChapter(tocIdx);
@@ -160,7 +135,6 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       epubRef.current = handle;
       setEpubTitle(handle.title);
       setToc(handle.toc);
-      setSelected(null);
       await setCurrentBook(language, handle.id);
       const state = await getState(language);
       const tocIdx = state.positions[handle.id] ?? 0;
@@ -197,38 +171,26 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     setToc([]);
     setCurrentChapter(null);
     setCurrentTocIdx(0);
-    setSelected(null);
-    setSentenceModeActive(false);
+    setSentenceIdx(0);
     await refreshLibrary();
     setPhase('library');
   }
 
   // ── Chapter loading ──────────────────────────────────────────────────────────
 
-  function openChapter(tocIdx: number) {
+  function openChapter(tocIdx: number, sentenceStart = 0) {
     const handle = epubRef.current;
     if (!handle) return;
     const entry = handle.toc[tocIdx];
     if (!entry) return;
     const chapter = handle.chapters[entry.href];
     if (!chapter) { setError('Chapter not available.'); return; }
-    setSelected(null);
     setCurrentChapter(chapter);
     setCurrentTocIdx(tocIdx);
+    setSentenceIdx(sentenceStart);
     setPhase('reading');
     setPosition(language, handle.id, tocIdx).catch(() => {});
   }
-
-  // ── Word press ───────────────────────────────────────────────────────────────
-
-  const handleWordPress = useCallback((wordId: string, word: string, sentence: Sentence) => {
-    if (sentenceModeActive) return;
-    setSelected({ wordId, word, sentence: sentence.raw });
-  }, [sentenceModeActive]);
-
-  const handleWordLongPress = useCallback((wordId: string, word: string, sentence: Sentence) => {
-    setContextMenu({ visible: true, wordId, word, sentence });
-  }, []);
 
   // ── Rendering ────────────────────────────────────────────────────────────────
 
@@ -340,92 +302,65 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     );
   }
 
-  // ── Reading ──────────────────────────────────────────────────────────────────
+  // ── Reading: one sentence at a time, fullscreen ─────────────────────────────
 
   if (phase === 'reading' && currentChapter) {
-    const prevIdx = currentTocIdx > 0 ? currentTocIdx - 1 : null;
-    const nextIdx = currentTocIdx < toc.length - 1 ? currentTocIdx + 1 : null;
+    const allSentences: Sentence[] = currentChapter.paragraphs.flatMap(p => p.sentences);
+    const current = allSentences[sentenceIdx];
 
-    const allSentences = currentChapter.paragraphs.flatMap(p => p.sentences);
-    const highlightedSentenceId = sentenceModeActive ? (allSentences[sentenceModeIdx]?.id ?? null) : null;
+    if (!current) {
+      return (
+        <View style={styles.centeredContainer}>
+          <Text style={styles.loadingText}>No sentences in this chapter.</Text>
+          <TouchableOpacity style={styles.primaryButton} onPress={() => setPhase('toc')}>
+            <Text style={styles.primaryButtonText}>Back to chapters</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    const isFirstChapter = currentTocIdx === 0;
+    const isLastChapter = currentTocIdx >= toc.length - 1;
+    const canPrev = sentenceIdx > 0 || !isFirstChapter;
+    const canNext = sentenceIdx < allSentences.length - 1 || !isLastChapter;
+
+    function handlePrev() {
+      if (sentenceIdx > 0) {
+        setSentenceIdx(i => i - 1);
+        return;
+      }
+      if (currentTocIdx === 0) return;
+      const handle = epubRef.current;
+      if (!handle) return;
+      const prevEntry = handle.toc[currentTocIdx - 1];
+      const prevChapter = prevEntry && handle.chapters[prevEntry.href];
+      if (!prevChapter) return;
+      const lastIdx = prevChapter.paragraphs.reduce((n, p) => n + p.sentences.length, 0) - 1;
+      openChapter(currentTocIdx - 1, Math.max(0, lastIdx));
+    }
+
+    function handleNext() {
+      if (sentenceIdx < allSentences.length - 1) {
+        setSentenceIdx(i => i + 1);
+        return;
+      }
+      if (currentTocIdx >= toc.length - 1) return;
+      openChapter(currentTocIdx + 1, 0);
+    }
 
     return (
-      <View style={styles.fullContainer}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.headerBack} onPress={() => { setSelected(null); setSentenceModeActive(false); setPhase('toc'); }}>
-            <Text style={styles.headerBackText}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle} numberOfLines={1}>{currentChapter.title}</Text>
-          <Text style={styles.chapterCounter}>{currentTocIdx + 1}/{toc.length}</Text>
-        </View>
-
-        {/* Chapter content */}
-        <EpubReader
-          chapter={currentChapter}
-          selectedWordId={sentenceModeActive ? null : (selected?.wordId ?? null)}
-          highlightedSentenceId={highlightedSentenceId}
-          onWordPress={handleWordPress}
-          onWordLongPress={handleWordLongPress}
-          bottomPadding={sentenceModeActive ? PANEL_HEIGHT : (selected ? CARD_HEIGHT : 0)}
-        />
-
-        {/* Chapter navigation — hidden during sentence mode */}
-        {!sentenceModeActive && (
-          <View style={styles.chapterNav}>
-            <TouchableOpacity
-              style={[styles.navButton, !prevIdx && prevIdx !== 0 && styles.navButtonDisabled]}
-              onPress={prevIdx !== null ? () => openChapter(prevIdx) : undefined}
-              disabled={prevIdx === null}
-            >
-              <Text style={styles.navButtonText}>‹ Prev</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.navButton, nextIdx === null && styles.navButtonDisabled]}
-              onPress={nextIdx !== null ? () => openChapter(nextIdx) : undefined}
-              disabled={nextIdx === null}
-            >
-              <Text style={styles.navButtonText}>Next ›</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Translation card — hidden during sentence mode */}
-        {selected && !sentenceModeActive && (
-          <TranslationCard
-            wordId={selected.wordId}
-            word={selected.word}
-            sentence={selected.sentence}
-            language={language}
-            onDismiss={() => setSelected(null)}
-          />
-        )}
-
-        {/* Word context menu (long-press popup) */}
-        <WordContextMenu
-          visible={contextMenu.visible}
-          onDismiss={() => setContextMenu(prev => ({ ...prev, visible: false }))}
-          onSentenceBysentence={() => {
-            if (!contextMenu.sentence) return;
-            const idx = allSentences.findIndex(s => s.id === contextMenu.sentence!.id);
-            setSentenceModeIdx(idx >= 0 ? idx : 0);
-            setSelected(null);
-            setSentenceModeActive(true);
-          }}
-        />
-
-        {/* Sentence-by-sentence panel */}
-        {sentenceModeActive && (
-          <SentenceModePanel
-            sentences={allSentences}
-            currentIdx={sentenceModeIdx}
-            language={language}
-            onClose={() => { setSentenceModeActive(false); setSentenceModeIdx(0); }}
-            onNext={() => setSentenceModeIdx(i => Math.min(i + 1, allSentences.length - 1))}
-            onPrev={() => setSentenceModeIdx(i => Math.max(i - 1, 0))}
-          />
-        )}
-      </View>
+      <SentenceModePanel
+        key={`${currentTocIdx}-${current.id}`}
+        sentence={current}
+        language={language}
+        position={{ current: sentenceIdx + 1, total: allSentences.length }}
+        chapterTitle={`${currentChapter.title} · ${currentTocIdx + 1}/${toc.length}`}
+        canPrev={canPrev}
+        canNext={canNext}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        onBack={() => setPhase('toc')}
+      />
     );
   }
 
@@ -476,7 +411,6 @@ const styles = StyleSheet.create({
   headerRight: { width: 36 },
   headerLibraryButton: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
   headerLibraryText: { color: colors.primary, fontSize: 13, fontWeight: '600' },
-  chapterCounter: { fontSize: 13, color: colors.muted, marginLeft: spacing.xs },
 
   // Library
   libraryActions: {
@@ -547,21 +481,4 @@ const styles = StyleSheet.create({
   },
   tocChevron: { fontSize: fontSize.md, color: colors.muted, marginLeft: spacing.xs },
   separator: { height: 1, backgroundColor: colors.border },
-
-  // Chapter navigation
-  chapterNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    backgroundColor: colors.cardBackground,
-  },
-  navButton: {
-    paddingVertical: spacing.xs,
-    paddingHorizontal: spacing.sm,
-  },
-  navButtonDisabled: { opacity: 0.3 },
-  navButtonText: { color: colors.primary, fontSize: fontSize.xs, fontWeight: '500' },
 });
