@@ -39,8 +39,11 @@ AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
 AWS_REGION=${AWS_REGION:-us-east-1}
 EOF"
 
-echo "🐳 Step 4: Pulling latest image and starting containers..."
-$SSH_CMD $EC2_HOST "cd $REMOTE_DIR && docker compose pull && docker compose up -d"
+echo "🐳 Step 4: Pulling latest image and recreating api..."
+# --force-recreate api ensures we always run the freshly-pulled image, even when
+# compose thinks the running container's config is unchanged (which happens
+# when only the underlying :latest digest moved). mongo is unaffected.
+$SSH_CMD $EC2_HOST "cd $REMOTE_DIR && docker compose pull && docker compose up -d --force-recreate api"
 
 echo "⏳ Step 5: Waiting for services to start..."
 sleep 5
