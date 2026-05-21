@@ -13,7 +13,7 @@ services:
       - language-app-network
 
   api:
-    build: ./api/v0
+    image: ghcr.io/georgebradford0/lenguas-api:latest
     container_name: language-app-api
     restart: unless-stopped
     ports:

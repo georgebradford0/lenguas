@@ -1,368 +1,218 @@
-# Claude Code Instructions for Language Learning App
+# Claude Code Instructions for Lenguas
 
 ## Project Overview
 
-This is a language learning app using the European Framework levels (A1/A2/B1). It generates simple word translation tasks from curated vocabulary lists, with spaced repetition and mastery tracking.
+Lenguas is a mobile reading app for language learners. The user opens an EPUB in their target language (German, Dutch, French, or Spanish) and reads it one sentence at a time: the English translation appears on top, the original sentence below with **only nouns and verbs tappable**. Tapping a noun/verb shows its contextual translation plus, when relevant, a one-sentence grammar explanation.
+
+Auth is passwordless — a 6-digit code is emailed via AWS SES and exchanged for a JWT.
 
 **Architecture:**
-- **Frontend**: React Native mobile app (`mobile/` directory)
-- **Backend**: Express.js API (`api/v0/` directory)
-- **Database**: MongoDB (for progress tracking)
-- **Deployment**: Docker containers on AWS EC2 (35.88.113.219)
-- **Vocabulary**: JSON files in `wordlists/` directory (a1_vocabulary.json, a2_vocabulary.json, b1_vocabulary.json)
+- **Frontend**: React Native app (`mobile/`)
+- **Backend**: Express.js API (`api/v0/`)
+- **Database**: MongoDB (only stores short-lived `LoginCode` documents — there is no user-progress tracking)
+- **Image registry**: `ghcr.io/georgebradford0/lenguas-api`
+- **Deployment**: Docker containers on AWS EC2 (`ec2-16-144-226-254.us-west-2.compute.amazonaws.com`)
+- **External services**: OpenAI (translation), AWS Polly (TTS), AWS SES (email)
 
 ## Key Files & Locations
 
-### Backend (API)
-- **`api/v0/routes/generateTask.js`**: Core task generation logic
-  - `loadVocabulary()`: Loads vocab from JSON files
-  - `parsePluralForm()`: Parses German plural markers (e.g., "die Adresse, -en")
-  - `selectWord()`: Weighted selection for spaced repetition
-  - `generateDistractors()`: Creates wrong answer choices
-  - Endpoints: `/generate-task`, `/submit-answer`, `/level-stats`
+### Backend (`api/v0/`)
+- `index.js` — Express app, mounts auth/speak/translate routes
+- `routes/auth.js` — `POST /auth/login`, `POST /auth/verify`, `DELETE /auth/account`
+- `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes)
+- `routes/translate.js` — `POST /translate/sentence`, `POST /translate/chapter`
+- `models/LoginCode.js` — the only Mongo model
+- `middleware/authMiddleware.js` — JWT verification
+- `config/languages.js` — per-language Polly voice config
+- `Dockerfile` — `node:22-alpine`, `npm ci --production`
 
-- **`api/v0/models/Progress.js`**: MongoDB schema for tracking user progress
-  - Fields: word, level (A1/A2/B1), timesShown, correctCount, lastSeenTaskType
+### Frontend (`mobile/src/`)
+- `App.tsx` — login → language pick → ReadAlongScreen
+- `screens/ReadAlongScreen.tsx` — phase machine (`loading | library | parsing | toc | reading`); the `reading` phase mounts `SentenceModePanel` fullscreen
+- `components/SentenceModePanel.tsx` — fullscreen sentence reader, fetches `/translate/sentence` per sentence, shows translation on top + original below with noun/verb taps
+- `utils/epubParser.ts` — unzips the EPUB, runs each chapter's raw lines through `/translate/chapter`, tokenizes into sentences with stable word IDs
+- `utils/bookStorage.ts` — AsyncStorage-backed library + per-language `{ currentBookId, positions }` state
+- `api/client.ts` — fetch wrappers for every endpoint above
 
-### Frontend (Mobile)
-- **`mobile/src/types/index.ts`**: TypeScript type definitions (Level, GeneratedTask, etc.)
-- **`mobile/src/hooks/useCards.ts`**: Main hook for task management
-- **`mobile/src/hooks/useApiClient.ts`**: API client for backend communication
+### Infra
+- `docker-compose.prod.yml` — pulls the GHCR image, brings up mongo + api with named containers + restart policy
+- `docker-compose.yml` — local dev compose (builds from `./api/v0`)
+- `deploy.sh` — ships compose file + writes `.env` on the remote host, then `docker compose pull && up -d`
+- `.github/workflows/api-docker.yml` — `workflow_dispatch` job that builds the API Dockerfile for `linux/amd64 + linux/arm64` and pushes to GHCR
 
-### Deployment & Infrastructure
-- **`docker-compose.prod.yml`**: Docker configuration for production deployment
-- **`deploy.sh`**: Main deployment script to AWS EC2
-- **`clear-db.sh`**: Script to clear remote database
+## Reading Flow
 
-### Vocabulary
-- **`wordlists/a1_vocabulary.json`**: 641 A1-level words
-- **`wordlists/a2_vocabulary.json`**: 904 A2-level words
-- **`wordlists/b1_vocabulary.json`**: 2,345 B1-level words
+1. App boots → loads library + auto-resumes current book if one is saved.
+2. User picks (or adds) an EPUB. New books are parsed: each chapter's raw HTML lines go to `POST /translate/chapter`, which uses OpenAI to drop non-content, merge paragraphs, and split sentences without translating. Parsed books are persisted locally so reopens are instant.
+3. Opening a chapter drops into fullscreen sentence mode at the saved position (or sentence 0). `SentenceModePanel` calls `POST /translate/sentence` for every sentence; the response carries the whole-sentence translation **and** a pre-computed list of nouns/verbs with per-word translation/explanation, so taps don't make a second API call.
+4. Prev/Next walks within the chapter and auto-advances across chapter boundaries. Back returns to the TOC.
 
-## Deployment Process
+## API Endpoints
 
-### Deploy to Remote Server
+All `/speak`, `/translate/*` routes require a JWT bearer token.
+
+- `POST /auth/login` — body `{ email }` → emails a 6-digit code
+- `POST /auth/verify` — body `{ email, code }` → `{ token, userId }`
+- `DELETE /auth/account` — deletes the caller's pending login codes
+- `GET /health` — `{ status: "ok" }`
+- `GET /speak/:text?language=de|nl|fr|es` — mp3 bytes via Polly
+- `POST /translate/sentence` — body `{ sentence, language }` →
+  ```
+  { translation: string,
+    words: [{ word, pos: 'noun'|'verb', translation, explanation: string|null }] }
+  ```
+  `word` is the inflected surface form as it appears in the sentence, not a lemma.
+- `POST /translate/chapter` — body `{ rawLines: string[], language }` → `{ paragraphs: string[][] }` (structured sentences, no translation)
+
+## Building & Publishing the API Image
+
+The image is **not** built on the EC2 box. Builds happen in CI (or locally) and the host pulls.
+
+**CI build** (`workflow_dispatch`): GitHub → Actions → "Build and Push API Image" → Run workflow. Pushes `:latest` and `:sha-<short>` to GHCR. Optional input adds a version tag (e.g. `v1.2.3`).
+
+**Local build** (multi-arch via buildx, useful when CI is unavailable):
+```bash
+gh auth token | docker login ghcr.io -u georgebradford0 --password-stdin
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  --tag ghcr.io/georgebradford0/lenguas-api:latest \
+  --tag ghcr.io/georgebradford0/lenguas-api:sha-$(git rev-parse --short HEAD) \
+  --push ./api/v0
+```
+
+The image is currently **private**; toggling public is a one-time UI flip at https://github.com/users/georgebradford0/packages/container/lenguas-api/settings .
+
+## Deploying the Backend
 
 ```bash
 ./deploy.sh
 ```
 
-**What it does:**
-1. Creates remote directory on EC2 server
-2. Copies API files (excluding node_modules)
-3. Copies wordlists directory
-4. Copies docker-compose.prod.yml
-5. Creates .env file with OPENAI_API_KEY
-6. Builds and starts Docker containers
-7. Shows service status
+What it does:
+1. Reads local `.env` (or environment) for `OPENAI_API_KEY` and `AWS_*`.
+2. SCPs `docker-compose.prod.yml` to the EC2 box.
+3. Writes a fresh `.env` on the host (sources `JWT_SECRET` from `~/.lenguas_secrets` on the box).
+4. `docker compose pull && docker compose up -d` — recreates only the api container; mongo keeps running off its volume.
 
-**Requirements:**
-- SSH key: `~/Documents/lenovo-ideapad.pem`
-- Environment variable: `OPENAI_API_KEY` must be set
-- Optional: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`
+**One-time prerequisites on the EC2 box:**
+- Docker installed.
+- If the GHCR image is still private: `echo "$GHCR_PAT" | docker login ghcr.io -u georgebradford0 --password-stdin`.
+- `~/.lenguas_secrets` contains `LENGUAS_JWT_SECRET=...`.
 
-**Remote Server Details:**
-- Host: ubuntu@35.88.113.219
-- Remote directory: /home/ubuntu/language-app
+**Remote details:**
+- Host: `ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com`
+- Remote dir: `/home/ubuntu/lenguas`
 - API port: 3000
-- MongoDB port: 27018 (external), 27017 (internal)
+- Mongo: container port 27017, host port 27018
 
-### Verify Deployment
-
-After deployment, check:
-- Health: http://35.88.113.219:3000/health
-- Level stats: http://35.88.113.219:3000/level-stats
-
-## Database Management
-
-### Clear Remote Database
-
+**Verify after deploy:**
 ```bash
-./clear-db.sh
+curl http://ec2-16-144-226-254.us-west-2.compute.amazonaws.com:3000/health
 ```
-
-This drops the entire `language-app` database on the remote server, clearing:
-- `progress` collection (user progress tracking)
-- `pronounhistories` collection (if exists)
-
-**Use when:**
-- Starting fresh in development
-- Testing new progression logic
-- Major schema changes
-
-## Testing
-
-### Test Plural Parsing Locally
-
-```bash
-node test-plural-parsing.js
-```
-
-Tests the German plural marker parsing logic with cases like:
-- "die Adresse,-en" → "die Adresse (pl: die Adressen)"
-- "der Apfel, -Ä" → "der Apfel (pl: die Äpfel)"
-- "das Haus, -ä, er" → "das Haus (pl: die Häuser)"
-
-## Common Development Tasks
-
-### 1. Modifying Task Generation Logic
-
-**File:** `api/v0/routes/generateTask.js`
-
-When changing how tasks are generated:
-1. Read the file first to understand current logic
-2. Make changes using Edit tool
-3. Test locally if possible (create test file)
-4. Deploy with `./deploy.sh`
-5. Verify with http://35.88.113.219:3000/level-stats
-
-### 2. Adding New Vocabulary Words
-
-**Files:** `wordlists/a1_vocabulary.json`, `a2_vocabulary.json`, `b1_vocabulary.json`
-
-Format:
-```json
-{
-  "word": "Adresse",
-  "full_entry": "die Adresse, -en",
-  "pos": "noun"
-}
-```
-
-After adding words:
-1. Deploy with `./deploy.sh` (will sync wordlists)
-2. Check stats endpoint to verify new word count
-
-### 3. Changing Progress Tracking
-
-**File:** `api/v0/models/Progress.js`
-
-When modifying schema or progression logic:
-1. Update model schema if needed
-2. Update `determineCurrentLevel()` function in generateTask.js if changing unlock criteria
-3. Consider clearing database with `./clear-db.sh` for testing
-4. Deploy changes
-
-### 4. Frontend Changes
-
-**Files:** `mobile/src/` directory
-
-Frontend changes don't require deployment (mobile app is not deployed to EC2).
-Only deploy backend changes that affect API endpoints.
-
-## Level Progression System
-
-**Mastery Criteria:**
-- Word is "mastered" when: 7+ attempts AND 75%+ accuracy
-
-**Level Unlocking:**
-- A1: Always available
-- A2: Unlocks when 75% of A1 words are mastered
-- B1: Unlocks when 75% of A2 words are mastered
-
-**Implementation:** See `determineCurrentLevel()` in generateTask.js
-
-## German Plural Markers
-
-The app parses German plural markers to display both singular and plural forms:
-
-**Format:** `article word, pluralMarker`
-
-**Examples:**
-- `-en`: "die Adresse, -en" → "die Adressen"
-- `-e`: "das Angebot, -e" → "die Angebote"
-- `-s`: "das Auto, -s" → "die Autos"
-- `-Ä`: "der Apfel, -Ä" → "die Äpfel" (umlaut only)
-- `ä, er`: "das Haus, -ä, er" → "die Häuser" (umlaut + ending)
-- `–` or `-`: No plural change (same as singular)
-
-**Implementation:** `parsePluralForm()` function in generateTask.js
 
 ## Mobile Deployment (iOS / TestFlight)
-
-### Deploy to TestFlight
 
 ```bash
 cd mobile/ios && bundle exec fastlane beta
 ```
 
-**What it does:**
-1. Builds a release IPA (`build_app` via Xcode)
-2. Uploads to TestFlight on App Store Connect
+Builds a release IPA via Xcode and uploads to TestFlight.
 
 **Requirements:**
 - App Store Connect team API key (`AuthKey_7XMT6777TY.p8`) in `mobile/ios/fastlane/`
-- `bundle` (Bundler) available: `gem install bundler` if missing
+- `bundle` (Bundler) available — `gem install bundler` if missing
 
 **Before deploying:**
-1. Bump `CURRENT_PROJECT_VERSION` (integer, increment by 1) and `MARKETING_VERSION` (semver) in `mobile/ios/Lenguas.xcodeproj/project.pbxproj`
-2. Commit the version bump and any other changes
-3. Run `bundle exec fastlane beta` from `mobile/ios/`
+1. Bump `CURRENT_PROJECT_VERSION` (integer, +1) and `MARKETING_VERSION` (semver) in `mobile/ios/Lenguas.xcodeproj/project.pbxproj`.
+2. Commit the version bump.
+3. Run `bundle exec fastlane beta` from `mobile/ios/`.
 
-**Upload only (skip rebuild):**
-```bash
-cd mobile/ios && bundle exec fastlane upload
-```
+Upload only (skip rebuild): `bundle exec fastlane upload`.
 
-**Fastfile location:** `mobile/ios/fastlane/Fastfile`
+Fastfile: `mobile/ios/fastlane/Fastfile`.
 
----
-
-## Mobile Deployment (Google Play)
-
-### Deploy to Google Play (Closed / Alpha Track)
+## Mobile Deployment (Google Play / Alpha)
 
 ```bash
 cd mobile/android && bundle exec fastlane closed
 ```
 
-**What it does:**
-1. Builds a release AAB (`bundleRelease` via Gradle)
-2. Uploads to the **alpha** (closed testing) track on Google Play
+Builds a release AAB via Gradle and uploads to the alpha track.
 
 **Requirements:**
-- Release keystore configured in `mobile/android/gradle.properties` (`LENGUAS_RELEASE_*` keys)
-- Google Play service account JSON key (`zotik-456123-a116e792e9e6.json`) in `mobile/android/fastlane/`
-- `bundle` (Bundler) available: `gem install bundler` if missing
+- Release keystore in `mobile/android/gradle.properties` (`LENGUAS_RELEASE_*` keys)
+- Google Play service account JSON (`zotik-456123-a116e792e9e6.json`) in `mobile/android/fastlane/`
 
 **Before deploying:**
-1. Bump `versionCode` (integer, increment by 1) and `versionName` (semver) in `mobile/android/app/build.gradle`
-2. Commit the version bump and any other changes
-3. Run `bundle exec fastlane closed` from `mobile/android/`
+1. Bump `versionCode` (+1) and `versionName` (semver) in `mobile/android/app/build.gradle`.
+2. Commit the version bump.
+3. Run `bundle exec fastlane closed` from `mobile/android/`.
 
-**Fastfile location:** `mobile/android/fastlane/Fastfile`
+Fastfile: `mobile/android/fastlane/Fastfile`. Version commits follow the format `Mobile Version X.Y.Z`.
 
-**Version history convention:** commit message format `Mobile Version X.Y.Z`
+## Remote Operations
 
----
-
-## Docker Container Management
-
-### View Logs (Remote)
 ```bash
-ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@35.88.113.219 'cd /home/ubuntu/language-app && docker compose logs -f'
+# View logs
+ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
+  'cd /home/ubuntu/lenguas && docker compose logs -f'
+
+# Restart api (mongo unaffected)
+ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
+  'cd /home/ubuntu/lenguas && docker compose restart api'
+
+# Pull a new image without redeploying compose
+ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
+  'cd /home/ubuntu/lenguas && docker compose pull && docker compose up -d'
+
+# API container shell
+ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
+  'docker exec -it language-app-api sh'
+
+# Mongo shell (mainly useful to inspect pending login codes)
+ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
+  'docker exec -it language-app-mongo mongosh language-app'
 ```
-
-### Restart Services (Remote)
-```bash
-ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@35.88.113.219 'cd /home/ubuntu/language-app && docker compose restart'
-```
-
-### Access API Container Shell (Remote)
-```bash
-ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@35.88.113.219 'docker exec -it language-app-api sh'
-```
-
-### Access MongoDB Shell (Remote)
-```bash
-ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@35.88.113.219 'docker exec -it language-app-mongo mongosh language-app'
-```
-
-## Troubleshooting
-
-### "Failed to load level stats" Error
-
-**Possible causes:**
-1. Vocabulary files not mounted in Docker container
-   - Check: Volume mount in docker-compose.prod.yml
-   - Fix: Ensure `./wordlists:/app/wordlists:ro` is present
-
-2. Wrong file path in code
-   - Check: `loadVocabulary()` function path resolution
-   - Container structure: `/app/routes/generateTask.js` with `/app/wordlists/`
-   - Path should be: `path.join(__dirname, '..', 'wordlists', ...)`
-
-3. Vocabulary files not deployed
-   - Fix: Run `./deploy.sh` to sync wordlists
-
-### Deployment Fails
-
-1. Check OPENAI_API_KEY is set:
-   ```bash
-   echo $OPENAI_API_KEY
-   ```
-
-2. Check SSH key permissions:
-   ```bash
-   chmod 400 ~/Documents/lenovo-ideapad.pem
-   ```
-
-3. Check EC2 server connectivity:
-   ```bash
-   ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@35.88.113.219
-   ```
-
-### Database Issues
-
-1. Clear and restart:
-   ```bash
-   ./clear-db.sh
-   ```
-
-2. Check MongoDB is running:
-   ```bash
-   ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@35.88.113.219 'docker ps | grep mongo'
-   ```
-
-## Git Workflow
-
-**IMPORTANT:** Only create git commits when explicitly requested by the user.
-
-When committing:
-1. Run `git status` and `git diff` to see changes
-2. Stage specific files (avoid `git add -A`)
-3. Write clear commit messages explaining WHY, not just WHAT
-4. Include co-author line: `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
-5. Use heredoc format for commit messages
-
-**Never use:**
-- Force push (unless explicitly requested)
-- `--no-verify` flag (unless explicitly requested)
-- `--amend` (create new commits instead)
-
-## API Endpoints
-
-- `POST /generate-task`: Generate a new word translation task
-  - Body: `{ level: 'A1'|'A2'|'B1', taskType: 'multipleChoice'|'reverseTranslation' }`
-
-- `POST /submit-answer`: Submit answer and update progress
-  - Body: `{ targetWord, level, taskType, userAnswer, correctAnswer, previousLevel }`
-
-- `GET /level-stats`: Get statistics for all levels
-  - Returns: currentLevel, levelStats, overallAccuracy, totalWords, wordProgress
-
-- `GET /tier-stats`: Legacy endpoint (maps to level-stats)
-
-- `GET /health`: Health check endpoint
 
 ## Environment Variables
 
-**Required:**
-- `OPENAI_API_KEY`: OpenAI API key for translations
+**Required for the API:**
+- `OPENAI_API_KEY` — `/translate/*`
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — SES (auth emails) + Polly (TTS)
+- `JWT_SECRET` — JWT signing
 
 **Optional:**
-- `AWS_ACCESS_KEY_ID`: AWS credentials (if using AWS services)
-- `AWS_SECRET_ACCESS_KEY`: AWS credentials
-- `AWS_REGION`: AWS region (default: us-east-1)
-- `MONGO_URI`: MongoDB connection string (default: mongodb://mongo:27017/language-app)
-- `PORT`: API port (default: 3000)
+- `MONGO_URI` (default `mongodb://mongo:27017/language-app`)
+- `PORT` (default 3000)
 
-## Best Practices for Development
+**Used by `deploy.sh` from your shell / local `.env`:**
+- `OPENAI_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`. `JWT_SECRET` is read from `~/.lenguas_secrets` on the EC2 box.
 
-1. **Always read files before editing** to understand current state
-2. **Test locally when possible** before deploying
-3. **Deploy after backend changes** using ./deploy.sh
-4. **Clear database when testing progression logic** to ensure clean state
-5. **Use parallel tool calls** for independent operations (git status + git diff, multiple file reads)
-6. **Don't create unnecessary files** - prefer editing existing files
-7. **Avoid over-engineering** - only make requested changes
-8. **Be careful with destructive actions** - confirm before force-push, database drops, etc.
+## Git Workflow
+
+**Only create commits when explicitly requested by the user.**
+
+When committing:
+1. Run `git status` and `git diff` first.
+2. Stage specific files (avoid `git add -A`).
+3. Write a message explaining WHY, not just WHAT.
+4. Include co-author line: `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`.
+5. Use heredoc format.
+
+**Never** force-push, `--no-verify`, or `--amend` without explicit instruction. Don't push without explicit instruction.
+
+## Best Practices
+
+1. **Read files before editing** — understand current state.
+2. **Prefer editing existing files** over creating new ones.
+3. **Parallelize independent tool calls** (e.g. `git status` + `git diff`, multiple `Read`s).
+4. **Only make requested changes** — no opportunistic refactors.
+5. **Confirm destructive remote actions** (force-push, dropping the prod DB, recreating containers in ways that could lose state).
+6. **For mobile changes**, no backend redeploy is needed — mobile builds ship separately via Fastlane.
 
 ## Notes for Claude
 
-- This is a development environment, but uses a remote server for backend
-- Frontend (mobile app) runs locally, backend runs on EC2
-- Always deploy backend changes after editing API code
-- Database can be freely cleared during development
-- No need to ask permission for standard deploy/test operations
-- The vocabulary lists are the source of truth - don't modify them without explicit request
+- Backend lives on EC2; mobile runs from the developer's machine via Metro.
+- After backend changes, the user must (a) trigger the GH Actions workflow or build locally, then (b) run `./deploy.sh` to roll the new image. There's no source-shipping deploy anymore.
+- The only Mongo collection in use is `logincodes`. There is no user-progress data; do not write code that assumes there is.
+- The reader keeps state locally (AsyncStorage). Clearing the remote DB only affects pending login codes.
