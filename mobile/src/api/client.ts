@@ -100,16 +100,79 @@ export async function translateSentence(
   return response.json();
 }
 
-export async function parseChapterText(
-  rawLines: string[],
+import type { SerializedBook } from '../utils/epubParser';
+
+export interface BookParseProgress {
+  phase: 'extract' | 'toc' | 'toc-done' | 'section';
+  message?: string;
+  current?: number;
+  total?: number;
+  sectionId?: string;
+  title?: string;
+  toc?: Array<{ id: string; title: string; level: number }>;
+}
+
+/**
+ * Upload an EPUB (as base64) and stream the multi-step LLM parse back.
+ * Returns the final book once /translate/book has assembled all sections.
+ *
+ * Progress events stream over a chunked HTTP response (one JSON object per line).
+ * We use XMLHttpRequest because React Native's fetch doesn't expose ReadableStream
+ * reliably across iOS/Android.
+ */
+export function parseBookWithLLM(
+  epubBase64: string,
   language: string,
-): Promise<string[][]> {
-  const response = await fetch(`${API_BASE}/translate/chapter`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ rawLines, language }),
+  title: string | null,
+  onProgress: (p: BookParseProgress) => void,
+): Promise<SerializedBook> {
+  return new Promise((resolve, reject) => {
+    const url = `${API_BASE}/translate/book`;
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    if (_authToken) xhr.setRequestHeader('Authorization', `Bearer ${_authToken}`);
+    xhr.timeout = 0; // no timeout; parsing can take many minutes
+
+    let cursor = 0;
+    let book: SerializedBook | null = null;
+    let errorMessage: string | null = null;
+
+    function processChunks() {
+      const text = xhr.responseText;
+      if (text.length <= cursor) return;
+      const lastNewline = text.lastIndexOf('\n');
+      if (lastNewline < cursor) return;
+      const complete = text.slice(cursor, lastNewline);
+      cursor = lastNewline + 1;
+      for (const line of complete.split('\n')) {
+        if (!line.trim()) continue;
+        let msg: any;
+        try { msg = JSON.parse(line); } catch { continue; }
+        if (msg.type === 'progress') {
+          onProgress(msg as BookParseProgress);
+        } else if (msg.type === 'book') {
+          book = msg.data as SerializedBook;
+        } else if (msg.type === 'error') {
+          errorMessage = String(msg.message || 'Book parsing failed');
+        }
+      }
+    }
+
+    xhr.onprogress = processChunks;
+    xhr.onload = () => {
+      processChunks();
+      if (xhr.status < 200 || xhr.status >= 300) {
+        reject(new Error(`HTTP ${xhr.status}: ${xhr.responseText.slice(0, 200)}`));
+        return;
+      }
+      if (errorMessage) reject(new Error(errorMessage));
+      else if (book) resolve(book);
+      else reject(new Error('Book parse stream ended without a book payload'));
+    };
+    xhr.onerror = () => reject(new Error('Network error during book parse'));
+    xhr.ontimeout = () => reject(new Error('Book parse timed out'));
+
+    xhr.send(JSON.stringify({ epubBase64, language, title }));
   });
-  if (!response.ok) throw new Error(`Chapter parsing failed: ${response.status}`);
-  const { paragraphs } = await response.json();
-  return paragraphs as string[][];
 }

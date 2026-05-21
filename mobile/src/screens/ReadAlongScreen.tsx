@@ -3,9 +3,12 @@ import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
   FlatList, Platform, ListRenderItemInfo, Alert,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
-import { parseEpub, serializeEpubHandle, hydrateSerializedBook } from '../utils/epubParser';
+import { hydrateSerializedBook } from '../utils/epubParser';
+import { parseBookWithLLM } from '../api/client';
+import type { BookParseProgress } from '../api/client';
 import {
   saveBook, loadBook, listBooks, deleteBook,
   getState, setCurrentBook, setPosition,
@@ -17,9 +20,23 @@ import type { Language } from '../types';
 
 type Phase = 'loading' | 'library' | 'parsing' | 'toc' | 'reading';
 
+function renderProgress(p: BookParseProgress | null): string {
+  if (!p) return 'Uploading book…';
+  switch (p.phase) {
+    case 'extract': return 'Reading EPUB…';
+    case 'toc': return 'Identifying chapters…';
+    case 'toc-done': return `${p.total ?? 0} chapters found`;
+    case 'section': {
+      const title = p.title ? ` — ${p.title}` : '';
+      return `Section ${p.current ?? 0} of ${p.total ?? 0}${title}`;
+    }
+    default: return 'Working…';
+  }
+}
+
 export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>('loading');
-  const [parseProgress, setParseProgress] = useState<{ done: number; total: number } | null>(null);
+  const [parseProgress, setParseProgress] = useState<BookParseProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
   const epubRef = useRef<EpubHandle | null>(null);
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
@@ -89,27 +106,28 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       const copy = copies[0];
       if (copy.status !== 'success') throw new Error('Failed to copy file');
 
-      const handle = await parseEpub(copy.localUri, (done, total) => {
-        setParseProgress({ done, total });
+      // Read the raw .epub bytes — server does the unzip + LLM parse.
+      const filePath = decodeURIComponent(copy.localUri.replace(/^file:\/\//, ''));
+      const epubBase64 = await RNFS.readFile(filePath, 'base64');
+      const guessedTitle = (result.name || 'book.epub').replace(/\.epub$/i, '');
+
+      const book = await parseBookWithLLM(epubBase64, language, guessedTitle, p => {
+        setParseProgress(p);
       });
+
+      await saveBook(book);
+      await setCurrentBook(language, book.id);
+      await refreshLibrary();
+
+      const handle = hydrateSerializedBook(book);
       epubRef.current = handle;
       setEpubTitle(handle.title);
       setToc(handle.toc);
 
-      try {
-        await saveBook(serializeEpubHandle(handle));
-        await setCurrentBook(language, handle.id);
-        await refreshLibrary();
-      } catch (e) {
-        console.error('[ReadAlong] failed to persist book', e);
-      }
-
-      const state = await getState(language);
-      const tocIdx = state.positions[handle.id] ?? 0;
-      openChapter(tocIdx);
+      openChapter(0);
     } catch (e: any) {
       if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
-        setError('Failed to open epub.');
+        setError(e.message || 'Failed to open epub.');
         console.error(e);
       }
       setPhase(epubRef.current ? 'reading' : 'library');
@@ -257,13 +275,12 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   }
 
   if (phase === 'parsing') {
-    const progressText = parseProgress
-      ? `Parsing chapter ${parseProgress.done} of ${parseProgress.total}…`
-      : 'Opening epub…';
+    const progressText = renderProgress(parseProgress);
     return (
       <View style={styles.centeredContainer}>
         <ActivityIndicator size="large" color={colors.primary} />
         <Text style={styles.loadingText}>{progressText}</Text>
+        <Text style={styles.loadingHint}>This can take a few minutes for long books.</Text>
       </View>
     );
   }
@@ -388,7 +405,8 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: { color: '#fff', fontSize: fontSize.xs, fontWeight: '600' },
   errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center', marginTop: spacing.sm },
-  loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm },
+  loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm, textAlign: 'center' },
+  loadingHint: { color: colors.muted, fontSize: 12, marginTop: spacing.xs, opacity: 0.7, textAlign: 'center' },
 
   // Header
   header: {
