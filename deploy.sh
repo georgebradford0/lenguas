@@ -32,13 +32,11 @@ $SCP_CMD $LOCAL_DIR/docker-compose.prod.yml $EC2_HOST:$REMOTE_DIR/docker-compose
 
 echo "🔧 Step 3: Writing .env file on remote server..."
 $SSH_CMD $EC2_HOST "
-  JWT_SECRET=\$(grep LENGUAS_JWT_SECRET ~/.lenguas_secrets | cut -d= -f2)
   cat > $REMOTE_DIR/.env << EOF
 OPENAI_API_KEY=$OPENAI_API_KEY
 AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
 AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
 AWS_REGION=${AWS_REGION:-us-east-1}
-JWT_SECRET=\$JWT_SECRET
 EOF"
 
 echo "🐳 Step 4: Pulling latest image and starting containers..."

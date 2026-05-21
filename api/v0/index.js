@@ -1,15 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const speakRoutes = require('./routes/speak');
 const translateRoutes = require('./routes/translate');
-const authRoutes = require('./routes/auth');
-const requireAuth = require('./middleware/authMiddleware');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/language-app';
 
 app.use(
   cors({
@@ -20,7 +16,6 @@ app.use(
       /^http:\/\/localhost:\d+$/,
       /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
     ],
-    // Allow requests with no origin (e.g., React Native on physical devices)
     credentials: true,
   })
 );
@@ -32,23 +27,13 @@ app.use((req, res, next) => {
 });
 app.use(express.json({ limit: '50mb' }));
 
-app.use('/auth', authRoutes);
-
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/speak', requireAuth, speakRoutes);
-app.use('/translate', requireAuth, translateRoutes);
+app.use('/speak', speakRoutes);
+app.use('/translate', translateRoutes);
 
-mongoose.connect(MONGO_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+app.listen(PORT, () => {
+  console.log(`API server running on port ${PORT}`);
+});
