@@ -38,8 +38,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: mobile/ios/Pods
+          # No restore-keys: a partial-prefix fallback would restore stale
+          # Pods/Local Podspecs from a prior lockfile and break `pod install`.
           key: pods-${{ hashFiles('mobile/ios/Podfile.lock') }}
-          restore-keys: pods-
 
       - name: Install CocoaPods
         run: cd ios && pod install --repo-update
@@ -96,8 +97,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: mobile/ios/Pods
+          # No restore-keys: a partial-prefix fallback would restore stale
+          # Pods/Local Podspecs from a prior lockfile and break `pod install`.
           key: pods-${{ hashFiles('mobile/ios/Podfile.lock') }}
-          restore-keys: pods-
 
       - name: Install CocoaPods
         run: cd ios && pod install --repo-update
