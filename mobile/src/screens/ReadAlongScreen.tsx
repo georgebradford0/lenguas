@@ -4,7 +4,8 @@ import {
   FlatList, Platform, ListRenderItemInfo, Alert,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-import { pick, keepLocalCopy, saveDocuments, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
+import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
+import Share from 'react-native-share';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { hydrateSerializedBook } from '../utils/epubParser';
 import { parseBookWithLLM } from '../api/client';
@@ -216,15 +217,17 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       const fileName = `${sanitizeFilename(stored.title)}.lenguas`;
       const tmpPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
       await RNFS.writeFile(tmpPath, JSON.stringify(stored), 'utf8');
-      await saveDocuments({
-        sourceUris: [`file://${tmpPath}`],
-        mimeType: 'application/octet-stream',
-        fileName,
-        copy: true,
+      await Share.open({
+        url: `file://${tmpPath}`,
+        type: 'application/octet-stream',
+        filename: fileName,
+        failOnCancel: false,
       });
     } catch (e: any) {
-      if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
-        setError(e.message || 'Failed to export book.');
+      // react-native-share throws { message: 'User did not share' } on cancel.
+      const msg = e?.message || '';
+      if (!/did not share|cancel/i.test(msg)) {
+        setError(msg || 'Failed to export book.');
         console.error(e);
       }
     }
