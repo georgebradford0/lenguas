@@ -4,7 +4,7 @@ import {
   FlatList, Platform, ListRenderItemInfo, Alert,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
+import { pick, keepLocalCopy, saveDocuments, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { hydrateSerializedBook } from '../utils/epubParser';
 import { parseBookWithLLM } from '../api/client';
@@ -15,8 +15,27 @@ import {
 } from '../utils/bookStorage';
 import type { BookSummary } from '../utils/bookStorage';
 import { SentenceModePanel } from '../components/SentenceModePanel';
-import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
+import type { EpubHandle, TocEntry, Chapter, Sentence, SerializedBook } from '../utils/epubParser';
 import type { Language } from '../types';
+
+const KNOWN_LANGUAGES: readonly Language[] = ['de', 'nl', 'fr', 'es'];
+
+function isSerializedBook(x: any): x is SerializedBook {
+  return (
+    x && typeof x === 'object' &&
+    typeof x.id === 'string' &&
+    typeof x.title === 'string' &&
+    typeof x.language === 'string' &&
+    KNOWN_LANGUAGES.includes(x.language) &&
+    Array.isArray(x.toc) &&
+    Array.isArray(x.spineHrefs) &&
+    x.chapterContent && typeof x.chapterContent === 'object'
+  );
+}
+
+function sanitizeFilename(s: string): string {
+  return s.replace(/[^a-zA-Z0-9-_ ]/g, '_').trim().slice(0, 60) || 'book';
+}
 
 type Phase = 'loading' | 'library' | 'parsing' | 'toc' | 'reading';
 
@@ -134,6 +153,83 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     }
   }
 
+  // ── Import a pre-parsed book (.lenguas.json) ─────────────────────────────────
+
+  async function handleImportBook() {
+    try {
+      setError(null);
+      const [result] = await pick({
+        type: Platform.OS === 'ios' ? 'public.data' : '*/*',
+      });
+
+      const copies = await keepLocalCopy({
+        files: [{ uri: result.uri, fileName: result.name ?? 'book.lenguas' }],
+        destination: 'cachesDirectory',
+      });
+      const copy = copies[0];
+      if (copy.status !== 'success') throw new Error('Failed to copy file');
+
+      const filePath = decodeURIComponent(copy.localUri.replace(/^file:\/\//, ''));
+      const raw = await RNFS.readFile(filePath, 'utf8');
+      let parsed: unknown;
+      try { parsed = JSON.parse(raw); }
+      catch { throw new Error('File is not valid JSON.'); }
+      if (!isSerializedBook(parsed)) {
+        throw new Error('File is not a parsed Lenguas book.');
+      }
+
+      await saveBook(parsed);
+
+      if (parsed.language === language) {
+        await setCurrentBook(language, parsed.id);
+        await refreshLibrary();
+        const handle = hydrateSerializedBook(parsed);
+        epubRef.current = handle;
+        setEpubTitle(handle.title);
+        setToc(handle.toc);
+        openChapter(0);
+      } else {
+        await refreshLibrary();
+        Alert.alert(
+          'Imported',
+          `"${parsed.title}" was added to your ${parsed.language.toUpperCase()} library. Switch languages to read it.`,
+        );
+      }
+    } catch (e: any) {
+      if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
+        setError(e.message || 'Failed to import book.');
+        console.error(e);
+      }
+    }
+  }
+
+  // ── Export a parsed book to a user-chosen location ──────────────────────────
+
+  async function handleExportBook(summary: BookSummary) {
+    try {
+      setError(null);
+      const stored = await loadBook(summary.id);
+      if (!stored) {
+        setError('Book file is missing — nothing to export.');
+        return;
+      }
+      const fileName = `${sanitizeFilename(stored.title)}.lenguas`;
+      const tmpPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+      await RNFS.writeFile(tmpPath, JSON.stringify(stored), 'utf8');
+      await saveDocuments({
+        sourceUris: [`file://${tmpPath}`],
+        mimeType: 'application/octet-stream',
+        fileName,
+        copy: true,
+      });
+    } catch (e: any) {
+      if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
+        setError(e.message || 'Failed to export book.');
+        console.error(e);
+      }
+    }
+  }
+
   // ── Open a saved book from the library ──────────────────────────────────────
 
   async function handleOpenSavedBook(summary: BookSummary) {
@@ -232,9 +328,14 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
         </View>
 
         <View style={styles.libraryActions}>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleSelectEpub} activeOpacity={0.85}>
-            <Text style={styles.primaryButtonText}>+ Add Book</Text>
-          </TouchableOpacity>
+          <View style={styles.libraryButtonRow}>
+            <TouchableOpacity style={styles.primaryButton} onPress={handleSelectEpub} activeOpacity={0.85}>
+              <Text style={styles.primaryButtonText}>+ Add Book</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.secondaryButton} onPress={handleImportBook} activeOpacity={0.85}>
+              <Text style={styles.secondaryButtonText}>Import</Text>
+            </TouchableOpacity>
+          </View>
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
 
@@ -258,9 +359,16 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
                   <Text style={styles.libraryRowTitle} numberOfLines={2}>{item.title}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.libraryRowDelete}
+                  style={styles.libraryRowAction}
+                  onPress={() => handleExportBook(item)}
+                  hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+                >
+                  <Text style={styles.libraryRowActionText}>⬆</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.libraryRowAction}
                   onPress={() => handleDeleteBook(item)}
-                  hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                  hitSlop={{ top: 12, bottom: 12, left: 8, right: 12 }}
                 >
                   <Text style={styles.libraryRowDeleteText}>✕</Text>
                 </TouchableOpacity>
@@ -404,6 +512,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryButtonText: { color: '#fff', fontSize: fontSize.xs, fontWeight: '600' },
+  secondaryButton: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: borderRadius.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  secondaryButtonText: { color: colors.text, fontSize: fontSize.xs, fontWeight: '600' },
   errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center', marginTop: spacing.sm },
   loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm, textAlign: 'center' },
   loadingHint: { color: colors.muted, fontSize: 12, marginTop: spacing.xs, opacity: 0.7, textAlign: 'center' },
@@ -434,6 +552,11 @@ const styles = StyleSheet.create({
   libraryActions: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+  libraryButtonRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
     alignItems: 'center',
   },
   libraryEmpty: {
@@ -468,9 +591,14 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontWeight: '500',
   },
-  libraryRowDelete: {
+  libraryRowAction: {
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
+  },
+  libraryRowActionText: {
+    fontSize: fontSize.md,
+    color: colors.muted,
+    fontWeight: '400',
   },
   libraryRowDeleteText: {
     fontSize: fontSize.md,
