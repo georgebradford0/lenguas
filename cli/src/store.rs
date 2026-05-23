@@ -5,6 +5,8 @@
 //!   s3://$AWS_S3_BUCKET/parsed-books/_index.json     [{contentHash, title, …}]
 
 use anyhow::{anyhow, Context, Result};
+use aws_sdk_s3::operation::get_object::GetObjectError;
+use aws_sdk_s3::operation::head_object::HeadObjectError;
 use aws_sdk_s3::primitives::ByteStream;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -71,13 +73,10 @@ impl Store {
         {
             Ok(_) => Ok(true),
             Err(err) => {
-                // aws-sdk's not-found surfaces as a service error with code "NotFound"
-                let display = err.to_string();
-                if display.contains("NotFound") || display.contains("404") {
-                    Ok(false)
-                } else {
-                    Err(anyhow!(err))
+                if let Some(HeadObjectError::NotFound(_)) = err.as_service_error() {
+                    return Ok(false);
                 }
+                Err(anyhow!(err))
             }
         }
     }
@@ -110,12 +109,10 @@ impl Store {
                 Ok(parsed.books)
             }
             Err(err) => {
-                let display = err.to_string();
-                if display.contains("NoSuchKey") || display.contains("404") {
-                    Ok(vec![])
-                } else {
-                    Err(anyhow!(err))
+                if let Some(GetObjectError::NoSuchKey(_)) = err.as_service_error() {
+                    return Ok(vec![]);
                 }
+                Err(anyhow!(err))
             }
         }
     }

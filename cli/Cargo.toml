@@ -1,6 +1,6 @@
 [package]
 name = "lenguas"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Offline tooling for the Lenguas reading app"
 publish = false
