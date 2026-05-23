@@ -42,16 +42,23 @@ export interface Chapter {
 export interface EpubHandle {
   id: string;
   title: string;
+  author: string | null;
   language: string;
   toc: TocEntry[];
   spineHrefs: string[];
   chapters: Record<string, Chapter>; // keyed by href (= id)
 }
 
+export type CefrLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+
 export interface SerializedBook {
   version?: number;
   id: string;
   title: string;
+  author?: string | null;
+  description?: string | null;
+  genre?: string | null;
+  difficulty?: CefrLevel | null;
   language: string;
   toc: TocEntry[];
   spineHrefs: string[];
@@ -76,6 +83,7 @@ export function hydrateSerializedBook(stored: SerializedBook): EpubHandle {
   return {
     id: stored.id,
     title: stored.title,
+    author: stored.author ?? null,
     language: stored.language,
     toc: stored.toc,
     spineHrefs: stored.spineHrefs,

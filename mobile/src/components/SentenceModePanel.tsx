@@ -5,7 +5,7 @@ import {
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
 import { speak, translateSentence } from '../api/client';
-import type { SentenceWord } from '../api/client';
+import type { SentenceChunk, SentenceWord } from '../api/client';
 import { cleanWord } from '../utils/epubParser';
 import type { Sentence } from '../utils/epubParser';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
@@ -17,6 +17,8 @@ interface Props {
   sentence: Sentence;
   language: Language;
   position: { current: number; total: number };
+  bookTitle: string | null;
+  bookAuthor: string | null;
   chapterTitle: string;
   canPrev: boolean;
   canNext: boolean;
@@ -26,13 +28,13 @@ interface Props {
 }
 
 export function SentenceModePanel({
-  sentence, language, position, chapterTitle, canPrev, canNext, onPrev, onNext, onBack,
+  sentence, language, position, bookTitle, bookAuthor, chapterTitle, canPrev, canNext, onPrev, onNext, onBack,
 }: Props) {
-  const [translation, setTranslation] = useState<string | null>(null);
+  const [chunks, setChunks] = useState<SentenceChunk[]>([]);
   const [contentWords, setContentWords] = useState<SentenceWord[]>([]);
   const [translating, setTranslating] = useState(false);
   const [selectedWord, setSelectedWord] = useState<SentenceWord | null>(null);
-  const [audioLoading, setAudioLoading] = useState(false);
+  const [playingChunkIdx, setPlayingChunkIdx] = useState<number | null>(null);
   const soundRef = useRef<Sound | null>(null);
 
   // Map cleaned-lowercased surface form → word entry, so taps look up data we already fetched.
@@ -45,31 +47,31 @@ export function SentenceModePanel({
     return m;
   }, [contentWords]);
 
-  // On sentence change: fetch translation + content words, auto-play audio.
+  // On sentence change: fetch chunks + content words. No auto-play.
   useEffect(() => {
     if (!sentence) return;
     setSelectedWord(null);
-    setTranslation(null);
+    setChunks([]);
     setContentWords([]);
     setTranslating(true);
+    stopAudio();
 
     let cancelled = false;
     translateSentence(sentence.raw, language)
       .then(res => {
         if (cancelled) return;
-        setTranslation(res.translation || '—');
+        setChunks(res.chunks?.length ? res.chunks : [{ original: sentence.raw, translation: res.translation || '—' }]);
         setContentWords(res.words || []);
       })
       .catch(err => {
         console.log('[SentenceMode] translateSentence error', err?.message);
         if (!cancelled) {
-          setTranslation('—');
+          setChunks([{ original: sentence.raw, translation: '—' }]);
           setContentWords([]);
         }
       })
       .finally(() => { if (!cancelled) setTranslating(false); });
 
-    playAudio(sentence.raw);
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentence.id, language]);
@@ -84,13 +86,13 @@ export function SentenceModePanel({
     }
   }
 
-  async function playAudio(text: string) {
+  async function playChunkAudio(text: string, idx: number) {
     await stopAudio();
-    setAudioLoading(true);
+    setPlayingChunkIdx(idx);
     try {
       const base64 = await speak(text, language);
       const key = text.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '_');
-      const path = `${RNFS.CachesDirectoryPath}/sent_${language}_${key}.mp3`;
+      const path = `${RNFS.CachesDirectoryPath}/chunk_${language}_${key}.mp3`;
       await RNFS.writeFile(path, base64, 'base64');
 
       const sound = createSound();
@@ -114,13 +116,18 @@ export function SentenceModePanel({
     } catch {
       // TTS unavailable for this text — skip silently
     } finally {
-      setAudioLoading(false);
+      setPlayingChunkIdx(prev => (prev === idx ? null : prev));
     }
   }
 
   function handleWordTap(rawWord: string) {
     const entry = contentLookup.get(cleanWord(rawWord).toLowerCase());
     if (entry) setSelectedWord(entry);
+  }
+
+  // Split a chunk's original text into whitespace-delimited tokens for tap rendering.
+  function tokenizeChunk(text: string): string[] {
+    return text.split(/(\s+)/).filter(p => p.length > 0);
   }
 
   return (
@@ -131,54 +138,63 @@ export function SentenceModePanel({
           <Text style={styles.headerBtnText}>←</Text>
         </TouchableOpacity>
         <View style={styles.headerCenter}>
+          {bookTitle ? (
+            <Text style={styles.headerBookLine} numberOfLines={1}>
+              {bookTitle}{bookAuthor ? ` · ${bookAuthor}` : ''}
+            </Text>
+          ) : null}
           <Text style={styles.headerTitle} numberOfLines={1}>{chapterTitle}</Text>
           <Text style={styles.headerCounter}>{position.current} / {position.total}</Text>
         </View>
-        <TouchableOpacity
-          style={styles.headerBtn}
-          onPress={() => playAudio(sentence.raw)}
-          disabled={audioLoading}
-        >
-          <Text style={styles.headerBtnText}>{audioLoading ? '⌛' : '🔊'}</Text>
-        </TouchableOpacity>
+        <View style={styles.headerBtn} />
       </View>
 
       {/* Body */}
       <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
-        {/* Translation first (native language) */}
         {translating ? (
           <ActivityIndicator color={colors.primary} style={styles.loader} />
         ) : (
-          <Text style={styles.translation}>{translation ?? '—'}</Text>
-        )}
-
-        <View style={styles.divider} />
-
-        {/* Original sentence — only nouns/verbs tappable */}
-        <Text style={styles.original}>
-          {sentence.words.map(word => {
-            if (!word.isWord) {
-              return <Text key={word.id} style={styles.nonContent}>{word.text}</Text>;
-            }
-            const clean = cleanWord(word.text).toLowerCase();
-            const entry = contentLookup.get(clean);
-            const isPressable = !!entry;
-            const isActive = selectedWord
-              && cleanWord(selectedWord.word).toLowerCase() === clean;
-            if (isPressable) {
-              return (
-                <Text
-                  key={word.id}
-                  onPress={() => handleWordTap(word.text)}
-                  style={[styles.contentWord, isActive && styles.contentWordActive]}
+          chunks.map((chunk, idx) => {
+            const isPlaying = playingChunkIdx === idx;
+            return (
+              <View key={idx} style={styles.chunkCard}>
+                <View style={styles.chunkText}>
+                  <Text style={styles.chunkTranslation}>{chunk.translation || '—'}</Text>
+                  <Text style={styles.chunkOriginal}>
+                    {tokenizeChunk(chunk.original).map((tok, i) => {
+                      if (/^\s+$/.test(tok)) {
+                        return <Text key={i} style={styles.nonContent}>{tok}</Text>;
+                      }
+                      const clean = cleanWord(tok).toLowerCase();
+                      const entry = clean ? contentLookup.get(clean) : undefined;
+                      if (!entry) {
+                        return <Text key={i} style={styles.nonContent}>{tok}</Text>;
+                      }
+                      const isActive = selectedWord
+                        && cleanWord(selectedWord.word).toLowerCase() === clean;
+                      return (
+                        <Text
+                          key={i}
+                          onPress={() => handleWordTap(tok)}
+                          style={[styles.contentWord, isActive && styles.contentWordActive]}
+                        >
+                          {tok}
+                        </Text>
+                      );
+                    })}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.chunkPlayBtn}
+                  onPress={() => playChunkAudio(chunk.original, idx)}
+                  disabled={isPlaying}
                 >
-                  {word.text}
-                </Text>
-              );
-            }
-            return <Text key={word.id} style={styles.nonContent}>{word.text}</Text>;
-          })}
-        </Text>
+                  <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })
+        )}
 
         {/* Selected word card */}
         {selectedWord && (
@@ -234,6 +250,7 @@ const styles = StyleSheet.create({
   headerBtn: { padding: spacing.xs, minWidth: 36, alignItems: 'center' },
   headerBtnText: { fontSize: fontSize.md, color: colors.text },
   headerCenter: { flex: 1, alignItems: 'center' },
+  headerBookLine: { fontSize: 11, color: colors.muted, marginBottom: 2 },
   headerTitle: { fontSize: fontSize.xs, fontWeight: '600', color: colors.text },
   headerCounter: { fontSize: 12, color: colors.muted, marginTop: 2 },
 
@@ -245,28 +262,43 @@ const styles = StyleSheet.create({
   },
   loader: { marginVertical: spacing.lg },
 
-  translation: {
+  chunkCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.sm,
+    paddingVertical: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  chunkText: { flex: 1 },
+  chunkTranslation: {
     fontSize: fontSize.md,
     color: colors.text,
     fontWeight: '600',
-    lineHeight: fontSize.md * 1.4,
+    lineHeight: fontSize.md * 1.35,
+    marginBottom: 4,
   },
-
-  divider: {
-    height: 1,
-    backgroundColor: colors.border,
-    marginVertical: spacing.md,
-  },
-
-  original: {
+  chunkOriginal: {
     fontSize: fontSize.sm,
     color: colors.muted,
-    lineHeight: fontSize.sm * 1.7,
+    lineHeight: fontSize.sm * 1.6,
   },
+  chunkPlayBtn: {
+    paddingVertical: 6,
+    paddingHorizontal: spacing.sm,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.cardBackground,
+    marginTop: 2,
+  },
+  chunkPlayBtnText: { fontSize: fontSize.sm },
+
   nonContent: { color: colors.muted },
   contentWord: {
     color: colors.text,
     fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   contentWordActive: {
     color: colors.primary,

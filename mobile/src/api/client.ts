@@ -21,8 +21,14 @@ export interface SentenceWord {
   explanation: string | null;
 }
 
+export interface SentenceChunk {
+  original: string;
+  translation: string;
+}
+
 export interface SentenceTranslation {
   translation: string;
+  chunks: SentenceChunk[];
   words: SentenceWord[];
 }
 

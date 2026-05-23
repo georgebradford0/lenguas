@@ -4,56 +4,49 @@
 
 Lenguas is a mobile reading app for language learners. The user opens an EPUB in their target language (German, Dutch, French, or Spanish) and reads it one sentence at a time: the English translation appears on top, the original sentence below with **only nouns and verbs tappable**. Tapping a noun/verb shows its contextual translation plus, when relevant, a one-sentence grammar explanation.
 
-Auth is passwordless — a 6-digit code is emailed via AWS SES and exchanged for a JWT.
+No login. The app launches directly into language select, and all API endpoints are open — there is no per-user state on the server.
 
 **Architecture:**
 - **Frontend**: React Native app (`mobile/`)
-- **Backend**: Express.js API (`api/v0/`)
-- **Database**: MongoDB (only stores short-lived `LoginCode` documents — there is no user-progress tracking)
+- **Backend**: Express.js API (`api/v0/`) — stateless, no database
 - **Image registry**: `ghcr.io/georgebradford0/lenguas-api`
-- **Deployment**: Docker containers on AWS EC2 (`ec2-16-144-226-254.us-west-2.compute.amazonaws.com`)
-- **External services**: OpenAI (translation), AWS Polly (TTS), AWS SES (email)
+- **Deployment**: Docker container on AWS EC2 (`ec2-16-144-226-254.us-west-2.compute.amazonaws.com`)
+- **External services**: OpenAI (translation + EPUB parse), AWS Polly (TTS)
 
 ## Key Files & Locations
 
 ### Backend (`api/v0/`)
-- `index.js` — Express app, mounts auth/speak/translate routes
-- `routes/auth.js` — `POST /auth/login`, `POST /auth/verify`, `DELETE /auth/account`
+- `index.js` — Express app, mounts `/speak` and `/translate` routes; no auth, no Mongo
 - `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes)
-- `routes/translate.js` — `POST /translate/sentence`, `POST /translate/chapter`
-- `models/LoginCode.js` — the only Mongo model
-- `middleware/authMiddleware.js` — JWT verification
+- `routes/translate.js` — `POST /translate/sentence`, `POST /translate/book`
 - `config/languages.js` — per-language Polly voice config
 - `Dockerfile` — `node:22-alpine`, `npm ci --production`
 
 ### Frontend (`mobile/src/`)
-- `App.tsx` — login → language pick → ReadAlongScreen
-- `screens/ReadAlongScreen.tsx` — phase machine (`loading | library | parsing | toc | reading`); the `reading` phase mounts `SentenceModePanel` fullscreen
+- `App.tsx` — language pick → ReadAlongScreen (no login screen)
+- `screens/ReadAlongScreen.tsx` — phase machine (`loading | library | parsing | toc | reading`); the `reading` phase mounts `SentenceModePanel` fullscreen. In the `parsing` phase it reads the picked EPUB as base64, POSTs to `/translate/book`, and consumes the NDJSON stream over XMLHttpRequest to show phase + chapter progress.
 - `components/SentenceModePanel.tsx` — fullscreen sentence reader, fetches `/translate/sentence` per sentence, shows translation on top + original below with noun/verb taps
-- `utils/epubParser.ts` — unzips the EPUB, runs each chapter's raw lines through `/translate/chapter`, tokenizes into sentences with stable word IDs
+- `utils/epubParser.ts` — thin client-side layer (~110 lines): types, hydrate from server response, tokenize sentences with stable word IDs. All OPF/NCX/spine/HTML parsing lives server-side in `/translate/book`.
 - `utils/bookStorage.ts` — AsyncStorage-backed library + per-language `{ currentBookId, positions }` state
 - `api/client.ts` — fetch wrappers for every endpoint above
 
 ### Infra
-- `docker-compose.prod.yml` — pulls the GHCR image, brings up mongo + api with named containers + restart policy
+- `docker-compose.prod.yml` — pulls the GHCR image and runs the api container with `restart: unless-stopped`. No mongo, no network alias.
 - `docker-compose.yml` — local dev compose (builds from `./api/v0`)
-- `deploy.sh` — ships compose file + writes `.env` on the remote host, then `docker compose pull && up -d`
+- `deploy.sh` — ships compose file + writes `.env` on the remote host, then `docker compose pull && up -d --force-recreate api`
 - `.github/workflows/api-docker.yml` — `workflow_dispatch` job that builds the API Dockerfile for `linux/amd64 + linux/arm64` and pushes to GHCR
 
 ## Reading Flow
 
-1. App boots → loads library + auto-resumes current book if one is saved.
-2. User picks (or adds) an EPUB. New books are parsed: each chapter's raw HTML lines go to `POST /translate/chapter`, which uses OpenAI to drop non-content, merge paragraphs, and split sentences without translating. Parsed books are persisted locally so reopens are instant.
+1. App boots into language select, then `ReadAlongScreen` loads the library and auto-resumes the saved current book if one exists.
+2. User picks (or adds) an EPUB. New books are parsed via a single `POST /translate/book` call: the mobile app sends the raw `.epub` as base64, and the server unzips it, extracts the spine to plain text, asks gpt-4.1-mini for a TOC, then reproduces each section as `{ paragraphs: [[sentence, ...]] }` in parallel batches. Progress is streamed back as NDJSON so multi-minute parses don't look frozen. Parsed books are persisted locally so reopens are instant.
 3. Opening a chapter drops into fullscreen sentence mode at the saved position (or sentence 0). `SentenceModePanel` calls `POST /translate/sentence` for every sentence; the response carries the whole-sentence translation **and** a pre-computed list of nouns/verbs with per-word translation/explanation, so taps don't make a second API call.
 4. Prev/Next walks within the chapter and auto-advances across chapter boundaries. Back returns to the TOC.
 
 ## API Endpoints
 
-All `/speak`, `/translate/*` routes require a JWT bearer token.
+All endpoints are unauthenticated.
 
-- `POST /auth/login` — body `{ email }` → emails a 6-digit code
-- `POST /auth/verify` — body `{ email, code }` → `{ token, userId }`
-- `DELETE /auth/account` — deletes the caller's pending login codes
 - `GET /health` — `{ status: "ok" }`
 - `GET /speak/:text?language=de|nl|fr|es` — mp3 bytes via Polly
 - `POST /translate/sentence` — body `{ sentence, language }` →
@@ -62,7 +55,10 @@ All `/speak`, `/translate/*` routes require a JWT bearer token.
     words: [{ word, pos: 'noun'|'verb', translation, explanation: string|null }] }
   ```
   `word` is the inflected surface form as it appears in the sentence, not a lemma.
-- `POST /translate/chapter` — body `{ rawLines: string[], language }` → `{ paragraphs: string[][] }` (structured sentences, no translation)
+- `POST /translate/book` — body `{ epubBase64, language, title? }`. Streams `application/x-ndjson`, one event per line:
+  - `{ type: 'progress', phase, message?, current?, total?, sectionId?, title? }`
+  - `{ type: 'book', data: <SerializedBook> }` (final)
+  - `{ type: 'error', message }`
 
 ## Building & Publishing the API Image
 
@@ -91,19 +87,17 @@ The image is currently **private**; toggling public is a one-time UI flip at htt
 What it does:
 1. Reads local `.env` (or environment) for `OPENAI_API_KEY` and `AWS_*`.
 2. SCPs `docker-compose.prod.yml` to the EC2 box.
-3. Writes a fresh `.env` on the host (sources `JWT_SECRET` from `~/.lenguas_secrets` on the box).
-4. `docker compose pull && docker compose up -d` — recreates only the api container; mongo keeps running off its volume.
+3. Writes a fresh `.env` on the host.
+4. `docker compose pull && docker compose up -d --force-recreate api` — always replaces the running api container with the freshly-pulled image, even when only the `:latest` digest moved.
 
 **One-time prerequisites on the EC2 box:**
 - Docker installed.
 - If the GHCR image is still private: `echo "$GHCR_PAT" | docker login ghcr.io -u georgebradford0 --password-stdin`.
-- `~/.lenguas_secrets` contains `LENGUAS_JWT_SECRET=...`.
 
 **Remote details:**
 - Host: `ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com`
 - Remote dir: `/home/ubuntu/lenguas`
 - API port: 3000
-- Mongo: container port 27017, host port 27018
 
 **Verify after deploy:**
 ```bash
@@ -157,36 +151,30 @@ Fastfile: `mobile/android/fastlane/Fastfile`. Version commits follow the format 
 ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
   'cd /home/ubuntu/lenguas && docker compose logs -f'
 
-# Restart api (mongo unaffected)
+# Restart api
 ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
   'cd /home/ubuntu/lenguas && docker compose restart api'
 
 # Pull a new image without redeploying compose
 ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
-  'cd /home/ubuntu/lenguas && docker compose pull && docker compose up -d'
+  'cd /home/ubuntu/lenguas && docker compose pull && docker compose up -d --force-recreate api'
 
 # API container shell
 ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
   'docker exec -it language-app-api sh'
-
-# Mongo shell (mainly useful to inspect pending login codes)
-ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.compute.amazonaws.com \
-  'docker exec -it language-app-mongo mongosh language-app'
 ```
 
 ## Environment Variables
 
 **Required for the API:**
 - `OPENAI_API_KEY` — `/translate/*`
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — SES (auth emails) + Polly (TTS)
-- `JWT_SECRET` — JWT signing
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — Polly (TTS)
 
 **Optional:**
-- `MONGO_URI` (default `mongodb://mongo:27017/language-app`)
 - `PORT` (default 3000)
 
 **Used by `deploy.sh` from your shell / local `.env`:**
-- `OPENAI_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`. `JWT_SECRET` is read from `~/.lenguas_secrets` on the EC2 box.
+- `OPENAI_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`.
 
 ## Git Workflow
 
@@ -207,12 +195,11 @@ When committing:
 2. **Prefer editing existing files** over creating new ones.
 3. **Parallelize independent tool calls** (e.g. `git status` + `git diff`, multiple `Read`s).
 4. **Only make requested changes** — no opportunistic refactors.
-5. **Confirm destructive remote actions** (force-push, dropping the prod DB, recreating containers in ways that could lose state).
+5. **Confirm destructive remote actions** (force-push, recreating containers in ways that could lose state).
 6. **For mobile changes**, no backend redeploy is needed — mobile builds ship separately via Fastlane.
 
 ## Notes for Claude
 
 - Backend lives on EC2; mobile runs from the developer's machine via Metro.
 - After backend changes, the user must (a) trigger the GH Actions workflow or build locally, then (b) run `./deploy.sh` to roll the new image. There's no source-shipping deploy anymore.
-- The only Mongo collection in use is `logincodes`. There is no user-progress data; do not write code that assumes there is.
-- The reader keeps state locally (AsyncStorage). Clearing the remote DB only affects pending login codes.
+- The API is stateless — there is no database in prod. All reader state (library, current book, sentence position per chapter) is kept locally in AsyncStorage on the device. Do not write code that assumes server-side per-user state.

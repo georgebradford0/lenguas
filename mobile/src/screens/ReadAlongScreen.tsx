@@ -60,6 +60,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   const [error, setError] = useState<string | null>(null);
   const epubRef = useRef<EpubHandle | null>(null);
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
+  const [epubAuthor, setEpubAuthor] = useState<string | null>(null);
   const [toc, setToc] = useState<TocEntry[]>([]);
   const [library, setLibrary] = useState<BookSummary[]>([]);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
@@ -81,6 +82,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
             const handle = hydrateSerializedBook(stored);
             epubRef.current = handle;
             setEpubTitle(handle.title);
+            setEpubAuthor(handle.author);
             setToc(handle.toc);
             const tocIdx = state.positions[stored.id] ?? 0;
             const entry = handle.toc[tocIdx];
@@ -142,6 +144,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       const handle = hydrateSerializedBook(book);
       epubRef.current = handle;
       setEpubTitle(handle.title);
+      setEpubAuthor(handle.author);
       setToc(handle.toc);
 
       openChapter(0);
@@ -187,6 +190,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
         const handle = hydrateSerializedBook(parsed);
         epubRef.current = handle;
         setEpubTitle(handle.title);
+        setEpubAuthor(handle.author);
         setToc(handle.toc);
         openChapter(0);
       } else {
@@ -251,6 +255,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
       const handle = hydrateSerializedBook(stored);
       epubRef.current = handle;
       setEpubTitle(handle.title);
+      setEpubAuthor(handle.author);
       setToc(handle.toc);
       await setCurrentBook(language, handle.id);
       const state = await getState(language);
@@ -285,6 +290,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     await setCurrentBook(language, null);
     epubRef.current = null;
     setEpubTitle(null);
+    setEpubAuthor(null);
     setToc([]);
     setCurrentChapter(null);
     setCurrentTocIdx(0);
@@ -359,7 +365,15 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
                   activeOpacity={0.7}
                 >
                   <Text style={styles.libraryRowIcon}>📖</Text>
-                  <Text style={styles.libraryRowTitle} numberOfLines={2}>{item.title}</Text>
+                  <View style={styles.libraryRowText}>
+                    <Text style={styles.libraryRowTitle} numberOfLines={2}>{item.title}</Text>
+                    {item.author ? (
+                      <Text style={styles.libraryRowAuthor} numberOfLines={1}>{item.author}</Text>
+                    ) : null}
+                  </View>
+                  {item.difficulty ? (
+                    <Text style={styles.libraryRowBadge}>{item.difficulty}</Text>
+                  ) : null}
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.libraryRowAction}
@@ -403,7 +417,12 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
           <TouchableOpacity style={styles.headerBack} onPress={() => currentChapter ? setPhase('reading') : handleCloseCurrentBook()}>
             <Text style={styles.headerBackText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle} numberOfLines={1}>{epubTitle}</Text>
+          <View style={styles.headerTitleStack}>
+            <Text style={styles.headerTitle} numberOfLines={1}>{epubTitle}</Text>
+            {epubAuthor ? (
+              <Text style={styles.headerSubtitle} numberOfLines={1}>{epubAuthor}</Text>
+            ) : null}
+          </View>
           <TouchableOpacity style={styles.headerLibraryButton} onPress={handleCloseCurrentBook}>
             <Text style={styles.headerLibraryText}>Library</Text>
           </TouchableOpacity>
@@ -482,6 +501,8 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
         sentence={current}
         language={language}
         position={{ current: sentenceIdx + 1, total: allSentences.length }}
+        bookTitle={epubTitle}
+        bookAuthor={epubAuthor}
         chapterTitle={`${currentChapter.title} · ${currentTocIdx + 1}/${toc.length}`}
         canPrev={canPrev}
         canNext={canNext}
@@ -541,11 +562,16 @@ const styles = StyleSheet.create({
   },
   headerBack: { padding: spacing.xs, marginRight: spacing.xs },
   headerBackText: { fontSize: fontSize.md, color: colors.text },
+  headerTitleStack: { flex: 1 },
   headerTitle: {
-    flex: 1,
     fontSize: fontSize.xs,
     fontWeight: '600',
     color: colors.text,
+  },
+  headerSubtitle: {
+    fontSize: 12,
+    color: colors.muted,
+    marginTop: 1,
   },
   headerRight: { width: 36 },
   headerLibraryButton: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
@@ -588,11 +614,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   libraryRowIcon: { fontSize: 22, marginRight: spacing.sm },
-  libraryRowTitle: {
+  libraryRowText: {
     flex: 1,
+  },
+  libraryRowTitle: {
     fontSize: fontSize.xs,
     color: colors.text,
     fontWeight: '500',
+  },
+  libraryRowAuthor: {
+    fontSize: 13,
+    color: colors.muted,
+    marginTop: 2,
+  },
+  libraryRowBadge: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: colors.muted,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.sm,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginLeft: spacing.xs,
   },
   libraryRowAction: {
     paddingHorizontal: spacing.sm,

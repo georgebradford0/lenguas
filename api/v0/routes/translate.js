@@ -5,7 +5,10 @@ const JSZip = require('jszip');
 const { parseDocument, DomUtils, ElementType } = require('htmlparser2');
 const he = require('he');
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// maxRetries=5: the SDK does exponential backoff on 429/5xx. When the section
+// fan-out below bursts 15 parallel calls, occasional rate-limit bumps on
+// Tier 3 are expected; this gives the SDK enough headroom to absorb them.
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 5 });
 
 const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish' };
 
@@ -25,12 +28,22 @@ router.post('/sentence', async (req, res) => {
 
 {
   "translation": "<natural English translation of the whole sentence>",
+  "chunks": [
+    { "original": "<verbatim span of the source sentence>", "translation": "<literal-but-readable English rendering of that span>" }
+  ],
   "words": [
     { "word": "<word as it appears in the sentence>", "pos": "noun" | "verb", "translation": "<1-6 word English gloss in this context>", "explanation": "<one short English sentence or null>" }
   ]
 }
 
-Rules:
+Rules for "chunks":
+- Partition the entire sentence into grammatically coherent chunks: clauses, prepositional phrases, noun phrases with their modifiers, verb groups, etc. Each chunk should be a unit that makes sense to translate together.
+- Each "original" must be a VERBATIM contiguous span of the source sentence. Concatenating every chunk's "original" in order, with single spaces between them, must reproduce the sentence (modulo whitespace).
+- Do NOT split inside a single word, and keep adjacent punctuation attached to its chunk.
+- Each "translation" is a literal-but-readable English rendering of that span on its own — not a full reflowed translation of the whole sentence.
+- Aim for 2-6 chunks per typical sentence. Very short sentences may be a single chunk.
+
+Rules for "words":
 - "words" contains every noun and every verb in the sentence (including auxiliary, modal, participle, and infinitive verb forms). Exclude articles, prepositions, pronouns, conjunctions, adjectives, adverbs, particles, and numbers.
 - "word" must match exactly how the word appears in the sentence — preserve case and inflection. Do NOT lemmatize.
 - Include each surface occurrence at most once, in the order they appear.
@@ -48,6 +61,16 @@ Rules:
     });
 
     const parsed = JSON.parse(response.choices[0].message.content || '{}');
+    const translation = typeof parsed.translation === 'string' ? parsed.translation : '';
+    const chunks = Array.isArray(parsed.chunks)
+      ? parsed.chunks
+          .filter(c => c && typeof c.original === 'string' && c.original.trim() && typeof c.translation === 'string')
+          .map(c => ({ original: c.original.trim(), translation: c.translation.trim() }))
+      : [];
+    // Fallback: if the model returns no chunks, treat the whole sentence as one chunk.
+    if (chunks.length === 0) {
+      chunks.push({ original: sentence.trim(), translation });
+    }
     const words = Array.isArray(parsed.words)
       ? parsed.words
           .filter(w => w && typeof w.word === 'string' && (w.pos === 'noun' || w.pos === 'verb'))
@@ -59,10 +82,7 @@ Rules:
           }))
       : [];
 
-    res.json({
-      translation: typeof parsed.translation === 'string' ? parsed.translation : '',
-      words,
-    });
+    res.json({ translation, chunks, words });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -115,17 +135,32 @@ function extractOpfTitle(opfXml) {
   return null;
 }
 
+function extractOpfAuthor(opfXml) {
+  try {
+    // Prefer <dc:creator opf:role="aut"> if present; fall back to the first <dc:creator>.
+    const authored = opfXml.match(/<dc:creator[^>]*opf:role=["']aut["'][^>]*>([^<]+)<\/dc:creator>/i);
+    if (authored && authored[1]) return he.decode(authored[1]).trim();
+    const any = opfXml.match(/<dc:creator[^>]*>([^<]+)<\/dc:creator>/i);
+    if (any && any[1]) return he.decode(any[1]).trim();
+  } catch {}
+  return null;
+}
+
 async function extractEpubText(epubBuffer) {
   const zip = await JSZip.loadAsync(epubBuffer);
 
   let title = null;
+  let author = null;
   try {
     const containerXml = await zip.file('META-INF/container.xml')?.async('string');
     if (containerXml) {
       const m = containerXml.match(/full-path="([^"]+)"/);
       if (m) {
         const opfXml = await zip.file(m[1])?.async('string');
-        if (opfXml) title = extractOpfTitle(opfXml);
+        if (opfXml) {
+          title = extractOpfTitle(opfXml);
+          author = extractOpfAuthor(opfXml);
+        }
       }
     }
   } catch {}
@@ -151,6 +186,7 @@ async function extractEpubText(epubBuffer) {
 
   return {
     title: title || 'Untitled',
+    author: author || null,
     fullText: parts.join('\n\n'),
   };
 }
@@ -196,13 +232,16 @@ router.post('/book', async (req, res) => {
     // ── Phase 1: Extract text from EPUB ─────────────────────────────────────
     send({ type: 'progress', phase: 'extract', message: 'Reading EPUB...' });
     const epubBuffer = Buffer.from(epubBase64, 'base64');
-    const { title: extractedTitle, fullText } = await extractEpubText(epubBuffer);
-    const bookTitle = (providedTitle && providedTitle.trim()) || extractedTitle || 'Untitled';
+    const { title: extractedTitle, author: extractedAuthor, fullText } = await extractEpubText(epubBuffer);
+    // Hint-title used inside the cached bookMessage prefix. Must stay stable across
+    // the TOC call and every section call so OpenAI's prompt cache matches.
+    const hintTitle = extractedTitle || (providedTitle && providedTitle.trim()) || 'Untitled';
+    const hintAuthor = extractedAuthor || null;
 
     if (!fullText || fullText.length < 200) {
       throw new Error('No readable text found in EPUB');
     }
-    console.log(`[/translate/book] "${bookTitle}" — ${fullText.length} chars extracted`);
+    console.log(`[/translate/book] hint title "${hintTitle}" — ${fullText.length} chars extracted`);
 
     // ── Build constant prefix (cached by OpenAI from call 2 onward) ─────────
     const systemPrompt = `You are processing a ${fromLanguage} EPUB book to prepare it for sentence-by-sentence language learning reading.
@@ -217,22 +256,54 @@ CRITICAL RULES:
   * Skip back matter (about the author, advertisements, indexes) unless explicitly requested
 - Output VALID JSON only. No prose explanations outside the JSON.`;
 
-    const bookMessage = `Here is the full text of the ${fromLanguage} book "${bookTitle}":
+    const bookMessage = `Here is the full text of the ${fromLanguage} book "${hintTitle}"${hintAuthor ? ` by ${hintAuthor}` : ''}:
 
 ${fullText}`;
 
-    // ── Phase 2: Generate TOC ───────────────────────────────────────────────
+    // ── Phase 2: Clean title + TOC ──────────────────────────────────────────
     send({ type: 'progress', phase: 'toc', message: 'Identifying chapters...' });
 
-    const tocPrompt = `Identify the table of contents — the major reading sections, typically chapters. Output JSON with this exact shape:
+    const tocPrompt = `Identify the book's metadata and its table of contents. Output JSON with this exact shape:
 
 {
+  "title": "<clean, library-display-quality book title>",
+  "author": "<author name in 'First Last' form, or null if unknown>",
+  "description": "<1-2 sentence neutral summary of the book>",
+  "genre": "<short genre label>",
+  "difficulty": "<CEFR level: A1 | A2 | B1 | B2 | C1 | C2>",
   "toc": [
     { "id": "ch1", "title": "Chapter title as it appears", "level": 0 }
   ]
 }
 
-Rules:
+Rules for "title":
+- Use the title as it would appear on the cover or in a library catalog.
+- Drop file-naming cruft (underscores, version numbers, "v1.0", "_unabridged"), edition tags like "(Unabridged)" or "[Annotated]", author names appended to the title, and series volume formatting like "- Book 2 of N".
+- Preserve original-language spelling and diacritics. Use proper capitalization for the source language (e.g. German nouns capitalized; French/Spanish sentence case).
+- If a subtitle is present and short, include it after a colon. Drop long marketing subtitles.
+
+Rules for "author":
+- Use the author's commonly-known display name in "First Last" order (e.g. "Franz Kafka", not "Kafka, Franz").
+- If multiple authors, join with " & " (e.g. "Jorge Luis Borges & Adolfo Bioy Casares").
+- Translators, editors, and illustrators do NOT count — author only.
+- If no author can be identified with reasonable confidence, output null. Do NOT guess from training-data memory if the text itself gives no signal.
+
+Rules for "description":
+- 1-2 sentences, neutral and factual. Avoid marketing language ("a thrilling tale...", "you won't put it down...").
+- Written in English regardless of the source language.
+- Focus on what the book is about, not why someone should read it.
+
+Rules for "genre":
+- Short label, ideally 1-3 words: "Literary Fiction", "Mystery", "Memoir", "Children's", "Short Stories", "Essays", "Historical Fiction", "Science Fiction", "Poetry", etc.
+- Pick the single best fit, not a list.
+
+Rules for "difficulty":
+- Estimate the CEFR reading-comprehension level required for a learner of ${fromLanguage}.
+- Base it on vocabulary range, sentence complexity, idiomatic density, and assumed cultural knowledge — not book length.
+- Children's books are typically A2-B1; literary fiction is typically B2-C1; technical/archaic prose is typically C1-C2.
+- Must be exactly one of: A1, A2, B1, B2, C1, C2.
+
+Rules for "toc":
 - One entry per chapter or major reading section.
 - "id" is a short slug like "ch1", "prologue", "ch_2", "epilogue". Must be unique across the TOC.
 - "title" is the chapter title as it appears in the source. If a chapter has no explicit title, generate a brief one like "Chapter 1".
@@ -254,6 +325,14 @@ Rules:
     });
 
     const tocJson = JSON.parse(tocResponse.choices[0].message.content || '{}');
+    const cleanTitle = typeof tocJson.title === 'string' ? tocJson.title.trim() : '';
+    const bookTitle = cleanTitle || hintTitle;
+    const cleanAuthor = typeof tocJson.author === 'string' ? tocJson.author.trim() : '';
+    const bookAuthor = cleanAuthor || hintAuthor || null;
+    const description = typeof tocJson.description === 'string' ? tocJson.description.trim() : '';
+    const genre = typeof tocJson.genre === 'string' ? tocJson.genre.trim() : '';
+    const rawDifficulty = typeof tocJson.difficulty === 'string' ? tocJson.difficulty.trim().toUpperCase() : '';
+    const difficulty = /^(A1|A2|B1|B2|C1|C2)$/.test(rawDifficulty) ? rawDifficulty : null;
     const seenIds = new Set();
     const toc = Array.isArray(tocJson.toc)
       ? tocJson.toc
@@ -274,13 +353,18 @@ Rules:
     if (toc.length === 0) {
       throw new Error('Could not identify any chapters in this book');
     }
-    console.log(`[/translate/book] TOC: ${toc.length} entries`);
+    console.log(`[/translate/book] resolved title "${bookTitle}"${bookAuthor ? ` by ${bookAuthor}` : ''}${difficulty ? ` [${difficulty}]` : ''}, TOC: ${toc.length} entries`);
     send({ type: 'progress', phase: 'toc-done', toc, total: toc.length });
 
     // ── Phase 3: Reproduce each section ─────────────────────────────────────
+    // BATCH_SIZE=15 is tuned for OpenAI Tier 3 on gpt-4.1-mini: fast enough to
+    // cut wall-clock on long books, conservative enough to stay under the TPM
+    // ceiling when each call carries the full book in its (cached) prefix.
+    // The cache is primed by the TOC call above, so every section call here
+    // hits the warm [system + bookMessage] prefix regardless of concurrency.
     const sections = {};
     const tocSummary = JSON.stringify({ toc });
-    const BATCH_SIZE = 5;
+    const BATCH_SIZE = 15;
     let done = 0;
 
     for (let batchStart = 0; batchStart < toc.length; batchStart += BATCH_SIZE) {
@@ -345,9 +429,13 @@ Rules:
     // ── Phase 4: Assemble final book ────────────────────────────────────────
     const bookId = computeBookId(bookTitle, toc.map(t => t.id));
     const book = {
-      version: 1,
+      version: 2,
       id: bookId,
       title: bookTitle,
+      author: bookAuthor,
+      description: description || null,
+      genre: genre || null,
+      difficulty,
       language,
       toc: toc.map(t => ({ id: t.id, title: t.title, href: t.id, level: t.level })),
       spineHrefs: toc.map(t => t.id),

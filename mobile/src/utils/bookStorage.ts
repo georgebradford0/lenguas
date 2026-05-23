@@ -6,6 +6,8 @@ const STORAGE_DIR = `${RNFS.DocumentDirectoryPath}/readalong`;
 export interface BookSummary {
   id: string;
   title: string;
+  author?: string | null;
+  difficulty?: string | null;
   language: string;
   addedAt: number;
 }
@@ -46,6 +48,8 @@ export async function saveBook(book: SerializedBook): Promise<void> {
   const summary: BookSummary = {
     id: book.id,
     title: book.title,
+    author: book.author ?? null,
+    difficulty: book.difficulty ?? null,
     language: book.language,
     addedAt: book.savedAt,
   };
