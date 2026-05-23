@@ -1,4 +1,6 @@
-require('dotenv').config();
+// Local bare-node dev reads the repo-root .env. In Docker, env vars come
+// from docker-compose; this path won't exist and dotenv silently no-ops.
+require('dotenv').config({ path: require('path').join(__dirname, '../../.env') });
 const express = require('express');
 const cors = require('cors');
 const speakRoutes = require('./routes/speak');
