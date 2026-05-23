@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const speakRoutes = require('./routes/speak');
 const translateRoutes = require('./routes/translate');
+const booksRoutes = require('./routes/books');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.get('/health', (req, res) => {
 
 app.use('/speak', speakRoutes);
 app.use('/translate', translateRoutes);
+app.use('/books', booksRoutes);
 
 app.listen(PORT, () => {
   console.log(`API server running on port ${PORT}`);

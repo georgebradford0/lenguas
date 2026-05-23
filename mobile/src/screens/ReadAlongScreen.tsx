@@ -1,101 +1,74 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
-  FlatList, Platform, ListRenderItemInfo, Alert,
+  FlatList, ListRenderItemInfo,
 } from 'react-native';
-import RNFS from 'react-native-fs';
-import { pick, keepLocalCopy, isErrorWithCode, errorCodes } from '@react-native-documents/picker';
-import Share from 'react-native-share';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { hydrateSerializedBook } from '../utils/epubParser';
-import { parseBookWithLLM } from '../api/client';
-import type { BookParseProgress } from '../api/client';
+import { listLibrary, fetchBook } from '../api/client';
+import type { LibrarySummary } from '../api/client';
 import {
-  saveBook, loadBook, listBooks, deleteBook,
-  getState, setCurrentBook, setPosition,
+  cacheBook, loadCachedBook, hasCachedBook,
+  cacheLibraryList, loadCachedLibraryList,
+  getState, setCurrentBookHash, setPosition,
 } from '../utils/bookStorage';
-import type { BookSummary } from '../utils/bookStorage';
 import { SentenceModePanel } from '../components/SentenceModePanel';
 import type { EpubHandle, TocEntry, Chapter, Sentence, SerializedBook } from '../utils/epubParser';
 import type { Language } from '../types';
 
-const KNOWN_LANGUAGES: readonly Language[] = ['de', 'nl', 'fr', 'es'];
-
-function isSerializedBook(x: any): x is SerializedBook {
-  return (
-    x && typeof x === 'object' &&
-    typeof x.id === 'string' &&
-    typeof x.title === 'string' &&
-    typeof x.language === 'string' &&
-    KNOWN_LANGUAGES.includes(x.language) &&
-    Array.isArray(x.toc) &&
-    Array.isArray(x.spineHrefs) &&
-    x.chapterContent && typeof x.chapterContent === 'object'
-  );
-}
-
-function sanitizeFilename(s: string): string {
-  return s.replace(/[^a-zA-Z0-9-_ ]/g, '_').trim().slice(0, 60) || 'book';
-}
-
-type Phase = 'loading' | 'library' | 'parsing' | 'toc' | 'reading';
-
-function renderProgress(p: BookParseProgress | null): string {
-  if (!p) return 'Uploading book…';
-  switch (p.phase) {
-    case 'extract': return 'Reading EPUB…';
-    case 'toc': return 'Identifying chapters…';
-    case 'toc-done': return `${p.total ?? 0} chapters found`;
-    case 'section': {
-      const title = p.title ? ` — ${p.title}` : '';
-      return `Section ${p.current ?? 0} of ${p.total ?? 0}${title}`;
-    }
-    default: return 'Working…';
-  }
-}
+type Phase = 'loading' | 'library' | 'downloading' | 'toc' | 'reading';
 
 export function ReadAlongScreen({ language, onBack }: { language: Language; onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>('loading');
-  const [parseProgress, setParseProgress] = useState<BookParseProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [library, setLibrary] = useState<LibrarySummary[]>([]);
+  const [downloadedHashes, setDownloadedHashes] = useState<Set<string>>(new Set());
+  const [downloadingHash, setDownloadingHash] = useState<string | null>(null);
+
   const epubRef = useRef<EpubHandle | null>(null);
+  const [currentHash, setCurrentHash] = useState<string | null>(null);
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
   const [epubAuthor, setEpubAuthor] = useState<string | null>(null);
   const [toc, setToc] = useState<TocEntry[]>([]);
-  const [library, setLibrary] = useState<BookSummary[]>([]);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [currentTocIdx, setCurrentTocIdx] = useState(0);
   const [sentenceIdx, setSentenceIdx] = useState(0);
 
-  // ── Init: load library + auto-resume current book ────────────────────────────
+  // ── Init: fetch library + auto-resume ───────────────────────────────────────
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const [state, books] = await Promise.all([getState(language), listBooks(language)]);
+        const state = await getState(language);
+
+        // Server library, fall back to cached list when offline.
+        let books: LibrarySummary[];
+        try {
+          books = await listLibrary(language);
+          await cacheLibraryList(language, books);
+        } catch (e) {
+          console.warn('[ReadAlong] library fetch failed, using cache:', (e as any)?.message);
+          books = (await loadCachedLibraryList(language)) ?? [];
+        }
         if (cancelled) return;
         setLibrary(books);
-        if (state.currentBookId) {
-          const stored = await loadBook(state.currentBookId);
+
+        const downloaded = new Set<string>();
+        for (const b of books) {
+          if (await hasCachedBook(b.contentHash)) downloaded.add(b.contentHash);
+        }
+        if (cancelled) return;
+        setDownloadedHashes(downloaded);
+
+        if (state.currentBookHash && downloaded.has(state.currentBookHash)) {
+          const stored = await loadCachedBook(state.currentBookHash);
           if (stored && !cancelled) {
-            const handle = hydrateSerializedBook(stored);
-            epubRef.current = handle;
-            setEpubTitle(handle.title);
-            setEpubAuthor(handle.author);
-            setToc(handle.toc);
-            const tocIdx = state.positions[stored.id] ?? 0;
-            const entry = handle.toc[tocIdx];
-            const chapter = entry ? handle.chapters[entry.href] : undefined;
-            if (chapter) {
-              setCurrentChapter(chapter);
-              setCurrentTocIdx(tocIdx);
-              setSentenceIdx(0);
-              setPhase('reading');
-              return;
-            }
+            openBook(state.currentBookHash, stored, state.positions[state.currentBookHash] ?? 0);
+            return;
           }
         }
+
         setPhase('library');
       } catch (e) {
         console.error('[ReadAlong] init failed', e);
@@ -106,189 +79,59 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
   }, [language]);
 
   async function refreshLibrary() {
-    const books = await listBooks(language);
-    setLibrary(books);
-  }
-
-  // ── File picker ─────────────────────────────────────────────────────────────
-
-  async function handleSelectEpub() {
     try {
-      setError(null);
-      const [result] = await pick({
-        type: Platform.OS === 'ios' ? 'org.idpf.epub-container' : 'application/epub+zip',
-      });
-
-      setPhase('parsing');
-      setParseProgress(null);
-      const copies = await keepLocalCopy({
-        files: [{ uri: result.uri, fileName: result.name ?? 'book.epub' }],
-        destination: 'cachesDirectory',
-      });
-      const copy = copies[0];
-      if (copy.status !== 'success') throw new Error('Failed to copy file');
-
-      // Read the raw .epub bytes — server does the unzip + LLM parse.
-      const filePath = decodeURIComponent(copy.localUri.replace(/^file:\/\//, ''));
-      const epubBase64 = await RNFS.readFile(filePath, 'base64');
-      const guessedTitle = (result.name || 'book.epub').replace(/\.epub$/i, '');
-
-      const book = await parseBookWithLLM(epubBase64, language, guessedTitle, p => {
-        setParseProgress(p);
-      });
-
-      await saveBook(book);
-      await setCurrentBook(language, book.id);
-      await refreshLibrary();
-
-      const handle = hydrateSerializedBook(book);
-      epubRef.current = handle;
-      setEpubTitle(handle.title);
-      setEpubAuthor(handle.author);
-      setToc(handle.toc);
-
-      openChapter(0);
-    } catch (e: any) {
-      if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
-        setError(e.message || 'Failed to open epub.');
-        console.error(e);
+      const books = await listLibrary(language);
+      await cacheLibraryList(language, books);
+      setLibrary(books);
+      const downloaded = new Set<string>();
+      for (const b of books) {
+        if (await hasCachedBook(b.contentHash)) downloaded.add(b.contentHash);
       }
-      setPhase(epubRef.current ? 'reading' : 'library');
-    }
-  }
-
-  // ── Import a pre-parsed book (.lenguas.json) ─────────────────────────────────
-
-  async function handleImportBook() {
-    try {
-      setError(null);
-      const [result] = await pick({
-        type: Platform.OS === 'ios' ? 'public.data' : '*/*',
-      });
-
-      const copies = await keepLocalCopy({
-        files: [{ uri: result.uri, fileName: result.name ?? 'book.lenguas' }],
-        destination: 'cachesDirectory',
-      });
-      const copy = copies[0];
-      if (copy.status !== 'success') throw new Error('Failed to copy file');
-
-      const filePath = decodeURIComponent(copy.localUri.replace(/^file:\/\//, ''));
-      const raw = await RNFS.readFile(filePath, 'utf8');
-      let parsed: unknown;
-      try { parsed = JSON.parse(raw); }
-      catch { throw new Error('File is not valid JSON.'); }
-      if (!isSerializedBook(parsed)) {
-        throw new Error('File is not a parsed Lenguas book.');
-      }
-
-      await saveBook(parsed);
-
-      if (parsed.language === language) {
-        await setCurrentBook(language, parsed.id);
-        await refreshLibrary();
-        const handle = hydrateSerializedBook(parsed);
-        epubRef.current = handle;
-        setEpubTitle(handle.title);
-        setEpubAuthor(handle.author);
-        setToc(handle.toc);
-        openChapter(0);
-      } else {
-        await refreshLibrary();
-        Alert.alert(
-          'Imported',
-          `"${parsed.title}" was added to your ${parsed.language.toUpperCase()} library. Switch languages to read it.`,
-        );
-      }
-    } catch (e: any) {
-      if (!isErrorWithCode(e) || e.code !== errorCodes.OPERATION_CANCELED) {
-        setError(e.message || 'Failed to import book.');
-        console.error(e);
-      }
-    }
-  }
-
-  // ── Export a parsed book to a user-chosen location ──────────────────────────
-
-  async function handleExportBook(summary: BookSummary) {
-    try {
-      setError(null);
-      const stored = await loadBook(summary.id);
-      if (!stored) {
-        setError('Book file is missing — nothing to export.');
-        return;
-      }
-      const fileName = `${sanitizeFilename(stored.title)}.lenguas`;
-      const tmpPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
-      await RNFS.writeFile(tmpPath, JSON.stringify(stored), 'utf8');
-      await Share.open({
-        url: `file://${tmpPath}`,
-        type: 'application/octet-stream',
-        filename: fileName,
-        failOnCancel: false,
-      });
-    } catch (e: any) {
-      // react-native-share throws { message: 'User did not share' } on cancel.
-      const msg = e?.message || '';
-      if (!/did not share|cancel/i.test(msg)) {
-        setError(msg || 'Failed to export book.');
-        console.error(e);
-      }
-    }
-  }
-
-  // ── Open a saved book from the library ──────────────────────────────────────
-
-  async function handleOpenSavedBook(summary: BookSummary) {
-    try {
-      setError(null);
-      setPhase('parsing');
-      setParseProgress(null);
-      const stored = await loadBook(summary.id);
-      if (!stored) {
-        await deleteBook(summary.id, language);
-        await refreshLibrary();
-        setError('Saved book is missing or corrupt — removed from library.');
-        setPhase('library');
-        return;
-      }
-      const handle = hydrateSerializedBook(stored);
-      epubRef.current = handle;
-      setEpubTitle(handle.title);
-      setEpubAuthor(handle.author);
-      setToc(handle.toc);
-      await setCurrentBook(language, handle.id);
-      const state = await getState(language);
-      const tocIdx = state.positions[handle.id] ?? 0;
-      openChapter(tocIdx);
+      setDownloadedHashes(downloaded);
     } catch (e) {
-      console.error('[ReadAlong] failed to open saved book', e);
-      setError('Failed to open saved book.');
+      console.warn('[ReadAlong] refresh failed:', (e as any)?.message);
+    }
+  }
+
+  // ── Open a library book (downloading first if needed) ──────────────────────
+
+  async function handleOpenLibraryBook(summary: LibrarySummary) {
+    try {
+      setError(null);
+      let book = await loadCachedBook(summary.contentHash);
+      if (!book) {
+        setDownloadingHash(summary.contentHash);
+        setPhase('downloading');
+        book = await fetchBook(summary.contentHash);
+        await cacheBook(summary.contentHash, book);
+        setDownloadedHashes(prev => new Set(prev).add(summary.contentHash));
+        setDownloadingHash(null);
+      }
+      const state = await getState(language);
+      const tocIdx = state.positions[summary.contentHash] ?? 0;
+      await setCurrentBookHash(language, summary.contentHash);
+      openBook(summary.contentHash, book, tocIdx);
+    } catch (e: any) {
+      setError(e?.message || 'Failed to open book.');
+      setDownloadingHash(null);
       setPhase('library');
     }
   }
 
-  function handleDeleteBook(summary: BookSummary) {
-    Alert.alert(
-      'Delete Book',
-      `Remove "${summary.title}" from your library?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            await deleteBook(summary.id, language);
-            await refreshLibrary();
-          },
-        },
-      ],
-    );
+  function openBook(contentHash: string, book: SerializedBook, tocIdx: number) {
+    const handle = hydrateSerializedBook(book);
+    epubRef.current = handle;
+    setCurrentHash(contentHash);
+    setEpubTitle(handle.title);
+    setEpubAuthor(handle.author);
+    setToc(handle.toc);
+    openChapter(tocIdx);
   }
 
   async function handleCloseCurrentBook() {
-    await setCurrentBook(language, null);
+    await setCurrentBookHash(language, null);
     epubRef.current = null;
+    setCurrentHash(null);
     setEpubTitle(null);
     setEpubAuthor(null);
     setToc([]);
@@ -312,7 +155,7 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     setCurrentTocIdx(tocIdx);
     setSentenceIdx(sentenceStart);
     setPhase('reading');
-    setPosition(language, handle.id, tocIdx).catch(() => {});
+    if (currentHash) setPosition(language, currentHash, tocIdx).catch(() => {});
   }
 
   // ── Rendering ────────────────────────────────────────────────────────────────
@@ -325,6 +168,16 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
     );
   }
 
+  if (phase === 'downloading') {
+    const downloading = library.find(b => b.contentHash === downloadingHash);
+    return (
+      <View style={styles.centeredContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={styles.loadingText}>Downloading{downloading ? ` "${downloading.title}"` : ''}…</Text>
+      </View>
+    );
+  }
+
   if (phase === 'library') {
     return (
       <View style={styles.fullContainer}>
@@ -332,39 +185,39 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
           <TouchableOpacity style={styles.headerBack} onPress={onBack}>
             <Text style={styles.headerBackText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Read Along</Text>
-          <View style={styles.headerRight} />
+          <Text style={styles.headerTitle}>Library</Text>
+          <TouchableOpacity style={styles.headerLibraryButton} onPress={refreshLibrary}>
+            <Text style={styles.headerLibraryText}>Refresh</Text>
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.libraryActions}>
-          <View style={styles.libraryButtonRow}>
-            <TouchableOpacity style={styles.primaryButton} onPress={handleSelectEpub} activeOpacity={0.85}>
-              <Text style={styles.primaryButtonText}>+ Add Book</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.secondaryButton} onPress={handleImportBook} activeOpacity={0.85}>
-              <Text style={styles.secondaryButtonText}>Import</Text>
-            </TouchableOpacity>
+        {error ? (
+          <View style={styles.errorBanner}>
+            <Text style={styles.errorText}>{error}</Text>
           </View>
-          {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        </View>
+        ) : null}
 
         {library.length === 0 ? (
           <View style={styles.libraryEmpty}>
             <Text style={styles.libraryEmptyIcon}>📚</Text>
-            <Text style={styles.libraryEmptyText}>Your library is empty.{'\n'}Add an EPUB to get started.</Text>
+            <Text style={styles.libraryEmptyText}>
+              No books in the {language.toUpperCase()} library yet.{'\n'}
+              Run the parse CLI to add some.
+            </Text>
           </View>
         ) : (
           <FlatList
             data={library}
-            keyExtractor={b => b.id}
-            renderItem={({ item }: ListRenderItemInfo<BookSummary>) => (
-              <View style={styles.libraryRow}>
+            keyExtractor={b => b.contentHash}
+            renderItem={({ item }: ListRenderItemInfo<LibrarySummary>) => {
+              const isDownloaded = downloadedHashes.has(item.contentHash);
+              return (
                 <TouchableOpacity
-                  style={styles.libraryRowBody}
-                  onPress={() => handleOpenSavedBook(item)}
+                  style={styles.libraryRow}
+                  onPress={() => handleOpenLibraryBook(item)}
                   activeOpacity={0.7}
                 >
-                  <Text style={styles.libraryRowIcon}>📖</Text>
+                  <Text style={styles.libraryRowIcon}>{isDownloaded ? '📖' : '☁️'}</Text>
                   <View style={styles.libraryRowText}>
                     <Text style={styles.libraryRowTitle} numberOfLines={2}>{item.title}</Text>
                     {item.author ? (
@@ -375,37 +228,12 @@ export function ReadAlongScreen({ language, onBack }: { language: Language; onBa
                     <Text style={styles.libraryRowBadge}>{item.difficulty}</Text>
                   ) : null}
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.libraryRowAction}
-                  onPress={() => handleExportBook(item)}
-                  hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
-                >
-                  <Text style={styles.libraryRowActionText}>⬆</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.libraryRowAction}
-                  onPress={() => handleDeleteBook(item)}
-                  hitSlop={{ top: 12, bottom: 12, left: 8, right: 12 }}
-                >
-                  <Text style={styles.libraryRowDeleteText}>✕</Text>
-                </TouchableOpacity>
-              </View>
-            )}
+              );
+            }}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             contentContainerStyle={{ paddingBottom: spacing.xl }}
           />
         )}
-      </View>
-    );
-  }
-
-  if (phase === 'parsing') {
-    const progressText = renderProgress(parseProgress);
-    return (
-      <View style={styles.centeredContainer}>
-        <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.loadingText}>{progressText}</Text>
-        <Text style={styles.loadingHint}>This can take a few minutes for long books.</Text>
       </View>
     );
   }
@@ -536,19 +364,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryButtonText: { color: '#fff', fontSize: fontSize.xs, fontWeight: '600' },
-  secondaryButton: {
-    backgroundColor: colors.cardBackground,
-    borderRadius: borderRadius.md,
+  errorBanner: {
+    paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
   },
-  secondaryButtonText: { color: colors.text, fontSize: fontSize.xs, fontWeight: '600' },
-  errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center', marginTop: spacing.sm },
+  errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center' },
   loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm, textAlign: 'center' },
-  loadingHint: { color: colors.muted, fontSize: 12, marginTop: spacing.xs, opacity: 0.7, textAlign: 'center' },
 
   // Header
   header: {
@@ -564,6 +385,7 @@ const styles = StyleSheet.create({
   headerBackText: { fontSize: fontSize.md, color: colors.text },
   headerTitleStack: { flex: 1 },
   headerTitle: {
+    flex: 1,
     fontSize: fontSize.xs,
     fontWeight: '600',
     color: colors.text,
@@ -573,21 +395,10 @@ const styles = StyleSheet.create({
     color: colors.muted,
     marginTop: 1,
   },
-  headerRight: { width: 36 },
   headerLibraryButton: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
   headerLibraryText: { color: colors.primary, fontSize: 13, fontWeight: '600' },
 
   // Library
-  libraryActions: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    alignItems: 'center',
-  },
-  libraryButtonRow: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    alignItems: 'center',
-  },
   libraryEmpty: {
     flex: 1,
     alignItems: 'center',
@@ -607,11 +418,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cardBackground,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
-  },
-  libraryRowBody: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   libraryRowIcon: { fontSize: 22, marginRight: spacing.sm },
   libraryRowText: {
@@ -637,20 +443,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 2,
     marginLeft: spacing.xs,
-  },
-  libraryRowAction: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  libraryRowActionText: {
-    fontSize: fontSize.md,
-    color: colors.muted,
-    fontWeight: '400',
-  },
-  libraryRowDeleteText: {
-    fontSize: fontSize.md,
-    color: colors.muted,
-    fontWeight: '300',
   },
 
   // TOC

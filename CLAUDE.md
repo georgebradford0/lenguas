@@ -2,33 +2,40 @@
 
 ## Project Overview
 
-Lenguas is a mobile reading app for language learners. The user opens an EPUB in their target language (German, Dutch, French, or Spanish) and reads it one sentence at a time: the English translation appears on top, the original sentence below with **only nouns and verbs tappable**. Tapping a noun/verb shows its contextual translation plus, when relevant, a one-sentence grammar explanation.
+Lenguas is a mobile reading app for language learners. The user opens a book in their target language (German, Dutch, French, or Spanish) and reads it one sentence at a time: the English translation appears on top, the original sentence below with **only nouns and verbs tappable**. Tapping a noun/verb shows its contextual translation plus, when relevant, a one-sentence grammar explanation.
 
 No login. The app launches directly into language select, and all API endpoints are open — there is no per-user state on the server.
 
+**Books are parsed offline** by the developer using a CLI script (`api/v0/bin/parse-epub.js`) that runs the EPUB through gpt-4.1-mini and uploads the parsed `SerializedBook` JSON to S3. The API is read-only against that S3 library; the mobile app fetches the library list and downloads books on demand. Mobile never parses anything.
+
 **Architecture:**
 - **Frontend**: React Native app (`mobile/`)
-- **Backend**: Express.js API (`api/v0/`) — stateless, no database
+- **Backend**: Express.js API (`api/v0/`) — stateless, no database; reads from S3
+- **Library storage**: S3 bucket `lenguas-parsed-books` (us-west-2)
 - **Image registry**: `ghcr.io/georgebradford0/lenguas-api`
 - **Deployment**: Docker container on AWS EC2 (`ec2-16-144-226-254.us-west-2.compute.amazonaws.com`)
-- **External services**: OpenAI (translation + EPUB parse), AWS Polly (TTS)
+- **External services**: OpenAI (translation + EPUB parse), AWS Polly (TTS), AWS S3 (library)
 
 ## Key Files & Locations
 
 ### Backend (`api/v0/`)
-- `index.js` — Express app, mounts `/speak` and `/translate` routes; no auth, no Mongo
+- `index.js` — Express app, mounts `/speak`, `/translate`, and `/books`
 - `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes)
-- `routes/translate.js` — `POST /translate/sentence`, `POST /translate/book`
+- `routes/translate.js` — `POST /translate/sentence` (sentence → chunks + word translations)
+- `routes/books.js` — `GET /books?language=X` (library list), `GET /books/:hash` (full book). Read-only against S3.
+- `lib/parseEpub.js` — pure parse pipeline: takes EPUB buffer, returns SerializedBook. Used by the CLI; not mounted as a route.
+- `lib/bookStore.js` — S3 helpers: head/get/put by SHA-256, plus `_index.json` manifest read/write.
+- `bin/parse-epub.js` — **dev CLI**: `node bin/parse-epub.js <file.epub> --language de`. Parses locally and uploads to S3.
 - `config/languages.js` — per-language Polly voice config
 - `Dockerfile` — `node:22-alpine`, `npm ci --production`
 
 ### Frontend (`mobile/src/`)
 - `App.tsx` — language pick → ReadAlongScreen (no login screen)
-- `screens/ReadAlongScreen.tsx` — phase machine (`loading | library | parsing | toc | reading`); the `reading` phase mounts `SentenceModePanel` fullscreen. In the `parsing` phase it reads the picked EPUB as base64, POSTs to `/translate/book`, and consumes the NDJSON stream over XMLHttpRequest to show phase + chapter progress.
+- `screens/ReadAlongScreen.tsx` — phase machine (`loading | library | downloading | toc | reading`). Library is fetched from `GET /books?language=X`; tapping an undownloaded book triggers `GET /books/:hash` and caches it locally by content hash.
 - `components/SentenceModePanel.tsx` — fullscreen sentence reader, fetches `/translate/sentence` per sentence, shows translation on top + original below with noun/verb taps
-- `utils/epubParser.ts` — thin client-side layer (~110 lines): types, hydrate from server response, tokenize sentences with stable word IDs. All OPF/NCX/spine/HTML parsing lives server-side in `/translate/book`.
-- `utils/bookStorage.ts` — AsyncStorage-backed library + per-language `{ currentBookId, positions }` state
-- `api/client.ts` — fetch wrappers for every endpoint above
+- `utils/epubParser.ts` — types + `hydrateSerializedBook` + tokenizer. No parsing — books arrive pre-parsed from the server.
+- `utils/bookStorage.ts` — RNFS-backed cache: downloaded `SerializedBook` JSONs keyed by content hash, library-list cache for offline, per-language `{ currentBookHash, positions }` state.
+- `api/client.ts` — fetch wrappers: `listLibrary`, `fetchBook`, `translateSentence`, `speak`.
 
 ### Infra
 - `docker-compose.prod.yml` — pulls the GHCR image and runs the api container with `restart: unless-stopped`. No mongo, no network alias.
@@ -38,10 +45,27 @@ No login. The app launches directly into language select, and all API endpoints 
 
 ## Reading Flow
 
-1. App boots into language select, then `ReadAlongScreen` loads the library and auto-resumes the saved current book if one exists.
-2. User picks (or adds) an EPUB. New books are parsed via a single `POST /translate/book` call: the mobile app sends the raw `.epub` as base64, and the server unzips it, extracts the spine to plain text, asks gpt-4.1-mini for a TOC, then reproduces each section as `{ paragraphs: [[sentence, ...]] }` in parallel batches. Progress is streamed back as NDJSON so multi-minute parses don't look frozen. Parsed books are persisted locally so reopens are instant.
-3. Opening a chapter drops into fullscreen sentence mode at the saved position (or sentence 0). `SentenceModePanel` calls `POST /translate/sentence` for every sentence; the response carries the whole-sentence translation **and** a pre-computed list of nouns/verbs with per-word translation/explanation, so taps don't make a second API call.
+1. App boots into language select, then `ReadAlongScreen` fetches the server library (`GET /books?language=de`) and auto-resumes the saved current book if it's already downloaded.
+2. User taps a book in the library. If already cached (downloaded earlier), it opens instantly. Otherwise mobile downloads it via `GET /books/:hash`, caches it locally as `<DocumentDirectoryPath>/readalong/book_<hash>.json`, then opens.
+3. Opening a chapter drops into fullscreen sentence mode at the saved position (or sentence 0). `SentenceModePanel` calls `POST /translate/sentence` for every sentence; the response carries the whole-sentence translation, a list of grammatically-coherent chunks (each with its own translation + play button), and a pre-computed list of nouns/verbs with per-word translation/explanation.
 4. Prev/Next walks within the chapter and auto-advances across chapter boundaries. Back returns to the TOC.
+
+## Adding Books (Dev Workflow)
+
+Books are added by the developer running the parse CLI locally:
+
+```bash
+cd api/v0 && node bin/parse-epub.js ~/Downloads/der-prozess.epub --language de
+```
+
+What it does:
+1. Reads the EPUB bytes, computes SHA-256.
+2. Skips the parse if `s3://lenguas-parsed-books/parsed-books/<hash>.json` already exists (use `--force` to override).
+3. Runs `lib/parseEpub.js` — extracts text, asks gpt-4.1-mini for TOC + metadata (title, author, description, genre, CEFR difficulty), reproduces each section in parallel batches.
+4. Uploads the full `SerializedBook` to S3 under `parsed-books/<hash>.json`.
+5. Upserts a summary entry into `parsed-books/_index.json` so the API library list picks it up.
+
+Requires `OPENAI_API_KEY`, `AWS_S3_BUCKET`, and AWS credentials in the repo-root `.env`. Or `npm run parse-epub -- <args>` from `api/v0/`.
 
 ## API Endpoints
 
@@ -52,13 +76,12 @@ All endpoints are unauthenticated.
 - `POST /translate/sentence` — body `{ sentence, language }` →
   ```
   { translation: string,
+    chunks: [{ original: string, translation: string }],
     words: [{ word, pos: 'noun'|'verb', translation, explanation: string|null }] }
   ```
   `word` is the inflected surface form as it appears in the sentence, not a lemma.
-- `POST /translate/book` — body `{ epubBase64, language, title? }`. Streams `application/x-ndjson`, one event per line:
-  - `{ type: 'progress', phase, message?, current?, total?, sectionId?, title? }`
-  - `{ type: 'book', data: <SerializedBook> }` (final)
-  - `{ type: 'error', message }`
+- `GET /books?language=de` — `{ books: LibrarySummary[] }`. Reads from S3 `_index.json`. Each summary: `{ contentHash, title, author, description, genre, difficulty, language, uploadedAt }`.
+- `GET /books/:hash` — `{ book: SerializedBook }`. Reads from S3. 404 if unknown hash. The full `SerializedBook` includes paragraphs/sentences for every chapter — ready for the reader to hydrate.
 
 ## Building & Publishing the API Image
 
@@ -167,14 +190,17 @@ ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.comput
 ## Environment Variables
 
 **Required for the API:**
-- `OPENAI_API_KEY` — `/translate/*`
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — Polly (TTS)
+- `OPENAI_API_KEY` — `/translate/sentence`
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — Polly (TTS) + S3 (library)
+- `AWS_S3_BUCKET` — the library bucket (`lenguas-parsed-books`)
+
+**Also required for `bin/parse-epub.js` (dev CLI):** all of the above.
 
 **Optional:**
 - `PORT` (default 3000)
 
 **Used by `deploy.sh` from your shell / local `.env`:**
-- `OPENAI_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`.
+- `OPENAI_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET`.
 
 ## Git Workflow
 

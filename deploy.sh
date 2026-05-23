@@ -37,6 +37,7 @@ OPENAI_API_KEY=$OPENAI_API_KEY
 AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
 AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
 AWS_REGION=${AWS_REGION:-us-east-1}
+AWS_S3_BUCKET=${AWS_S3_BUCKET:-lenguas-parsed-books}
 EOF"
 
 echo "🐳 Step 4: Pulling latest image and recreating api..."

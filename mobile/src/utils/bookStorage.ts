@@ -1,19 +1,11 @@
 import RNFS from 'react-native-fs';
 import type { SerializedBook } from './epubParser';
+import type { LibrarySummary } from '../api/client';
 
 const STORAGE_DIR = `${RNFS.DocumentDirectoryPath}/readalong`;
 
-export interface BookSummary {
-  id: string;
-  title: string;
-  author?: string | null;
-  difficulty?: string | null;
-  language: string;
-  addedAt: number;
-}
-
 export interface ReadAlongState {
-  currentBookId: string | null;
+  currentBookHash: string | null;
   positions: Record<string, number>;
 }
 
@@ -22,8 +14,8 @@ async function ensureDir() {
   if (!exists) await RNFS.mkdir(STORAGE_DIR);
 }
 
-const bookPath = (id: string) => `${STORAGE_DIR}/book_${id}.json`;
-const libraryPath = (lang: string) => `${STORAGE_DIR}/library_${lang}.json`;
+const bookPath = (hash: string) => `${STORAGE_DIR}/book_${hash}.json`;
+const libraryCachePath = (lang: string) => `${STORAGE_DIR}/library_${lang}.json`;
 const statePath = (lang: string) => `${STORAGE_DIR}/state_${lang}.json`;
 
 async function readJson<T>(path: string): Promise<T | null> {
@@ -42,62 +34,55 @@ async function writeJson(path: string, data: unknown): Promise<void> {
   await RNFS.writeFile(path, JSON.stringify(data), 'utf8');
 }
 
-export async function saveBook(book: SerializedBook): Promise<void> {
-  await writeJson(bookPath(book.id), book);
-  const lib = (await readJson<BookSummary[]>(libraryPath(book.language))) ?? [];
-  const summary: BookSummary = {
-    id: book.id,
-    title: book.title,
-    author: book.author ?? null,
-    difficulty: book.difficulty ?? null,
-    language: book.language,
-    addedAt: book.savedAt,
-  };
-  const existingIdx = lib.findIndex(b => b.id === book.id);
-  if (existingIdx >= 0) lib[existingIdx] = summary;
-  else lib.push(summary);
-  await writeJson(libraryPath(book.language), lib);
+// ── Full book cache (downloaded SerializedBook keyed by content hash) ────────
+
+export async function cacheBook(contentHash: string, book: SerializedBook): Promise<void> {
+  await writeJson(bookPath(contentHash), book);
 }
 
-export async function loadBook(id: string): Promise<SerializedBook | null> {
-  return readJson<SerializedBook>(bookPath(id));
+export async function loadCachedBook(contentHash: string): Promise<SerializedBook | null> {
+  return readJson<SerializedBook>(bookPath(contentHash));
 }
 
-export async function listBooks(language: string): Promise<BookSummary[]> {
-  const lib = (await readJson<BookSummary[]>(libraryPath(language))) ?? [];
-  return [...lib].sort((a, b) => b.addedAt - a.addedAt);
+export async function hasCachedBook(contentHash: string): Promise<boolean> {
+  return RNFS.exists(bookPath(contentHash));
 }
 
-export async function deleteBook(id: string, language: string): Promise<void> {
+export async function deleteCachedBook(contentHash: string): Promise<void> {
   try {
-    const exists = await RNFS.exists(bookPath(id));
-    if (exists) await RNFS.unlink(bookPath(id));
+    if (await RNFS.exists(bookPath(contentHash))) await RNFS.unlink(bookPath(contentHash));
   } catch {}
-  const lib = (await readJson<BookSummary[]>(libraryPath(language))) ?? [];
-  await writeJson(libraryPath(language), lib.filter(b => b.id !== id));
-  const state = await getState(language);
-  if (state.currentBookId === id) state.currentBookId = null;
-  delete state.positions[id];
-  await writeJson(statePath(language), state);
 }
+
+// ── Library list cache (latest server response, used as offline fallback) ────
+
+export async function cacheLibraryList(language: string, books: LibrarySummary[]): Promise<void> {
+  await writeJson(libraryCachePath(language), books);
+}
+
+export async function loadCachedLibraryList(language: string): Promise<LibrarySummary[] | null> {
+  return readJson<LibrarySummary[]>(libraryCachePath(language));
+}
+
+// ── Per-language reading state ───────────────────────────────────────────────
 
 export async function getState(language: string): Promise<ReadAlongState> {
   const s = await readJson<ReadAlongState>(statePath(language));
-  return s ?? { currentBookId: null, positions: {} };
+  return s ?? { currentBookHash: null, positions: {} };
 }
 
-export async function setCurrentBook(language: string, id: string | null): Promise<void> {
+export async function setCurrentBookHash(language: string, hash: string | null): Promise<void> {
   const state = await getState(language);
-  state.currentBookId = id;
+  state.currentBookHash = hash;
   await writeJson(statePath(language), state);
 }
 
 export async function setPosition(
   language: string,
-  bookId: string,
+  contentHash: string,
   tocIdx: number,
 ): Promise<void> {
   const state = await getState(language);
-  state.positions[bookId] = tocIdx;
+  state.positions[contentHash] = tocIdx;
   await writeJson(statePath(language), state);
 }
