@@ -16,6 +16,7 @@ async function ensureDir() {
 
 const bookPath = (hash: string) => `${STORAGE_DIR}/book_${hash}.json`;
 const libraryCachePath = (lang: string) => `${STORAGE_DIR}/library_${lang}.json`;
+const allLibraryCachePath = `${STORAGE_DIR}/library_all.json`;
 const statePath = (lang: string) => `${STORAGE_DIR}/state_${lang}.json`;
 
 async function readJson<T>(path: string): Promise<T | null> {
@@ -62,6 +63,15 @@ export async function cacheLibraryList(language: string, books: LibrarySummary[]
 
 export async function loadCachedLibraryList(language: string): Promise<LibrarySummary[] | null> {
   return readJson<LibrarySummary[]>(libraryCachePath(language));
+}
+
+// Whole-library cache (all languages) for the unified library screen.
+export async function cacheAllLibrary(books: LibrarySummary[]): Promise<void> {
+  await writeJson(allLibraryCachePath, books);
+}
+
+export async function loadCachedAllLibrary(): Promise<LibrarySummary[] | null> {
+  return readJson<LibrarySummary[]>(allLibraryCachePath);
 }
 
 // ── Per-language reading state ───────────────────────────────────────────────

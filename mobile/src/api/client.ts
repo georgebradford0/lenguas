@@ -71,8 +71,9 @@ export interface LibrarySummary {
   uploadedAt: number;
 }
 
-export async function listLibrary(language: string): Promise<LibrarySummary[]> {
-  const res = await fetch(`${API_BASE}/books?language=${encodeURIComponent(language)}`);
+export async function listLibrary(language?: string): Promise<LibrarySummary[]> {
+  const qs = language ? `?language=${encodeURIComponent(language)}` : '';
+  const res = await fetch(`${API_BASE}/books${qs}`);
   if (!res.ok) throw new Error(`Failed to list library: HTTP ${res.status}`);
   const json = await res.json();
   return Array.isArray(json.books) ? json.books : [];
