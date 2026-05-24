@@ -81,6 +81,19 @@ impl Store {
         }
     }
 
+    /// Delete the per-book JSON object from S3. S3 returns 204 even for missing
+    /// keys, so this is idempotent — calling on a non-existent hash is a no-op.
+    pub async fn delete_book_json(&self, hash: &str) -> Result<()> {
+        self.client
+            .delete_object()
+            .bucket(&self.bucket)
+            .key(Self::key_for(hash))
+            .send()
+            .await
+            .context("deleting book from S3")?;
+        Ok(())
+    }
+
     pub async fn put_book_json(&self, hash: &str, body: Vec<u8>) -> Result<()> {
         self.client
             .put_object()
