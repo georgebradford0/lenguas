@@ -9,10 +9,11 @@ import { fetchBook } from '../api/client';
 import type { LibrarySummary } from '../api/client';
 import {
   cacheBook, loadCachedBook,
-  getState, setCurrentBookHash, setPosition,
+  getPosition, setCurrentBookHash, setPosition,
 } from '../utils/bookStorage';
 import { SentenceModePanel } from '../components/SentenceModePanel';
-import type { EpubHandle, TocEntry, Chapter, Sentence } from '../utils/epubParser';
+import type { SentencePageData } from '../components/SentenceModePanel';
+import type { EpubHandle, TocEntry } from '../utils/epubParser';
 import type { Language } from '../types';
 
 type Phase = 'loading' | 'downloading' | 'toc' | 'reading';
@@ -28,11 +29,14 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
   const [epubAuthor, setEpubAuthor] = useState<string | null>(null);
   const [toc, setToc] = useState<TocEntry[]>([]);
-  const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
-  const [currentTocIdx, setCurrentTocIdx] = useState(0);
-  const [sentenceIdx, setSentenceIdx] = useState(0);
 
-  // ── Init: hydrate from cache or download, then jump to saved chapter ───────
+  // Whole-book flat pages. Built once after hydrate; cross-chapter swipe is
+  // free because the entire book is one paged FlatList.
+  const [pages, setPages] = useState<SentencePageData[]>([]);
+  const chapterStartsRef = useRef<number[]>([]); // chapterIdx → first page index
+  const [initialPageIdx, setInitialPageIdx] = useState(0);
+
+  // ── Init: hydrate from cache or download, build pages, jump to saved spot ───
 
   useEffect(() => {
     let cancelled = false;
@@ -48,7 +52,6 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
         }
         if (cancelled) return;
 
-        const state = await getState(language);
         await setCurrentBookHash(language, contentHash);
 
         const handle = hydrateSerializedBook(stored);
@@ -57,8 +60,18 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
         setEpubAuthor(handle.author);
         setToc(handle.toc);
 
-        const tocIdx = state.positions[contentHash] ?? 0;
-        openChapter(tocIdx);
+        const { pages: built, starts } = buildPages(handle);
+        chapterStartsRef.current = starts;
+        setPages(built);
+
+        const saved = await getPosition(language, contentHash);
+        const safeChapter = Math.min(Math.max(0, saved.chapterIdx), handle.toc.length - 1);
+        const chapterStart = starts[safeChapter] ?? 0;
+        const sentencesInChapter = sentenceCountInChapter(starts, built.length, safeChapter);
+        const safeSentence = Math.min(Math.max(0, saved.sentenceIdx), Math.max(0, sentencesInChapter - 1));
+        if (cancelled) return;
+        setInitialPageIdx(chapterStart + safeSentence);
+        setPhase('reading');
       } catch (e: any) {
         console.error('[ReadAlong] init failed', e);
         if (!cancelled) {
@@ -72,20 +85,22 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentHash]);
 
-  // ── Chapter loading ──────────────────────────────────────────────────────────
+  // ── Navigation ───────────────────────────────────────────────────────────────
 
-  function openChapter(tocIdx: number, sentenceStart = 0) {
-    const handle = epubRef.current;
-    if (!handle) return;
-    const entry = handle.toc[tocIdx];
-    if (!entry) return;
-    const chapter = handle.chapters[entry.href];
-    if (!chapter) { setError('Chapter not available.'); return; }
-    setCurrentChapter(chapter);
-    setCurrentTocIdx(tocIdx);
-    setSentenceIdx(sentenceStart);
+  function openChapter(tocIdx: number) {
+    const start = chapterStartsRef.current[tocIdx];
+    if (start === undefined) return;
+    setInitialPageIdx(start);
     setPhase('reading');
-    setPosition(language, contentHash, tocIdx).catch(() => {});
+    // Persist intent in case the user backgrounds before swiping.
+    setPosition(language, contentHash, { chapterIdx: tocIdx, sentenceIdx: 0 }).catch(() => {});
+  }
+
+  function handlePageChange(_idx: number, page: SentencePageData) {
+    setPosition(language, contentHash, {
+      chapterIdx: page.chapterIdx,
+      sentenceIdx: page.sentenceIdxInChapter,
+    }).catch(() => {});
   }
 
   // ── Rendering ────────────────────────────────────────────────────────────────
@@ -117,7 +132,7 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
     return (
       <View style={styles.fullContainer}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerBack} onPress={() => currentChapter ? setPhase('reading') : onBack()}>
+          <TouchableOpacity style={styles.headerBack} onPress={() => setPhase('reading')}>
             <Text style={styles.headerBackText}>←</Text>
           </TouchableOpacity>
           <View style={styles.headerTitleStack}>
@@ -152,71 +167,63 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
     );
   }
 
-  // ── Reading: one sentence at a time, fullscreen ─────────────────────────────
+  // ── Reading: horizontal swipe across all sentences in the book ──────────────
 
-  if (phase === 'reading' && currentChapter) {
-    const allSentences: Sentence[] = currentChapter.paragraphs.flatMap(p => p.sentences);
-    const current = allSentences[sentenceIdx];
-
-    if (!current) {
+  if (phase === 'reading') {
+    if (pages.length === 0) {
       return (
         <View style={styles.centeredContainer}>
-          <Text style={styles.loadingText}>No sentences in this chapter.</Text>
-          <TouchableOpacity style={styles.primaryButton} onPress={() => setPhase('toc')}>
-            <Text style={styles.primaryButtonText}>Back to chapters</Text>
+          <Text style={styles.loadingText}>No sentences in this book.</Text>
+          <TouchableOpacity style={styles.primaryButton} onPress={onBack}>
+            <Text style={styles.primaryButtonText}>Back to library</Text>
           </TouchableOpacity>
         </View>
       );
     }
-
-    const isFirstChapter = currentTocIdx === 0;
-    const isLastChapter = currentTocIdx >= toc.length - 1;
-    const canPrev = sentenceIdx > 0 || !isFirstChapter;
-    const canNext = sentenceIdx < allSentences.length - 1 || !isLastChapter;
-
-    function handlePrev() {
-      if (sentenceIdx > 0) {
-        setSentenceIdx(i => i - 1);
-        return;
-      }
-      if (currentTocIdx === 0) return;
-      const handle = epubRef.current;
-      if (!handle) return;
-      const prevEntry = handle.toc[currentTocIdx - 1];
-      const prevChapter = prevEntry && handle.chapters[prevEntry.href];
-      if (!prevChapter) return;
-      const lastIdx = prevChapter.paragraphs.reduce((n, p) => n + p.sentences.length, 0) - 1;
-      openChapter(currentTocIdx - 1, Math.max(0, lastIdx));
-    }
-
-    function handleNext() {
-      if (sentenceIdx < allSentences.length - 1) {
-        setSentenceIdx(i => i + 1);
-        return;
-      }
-      if (currentTocIdx >= toc.length - 1) return;
-      openChapter(currentTocIdx + 1, 0);
-    }
-
     return (
       <SentenceModePanel
-        key={`${currentTocIdx}-${current.id}`}
-        sentence={current}
+        pages={pages}
+        initialIndex={initialPageIdx}
+        totalChapters={toc.length}
         language={language}
-        position={{ current: sentenceIdx + 1, total: allSentences.length }}
         bookTitle={epubTitle}
         bookAuthor={epubAuthor}
-        chapterTitle={`${currentChapter.title} · ${currentTocIdx + 1}/${toc.length}`}
-        canPrev={canPrev}
-        canNext={canNext}
-        onPrev={handlePrev}
-        onNext={handleNext}
+        onPageChange={handlePageChange}
         onBack={() => setPhase('toc')}
       />
     );
   }
 
   return null;
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+function buildPages(handle: EpubHandle): { pages: SentencePageData[]; starts: number[] } {
+  const pages: SentencePageData[] = [];
+  const starts: number[] = [];
+  handle.toc.forEach((entry, chapterIdx) => {
+    starts[chapterIdx] = pages.length;
+    const chapter = handle.chapters[entry.href];
+    if (!chapter) return;
+    const sentences = chapter.paragraphs.flatMap(p => p.sentences);
+    sentences.forEach((sentence, sentenceIdxInChapter) => {
+      pages.push({
+        sentence,
+        chapterIdx,
+        chapterTitle: entry.title,
+        sentenceIdxInChapter,
+        totalSentencesInChapter: sentences.length,
+      });
+    });
+  });
+  return { pages, starts };
+}
+
+function sentenceCountInChapter(starts: number[], totalPages: number, chapterIdx: number): number {
+  const start = starts[chapterIdx] ?? 0;
+  const end = (chapterIdx + 1 < starts.length) ? starts[chapterIdx + 1] : totalPages;
+  return Math.max(0, end - start);
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView,
+  FlatList, NativeSyntheticEvent, NativeScrollEvent,
+  ListRenderItemInfo, useWindowDimensions,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
@@ -13,23 +15,115 @@ import type { Language } from '../types';
 
 type Sound = ReturnType<typeof createSound>;
 
-interface Props {
+export interface SentencePageData {
   sentence: Sentence;
+  chapterIdx: number;
+  chapterTitle: string;
+  sentenceIdxInChapter: number;
+  totalSentencesInChapter: number;
+}
+
+interface Props {
+  pages: SentencePageData[];
+  initialIndex: number;
+  totalChapters: number;
   language: Language;
-  position: { current: number; total: number };
   bookTitle: string | null;
   bookAuthor: string | null;
-  chapterTitle: string;
-  canPrev: boolean;
-  canNext: boolean;
-  onPrev: () => void;
-  onNext: () => void;
+  onPageChange?: (idx: number, page: SentencePageData) => void;
   onBack: () => void;
 }
 
+/**
+ * Book-wide reader. Every sentence across every chapter is one flat list of
+ * pages — swipe just works across chapter boundaries with no special edge
+ * handling. The header re-reads the current page's chapter metadata on each
+ * settled swipe so the reader always sees where they are.
+ */
 export function SentenceModePanel({
-  sentence, language, position, bookTitle, bookAuthor, chapterTitle, canPrev, canNext, onPrev, onNext, onBack,
+  pages, initialIndex, totalChapters, language, bookTitle, bookAuthor, onPageChange, onBack,
 }: Props) {
+  const { width } = useWindowDimensions();
+  const listRef = useRef<FlatList<SentencePageData>>(null);
+  const [currentIdx, setCurrentIdx] = useState(initialIndex);
+
+  // When the parent updates initialIndex (e.g. TOC tap), scroll-jump to it.
+  // Bare initialScrollIndex only applies on first mount.
+  useEffect(() => {
+    setCurrentIdx(initialIndex);
+    requestAnimationFrame(() => {
+      listRef.current?.scrollToOffset({ offset: initialIndex * width, animated: false });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialIndex, width]);
+
+  const onMomentumEnd = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const idx = Math.round(e.nativeEvent.contentOffset.x / width);
+    if (idx !== currentIdx && pages[idx]) {
+      setCurrentIdx(idx);
+      onPageChange?.(idx, pages[idx]);
+    }
+  }, [width, currentIdx, onPageChange, pages]);
+
+  const getItemLayout = useCallback(
+    (_data: ArrayLike<SentencePageData> | null | undefined, index: number) => ({
+      length: width, offset: width * index, index,
+    }),
+    [width],
+  );
+
+  const current = pages[currentIdx] ?? pages[0];
+
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerBtn} onPress={onBack}>
+          <Text style={styles.headerBtnText}>←</Text>
+        </TouchableOpacity>
+        <View style={styles.headerCenter}>
+          {bookTitle ? (
+            <Text style={styles.headerBookLine} numberOfLines={1}>
+              {bookTitle}{bookAuthor ? ` · ${bookAuthor}` : ''}
+            </Text>
+          ) : null}
+          <Text style={styles.headerTitle} numberOfLines={1}>{current?.chapterTitle ?? ''}</Text>
+          <Text style={styles.headerCounter}>
+            Ch {(current?.chapterIdx ?? 0) + 1}/{totalChapters} · {(current?.sentenceIdxInChapter ?? 0) + 1}/{current?.totalSentencesInChapter ?? 0}
+          </Text>
+        </View>
+        <View style={styles.headerBtn} />
+      </View>
+
+      {/* Pages */}
+      <FlatList
+        ref={listRef}
+        data={pages}
+        keyExtractor={p => `${p.chapterIdx}:${p.sentence.id}`}
+        renderItem={({ item }: ListRenderItemInfo<SentencePageData>) => (
+          <SentencePage sentence={item.sentence} language={language} width={width} />
+        )}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        decelerationRate="fast"
+        snapToInterval={width}
+        snapToAlignment="start"
+        initialScrollIndex={Math.min(initialIndex, Math.max(0, pages.length - 1))}
+        getItemLayout={getItemLayout}
+        onMomentumScrollEnd={onMomentumEnd}
+        windowSize={3}
+        initialNumToRender={1}
+        maxToRenderPerBatch={2}
+        removeClippedSubviews
+      />
+    </View>
+  );
+}
+
+// ── Single page ─────────────────────────────────────────────────────────────
+
+function SentencePage({ sentence, language, width }: { sentence: Sentence; language: Language; width: number }) {
   const [chunks, setChunks] = useState<SentenceChunk[]>([]);
   const [contentWords, setContentWords] = useState<SentenceWord[]>([]);
   const [translating, setTranslating] = useState(false);
@@ -37,7 +131,6 @@ export function SentenceModePanel({
   const [playingChunkIdx, setPlayingChunkIdx] = useState<number | null>(null);
   const soundRef = useRef<Sound | null>(null);
 
-  // Map cleaned-lowercased surface form → word entry, so taps look up data we already fetched.
   const contentLookup = useMemo(() => {
     const m = new Map<string, SentenceWord>();
     for (const w of contentWords) {
@@ -47,16 +140,13 @@ export function SentenceModePanel({
     return m;
   }, [contentWords]);
 
-  // On sentence change: fetch chunks + content words. No auto-play.
   useEffect(() => {
-    if (!sentence) return;
+    let cancelled = false;
     setSelectedWord(null);
     setChunks([]);
     setContentWords([]);
     setTranslating(true);
-    stopAudio();
 
-    let cancelled = false;
     translateSentence(sentence.raw, language)
       .then(res => {
         if (cancelled) return;
@@ -64,7 +154,7 @@ export function SentenceModePanel({
         setContentWords(res.words || []);
       })
       .catch(err => {
-        console.log('[SentenceMode] translateSentence error', err?.message);
+        console.log('[SentencePage] translateSentence error', err?.message);
         if (!cancelled) {
           setChunks([{ original: sentence.raw, translation: '—' }]);
           setContentWords([]);
@@ -72,7 +162,7 @@ export function SentenceModePanel({
       })
       .finally(() => { if (!cancelled) setTranslating(false); });
 
-    return () => { cancelled = true; };
+    return () => { cancelled = true; stopAudio(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentence.id, language]);
 
@@ -125,41 +215,22 @@ export function SentenceModePanel({
     if (entry) setSelectedWord(entry);
   }
 
-  // Split a chunk's original text into whitespace-delimited tokens for tap rendering.
   function tokenizeChunk(text: string): string[] {
     return text.split(/(\s+)/).filter(p => p.length > 0);
   }
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.headerBtn} onPress={onBack}>
-          <Text style={styles.headerBtnText}>←</Text>
-        </TouchableOpacity>
-        <View style={styles.headerCenter}>
-          {bookTitle ? (
-            <Text style={styles.headerBookLine} numberOfLines={1}>
-              {bookTitle}{bookAuthor ? ` · ${bookAuthor}` : ''}
-            </Text>
-          ) : null}
-          <Text style={styles.headerTitle} numberOfLines={1}>{chapterTitle}</Text>
-          <Text style={styles.headerCounter}>{position.current} / {position.total}</Text>
-        </View>
-        <View style={styles.headerBtn} />
-      </View>
-
-      {/* Body */}
-      <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
+    <View style={{ width }}>
+      <ScrollView contentContainerStyle={styles.pageBody} showsVerticalScrollIndicator={false}>
         {translating ? (
           <ActivityIndicator color={colors.primary} style={styles.loader} />
         ) : (
           chunks.map((chunk, idx) => {
             const isPlaying = playingChunkIdx === idx;
             return (
-              <View key={idx} style={styles.chunkCard}>
-                <View style={styles.chunkText}>
-                  <Text style={styles.chunkTranslation}>{chunk.translation || '—'}</Text>
+              <View key={idx} style={styles.chunk}>
+                <Text style={styles.chunkTranslation}>{chunk.translation || '—'}</Text>
+                <View style={styles.chunkRow}>
                   <Text style={styles.chunkOriginal}>
                     {tokenizeChunk(chunk.original).map((tok, i) => {
                       if (/^\s+$/.test(tok)) {
@@ -183,20 +254,19 @@ export function SentenceModePanel({
                       );
                     })}
                   </Text>
+                  <TouchableOpacity
+                    style={styles.chunkPlayBtn}
+                    onPress={() => playChunkAudio(chunk.original, idx)}
+                    disabled={isPlaying}
+                  >
+                    <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={styles.chunkPlayBtn}
-                  onPress={() => playChunkAudio(chunk.original, idx)}
-                  disabled={isPlaying}
-                >
-                  <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
-                </TouchableOpacity>
               </View>
             );
           })
         )}
 
-        {/* Selected word card */}
         {selectedWord && (
           <View style={styles.wordCard}>
             <View style={styles.wordCardHeader}>
@@ -210,24 +280,6 @@ export function SentenceModePanel({
           </View>
         )}
       </ScrollView>
-
-      {/* Navigation */}
-      <View style={styles.nav}>
-        <TouchableOpacity
-          style={[styles.navBtn, !canPrev && styles.navBtnDisabled]}
-          onPress={onPrev}
-          disabled={!canPrev}
-        >
-          <Text style={styles.navBtnText}>‹ Prev</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.navBtn, styles.navBtnNext, !canNext && styles.navBtnDisabled]}
-          onPress={onNext}
-          disabled={!canNext}
-        >
-          <Text style={[styles.navBtnText, styles.navBtnNextText]}>Next ›</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -254,43 +306,40 @@ const styles = StyleSheet.create({
   headerTitle: { fontSize: fontSize.xs, fontWeight: '600', color: colors.text },
   headerCounter: { fontSize: 12, color: colors.muted, marginTop: 2 },
 
-  body: {
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.lg,
+  pageBody: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xl,
     flexGrow: 1,
   },
   loader: { marginVertical: spacing.lg },
 
-  chunkCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: spacing.sm,
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+  chunk: {
+    marginBottom: spacing.lg,
   },
-  chunkText: { flex: 1 },
   chunkTranslation: {
     fontSize: fontSize.md,
     color: colors.text,
-    fontWeight: '600',
-    lineHeight: fontSize.md * 1.35,
-    marginBottom: 4,
+    fontWeight: '500',
+    lineHeight: fontSize.md * 1.4,
+    marginBottom: 6,
+  },
+  chunkRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.xs,
   },
   chunkOriginal: {
+    flex: 1,
     fontSize: fontSize.sm,
     color: colors.muted,
-    lineHeight: fontSize.sm * 1.6,
+    lineHeight: fontSize.sm * 1.65,
   },
   chunkPlayBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: spacing.sm,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.cardBackground,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     marginTop: 2,
+    opacity: 0.7,
   },
   chunkPlayBtnText: { fontSize: fontSize.sm },
 
@@ -299,6 +348,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontWeight: '600',
     textDecorationLine: 'underline',
+    textDecorationColor: colors.border,
   },
   contentWordActive: {
     color: colors.primary,
@@ -320,26 +370,4 @@ const styles = StyleSheet.create({
   wordCardPos: { fontSize: 12, color: colors.muted, textTransform: 'uppercase' },
   wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
   wordCardExplanation: { fontSize: 13, color: colors.muted, lineHeight: 18 },
-
-  nav: {
-    flexDirection: 'row',
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    gap: spacing.sm,
-    backgroundColor: colors.cardBackground,
-  },
-  navBtn: {
-    flex: 1,
-    paddingVertical: spacing.sm,
-    alignItems: 'center',
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  navBtnNext: { backgroundColor: colors.primary, borderColor: colors.primary },
-  navBtnDisabled: { opacity: 0.3 },
-  navBtnText: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
-  navBtnNextText: { color: '#fff' },
 });

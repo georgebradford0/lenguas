@@ -4,9 +4,27 @@ import type { LibrarySummary } from '../api/client';
 
 const STORAGE_DIR = `${RNFS.DocumentDirectoryPath}/readalong`;
 
+export interface BookPosition {
+  chapterIdx: number;
+  sentenceIdx: number;
+}
+
 export interface ReadAlongState {
   currentBookHash: string | null;
-  positions: Record<string, number>;
+  // string → BookPosition (new) or number (legacy: chapter index, sentence 0).
+  // normalizePosition handles both transparently.
+  positions: Record<string, BookPosition | number>;
+}
+
+function normalizePosition(raw: BookPosition | number | undefined): BookPosition {
+  if (typeof raw === 'number') return { chapterIdx: raw, sentenceIdx: 0 };
+  if (raw && typeof raw === 'object' && typeof raw.chapterIdx === 'number') {
+    return {
+      chapterIdx: raw.chapterIdx,
+      sentenceIdx: typeof raw.sentenceIdx === 'number' ? raw.sentenceIdx : 0,
+    };
+  }
+  return { chapterIdx: 0, sentenceIdx: 0 };
 }
 
 async function ensureDir() {
@@ -90,9 +108,17 @@ export async function setCurrentBookHash(language: string, hash: string | null):
 export async function setPosition(
   language: string,
   contentHash: string,
-  tocIdx: number,
+  position: BookPosition,
 ): Promise<void> {
   const state = await getState(language);
-  state.positions[contentHash] = tocIdx;
+  state.positions[contentHash] = position;
   await writeJson(statePath(language), state);
+}
+
+export async function getPosition(
+  language: string,
+  contentHash: string,
+): Promise<BookPosition> {
+  const state = await getState(language);
+  return normalizePosition(state.positions[contentHash]);
 }
