@@ -32,48 +32,106 @@ impl Client {
         temperature: f32,
         max_tokens: u32,
     ) -> Result<Value> {
-        // Exponential backoff for 429/5xx. OpenAI Tier 3 throttles around
-        // bursts of ~15 concurrent calls; this lets the SDK absorb a few hits.
-        let mut delay_ms: u64 = 1_000;
-        let mut attempt = 0u32;
-        loop {
-            attempt += 1;
-            let body = json!({
-                "model": model,
-                "messages": messages,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-                "response_format": { "type": "json_object" },
-            });
-            let res = self
+        // Retry policy: up to MAX_ATTEMPTS total. Retry on 429, 5xx, and
+        // network/transport errors. On 429, honor the server's Retry-After
+        // header when present (capped so we don't sleep forever); otherwise
+        // exponential backoff (1, 2, 4, 8, 16, 30s, capped at MAX_DELAY_MS).
+        const MAX_ATTEMPTS: u32 = 6;
+        const MIN_DELAY_MS: u64 = 1_000;
+        const MAX_DELAY_MS: u64 = 30_000;
+        const MAX_RETRY_AFTER_MS: u64 = 120_000;
+
+        let body = json!({
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "response_format": { "type": "json_object" },
+        });
+
+        for attempt in 1..=MAX_ATTEMPTS {
+            let send_result = self
                 .http
                 .post(ENDPOINT)
                 .bearer_auth(&self.api_key)
                 .json(&body)
                 .send()
-                .await
-                .context("OpenAI request failed")?;
-            let status = res.status();
-            if status.is_success() {
-                let parsed: ChatResponse = res.json().await.context("decoding OpenAI response")?;
-                let content = parsed
-                    .choices
-                    .into_iter()
-                    .next()
-                    .ok_or_else(|| anyhow!("no choices returned"))?
-                    .message
-                    .content;
-                return serde_json::from_str(&content).context("LLM returned invalid JSON");
+                .await;
+
+            let (delay_ms, reason) = match send_result {
+                Ok(res) if res.status().is_success() => {
+                    let parsed: ChatResponse =
+                        res.json().await.context("decoding OpenAI response")?;
+                    let content = parsed
+                        .choices
+                        .into_iter()
+                        .next()
+                        .ok_or_else(|| anyhow!("no choices returned"))?
+                        .message
+                        .content;
+                    return serde_json::from_str(&content).context("LLM returned invalid JSON");
+                }
+                Ok(res) => {
+                    let status = res.status();
+                    let retry_after_ms = parse_retry_after(res.headers().get("retry-after"))
+                        .map(|ms| ms.min(MAX_RETRY_AFTER_MS));
+                    let retryable = status.as_u16() == 429 || status.is_server_error();
+                    let text = res.text().await.unwrap_or_default();
+                    if !retryable {
+                        // Non-retryable HTTP error (4xx other than 429) — fail immediately.
+                        return Err(anyhow!(
+                            "OpenAI {status}: {}",
+                            text.chars().take(400).collect::<String>()
+                        ));
+                    }
+                    let delay = retry_after_ms.unwrap_or_else(|| backoff_ms(attempt, MIN_DELAY_MS, MAX_DELAY_MS));
+                    let trimmed = text.chars().take(120).collect::<String>();
+                    let detail = if trimmed.is_empty() { String::new() } else { format!(" — {trimmed}") };
+                    let hint = if retry_after_ms.is_some() { " (Retry-After)" } else { "" };
+                    (delay, format!("HTTP {status}{hint}{detail}"))
+                }
+                Err(err) => {
+                    // Network / transport error (DNS, timeout, connection reset). Retry.
+                    let delay = backoff_ms(attempt, MIN_DELAY_MS, MAX_DELAY_MS);
+                    (delay, format!("network: {err}"))
+                }
+            };
+
+            if attempt >= MAX_ATTEMPTS {
+                return Err(anyhow!(
+                    "OpenAI failed after {MAX_ATTEMPTS} attempts: {reason}"
+                ));
             }
-            let retryable = status.as_u16() == 429 || status.is_server_error();
-            let text = res.text().await.unwrap_or_default();
-            if !retryable || attempt >= 6 {
-                return Err(anyhow!("OpenAI {status}: {}", text.chars().take(400).collect::<String>()));
-            }
+            // Surface the retry so a multi-second backoff doesn't look like a hang.
+            eprintln!(
+                "  ↻ openai retry {}/{} in {:.1}s: {}",
+                attempt + 1,
+                MAX_ATTEMPTS,
+                delay_ms as f64 / 1000.0,
+                reason,
+            );
             tokio::time::sleep(std::time::Duration::from_millis(delay_ms)).await;
-            delay_ms = (delay_ms * 2).min(30_000);
         }
+
+        // Unreachable: the loop either returns Ok, bails on non-retryable, or
+        // bails on attempt == MAX_ATTEMPTS above.
+        unreachable!()
     }
+}
+
+fn backoff_ms(attempt: u32, min: u64, max: u64) -> u64 {
+    // attempt 1 → min, attempt 2 → 2*min, attempt 3 → 4*min, ... capped at max.
+    let shifted = min.checked_shl(attempt.saturating_sub(1)).unwrap_or(max);
+    shifted.min(max)
+}
+
+fn parse_retry_after(header: Option<&reqwest::header::HeaderValue>) -> Option<u64> {
+    let value = header?.to_str().ok()?;
+    let secs: f64 = value.trim().parse().ok()?;
+    if !secs.is_finite() || secs < 0.0 {
+        return None;
+    }
+    Some((secs * 1000.0) as u64)
 }
 
 #[derive(Deserialize)]
