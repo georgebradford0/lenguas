@@ -1,21 +1,54 @@
-import React, { useState } from 'react';
-import { StyleSheet, StatusBar, Platform, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, StatusBar, Platform, View, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ReadAlongScreen } from './src/screens/ReadAlongScreen';
 import { LibraryScreen } from './src/screens/LibraryScreen';
 import { colors } from './src/styles/theme';
+import { getLastOpenedBook, setLastOpenedBook } from './src/utils/bookStorage';
 import type { LibrarySummary } from './src/api/client';
 
 function AppContent() {
   const insets = useSafeAreaInsets();
   const [book, setBook] = useState<LibrarySummary | null>(null);
+  const [bootChecked, setBootChecked] = useState(false);
+
+  // Auto-resume the last book that was open when the app was killed.
+  // Cleared explicitly when the user taps "back to library", so a deliberate
+  // exit doesn't reopen into the reader on next launch.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const last = await getLastOpenedBook();
+      if (!cancelled) {
+        if (last) setBook(last);
+        setBootChecked(true);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  function openBook(b: LibrarySummary) {
+    setBook(b);
+    setLastOpenedBook(b).catch(() => {});
+  }
+
+  function closeBook() {
+    setBook(null);
+    setLastOpenedBook(null).catch(() => {});
+  }
 
   return (
     <View style={[appStyles.container, { paddingTop: insets.top }]}>
       {Platform.OS !== 'web' && <StatusBar barStyle="light-content" backgroundColor={colors.background} />}
-      {book === null
-        ? <LibraryScreen onSelect={setBook} />
-        : <ReadAlongScreen book={book} onBack={() => setBook(null)} />
+      {!bootChecked
+        ? (
+          <View style={appStyles.centered}>
+            <ActivityIndicator size="large" color={colors.primary} />
+          </View>
+        )
+        : book === null
+          ? <LibraryScreen onSelect={openBook} />
+          : <ReadAlongScreen book={book} onBack={closeBook} />
       }
     </View>
   );
@@ -33,6 +66,11 @@ const appStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

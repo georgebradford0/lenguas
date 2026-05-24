@@ -9,7 +9,7 @@ import { fetchBook } from '../api/client';
 import type { LibrarySummary } from '../api/client';
 import {
   cacheBook, loadCachedBook,
-  getPosition, setCurrentBookHash, setPosition,
+  getPosition, setPosition,
 } from '../utils/bookStorage';
 import { SentenceModePanel } from '../components/SentenceModePanel';
 import type { SentencePageData } from '../components/SentenceModePanel';
@@ -51,8 +51,6 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
           await cacheBook(contentHash, stored);
         }
         if (cancelled) return;
-
-        await setCurrentBookHash(language, contentHash);
 
         const handle = hydrateSerializedBook(stored);
         epubRef.current = handle;

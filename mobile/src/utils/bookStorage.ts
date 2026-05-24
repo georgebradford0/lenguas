@@ -36,6 +36,7 @@ const bookPath = (hash: string) => `${STORAGE_DIR}/book_${hash}.json`;
 const libraryCachePath = (lang: string) => `${STORAGE_DIR}/library_${lang}.json`;
 const allLibraryCachePath = `${STORAGE_DIR}/library_all.json`;
 const statePath = (lang: string) => `${STORAGE_DIR}/state_${lang}.json`;
+const lastBookPath = `${STORAGE_DIR}/last_book.json`;
 
 async function readJson<T>(path: string): Promise<T | null> {
   try {
@@ -90,6 +91,25 @@ export async function cacheAllLibrary(books: LibrarySummary[]): Promise<void> {
 
 export async function loadCachedAllLibrary(): Promise<LibrarySummary[] | null> {
   return readJson<LibrarySummary[]>(allLibraryCachePath);
+}
+
+// ── Last-opened book (global across languages) ───────────────────────────────
+// App boot reads this and, if set, jumps straight into the reader for that
+// book. Cleared when the user explicitly taps back to the library.
+
+export async function setLastOpenedBook(book: LibrarySummary | null): Promise<void> {
+  if (book === null) {
+    try {
+      if (await RNFS.exists(lastBookPath)) await RNFS.unlink(lastBookPath);
+    } catch {}
+    return;
+  }
+  await writeJson(lastBookPath, { book });
+}
+
+export async function getLastOpenedBook(): Promise<LibrarySummary | null> {
+  const stored = await readJson<{ book: LibrarySummary }>(lastBookPath);
+  return stored?.book ?? null;
 }
 
 // ── Per-language reading state ───────────────────────────────────────────────
