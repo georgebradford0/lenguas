@@ -1,8 +1,25 @@
-import { Platform } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 import { fromByteArray } from 'base64-js';
 
-const DEV_API_BASE = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
-const API_BASE = __DEV__ ? DEV_API_BASE : 'https://lenguas.directto.link';
+const PROD_API_BASE = 'https://lenguas.directto.link';
+
+/**
+ * Pick the API base. Release always hits production. In dev, only an
+ * emulator/simulator hits a local backend — detected from the Metro bundle
+ * host: simulators load the bundle from a loopback address, while a physical
+ * device loads it from the Mac's LAN IP (so `localhost` there is the phone
+ * itself, not the dev machine). Physical devices in dev fall back to prod.
+ */
+function resolveApiBase(): string {
+  if (!__DEV__) return PROD_API_BASE;
+  const scriptURL: string | undefined = (NativeModules as any)?.SourceCode?.scriptURL;
+  const host = scriptURL?.split('://')[1]?.split(/[:/]/)[0] ?? '';
+  const isEmulator = host === 'localhost' || host === '127.0.0.1' || host === '10.0.2.2';
+  if (!isEmulator) return PROD_API_BASE;
+  return Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
+}
+
+const API_BASE = resolveApiBase();
 
 export async function speak(text: string, language = 'de'): Promise<string> {
   const response = await fetch(`${API_BASE}/speak/${encodeURIComponent(text)}?language=${language}`);
