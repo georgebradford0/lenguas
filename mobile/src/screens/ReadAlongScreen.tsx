@@ -11,8 +11,7 @@ import {
   cacheBook, loadCachedBook,
   getPosition, setPosition,
 } from '../utils/bookStorage';
-import { SentenceModePanel } from '../components/SentenceModePanel';
-import type { SentencePageData } from '../components/SentenceModePanel';
+import { ChapterReader } from '../components/SentenceModePanel';
 import type { EpubHandle, TocEntry } from '../utils/epubParser';
 import type { Language } from '../types';
 
@@ -30,11 +29,10 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
   const [epubAuthor, setEpubAuthor] = useState<string | null>(null);
   const [toc, setToc] = useState<TocEntry[]>([]);
 
-  // Whole-book flat pages. Built once after hydrate; cross-chapter swipe is
-  // free because the entire book is one paged FlatList.
-  const [pages, setPages] = useState<SentencePageData[]>([]);
-  const chapterStartsRef = useRef<number[]>([]); // chapterIdx → first page index
-  const [initialPageIdx, setInitialPageIdx] = useState(0);
+  // Reader is per-section: one chapter rendered as continuous scroll. We track
+  // which chapter is open and which sentence within it to resume at.
+  const [currentChapterIdx, setCurrentChapterIdx] = useState(0);
+  const [initialSentenceIdx, setInitialSentenceIdx] = useState(0);
 
   // ── Init: hydrate from cache or download, build pages, jump to saved spot ───
 
@@ -58,17 +56,12 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
         setEpubAuthor(handle.author);
         setToc(handle.toc);
 
-        const { pages: built, starts } = buildPages(handle);
-        chapterStartsRef.current = starts;
-        setPages(built);
-
         const saved = await getPosition(language, contentHash);
         const safeChapter = Math.min(Math.max(0, saved.chapterIdx), handle.toc.length - 1);
-        const chapterStart = starts[safeChapter] ?? 0;
-        const sentencesInChapter = sentenceCountInChapter(starts, built.length, safeChapter);
-        const safeSentence = Math.min(Math.max(0, saved.sentenceIdx), Math.max(0, sentencesInChapter - 1));
+        const safeSentence = Math.max(0, saved.sentenceIdx);
         if (cancelled) return;
-        setInitialPageIdx(chapterStart + safeSentence);
+        setCurrentChapterIdx(safeChapter);
+        setInitialSentenceIdx(safeSentence);
         setPhase('reading');
       } catch (e: any) {
         console.error('[ReadAlong] init failed', e);
@@ -86,18 +79,18 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
   // ── Navigation ───────────────────────────────────────────────────────────────
 
   function openChapter(tocIdx: number) {
-    const start = chapterStartsRef.current[tocIdx];
-    if (start === undefined) return;
-    setInitialPageIdx(start);
+    if (!epubRef.current?.toc[tocIdx]) return;
+    setCurrentChapterIdx(tocIdx);
+    setInitialSentenceIdx(0);
     setPhase('reading');
-    // Persist intent in case the user backgrounds before swiping.
+    // Persist intent in case the user backgrounds before scrolling.
     setPosition(language, contentHash, { chapterIdx: tocIdx, sentenceIdx: 0 }).catch(() => {});
   }
 
-  function handlePageChange(_idx: number, page: SentencePageData) {
+  function handleSentenceChange(sentenceIdx: number) {
     setPosition(language, contentHash, {
-      chapterIdx: page.chapterIdx,
-      sentenceIdx: page.sentenceIdxInChapter,
+      chapterIdx: currentChapterIdx,
+      sentenceIdx,
     }).catch(() => {});
   }
 
@@ -165,63 +158,42 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
     );
   }
 
-  // ── Reading: horizontal swipe across all sentences in the book ──────────────
+  // ── Reading: one chapter as a continuous vertical scroll ────────────────────
 
   if (phase === 'reading') {
-    if (pages.length === 0) {
+    const handle = epubRef.current;
+    const entry = handle?.toc[currentChapterIdx];
+    const chapter = entry ? handle?.chapters[entry.href] : undefined;
+    const paragraphs = chapter?.paragraphs ?? [];
+
+    if (!entry || paragraphs.length === 0) {
       return (
         <View style={styles.centeredContainer}>
-          <Text style={styles.loadingText}>No sentences in this book.</Text>
-          <TouchableOpacity style={styles.primaryButton} onPress={onBack}>
-            <Text style={styles.primaryButtonText}>Back to library</Text>
+          <Text style={styles.loadingText}>No text in this section.</Text>
+          <TouchableOpacity style={styles.primaryButton} onPress={() => setPhase('toc')}>
+            <Text style={styles.primaryButtonText}>Back to contents</Text>
           </TouchableOpacity>
         </View>
       );
     }
     return (
-      <SentenceModePanel
-        pages={pages}
-        initialIndex={initialPageIdx}
+      <ChapterReader
+        key={currentChapterIdx}
+        paragraphs={paragraphs}
+        chapterTitle={entry.title}
+        chapterIdx={currentChapterIdx}
         totalChapters={toc.length}
         language={language}
         bookTitle={epubTitle}
         bookAuthor={epubAuthor}
-        onPageChange={handlePageChange}
+        initialSentenceIdx={initialSentenceIdx}
+        onSentenceChange={handleSentenceChange}
         onBack={() => setPhase('toc')}
       />
     );
   }
 
   return null;
-}
-
-// ── Helpers ────────────────────────────────────────────────────────────────
-
-function buildPages(handle: EpubHandle): { pages: SentencePageData[]; starts: number[] } {
-  const pages: SentencePageData[] = [];
-  const starts: number[] = [];
-  handle.toc.forEach((entry, chapterIdx) => {
-    starts[chapterIdx] = pages.length;
-    const chapter = handle.chapters[entry.href];
-    if (!chapter) return;
-    const sentences = chapter.paragraphs.flatMap(p => p.sentences);
-    sentences.forEach((sentence, sentenceIdxInChapter) => {
-      pages.push({
-        sentence,
-        chapterIdx,
-        chapterTitle: entry.title,
-        sentenceIdxInChapter,
-        totalSentencesInChapter: sentences.length,
-      });
-    });
-  });
-  return { pages, starts };
-}
-
-function sentenceCountInChapter(starts: number[], totalPages: number, chapterIdx: number): number {
-  const start = starts[chapterIdx] ?? 0;
-  const end = (chapterIdx + 1 < starts.length) ? starts[chapterIdx + 1] : totalPages;
-  return Math.max(0, end - start);
 }
 
 const styles = StyleSheet.create({
