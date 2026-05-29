@@ -172,9 +172,9 @@ const ParagraphBlock = React.memo(function ParagraphBlock({
   paragraph, activeSentenceId, language, cacheRef, onToggleSentence,
 }: ParagraphBlockProps) {
   // A paragraph flows as one Text. When a sentence is expanded we split the
-  // paragraph at that sentence so the box sits directly beneath it: the text
-  // up to and including the tapped sentence renders as one run, then the box,
-  // then the remaining sentences continue below.
+  // paragraph at that sentence and replace it in place with the box: the text
+  // before the tapped sentence renders as one run, then the box (standing in
+  // for the sentence itself), then the remaining sentences continue below.
   const splitIdx = activeSentenceId
     ? paragraph.sentences.findIndex(s => s.id === activeSentenceId)
     : -1;
@@ -185,7 +185,7 @@ const ParagraphBlock = React.memo(function ParagraphBlock({
         <Text
           key={s.id}
           onPress={() => onToggleSentence(s.id)}
-          style={s.id === activeSentenceId ? styles.sentenceActive : styles.sentence}
+          style={styles.sentence}
         >
           {(i > 0 ? ' ' : '') + s.raw}
         </Text>
@@ -197,14 +197,20 @@ const ParagraphBlock = React.memo(function ParagraphBlock({
     return <View style={styles.paragraphWrap}>{renderRun(paragraph.sentences)}</View>;
   }
 
-  const head = paragraph.sentences.slice(0, splitIdx + 1);
+  const head = paragraph.sentences.slice(0, splitIdx);
   const tail = paragraph.sentences.slice(splitIdx + 1);
   const active = paragraph.sentences[splitIdx];
 
   return (
     <View style={styles.paragraphWrap}>
-      {renderRun(head)}
-      <TranslationBox key={active.id} sentence={active} language={language} cacheRef={cacheRef} />
+      {head.length > 0 ? renderRun(head) : null}
+      <TranslationBox
+        key={active.id}
+        sentence={active}
+        language={language}
+        cacheRef={cacheRef}
+        onClose={() => onToggleSentence(active.id)}
+      />
       {tail.length > 0 ? renderRun(tail) : null}
     </View>
   );
@@ -213,11 +219,12 @@ const ParagraphBlock = React.memo(function ParagraphBlock({
 // ── Inline translation box for one sentence ──────────────────────────────────
 
 function TranslationBox({
-  sentence, language, cacheRef,
+  sentence, language, cacheRef, onClose,
 }: {
   sentence: Sentence;
   language: Language;
   cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+  onClose: () => void;
 }) {
   const cached = cacheRef.current.get(sentence.id);
   const [chunks, setChunks] = useState<SentenceChunk[]>(cached?.chunks ?? []);
@@ -328,6 +335,13 @@ function TranslationBox({
 
   return (
     <View style={styles.box}>
+      <TouchableOpacity
+        style={styles.boxClose}
+        onPress={onClose}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <Text style={styles.boxCloseText}>×</Text>
+      </TouchableOpacity>
       {translating ? (
         <ActivityIndicator color={colors.primary} style={styles.boxLoader} />
       ) : (
@@ -425,22 +439,20 @@ const styles = StyleSheet.create({
     color: colors.text,
     lineHeight: fontSize.sm * 1.7,
   },
-  sentenceActive: {
-    fontSize: fontSize.sm,
-    color: colors.primary,
-    lineHeight: fontSize.sm * 1.7,
-    backgroundColor: '#dbeafe',
-  },
 
-  // Inline translation box
+  // Inline translation box (stands in for the tapped sentence)
   box: {
-    marginTop: spacing.sm,
+    marginVertical: spacing.xs,
     backgroundColor: colors.cardBackground,
     borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    padding: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.md,
+    paddingTop: spacing.xs,
   },
+  boxClose: { alignSelf: 'flex-end', paddingHorizontal: 4, paddingVertical: 2 },
+  boxCloseText: { fontSize: fontSize.md, color: colors.muted, lineHeight: fontSize.md },
   boxLoader: { marginVertical: spacing.sm },
 
   chunk: { marginBottom: spacing.md },
