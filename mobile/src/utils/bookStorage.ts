@@ -4,6 +4,8 @@ import type { LibrarySummary } from '../api/client';
 
 const STORAGE_DIR = `${RNFS.DocumentDirectoryPath}/readalong`;
 
+export type ReaderMode = 'scroll' | 'swipe';
+
 export interface BookPosition {
   chapterIdx: number;
   sentenceIdx: number;
@@ -37,6 +39,7 @@ const libraryCachePath = (lang: string) => `${STORAGE_DIR}/library_${lang}.json`
 const allLibraryCachePath = `${STORAGE_DIR}/library_all.json`;
 const statePath = (lang: string) => `${STORAGE_DIR}/state_${lang}.json`;
 const lastBookPath = `${STORAGE_DIR}/last_book.json`;
+const readerModePath = `${STORAGE_DIR}/reader_mode.json`;
 
 async function readJson<T>(path: string): Promise<T | null> {
   try {
@@ -110,6 +113,20 @@ export async function setLastOpenedBook(book: LibrarySummary | null): Promise<vo
 export async function getLastOpenedBook(): Promise<LibrarySummary | null> {
   const stored = await readJson<{ book: LibrarySummary }>(lastBookPath);
   return stored?.book ?? null;
+}
+
+// ── Reader mode preference (global across books/languages) ───────────────────
+// Beginners stay in "swipe" (one sentence per page); fluent readers in
+// "scroll" (continuous text, tap to translate). Persisted once, applied
+// everywhere.
+
+export async function getReaderMode(): Promise<ReaderMode> {
+  const s = await readJson<{ mode: ReaderMode }>(readerModePath);
+  return s?.mode === 'swipe' ? 'swipe' : 'scroll';
+}
+
+export async function setReaderMode(mode: ReaderMode): Promise<void> {
+  await writeJson(readerModePath, { mode });
 }
 
 // ── Per-language reading state ───────────────────────────────────────────────

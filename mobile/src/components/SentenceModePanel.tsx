@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
+  View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView,
   FlatList, ListRenderItemInfo, LayoutAnimation, Platform, UIManager,
-  ViewToken,
+  ViewToken, NativeSyntheticEvent, NativeScrollEvent, useWindowDimensions,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
@@ -10,10 +10,12 @@ import { speak, translateSentence } from '../api/client';
 import type { SentenceChunk, SentenceWord, SentenceTranslation } from '../api/client';
 import { cleanWord } from '../utils/epubParser';
 import type { Paragraph, Sentence } from '../utils/epubParser';
+import type { ReaderMode } from '../utils/bookStorage';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import type { Language } from '../types';
 
 type Sound = ReturnType<typeof createSound>;
+type Mode = ReaderMode;
 
 // LayoutAnimation needs an explicit opt-in on Android.
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -34,32 +36,127 @@ interface Props {
   language: Language;
   bookTitle: string | null;
   bookAuthor: string | null;
-  /** Sentence index within this chapter to scroll to on open (resume). */
+  /** Sentence index within this chapter to open at (resume). */
   initialSentenceIdx: number;
-  /** Reports the top-most visible sentence index so the parent can persist it. */
+  /** Reports the current sentence index so the parent can persist it. */
   onSentenceChange?: (sentenceIdx: number) => void;
+  /** Persisted reader mode to start in. */
+  initialMode?: Mode;
+  /** Called when the user toggles the mode pill, so the parent can persist it. */
+  onModeChange?: (mode: Mode) => void;
   onBack: () => void;
 }
 
 /**
- * Continuous per-section reader. The chapter renders as one vertical scroll of
- * flowing paragraphs in the source language. Tapping a sentence expands an
- * inline translation box directly beneath its paragraph (smoothly animated),
- * showing the chunk-by-chunk translation with noun/verb taps and per-chunk
- * audio. Only one box is open at a time.
+ * Per-section reader with two modes, switched by the header pill:
+ *   - scroll: the chapter flows as continuous source text; tapping a sentence
+ *     expands an inline translation box in its place.
+ *   - swipe: one sentence per horizontal page, each shown as its chunked
+ *     translation — swipe left/right to step through. Built for beginners who
+ *     would otherwise tap every sentence.
+ * Both modes share the per-chapter translation cache and the current sentence
+ * index, so toggling preserves place and never refetches.
  */
 export function ChapterReader({
   paragraphs, chapterTitle, chapterIdx, totalChapters, language,
-  bookTitle, bookAuthor, initialSentenceIdx, onSentenceChange, onBack,
+  bookTitle, bookAuthor, initialSentenceIdx, onSentenceChange,
+  initialMode = 'scroll', onModeChange, onBack,
 }: Props) {
+  const cacheRef = useRef<Map<string, SentenceTranslation>>(new Map());
+  const [mode, setMode] = useState<Mode>(initialMode);
+  const [curIdx, setCurIdx] = useState(initialSentenceIdx);
+
+  const sentences = useMemo(() => paragraphs.flatMap(p => p.sentences), [paragraphs]);
+
+  const handlePos = useCallback((idx: number) => {
+    setCurIdx(idx);
+    onSentenceChange?.(idx);
+  }, [onSentenceChange]);
+
+  const changeMode = useCallback((m: Mode) => {
+    setMode(m);
+    onModeChange?.(m);
+  }, [onModeChange]);
+
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerBtn} onPress={onBack}>
+          <Text style={styles.headerBtnText}>←</Text>
+        </TouchableOpacity>
+        <View style={styles.headerCenter}>
+          {bookTitle ? (
+            <Text style={styles.headerBookLine} numberOfLines={1}>
+              {bookTitle}{bookAuthor ? ` · ${bookAuthor}` : ''}
+            </Text>
+          ) : null}
+          <Text style={styles.headerTitle} numberOfLines={1}>{chapterTitle}</Text>
+          <Text style={styles.headerCounter}>
+            Ch {chapterIdx + 1}/{totalChapters}
+            {mode === 'swipe' && sentences.length
+              ? ` · ${Math.min(curIdx, sentences.length - 1) + 1}/${sentences.length}`
+              : ''}
+          </Text>
+        </View>
+        <View style={styles.modePill}>
+          <TouchableOpacity
+            style={[styles.modeCell, mode === 'scroll' && styles.modeCellActive]}
+            onPress={() => changeMode('scroll')}
+          >
+            <Text style={[styles.modeCellText, mode === 'scroll' && styles.modeCellTextActive]}>
+              Read
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.modeCell, mode === 'swipe' && styles.modeCellActive]}
+            onPress={() => changeMode('swipe')}
+          >
+            <Text style={[styles.modeCellText, mode === 'swipe' && styles.modeCellTextActive]}>
+              Cards
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {mode === 'scroll' ? (
+        <ContinuousReader
+          key="scroll"
+          paragraphs={paragraphs}
+          language={language}
+          cacheRef={cacheRef}
+          initialSentenceIdx={curIdx}
+          onSentenceChange={handlePos}
+        />
+      ) : (
+        <SwipeReader
+          key="swipe"
+          sentences={sentences}
+          language={language}
+          cacheRef={cacheRef}
+          initialSentenceIdx={curIdx}
+          onSentenceChange={handlePos}
+        />
+      )}
+    </View>
+  );
+}
+
+// ── Continuous scroll mode ───────────────────────────────────────────────────
+
+function ContinuousReader({
+  paragraphs, language, cacheRef, initialSentenceIdx, onSentenceChange,
+}: {
+  paragraphs: Paragraph[];
+  language: Language;
+  cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+  initialSentenceIdx: number;
+  onSentenceChange: (idx: number) => void;
+}) {
   const listRef = useRef<FlatList<Paragraph>>(null);
   const [expandedSentenceId, setExpandedSentenceId] = useState<string | null>(null);
 
-  // Translations are cached for the lifetime of the chapter so re-tapping a
-  // sentence (or scrolling back to it) reopens instantly without a refetch.
-  const cacheRef = useRef<Map<string, SentenceTranslation>>(new Map());
-
-  // First sentence index of each paragraph — used for resume + position report.
+  // First sentence index of each paragraph — for resume + position reporting.
   const paraStarts = useMemo(() => {
     const starts: number[] = [];
     let acc = 0;
@@ -67,13 +164,14 @@ export function ChapterReader({
     return starts;
   }, [paragraphs]);
 
-  const initialParaIdx = useMemo(() => {
+  // Captured once at mount: which paragraph holds the entry sentence.
+  const [initialParaIdx] = useState(() => {
     let idx = 0;
     for (let i = 0; i < paraStarts.length; i++) {
       if (paraStarts[i] <= initialSentenceIdx) idx = i; else break;
     }
     return idx;
-  }, [paraStarts, initialSentenceIdx]);
+  });
 
   // Stable refs for the viewability callback (FlatList forbids changing it).
   const paraStartsRef = useRef(paraStarts);
@@ -98,7 +196,7 @@ export function ChapterReader({
   const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
     if (!viewableItems.length) return;
     const top = viewableItems[0].index ?? 0;
-    onSentenceChangeRef.current?.(paraStartsRef.current[top] ?? 0);
+    onSentenceChangeRef.current(paraStartsRef.current[top] ?? 0);
   }).current;
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Paragraph>) => {
@@ -114,47 +212,28 @@ export function ChapterReader({
         onToggleSentence={toggleSentence}
       />
     );
-  }, [expandedSentenceId, language, toggleSentence]);
+  }, [expandedSentenceId, language, cacheRef, toggleSentence]);
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.headerBtn} onPress={onBack}>
-          <Text style={styles.headerBtnText}>←</Text>
-        </TouchableOpacity>
-        <View style={styles.headerCenter}>
-          {bookTitle ? (
-            <Text style={styles.headerBookLine} numberOfLines={1}>
-              {bookTitle}{bookAuthor ? ` · ${bookAuthor}` : ''}
-            </Text>
-          ) : null}
-          <Text style={styles.headerTitle} numberOfLines={1}>{chapterTitle}</Text>
-          <Text style={styles.headerCounter}>Ch {chapterIdx + 1}/{totalChapters}</Text>
-        </View>
-        <View style={styles.headerBtn} />
-      </View>
-
-      <FlatList
-        ref={listRef}
-        data={paragraphs}
-        keyExtractor={p => p.id}
-        renderItem={renderItem}
-        extraData={expandedSentenceId}
-        contentContainerStyle={styles.readerBody}
-        showsVerticalScrollIndicator={false}
-        viewabilityConfig={viewabilityConfig}
-        onViewableItemsChanged={onViewableItemsChanged}
-        onScrollToIndexFailed={info => {
-          setTimeout(() => {
-            try { listRef.current?.scrollToIndex({ index: info.index, animated: false }); } catch {}
-          }, 80);
-        }}
-        initialNumToRender={12}
-        maxToRenderPerBatch={12}
-        windowSize={9}
-      />
-    </View>
+    <FlatList
+      ref={listRef}
+      data={paragraphs}
+      keyExtractor={p => p.id}
+      renderItem={renderItem}
+      extraData={expandedSentenceId}
+      contentContainerStyle={styles.readerBody}
+      showsVerticalScrollIndicator={false}
+      viewabilityConfig={viewabilityConfig}
+      onViewableItemsChanged={onViewableItemsChanged}
+      onScrollToIndexFailed={info => {
+        setTimeout(() => {
+          try { listRef.current?.scrollToIndex({ index: info.index, animated: false }); } catch {}
+        }, 80);
+      }}
+      initialNumToRender={12}
+      maxToRenderPerBatch={12}
+      windowSize={9}
+    />
   );
 }
 
@@ -216,7 +295,81 @@ const ParagraphBlock = React.memo(function ParagraphBlock({
   );
 });
 
-// ── Inline translation box for one sentence ──────────────────────────────────
+// ── Swipe mode: one sentence per page ────────────────────────────────────────
+
+function SwipeReader({
+  sentences, language, cacheRef, initialSentenceIdx, onSentenceChange,
+}: {
+  sentences: Sentence[];
+  language: Language;
+  cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+  initialSentenceIdx: number;
+  onSentenceChange: (idx: number) => void;
+}) {
+  const { width } = useWindowDimensions();
+  const listRef = useRef<FlatList<Sentence>>(null);
+
+  const [initialIdx] = useState(() =>
+    Math.min(Math.max(0, initialSentenceIdx), Math.max(0, sentences.length - 1)),
+  );
+
+  const getItemLayout = useCallback(
+    (_d: ArrayLike<Sentence> | null | undefined, index: number) => ({
+      length: width, offset: width * index, index,
+    }),
+    [width],
+  );
+
+  const onMomentumEnd = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const idx = Math.round(e.nativeEvent.contentOffset.x / width);
+    if (sentences[idx]) onSentenceChange(idx);
+  }, [width, onSentenceChange, sentences]);
+
+  return (
+    <FlatList
+      ref={listRef}
+      data={sentences}
+      keyExtractor={s => s.id}
+      renderItem={({ item }: ListRenderItemInfo<Sentence>) => (
+        <SentenceSwipePage sentence={item} language={language} cacheRef={cacheRef} width={width} />
+      )}
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      decelerationRate="fast"
+      snapToInterval={width}
+      snapToAlignment="start"
+      initialScrollIndex={initialIdx}
+      getItemLayout={getItemLayout}
+      onMomentumScrollEnd={onMomentumEnd}
+      windowSize={3}
+      initialNumToRender={1}
+      maxToRenderPerBatch={2}
+      removeClippedSubviews
+    />
+  );
+}
+
+function SentenceSwipePage({
+  sentence, language, cacheRef, width,
+}: {
+  sentence: Sentence;
+  language: Language;
+  cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+  width: number;
+}) {
+  return (
+    <ScrollView
+      style={{ width }}
+      contentContainerStyle={styles.swipePageBody}
+      showsVerticalScrollIndicator={false}
+    >
+      <ChunkedTranslation sentence={sentence} language={language} cacheRef={cacheRef} />
+    </ScrollView>
+  );
+}
+
+// ── Inline translation box (scroll mode) ─────────────────────────────────────
 
 function TranslationBox({
   sentence, language, cacheRef, onClose,
@@ -225,6 +378,29 @@ function TranslationBox({
   language: Language;
   cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
   onClose: () => void;
+}) {
+  return (
+    <View style={styles.box}>
+      <TouchableOpacity
+        style={styles.boxClose}
+        onPress={onClose}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <Text style={styles.boxCloseText}>×</Text>
+      </TouchableOpacity>
+      <ChunkedTranslation sentence={sentence} language={language} cacheRef={cacheRef} />
+    </View>
+  );
+}
+
+// ── Shared: fetch + render chunked translation with word taps and audio ──────
+
+function ChunkedTranslation({
+  sentence, language, cacheRef,
+}: {
+  sentence: Sentence;
+  language: Language;
+  cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
 }) {
   const cached = cacheRef.current.get(sentence.id);
   const [chunks, setChunks] = useState<SentenceChunk[]>(cached?.chunks ?? []);
@@ -264,7 +440,7 @@ function TranslationBox({
         setContentWords(next.words);
       })
       .catch(err => {
-        console.log('[TranslationBox] translateSentence error', err?.message);
+        console.log('[ChunkedTranslation] translateSentence error', err?.message);
         if (!cancelled) {
           LayoutAnimation.configureNext(SMOOTH);
           setChunks([{ original: sentence.raw, translation: '—' }]);
@@ -334,14 +510,7 @@ function TranslationBox({
   }
 
   return (
-    <View style={styles.box}>
-      <TouchableOpacity
-        style={styles.boxClose}
-        onPress={onClose}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <Text style={styles.boxCloseText}>×</Text>
-      </TouchableOpacity>
+    <>
       {translating ? (
         <ActivityIndicator color={colors.primary} style={styles.boxLoader} />
       ) : (
@@ -399,7 +568,7 @@ function TranslationBox({
           ) : null}
         </View>
       )}
-    </View>
+    </>
   );
 }
 
@@ -425,10 +594,29 @@ const styles = StyleSheet.create({
   headerTitle: { fontSize: fontSize.xs, fontWeight: '600', color: colors.text },
   headerCounter: { fontSize: 12, color: colors.muted, marginTop: 2 },
 
+  // Mode toggle pill
+  modePill: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.lg,
+    overflow: 'hidden',
+  },
+  modeCell: { paddingHorizontal: 10, paddingVertical: 5 },
+  modeCellActive: { backgroundColor: colors.primary },
+  modeCellText: { fontSize: 12, fontWeight: '600', color: colors.muted },
+  modeCellTextActive: { color: '#fff' },
+
   readerBody: {
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.lg,
     paddingBottom: spacing.xxl,
+  },
+  swipePageBody: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl,
+    flexGrow: 1,
   },
 
   // Flowing source text

@@ -10,7 +10,9 @@ import type { LibrarySummary } from '../api/client';
 import {
   cacheBook, loadCachedBook,
   getPosition, setPosition,
+  getReaderMode, setReaderMode,
 } from '../utils/bookStorage';
+import type { ReaderMode } from '../utils/bookStorage';
 import { ChapterReader } from '../components/SentenceModePanel';
 import type { EpubHandle, TocEntry } from '../utils/epubParser';
 import type { Language } from '../types';
@@ -33,6 +35,7 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
   // which chapter is open and which sentence within it to resume at.
   const [currentChapterIdx, setCurrentChapterIdx] = useState(0);
   const [initialSentenceIdx, setInitialSentenceIdx] = useState(0);
+  const [readerMode, setReaderModeState] = useState<ReaderMode>('scroll');
 
   // ── Init: hydrate from cache or download, build pages, jump to saved spot ───
 
@@ -56,10 +59,14 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
         setEpubAuthor(handle.author);
         setToc(handle.toc);
 
-        const saved = await getPosition(language, contentHash);
+        const [saved, mode] = await Promise.all([
+          getPosition(language, contentHash),
+          getReaderMode(),
+        ]);
         const safeChapter = Math.min(Math.max(0, saved.chapterIdx), handle.toc.length - 1);
         const safeSentence = Math.max(0, saved.sentenceIdx);
         if (cancelled) return;
+        setReaderModeState(mode);
         setCurrentChapterIdx(safeChapter);
         setInitialSentenceIdx(safeSentence);
         setPhase('reading');
@@ -92,6 +99,11 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
       chapterIdx: currentChapterIdx,
       sentenceIdx,
     }).catch(() => {});
+  }
+
+  function handleModeChange(mode: ReaderMode) {
+    setReaderModeState(mode);
+    setReaderMode(mode).catch(() => {});
   }
 
   // ── Rendering ────────────────────────────────────────────────────────────────
@@ -188,6 +200,8 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
         bookAuthor={epubAuthor}
         initialSentenceIdx={initialSentenceIdx}
         onSentenceChange={handleSentenceChange}
+        initialMode={readerMode}
+        onModeChange={handleModeChange}
         onBack={() => setPhase('toc')}
       />
     );
