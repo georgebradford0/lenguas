@@ -23,6 +23,10 @@ pub struct Args {
 
 const BATCH_SIZE: usize = 15;
 const MODEL: &str = "gpt-4.1-mini";
+/// Target size, in characters, of each source window handed to one reproduction
+/// call. ~22k chars of French is roughly ~6-7k output tokens — comfortably under
+/// the model's completion cap, with headroom for JSON overhead.
+const WINDOW_CHARS: usize = 22_000;
 
 fn language_name(code: &str) -> Option<&'static str> {
     match code {
@@ -101,7 +105,7 @@ pub async fn run(args: Args) -> Result<()> {
                 json!({ "role": "user", "content": openai::toc_prompt(from_language) }),
             ],
             0.0,
-            4096,
+            8192,
         )
         .await?;
     println!("done in {:.1}s", toc_started.elapsed().as_secs_f64());
@@ -114,7 +118,7 @@ pub async fn run(args: Args) -> Result<()> {
         .map(|s| s.to_uppercase())
         .filter(|s| matches!(s.as_str(), "A1" | "A2" | "B1" | "B2" | "C1" | "C2"));
 
-    let toc = parse_toc(&toc_json)?;
+    let (toc, anchors) = parse_toc(&toc_json)?;
     if toc.is_empty() {
         bail!("Could not identify any chapters in this book");
     }
@@ -126,63 +130,122 @@ pub async fn run(args: Args) -> Result<()> {
         toc.len(),
     );
 
-    // Phase 3: reproduce each section, batched in groups of 15 parallel calls.
-    let toc_summary = serde_json::to_string(&json!({ "toc": &toc }))?;
-    let bar = ProgressBar::new(toc.len() as u64);
+    // Phase 3: locate each section in the source via its verbatim startAnchor,
+    // slice the text into bounded windows on paragraph boundaries, and reproduce
+    // each window in parallel. This keeps every completion well under the output
+    // token cap and avoids re-sending the whole book on every call.
+    let full_text = &extracted.full_text;
+    let mut cursor = 0usize;
+    let mut starts: Vec<Option<usize>> = Vec::with_capacity(toc.len());
+    for anchor in &anchors {
+        match anchor.as_deref().and_then(|a| find_anchor(full_text, a, cursor)) {
+            Some((start, len)) => {
+                starts.push(Some(start));
+                cursor = start + len;
+            }
+            None => starts.push(None),
+        }
+    }
+
+    let unresolved = starts.iter().filter(|s| s.is_none()).count();
+    if unresolved > 0 {
+        eprintln!(
+            "  ! {unresolved}/{} section anchor(s) not found in the source — those chapters may come out empty or merged into the previous section.",
+            toc.len()
+        );
+    }
+
+    // Flatten every section into a list of window jobs, each tagged with its
+    // section index and order so we can reassemble afterwards. A section's text
+    // runs from its anchor up to the next *resolved* anchor (or end of book).
+    struct WinJob {
+        sec: usize,
+        ord: usize,
+        text: String,
+    }
+    let mut jobs: Vec<WinJob> = Vec::new();
+    for i in 0..toc.len() {
+        let Some(s) = starts[i] else { continue };
+        let e = starts[i + 1..]
+            .iter()
+            .flatten()
+            .next()
+            .copied()
+            .unwrap_or(full_text.len());
+        if e <= s {
+            continue;
+        }
+        for (ord, text) in split_into_windows(&full_text[s..e], WINDOW_CHARS)
+            .into_iter()
+            .enumerate()
+        {
+            jobs.push(WinJob { sec: i, ord, text });
+        }
+    }
+
+    let total_windows = jobs.len();
+    let bar = ProgressBar::new(total_windows as u64);
     bar.set_style(
-        ProgressStyle::with_template("  reproducing sections [{bar:30}] {pos}/{len} {elapsed_precise}")
+        ProgressStyle::with_template("  reproducing windows [{bar:30}] {pos}/{len} {elapsed_precise}")
             .unwrap()
             .progress_chars("=>-"),
     );
 
-    let mut chapters: BTreeMap<String, ChapterContent> = BTreeMap::new();
+    // sec index -> (window order -> paragraphs), so sections reassemble in order.
+    let mut sec_windows: BTreeMap<usize, BTreeMap<usize, Vec<Vec<String>>>> = BTreeMap::new();
 
-    for batch in toc.chunks(BATCH_SIZE) {
+    for batch in jobs.chunks(BATCH_SIZE) {
         let mut tasks = FuturesUnordered::new();
-        for entry in batch {
+        for job in batch {
             let client = openai_client.clone();
             let system = system.clone();
-            let book_msg = book_msg.clone();
-            let prompt = openai::section_prompt(
-                from_language,
-                &toc_summary,
-                &entry.id,
-                &entry.title,
-            );
-            let entry = entry.clone();
+            let prompt = openai::window_prompt(from_language, &job.text);
+            let sec = job.sec;
+            let ord = job.ord;
             tasks.push(async move {
                 let result = client
                     .chat_json(
                         MODEL,
                         &[
                             json!({ "role": "system", "content": system }),
-                            json!({ "role": "user", "content": book_msg }),
                             json!({ "role": "user", "content": prompt }),
                         ],
                         0.0,
                         16_384,
                     )
                     .await;
-                (entry, result)
+                (sec, ord, result)
             });
         }
-        while let Some((entry, result)) = tasks.next().await {
+        while let Some((sec, ord, result)) = tasks.next().await {
             let paragraphs = match result {
                 Ok(json) => extract_paragraphs(&json),
                 Err(err) => {
-                    eprintln!("\n  ! section \"{}\" failed: {err}", entry.id);
+                    eprintln!("\n  ! section \"{}\" window {ord} failed: {err}", toc[sec].id);
                     Vec::new()
                 }
             };
-            chapters.insert(
-                entry.id.clone(),
-                ChapterContent { title: entry.title.clone(), paragraphs },
-            );
+            sec_windows.entry(sec).or_default().insert(ord, paragraphs);
             bar.inc(1);
         }
     }
     bar.finish_and_clear();
-    println!("  done reproducing {} sections", toc.len());
+    println!("  done reproducing {total_windows} windows across {} sections", toc.len());
+
+    // Assemble each section's paragraphs by concatenating its windows in order.
+    let mut chapters: BTreeMap<String, ChapterContent> = BTreeMap::new();
+    for (i, entry) in toc.iter().enumerate() {
+        let mut paragraphs: Vec<Vec<String>> = Vec::new();
+        if let Some(windows) = sec_windows.get(&i) {
+            for paras in windows.values() {
+                paragraphs.extend(paras.iter().cloned());
+            }
+        }
+        chapters.insert(
+            entry.id.clone(),
+            ChapterContent { title: entry.title.clone(), paragraphs },
+        );
+    }
 
     // Phase 4: assemble + upload.
     let saved_at = chrono_now_millis();
@@ -238,13 +301,16 @@ fn trim_string(v: &Value, key: &str) -> Option<String> {
     (!s.is_empty()).then(|| s.to_string())
 }
 
-fn parse_toc(v: &Value) -> Result<Vec<TocEntry>> {
+/// Returns the cleaned TOC plus a parallel vector of per-entry `startAnchor`
+/// strings (aligned by index; `None` when the model omitted one).
+fn parse_toc(v: &Value) -> Result<(Vec<TocEntry>, Vec<Option<String>>)> {
     let arr = v
         .get("toc")
         .and_then(|t| t.as_array())
         .ok_or_else(|| anyhow!("LLM response missing `toc` array"))?;
     let mut seen = std::collections::HashSet::new();
     let mut out = Vec::new();
+    let mut anchors = Vec::new();
     for (i, raw) in arr.iter().enumerate() {
         let id_str = raw.get("id").and_then(|x| x.as_str()).map(str::trim);
         let title_str = raw.get("title").and_then(|x| x.as_str()).map(str::trim);
@@ -258,14 +324,73 @@ fn parse_toc(v: &Value) -> Result<Vec<TocEntry>> {
             seen.insert(id.clone());
         }
         let level = raw.get("level").and_then(|x| x.as_u64()).unwrap_or(0) as u32;
+        let anchor = raw
+            .get("startAnchor")
+            .and_then(|x| x.as_str())
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(String::from);
         out.push(TocEntry {
             id: id.clone(),
             title: title_str.to_string(),
             href: id,
             level,
         });
+        anchors.push(anchor);
     }
-    Ok(out)
+    Ok((out, anchors))
+}
+
+/// Locate `anchor` in `hay` at or after byte offset `from`, returning the match's
+/// start offset and byte length. Falls back to the first ~6 words if the full
+/// anchor isn't found verbatim (e.g. the model drifted on the tail end).
+fn find_anchor(hay: &str, anchor: &str, from: usize) -> Option<(usize, usize)> {
+    let a = anchor.trim();
+    if a.chars().count() < 4 {
+        return None;
+    }
+    let sub = &hay[from..];
+    if let Some(p) = sub.find(a) {
+        return Some((from + p, a.len()));
+    }
+    let short: String = a.split_whitespace().take(6).collect::<Vec<_>>().join(" ");
+    if short.chars().count() >= 8 {
+        if let Some(p) = sub.find(&short) {
+            return Some((from + p, short.len()));
+        }
+    }
+    None
+}
+
+/// Split text into windows of whole lines (paragraphs), each up to ~`target_chars`
+/// characters. Because `epub::extract` emits one block element per line, splitting
+/// on '\n' never cuts a sentence. A single paragraph longer than the target becomes
+/// its own oversized window — unavoidable without splitting mid-paragraph.
+fn split_into_windows(text: &str, target_chars: usize) -> Vec<String> {
+    let mut windows = Vec::new();
+    let mut cur = String::new();
+    let mut cur_chars = 0usize;
+    for raw_line in text.split('\n') {
+        let line = raw_line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        let line_chars = line.chars().count();
+        if cur_chars > 0 && cur_chars + 1 + line_chars > target_chars {
+            windows.push(std::mem::take(&mut cur));
+            cur_chars = 0;
+        }
+        if !cur.is_empty() {
+            cur.push('\n');
+            cur_chars += 1;
+        }
+        cur.push_str(line);
+        cur_chars += line_chars;
+    }
+    if !cur.is_empty() {
+        windows.push(cur);
+    }
+    windows
 }
 
 fn extract_paragraphs(v: &Value) -> Vec<Vec<String>> {
@@ -321,4 +446,53 @@ fn chrono_now_millis() -> i64 {
         .duration_since(UNIX_EPOCH)
         .map(|d| d.as_millis() as i64)
         .unwrap_or(0)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn find_anchor_locates_and_advances() {
+        let hay = "Avant-propos inutile.\nLe désir produit le réel.\nSuite du texte.\nDeuxième partie commence ici.";
+        let (s, len) = find_anchor(hay, "Le désir produit", 0).unwrap();
+        assert_eq!(&hay[s..s + len], "Le désir produit");
+        // Searching from just past the first match still finds a later anchor.
+        let (s2, _) = find_anchor(hay, "Deuxième partie commence", s + len).unwrap();
+        assert!(s2 > s);
+        // A phrase that isn't present resolves to None.
+        assert!(find_anchor(hay, "absent phrase xyz", 0).is_none());
+    }
+
+    #[test]
+    fn find_anchor_short_fallback() {
+        let hay = "Le chat noir dort sur le tapis rouge ce soir.";
+        // The full anchor drifts at the tail, but the first 6 words still match.
+        let (s, len) = find_anchor(hay, "Le chat noir dort sur le DRIFTED words", 0).unwrap();
+        assert_eq!(&hay[s..s + len], "Le chat noir dort sur le");
+    }
+
+    #[test]
+    fn windows_keep_whole_lines_and_lose_nothing() {
+        let text = "alpha\nbeta\ngamma\ndelta\nepsilon";
+        let w = split_into_windows(text, 12);
+        assert!(w.len() > 1, "small target should produce multiple windows");
+        // Every window is composed only of intact original lines.
+        for win in &w {
+            for line in win.split('\n') {
+                assert!(["alpha", "beta", "gamma", "delta", "epsilon"].contains(&line));
+            }
+        }
+        // Concatenating windows reproduces every line in order — nothing dropped.
+        let flat: Vec<&str> = w.iter().flat_map(|s| s.split('\n')).collect();
+        assert_eq!(flat, vec!["alpha", "beta", "gamma", "delta", "epsilon"]);
+    }
+
+    #[test]
+    fn oversized_paragraph_becomes_its_own_window() {
+        let big = "x".repeat(50);
+        let text = format!("short\n{big}\nshort2");
+        let w = split_into_windows(&text, 20);
+        assert!(w.iter().any(|win| win == &big));
+    }
 }

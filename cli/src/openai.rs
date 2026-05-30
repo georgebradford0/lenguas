@@ -181,7 +181,7 @@ pub fn toc_prompt(from_language: &str) -> String {
   \"genre\": \"<short genre label>\",
   \"difficulty\": \"<CEFR level: A1 | A2 | B1 | B2 | C1 | C2>\",
   \"toc\": [
-    {{ \"id\": \"ch1\", \"title\": \"Chapter title as it appears\", \"level\": 0 }}
+    {{ \"id\": \"ch1\", \"title\": \"Chapter title as it appears\", \"level\": 0, \"startAnchor\": \"first ~10 words of this section's body, verbatim\" }}
   ]
 }}
 
@@ -219,16 +219,14 @@ Rules for \"toc\":
 - \"level\" is 0 for top-level chapters, 1 for nested subsections (rarely needed).
 - Skip front matter (copyright, publisher info, dedications, contents page).
 - Skip back matter (about the author, advertisements, indexes).
-- If the source has no clear chapter breaks, divide into reading units of ~2000-5000 words each."
+- If the source has no clear chapter breaks, divide into reading units of ~2000-5000 words each.
+- \"startAnchor\" is the first 8-12 words of the section's BODY text — the prose where the section actually begins, NOT the title — copied VERBATIM from the source above, with exact spelling, accents, capitalization, and punctuation, so it can be located by an exact string search. Never translate, paraphrase, shorten, or invent it. It must be a contiguous substring that appears in the text above."
     )
 }
 
-pub fn section_prompt(from_language: &str, toc_summary: &str, entry_id: &str, entry_title: &str) -> String {
+pub fn window_prompt(from_language: &str, window_text: &str) -> String {
     format!(
-        "The table of contents you previously identified is:
-{toc_summary}
-
-Reproduce the content of section \"{entry_id}\" (titled \"{entry_title}\") from the source book. Output JSON with this exact shape:
+        "Reproduce the following excerpt of a {from_language} book as clean, sentence-split JSON. Output JSON with this exact shape:
 
 {{
   \"paragraphs\": [
@@ -238,12 +236,15 @@ Reproduce the content of section \"{entry_id}\" (titled \"{entry_title}\") from 
 }}
 
 Rules:
-- Each inner array is one paragraph from the source.
-- Each string is one sentence in {from_language}.
-- Preserve text VERBATIM (no translation, no paraphrasing).
-- Apply the cleanups described in the system prompt.
-- Output only the content of THIS section, not adjacent sections.
-- If the section has no readable content, output {{ \"paragraphs\": [] }}."
+- Each line of the excerpt is one source paragraph. Preserve paragraph boundaries (one inner array per paragraph).
+- Each string is one {from_language} sentence. Split each paragraph into sentences (handle abbreviations like \"Dr.\", \"M.\", \"z.B.\", \"St.\", etc.).
+- Preserve the text VERBATIM — no translation, paraphrasing, summarizing, or correcting.
+- Apply only the structural cleanups from the system prompt (drop page numbers, running headers/footers, and navigation cruft; merge any mid-paragraph line breaks).
+- Do NOT add, omit, or reorder content, and do NOT include anything outside this excerpt. Reproduce exactly what is given.
+- If the excerpt has no readable content, output {{ \"paragraphs\": [] }}.
+
+Excerpt:
+{window_text}"
     )
 }
 
