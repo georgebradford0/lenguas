@@ -4,7 +4,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { ReadAlongScreen } from './src/screens/ReadAlongScreen';
 import { LibraryScreen } from './src/screens/LibraryScreen';
 import { colors } from './src/styles/theme';
-import { getLastOpenedBook, setLastOpenedBook } from './src/utils/bookStorage';
+import { getLastOpenedBook, setLastOpenedBook, clearCachedBooks } from './src/utils/bookStorage';
 import type { LibrarySummary } from './src/api/client';
 
 function AppContent() {
@@ -15,9 +15,15 @@ function AppContent() {
   // Auto-resume the last book that was open when the app was killed.
   // Cleared explicitly when the user taps "back to library", so a deliberate
   // exit doesn't reopen into the reader on next launch.
+  //
+  // Before resuming, forcibly drop the cached book content so every book
+  // re-downloads fresh on open. Book content hashes are derived from the EPUB
+  // bytes, so a re-parsed book keeps the same hash and the cache would otherwise
+  // serve stale content indefinitely.
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      await clearCachedBooks();
       const last = await getLastOpenedBook();
       if (!cancelled) {
         if (last) setBook(last);

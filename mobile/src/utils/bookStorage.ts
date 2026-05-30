@@ -77,6 +77,23 @@ export async function deleteCachedBook(contentHash: string): Promise<void> {
   } catch {}
 }
 
+// Delete every cached book JSON, forcing each to re-download on next open.
+// Used at startup to recover from re-parsed books, whose content changes while
+// their content hash (derived from the EPUB bytes) stays the same — so the cache
+// would otherwise keep serving stale content. Reading progress, preferences, and
+// the library-list cache are left untouched.
+export async function clearCachedBooks(): Promise<void> {
+  try {
+    if (!(await RNFS.exists(STORAGE_DIR))) return;
+    const entries = await RNFS.readDir(STORAGE_DIR);
+    await Promise.all(
+      entries
+        .filter(e => e.isFile() && /^book_.*\.json$/.test(e.name))
+        .map(e => RNFS.unlink(e.path).catch(() => {})),
+    );
+  } catch {}
+}
+
 // ── Library list cache (latest server response, used as offline fallback) ────
 
 export async function cacheLibraryList(language: string, books: LibrarySummary[]): Promise<void> {
