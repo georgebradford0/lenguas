@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator,
-  FlatList, ListRenderItemInfo,
+  FlatList, ListRenderItemInfo, Modal,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../styles/theme';
 import { hydrateSerializedBook } from '../utils/epubParser';
@@ -17,7 +17,7 @@ import { ChapterReader } from '../components/SentenceModePanel';
 import type { EpubHandle, TocEntry } from '../utils/epubParser';
 import type { Language } from '../types';
 
-type Phase = 'loading' | 'downloading' | 'toc' | 'reading';
+type Phase = 'loading' | 'downloading' | 'reading';
 
 export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack: () => void }) {
   const language = book.language as Language;
@@ -25,6 +25,7 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
 
   const [phase, setPhase] = useState<Phase>('loading');
   const [error, setError] = useState<string | null>(null);
+  const [tocVisible, setTocVisible] = useState(false);
 
   const epubRef = useRef<EpubHandle | null>(null);
   const [epubTitle, setEpubTitle] = useState<string | null>(null);
@@ -87,6 +88,7 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
 
   function openChapter(tocIdx: number) {
     if (!epubRef.current?.toc[tocIdx]) return;
+    setTocVisible(false);
     setCurrentChapterIdx(tocIdx);
     setInitialSentenceIdx(0);
     setPhase('reading');
@@ -131,45 +133,6 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
     );
   }
 
-  if (phase === 'toc') {
-    return (
-      <View style={styles.fullContainer}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.headerBack} onPress={() => setPhase('reading')}>
-            <Text style={styles.headerBackText}>←</Text>
-          </TouchableOpacity>
-          <View style={styles.headerTitleStack}>
-            <Text style={styles.headerTitle} numberOfLines={1}>{epubTitle}</Text>
-            {epubAuthor ? (
-              <Text style={styles.headerSubtitle} numberOfLines={1}>{epubAuthor}</Text>
-            ) : null}
-          </View>
-          <TouchableOpacity style={styles.headerLibraryButton} onPress={onBack}>
-            <Text style={styles.headerLibraryText}>Library</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={toc}
-          keyExtractor={e => e.id}
-          renderItem={({ item, index }: ListRenderItemInfo<TocEntry>) => (
-            <TouchableOpacity
-              style={[styles.tocItem, item.level > 0 && { paddingLeft: spacing.md + item.level * 16 }]}
-              onPress={() => openChapter(index)}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.tocItemText, item.level > 0 && styles.tocItemSubText]} numberOfLines={2}>
-                {item.title}
-              </Text>
-              <Text style={styles.tocChevron}>›</Text>
-            </TouchableOpacity>
-          )}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          contentContainerStyle={{ paddingBottom: spacing.xl }}
-        />
-      </View>
-    );
-  }
-
   // ── Reading: one chapter as a continuous vertical scroll ────────────────────
 
   if (phase === 'reading') {
@@ -178,36 +141,117 @@ export function ReadAlongScreen({ book, onBack }: { book: LibrarySummary; onBack
     const chapter = entry ? handle?.chapters[entry.href] : undefined;
     const paragraphs = chapter?.paragraphs ?? [];
 
+    const tocModal = (
+      <TocModal
+        visible={tocVisible}
+        toc={toc}
+        currentChapterIdx={currentChapterIdx}
+        onSelect={openChapter}
+        onClose={() => setTocVisible(false)}
+      />
+    );
+
     if (!entry || paragraphs.length === 0) {
       return (
         <View style={styles.centeredContainer}>
           <Text style={styles.loadingText}>No text in this section.</Text>
-          <TouchableOpacity style={styles.primaryButton} onPress={() => setPhase('toc')}>
-            <Text style={styles.primaryButtonText}>Back to contents</Text>
+          <TouchableOpacity style={styles.primaryButton} onPress={() => setTocVisible(true)}>
+            <Text style={styles.primaryButtonText}>Open contents</Text>
           </TouchableOpacity>
+          {tocModal}
         </View>
       );
     }
     return (
-      <ChapterReader
-        key={currentChapterIdx}
-        paragraphs={paragraphs}
-        chapterTitle={entry.title}
-        chapterIdx={currentChapterIdx}
-        totalChapters={toc.length}
-        language={language}
-        bookTitle={epubTitle}
-        bookAuthor={epubAuthor}
-        initialSentenceIdx={initialSentenceIdx}
-        onSentenceChange={handleSentenceChange}
-        initialMode={readerMode}
-        onModeChange={handleModeChange}
-        onBack={() => setPhase('toc')}
-      />
+      <>
+        <ChapterReader
+          key={currentChapterIdx}
+          paragraphs={paragraphs}
+          chapterTitle={entry.title}
+          chapterIdx={currentChapterIdx}
+          totalChapters={toc.length}
+          language={language}
+          bookTitle={epubTitle}
+          bookAuthor={epubAuthor}
+          initialSentenceIdx={initialSentenceIdx}
+          onSentenceChange={handleSentenceChange}
+          initialMode={readerMode}
+          onModeChange={handleModeChange}
+          onBack={onBack}
+          onOpenToc={() => setTocVisible(true)}
+        />
+        {tocModal}
+      </>
     );
   }
 
   return null;
+}
+
+// ── Table of contents: bottom-sheet modal that slides up from the bottom ──────
+
+function TocModal({
+  visible, toc, currentChapterIdx, onSelect, onClose,
+}: {
+  visible: boolean;
+  toc: TocEntry[];
+  currentChapterIdx: number;
+  onSelect: (index: number) => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View style={styles.modalRoot}>
+        <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={onClose} />
+        <View style={styles.modalSheet}>
+          <View style={styles.modalHandle} />
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Contents</Text>
+            <TouchableOpacity
+              style={styles.modalClose}
+              onPress={onClose}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Text style={styles.modalCloseText}>×</Text>
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={toc}
+            keyExtractor={e => e.id}
+            renderItem={({ item, index }: ListRenderItemInfo<TocEntry>) => {
+              const isCurrent = index === currentChapterIdx;
+              return (
+                <TouchableOpacity
+                  style={[styles.tocItem, item.level > 0 && { paddingLeft: spacing.md + item.level * 16 }]}
+                  onPress={() => onSelect(index)}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.tocItemText,
+                      item.level > 0 && styles.tocItemSubText,
+                      isCurrent && styles.tocItemTextActive,
+                    ]}
+                    numberOfLines={2}
+                  >
+                    {item.title}
+                  </Text>
+                  <Text style={styles.tocChevron}>{isCurrent ? '●' : '›'}</Text>
+                </TouchableOpacity>
+              );
+            }}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            contentContainerStyle={{ paddingBottom: spacing.xl }}
+          />
+        </View>
+      </View>
+    </Modal>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -217,10 +261,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
-  },
-  fullContainer: {
-    flex: 1,
-    backgroundColor: colors.background,
   },
   primaryButton: {
     backgroundColor: colors.primary,
@@ -234,32 +274,37 @@ const styles = StyleSheet.create({
   errorText: { color: colors.wrong, fontSize: 14, textAlign: 'center', marginTop: spacing.sm },
   loadingText: { color: colors.muted, fontSize: fontSize.xs, marginTop: spacing.sm, textAlign: 'center' },
 
-  // Header
-  header: {
+  // TOC bottom-sheet modal
+  modalRoot: { flex: 1, justifyContent: 'flex-end' },
+  modalBackdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.45)' },
+  modalSheet: {
+    maxHeight: '80%',
+    backgroundColor: colors.background,
+    borderTopLeftRadius: borderRadius.lg,
+    borderTopRightRadius: borderRadius.lg,
+    paddingTop: spacing.xs,
+    overflow: 'hidden',
+  },
+  modalHandle: {
+    alignSelf: 'center',
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.border,
+    marginVertical: spacing.xs,
+  },
+  modalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.xs,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    backgroundColor: colors.cardBackground,
   },
-  headerBack: { padding: spacing.xs, marginRight: spacing.xs },
-  headerBackText: { fontSize: fontSize.md, color: colors.text },
-  headerTitleStack: { flex: 1 },
-  headerTitle: {
-    flex: 1,
-    fontSize: fontSize.xs,
-    fontWeight: '600',
-    color: colors.text,
-  },
-  headerSubtitle: {
-    fontSize: 12,
-    color: colors.muted,
-    marginTop: 1,
-  },
-  headerLibraryButton: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
-  headerLibraryText: { color: colors.primary, fontSize: 13, fontWeight: '600' },
+  modalTitle: { fontSize: fontSize.xs, fontWeight: '700', color: colors.text },
+  modalClose: { paddingHorizontal: 4, paddingVertical: 2 },
+  modalCloseText: { fontSize: fontSize.md, color: colors.muted, lineHeight: fontSize.md },
 
   // TOC
   tocItem: {
@@ -280,6 +325,7 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: 15,
   },
+  tocItemTextActive: { color: colors.primary, fontWeight: '700' },
   tocChevron: { fontSize: fontSize.md, color: colors.muted, marginLeft: spacing.xs },
   separator: { height: 1, backgroundColor: colors.border },
 });

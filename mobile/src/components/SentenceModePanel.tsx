@@ -45,6 +45,8 @@ interface Props {
   /** Called when the user toggles the mode pill, so the parent can persist it. */
   onModeChange?: (mode: Mode) => void;
   onBack: () => void;
+  /** Opens the table-of-contents bottom sheet. */
+  onOpenToc: () => void;
 }
 
 /**
@@ -60,7 +62,7 @@ interface Props {
 export function ChapterReader({
   paragraphs, chapterTitle, chapterIdx, totalChapters, language,
   bookTitle, bookAuthor, initialSentenceIdx, onSentenceChange,
-  initialMode = 'scroll', onModeChange, onBack,
+  initialMode = 'scroll', onModeChange, onBack, onOpenToc,
 }: Props) {
   const cacheRef = useRef<Map<string, SentenceTranslation>>(new Map());
   const [mode, setMode] = useState<Mode>(initialMode);
@@ -84,6 +86,9 @@ export function ChapterReader({
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerBtn} onPress={onBack}>
           <Text style={styles.headerBtnText}>←</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.headerBtn} onPress={onOpenToc}>
+          <Text style={styles.headerBtnText}>☰</Text>
         </TouchableOpacity>
         <View style={styles.headerCenter}>
           {bookTitle ? (
