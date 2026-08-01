@@ -566,6 +566,13 @@ function ChunkedTranslation({
 
       {selectedWord && (
         <View style={styles.wordCard}>
+          <TouchableOpacity
+            style={styles.wordPlayBtn}
+            onPress={() => playAudio(selectedWord.word, 'word')}
+            disabled={playingId === 'word'}
+          >
+            <Text style={styles.chunkPlayBtnText}>{playingId === 'word' ? '⌛' : '🔊'}</Text>
+          </TouchableOpacity>
           <View style={styles.wordCardContent}>
             <View style={styles.wordCardHeader}>
               <Text style={styles.wordCardWord}>{selectedWord.word}</Text>
@@ -576,13 +583,6 @@ function ChunkedTranslation({
               <Text style={styles.wordCardExplanation}>{selectedWord.explanation}</Text>
             ) : null}
           </View>
-          <TouchableOpacity
-            style={styles.wordPlayBtn}
-            onPress={() => playAudio(selectedWord.word, 'word')}
-            disabled={playingId === 'word'}
-          >
-            <Text style={styles.chunkPlayBtnText}>{playingId === 'word' ? '⌛' : '🔊'}</Text>
-          </TouchableOpacity>
         </View>
       )}
     </>
