@@ -412,7 +412,7 @@ function ChunkedTranslation({
   const [contentWords, setContentWords] = useState<SentenceWord[]>(cached?.words ?? []);
   const [translating, setTranslating] = useState(!cached);
   const [selectedWord, setSelectedWord] = useState<SentenceWord | null>(null);
-  const [playingChunkIdx, setPlayingChunkIdx] = useState<number | null>(null);
+  const [playingId, setPlayingId] = useState<string | null>(null);
   const soundRef = useRef<Sound | null>(null);
 
   const contentLookup = useMemo(() => {
@@ -468,14 +468,16 @@ function ChunkedTranslation({
     }
   }
 
-  async function playChunkAudio(text: string, idx: number) {
+  async function playAudio(text: string, id: string) {
     await stopAudio();
-    setPlayingChunkIdx(idx);
+    setPlayingId(id);
+    const key = text.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '_');
+    const path = `${RNFS.CachesDirectoryPath}/audio_${language}_${key}.mp3`;
     try {
-      const base64 = await speak(text, language);
-      const key = text.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '_');
-      const path = `${RNFS.CachesDirectoryPath}/chunk_${language}_${key}.mp3`;
-      await RNFS.writeFile(path, base64, 'base64');
+      if (!(await RNFS.exists(path))) {
+        const base64 = await speak(text, language);
+        await RNFS.writeFile(path, base64, 'base64');
+      }
 
       const sound = createSound();
       soundRef.current = sound;
@@ -498,7 +500,7 @@ function ChunkedTranslation({
     } catch {
       // TTS unavailable for this text — skip silently
     } finally {
-      setPlayingChunkIdx(prev => (prev === idx ? null : prev));
+      setPlayingId(prev => (prev === id ? null : prev));
     }
   }
 
@@ -507,6 +509,7 @@ function ChunkedTranslation({
     if (entry) {
       LayoutAnimation.configureNext(SMOOTH);
       setSelectedWord(entry);
+      playAudio(entry.word, 'word');
     }
   }
 
@@ -520,7 +523,7 @@ function ChunkedTranslation({
         <ActivityIndicator color={colors.primary} style={styles.boxLoader} />
       ) : (
         chunks.map((chunk, idx) => {
-          const isPlaying = playingChunkIdx === idx;
+          const isPlaying = playingId === `chunk-${idx}`;
           return (
             <View key={idx} style={styles.chunk}>
               <Text style={styles.chunkTranslation}>{chunk.translation || '—'}</Text>
@@ -550,7 +553,7 @@ function ChunkedTranslation({
                 </Text>
                 <TouchableOpacity
                   style={styles.chunkPlayBtn}
-                  onPress={() => playChunkAudio(chunk.original, idx)}
+                  onPress={() => playAudio(chunk.original, `chunk-${idx}`)}
                   disabled={isPlaying}
                 >
                   <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
@@ -566,6 +569,13 @@ function ChunkedTranslation({
           <View style={styles.wordCardHeader}>
             <Text style={styles.wordCardWord}>{selectedWord.word}</Text>
             <Text style={styles.wordCardPos}>{selectedWord.pos}</Text>
+            <TouchableOpacity
+              style={styles.wordPlayBtn}
+              onPress={() => playAudio(selectedWord.word, 'word')}
+              disabled={playingId === 'word'}
+            >
+              <Text style={styles.chunkPlayBtnText}>{playingId === 'word' ? '⌛' : '🔊'}</Text>
+            </TouchableOpacity>
           </View>
           <Text style={styles.wordCardTranslation}>{selectedWord.translation || '—'}</Text>
           {selectedWord.explanation ? (
@@ -698,6 +708,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   wordCardHeader: { flexDirection: 'row', alignItems: 'baseline', gap: spacing.sm },
+  wordPlayBtn: { marginLeft: 'auto', alignSelf: 'center', paddingHorizontal: 4, paddingVertical: 2 },
   wordCardWord: { fontSize: fontSize.sm, color: colors.text, fontWeight: '700' },
   wordCardPos: { fontSize: 12, color: colors.muted, textTransform: 'uppercase' },
   wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
