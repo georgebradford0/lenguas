@@ -566,21 +566,23 @@ function ChunkedTranslation({
 
       {selectedWord && (
         <View style={styles.wordCard}>
-          <View style={styles.wordCardHeader}>
-            <Text style={styles.wordCardWord}>{selectedWord.word}</Text>
-            <Text style={styles.wordCardPos}>{selectedWord.pos}</Text>
-            <TouchableOpacity
-              style={styles.wordPlayBtn}
-              onPress={() => playAudio(selectedWord.word, 'word')}
-              disabled={playingId === 'word'}
-            >
-              <Text style={styles.chunkPlayBtnText}>{playingId === 'word' ? '⌛' : '🔊'}</Text>
-            </TouchableOpacity>
+          <View style={styles.wordCardContent}>
+            <View style={styles.wordCardHeader}>
+              <Text style={styles.wordCardWord}>{selectedWord.word}</Text>
+              <Text style={styles.wordCardPos}>{selectedWord.pos}</Text>
+            </View>
+            <Text style={styles.wordCardTranslation}>{selectedWord.translation || '—'}</Text>
+            {selectedWord.explanation ? (
+              <Text style={styles.wordCardExplanation}>{selectedWord.explanation}</Text>
+            ) : null}
           </View>
-          <Text style={styles.wordCardTranslation}>{selectedWord.translation || '—'}</Text>
-          {selectedWord.explanation ? (
-            <Text style={styles.wordCardExplanation}>{selectedWord.explanation}</Text>
-          ) : null}
+          <TouchableOpacity
+            style={styles.wordPlayBtn}
+            onPress={() => playAudio(selectedWord.word, 'word')}
+            disabled={playingId === 'word'}
+          >
+            <Text style={styles.chunkPlayBtnText}>{playingId === 'word' ? '⌛' : '🔊'}</Text>
+          </TouchableOpacity>
         </View>
       )}
     </>
@@ -700,15 +702,18 @@ const styles = StyleSheet.create({
 
   wordCard: {
     marginTop: spacing.xs,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.background,
     borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.md,
-    gap: 6,
+    gap: spacing.sm,
   },
+  wordCardContent: { flex: 1, gap: 6 },
   wordCardHeader: { flexDirection: 'row', alignItems: 'baseline', gap: spacing.sm },
-  wordPlayBtn: { marginLeft: 'auto', alignSelf: 'center', paddingHorizontal: 4, paddingVertical: 2 },
+  wordPlayBtn: { paddingHorizontal: 4, paddingVertical: 2 },
   wordCardWord: { fontSize: fontSize.sm, color: colors.text, fontWeight: '700' },
   wordCardPos: { fontSize: 12, color: colors.muted, textTransform: 'uppercase' },
   wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
