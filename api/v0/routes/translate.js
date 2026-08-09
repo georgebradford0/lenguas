@@ -30,7 +30,7 @@ router.post('/sentence', async (req, res) => {
     { "original": "<verbatim span of the source sentence>", "translation": "<literal-but-readable English rendering of that span>" }
   ],
   "words": [
-    { "word": "<word as it appears in the sentence>", "pos": "noun" | "verb", "translation": "<1-6 word English gloss in this context>", "explanation": "<one short English sentence or null>" }
+    { "word": "<word as it appears in the sentence>", "pos": "noun" | "verb" | "adjective", "translation": "<1-6 word English gloss in this context>", "explanation": "<one short English sentence or null>" }
   ]
 }
 
@@ -42,7 +42,7 @@ Rules for "chunks":
 - Aim for 2-6 chunks per typical sentence. Very short sentences may be a single chunk.
 
 Rules for "words":
-- "words" contains every noun and every verb in the sentence (including auxiliary, modal, participle, and infinitive verb forms). Exclude articles, prepositions, pronouns, conjunctions, adjectives, adverbs, particles, and numbers.
+- "words" contains every noun, verb, and adjective in the sentence (including auxiliary, modal, participle, and infinitive verb forms, and predicate/attributive adjectives). Exclude articles, prepositions, pronouns, conjunctions, adverbs, particles, and numbers.
 - "word" must match exactly how the word appears in the sentence — preserve case and inflection. Do NOT lemmatize.
 - Include each surface occurrence at most once, in the order they appear.
 - "explanation" is a short English sentence only when the word's meaning here is non-obvious or context-dependent (e.g. separable-prefix verb, idiomatic noun usage). Otherwise null.`;
@@ -71,7 +71,7 @@ Rules for "words":
     }
     const words = Array.isArray(parsed.words)
       ? parsed.words
-          .filter(w => w && typeof w.word === 'string' && (w.pos === 'noun' || w.pos === 'verb'))
+          .filter(w => w && typeof w.word === 'string' && (w.pos === 'noun' || w.pos === 'verb' || w.pos === 'adjective'))
           .map(w => ({
             word: w.word,
             pos: w.pos,

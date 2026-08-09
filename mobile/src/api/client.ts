@@ -33,7 +33,7 @@ export async function speak(text: string, language = 'de'): Promise<string> {
 
 export interface SentenceWord {
   word: string;
-  pos: 'noun' | 'verb';
+  pos: 'noun' | 'verb' | 'adjective';
   translation: string;
   explanation: string | null;
 }

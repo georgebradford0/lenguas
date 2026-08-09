@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Lenguas is a mobile reading app for language learners. The user opens a book in their target language (German, Dutch, French, or Spanish) and reads it one sentence at a time: the English translation appears on top, the original sentence below with **only nouns and verbs tappable**. Tapping a noun/verb shows its contextual translation plus, when relevant, a one-sentence grammar explanation.
+Lenguas is a mobile reading app for language learners. The user opens a book in their target language (German, Dutch, French, or Spanish) and reads it one sentence at a time: the English translation appears on top, the original sentence below with every word tappable. Tapping a noun/verb/adjective (highlighted) shows its contextual translation plus, when relevant, a one-sentence grammar explanation; tapping any other word (articles, prepositions, pronouns, etc., shown in a different color) just plays its audio, with no translation.
 
 No login. The app launches directly into language select, and all API endpoints are open — there is no per-user state on the server.
 
@@ -77,7 +77,7 @@ All endpoints are unauthenticated.
   ```
   { translation: string,
     chunks: [{ original: string, translation: string }],
-    words: [{ word, pos: 'noun'|'verb', translation, explanation: string|null }] }
+    words: [{ word, pos: 'noun'|'verb'|'adjective', translation, explanation: string|null }] }
   ```
   `word` is the inflected surface form as it appears in the sentence, not a lemma.
 - `GET /books?language=de` — `{ books: LibrarySummary[] }`. Reads from S3 `_index.json`. Each summary: `{ contentHash, title, author, description, genre, difficulty, language, uploadedAt }`.
