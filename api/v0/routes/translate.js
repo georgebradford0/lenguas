@@ -86,4 +86,52 @@ Rules for "words":
   }
 });
 
+// ── /translate/ask ────────────────────────────────────────────────────────────
+// Answer a follow-up question about a specific sentence the reader currently
+// has open. Stateless like every other route: the client resends the sentence
+// (as context) and the prior chat turns on every call.
+router.post('/ask', async (req, res) => {
+  try {
+    const { sentence, translation, language = 'de', question, history = [] } = req.body;
+    if (!sentence || !sentence.trim()) {
+      return res.status(400).json({ error: 'sentence is required' });
+    }
+    if (!question || !question.trim()) {
+      return res.status(400).json({ error: 'question is required' });
+    }
+    const fromLanguage = LANGUAGE_NAMES[language] || 'German';
+
+    const contextLine = typeof translation === 'string' && translation.trim()
+      ? `The learner is looking at this ${fromLanguage} sentence: "${sentence.trim()}" (English: "${translation.trim()}").`
+      : `The learner is looking at this ${fromLanguage} sentence: "${sentence.trim()}".`;
+
+    const systemPrompt = `You are a brief, friendly ${fromLanguage}-English language tutor embedded in a reading app. ${contextLine}
+
+Answer the learner's question about this sentence — grammar, vocabulary, word choice, nuance, cultural context, etc. Always respond in English, even if the question is asked in ${fromLanguage} — you may quote ${fromLanguage} words/phrases inline, but the explanation itself must be in English. Keep answers to 1-3 short sentences. Be direct; skip preamble like "Great question!". If the question isn't about this sentence or language learning, briefly say you can only help with the current sentence.`;
+
+    const historyMessages = Array.isArray(history)
+      ? history
+          .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
+          .slice(-12)
+          .map(m => ({ role: m.role, content: m.content.trim() }))
+      : [];
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-oss-120b',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...historyMessages,
+        { role: 'user', content: question.trim() },
+      ],
+      temperature: 0.3,
+      max_tokens: 300,
+    });
+
+    const answer = response.choices[0]?.message?.content?.trim() || '';
+    res.json({ answer });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

@@ -3,11 +3,12 @@ import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView,
   FlatList, ListRenderItemInfo, LayoutAnimation, Platform, UIManager,
   ViewToken, NativeSyntheticEvent, NativeScrollEvent, useWindowDimensions,
+  Modal, Pressable, TextInput, KeyboardAvoidingView,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
-import { speak, translateSentence } from '../api/client';
-import type { SentenceChunk, SentenceWord, SentenceTranslation } from '../api/client';
+import { speak, translateSentence, askAboutSentence } from '../api/client';
+import type { SentenceChunk, SentenceWord, SentenceTranslation, AskChatMessage } from '../api/client';
 import { cleanWord } from '../utils/epubParser';
 import type { Paragraph, Sentence } from '../utils/epubParser';
 import type { ReaderMode } from '../utils/bookStorage';
@@ -153,7 +154,177 @@ export function ChapterReader({
           onSentenceChange={handlePos}
         />
       )}
+
+      {mode === 'swipe' && sentences.length > 0 ? (
+        <AskFab
+          key={sentences[Math.min(curIdx, sentences.length - 1)].id}
+          sentence={sentences[Math.min(curIdx, sentences.length - 1)]}
+          language={language}
+          cacheRef={cacheRef}
+        />
+      ) : null}
     </View>
+  );
+}
+
+// ── Ask-about-this-sentence chat (Cards mode) ────────────────────────────────
+// A small FAB pinned bottom-right that opens a chat modal scoped to whichever
+// sentence is currently on screen. The sentence (and its English translation,
+// once cached) is injected as context on every question. Keyed by sentence id
+// at the call site, so switching cards remounts this fresh with an empty chat.
+
+function AskFab({
+  sentence, language, cacheRef,
+}: {
+  sentence: Sentence;
+  language: Language;
+  cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <TouchableOpacity
+        style={styles.askFab}
+        onPress={() => setOpen(true)}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.askFabIcon}>💬</Text>
+      </TouchableOpacity>
+      {open && (
+        <AskModal
+          sentence={sentence}
+          language={language}
+          cacheRef={cacheRef}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </>
+  );
+}
+
+function AskModal({
+  sentence, language, cacheRef, onClose,
+}: {
+  sentence: Sentence;
+  language: Language;
+  cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+  onClose: () => void;
+}) {
+  const [messages, setMessages] = useState<AskChatMessage[]>([]);
+  const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  }, [messages, sending]);
+
+  const handleSend = useCallback(async () => {
+    const question = input.trim();
+    if (!question || sending) return;
+    const priorHistory = messages;
+    setInput('');
+    setError(null);
+    setMessages(prev => [...prev, { role: 'user', content: question }]);
+    setSending(true);
+    try {
+      const cached = cacheRef.current.get(sentence.id);
+      const answer = await askAboutSentence({
+        sentence: sentence.raw,
+        translation: cached?.translation,
+        language,
+        question,
+        history: priorHistory,
+      });
+      setMessages(prev => [...prev, { role: 'assistant', content: answer || '—' }]);
+    } catch (err) {
+      setError('Could not get an answer — try again.');
+    } finally {
+      setSending(false);
+    }
+  }, [input, sending, messages, cacheRef, sentence, language]);
+
+  const handleClear = useCallback(() => {
+    setMessages([]);
+    setError(null);
+  }, []);
+
+  return (
+    <Modal visible transparent animationType="fade" onRequestClose={onClose}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.askBackdrop}
+      >
+        {/* Full-screen backdrop layer, separate from the sheet (not a parent of
+            it) — a sibling that sits behind it, so a tap on the sheet never
+            reaches this at all, no propagation trickery needed. */}
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={styles.askSheet}>
+          <View style={styles.askHeader}>
+            <Text style={styles.askHeaderTitle} numberOfLines={1}>Ask about this sentence</Text>
+            <View style={styles.askHeaderActions}>
+              <TouchableOpacity onPress={handleClear} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                <Text style={styles.askHeaderAction}>Clear</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                <Text style={styles.askHeaderClose}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <Text style={styles.askSentenceContext} numberOfLines={2}>{sentence.raw}</Text>
+
+          <ScrollView
+            ref={scrollRef}
+            style={styles.askMessages}
+            contentContainerStyle={styles.askMessagesContent}
+            keyboardShouldPersistTaps="handled"
+          >
+            {messages.length === 0 ? (
+              <Text style={styles.askEmpty}>
+                Ask anything about this sentence — grammar, vocab, word choice.
+              </Text>
+            ) : (
+              messages.map((m, i) => (
+                <View
+                  key={i}
+                  style={[
+                    styles.askBubble,
+                    m.role === 'user' ? styles.askBubbleUser : styles.askBubbleAssistant,
+                  ]}
+                >
+                  <Text style={m.role === 'user' ? styles.askBubbleUserText : styles.askBubbleAssistantText}>
+                    {m.content}
+                  </Text>
+                </View>
+              ))
+            )}
+            {sending ? <ActivityIndicator color={colors.primary} style={styles.askLoading} /> : null}
+            {error ? <Text style={styles.askError}>{error}</Text> : null}
+          </ScrollView>
+
+          <View style={styles.askInputRow}>
+            <TextInput
+              style={styles.askInput}
+              value={input}
+              onChangeText={setInput}
+              placeholder="Ask a question…"
+              placeholderTextColor={colors.muted}
+              multiline
+              editable={!sending}
+            />
+            <TouchableOpacity
+              style={[styles.askSendBtn, (!input.trim() || sending) && styles.askSendBtnDisabled]}
+              onPress={handleSend}
+              disabled={!input.trim() || sending}
+            >
+              <Text style={styles.askSendBtnText}>Send</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </Modal>
   );
 }
 
@@ -749,4 +920,106 @@ const styles = StyleSheet.create({
   wordCardPos: { fontSize: 12, color: colors.muted, textTransform: 'uppercase' },
   wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
   wordCardExplanation: { fontSize: 13, color: colors.muted, lineHeight: 18 },
+
+  askFab: {
+    position: 'absolute',
+    right: spacing.md,
+    bottom: spacing.xl,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  askFabIcon: { fontSize: 22 },
+
+  askBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+  },
+  askSheet: {
+    width: '100%',
+    maxWidth: 480,
+    maxHeight: '75%',
+    alignSelf: 'center',
+    backgroundColor: colors.cardBackground,
+    borderTopLeftRadius: borderRadius.lg,
+    borderTopRightRadius: borderRadius.lg,
+    padding: spacing.md,
+    gap: spacing.sm,
+  },
+  askHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.sm,
+  },
+  askHeaderTitle: { flex: 1, fontSize: fontSize.xs, fontWeight: '700', color: colors.text },
+  askHeaderActions: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  askHeaderAction: { fontSize: 13, fontWeight: '600', color: colors.muted },
+  askHeaderClose: { fontSize: fontSize.md, color: colors.muted, lineHeight: fontSize.md },
+  askSentenceContext: {
+    fontSize: 13,
+    fontStyle: 'italic',
+    color: colors.muted,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    paddingBottom: spacing.sm,
+  },
+  askMessages: { flexGrow: 0 },
+  askMessagesContent: { gap: spacing.sm, paddingVertical: spacing.xs },
+  askEmpty: { fontSize: 13, color: colors.muted, lineHeight: 18 },
+  askBubble: {
+    maxWidth: '85%',
+    borderRadius: borderRadius.md,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  askBubbleUser: {
+    alignSelf: 'flex-end',
+    backgroundColor: colors.primary,
+  },
+  askBubbleAssistant: {
+    alignSelf: 'flex-start',
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  askBubbleUserText: { color: '#fff', fontSize: 14, lineHeight: 19 },
+  askBubbleAssistantText: { color: colors.text, fontSize: 14, lineHeight: 19 },
+  askLoading: { marginTop: spacing.xs, alignSelf: 'flex-start' },
+  askError: { fontSize: 13, color: colors.wrong, marginTop: spacing.xs },
+  askInputRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+  },
+  askInput: {
+    flex: 1,
+    maxHeight: 100,
+    fontSize: 14,
+    color: colors.text,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  askSendBtn: {
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  askSendBtnDisabled: { opacity: 0.5 },
+  askSendBtnText: { color: '#fff', fontWeight: '600', fontSize: 14 },
 });

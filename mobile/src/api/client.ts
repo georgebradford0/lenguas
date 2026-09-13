@@ -1,4 +1,5 @@
-import { Platform, NativeModules } from 'react-native';
+import { Platform } from 'react-native';
+import getDevServer from 'react-native/Libraries/Core/Devtools/getDevServer';
 import { fromByteArray } from 'base64-js';
 
 const PROD_API_BASE = 'https://lenguas.directto.link';
@@ -9,11 +10,17 @@ const PROD_API_BASE = 'https://lenguas.directto.link';
  * host: simulators load the bundle from a loopback address, while a physical
  * device loads it from the Mac's LAN IP (so `localhost` there is the phone
  * itself, not the dev machine). Physical devices in dev fall back to prod.
+ *
+ * Uses RN's own dev-server detection (`getDevServer`) rather than reading
+ * `NativeModules.SourceCode.scriptURL` directly — that legacy path returns
+ * nothing under the New Architecture, which silently sent every dev/simulator
+ * request to production.
  */
 function resolveApiBase(): string {
   if (!__DEV__) return PROD_API_BASE;
-  const scriptURL: string | undefined = (NativeModules as any)?.SourceCode?.scriptURL;
-  const host = scriptURL?.split('://')[1]?.split(/[:/]/)[0] ?? '';
+  const { url, bundleLoadedFromServer } = getDevServer();
+  if (!bundleLoadedFromServer) return PROD_API_BASE;
+  const host = url.split('://')[1]?.split(/[:/]/)[0] ?? '';
   const isEmulator = host === 'localhost' || host === '127.0.0.1' || host === '10.0.2.2';
   if (!isEmulator) return PROD_API_BASE;
   return Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
@@ -68,6 +75,31 @@ export async function translateSentence(
     throw new Error(`Sentence translation failed: ${response.status}`);
   }
   return response.json();
+}
+
+export interface AskChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export async function askAboutSentence(params: {
+  sentence: string;
+  translation?: string;
+  language: string;
+  question: string;
+  history: AskChatMessage[];
+}): Promise<string> {
+  const url = `${API_BASE}/translate/ask`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  if (!response.ok) {
+    throw new Error(`Ask failed: ${response.status}`);
+  }
+  const data = await response.json();
+  return typeof data.answer === 'string' ? data.answer : '';
 }
 
 import type { SerializedBook, CefrLevel } from '../utils/epubParser';
