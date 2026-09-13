@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView,
   FlatList, ListRenderItemInfo, LayoutAnimation, Platform, UIManager,
   ViewToken, NativeSyntheticEvent, NativeScrollEvent, useWindowDimensions,
-  Modal, Pressable, TextInput, KeyboardAvoidingView,
+  Modal, Pressable, TextInput, KeyboardAvoidingView, TextStyle,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
@@ -202,6 +202,62 @@ function AskFab({
   );
 }
 
+// ── Minimal markdown for chat answers ────────────────────────────────────────
+// The tutor model replies with light markdown (**bold**, *italic*, `code`,
+// "- " / "1. " lists). Just enough rendering to not show raw asterisks —
+// not a general-purpose renderer (no headers, links, blockquotes, tables).
+
+interface InlineSpan {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  code?: boolean;
+}
+
+function parseInlineMarkdown(line: string): InlineSpan[] {
+  const spans: InlineSpan[] = [];
+  const pattern = /\*\*([^*]+)\*\*|__([^_]+)__|`([^`]+)`|\*([^*]+)\*|_([^_]+)_/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(line))) {
+    if (match.index > lastIndex) spans.push({ text: line.slice(lastIndex, match.index) });
+    if (match[1] !== undefined) spans.push({ text: match[1], bold: true });
+    else if (match[2] !== undefined) spans.push({ text: match[2], bold: true });
+    else if (match[3] !== undefined) spans.push({ text: match[3], code: true });
+    else if (match[4] !== undefined) spans.push({ text: match[4], italic: true });
+    else if (match[5] !== undefined) spans.push({ text: match[5], italic: true });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < line.length) spans.push({ text: line.slice(lastIndex) });
+  return spans;
+}
+
+function MarkdownText({ text, style }: { text: string; style: TextStyle }) {
+  const blocks = text.split(/\n+/).map(b => b.trim()).filter(Boolean);
+  return (
+    <>
+      {blocks.map((block, i) => {
+        const listMatch = block.match(/^([-*]|\d+\.)\s+(.*)$/s);
+        const marker = listMatch ? (/^\d+\.$/.test(listMatch[1]) ? `${listMatch[1]} ` : '• ') : '';
+        const spans = parseInlineMarkdown(listMatch ? listMatch[2] : block);
+        return (
+          <Text key={i} style={[style, i > 0 && styles.mdBlockSpacing]}>
+            {marker}
+            {spans.map((s, j) => (
+              <Text
+                key={j}
+                style={[s.bold && styles.mdBold, s.italic && styles.mdItalic, s.code && styles.mdCode]}
+              >
+                {s.text}
+              </Text>
+            ))}
+          </Text>
+        );
+      })}
+    </>
+  );
+}
+
 function AskModal({
   sentence, language, cacheRef, onClose,
 }: {
@@ -294,9 +350,11 @@ function AskModal({
                     m.role === 'user' ? styles.askBubbleUser : styles.askBubbleAssistant,
                   ]}
                 >
-                  <Text style={m.role === 'user' ? styles.askBubbleUserText : styles.askBubbleAssistantText}>
-                    {m.content}
-                  </Text>
+                  {m.role === 'user' ? (
+                    <Text style={styles.askBubbleUserText}>{m.content}</Text>
+                  ) : (
+                    <MarkdownText text={m.content} style={styles.askBubbleAssistantText} />
+                  )}
                 </View>
               ))
             )}
@@ -994,6 +1052,14 @@ const styles = StyleSheet.create({
   },
   askBubbleUserText: { color: '#fff', fontSize: 14, lineHeight: 19 },
   askBubbleAssistantText: { color: colors.text, fontSize: 14, lineHeight: 19 },
+  mdBlockSpacing: { marginTop: 6 },
+  mdBold: { fontWeight: '700' },
+  mdItalic: { fontStyle: 'italic' },
+  mdCode: {
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    fontSize: 13,
+    backgroundColor: colors.progressBar,
+  },
   askLoading: { marginTop: spacing.xs, alignSelf: 'flex-start' },
   askError: { fontSize: 13, color: colors.wrong, marginTop: spacing.xs },
   askInputRow: {
