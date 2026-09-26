@@ -39,7 +39,6 @@ Rules for "chunks":
 - Each "original" must be a VERBATIM contiguous span of the source sentence. Concatenating every chunk's "original" in order, with single spaces between them, must reproduce the sentence (modulo whitespace).
 - Do NOT split inside a single word, and keep adjacent punctuation attached to its chunk.
 - Each "translation" is a literal-but-readable English rendering of that span on its own — not a full reflowed translation of the whole sentence.
-- Aim for 2-6 chunks per typical sentence. Very short sentences may be a single chunk.
 
 Rules for "words":
 - "words" contains every noun, verb, and adjective in the sentence (including auxiliary, modal, participle, and infinitive verb forms, and predicate/attributive adjectives). Exclude articles, prepositions, pronouns, conjunctions, adverbs, particles, and numbers.
