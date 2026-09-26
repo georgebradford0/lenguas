@@ -36,6 +36,7 @@ router.post('/sentence', async (req, res) => {
 
 Rules for "chunks":
 - Partition the entire sentence into grammatically coherent chunks: clauses, prepositional phrases, noun phrases with their modifiers, verb groups, etc. Each chunk should be a unit that makes sense to translate together.
+- Keep a verb together with the adverb(s) that modify it in the same chunk — never split a verb from its adverb into separate chunks (e.g. "läuft schnell" is one chunk, not "läuft" + "schnell").
 - Each "original" must be a VERBATIM contiguous span of the source sentence. Concatenating every chunk's "original" in order, with single spaces between them, must reproduce the sentence (modulo whitespace).
 - Do NOT split inside a single word, and keep adjacent punctuation attached to its chunk.
 - Each "translation" is a literal-but-readable English rendering of that span on its own — not a full reflowed translation of the whole sentence.
