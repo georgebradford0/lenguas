@@ -18,14 +18,17 @@ import type { Language } from '../types';
 type Sound = ReturnType<typeof createSound>;
 type Mode = ReaderMode;
 
-/** A tapped word's info card. `pos`/`translation` are null for words the
- * server doesn't translate (articles, prepositions, pronouns, etc.) — those
- * only get audio playback. */
+/** A tapped word's info card. `translation`/`explanation` are set for
+ * translated words (noun/verb/adjective); `usageInSentence`/`usageInGeneral`
+ * are set for everything else (articles, prepositions, pronouns, etc.) —
+ * those get audio playback plus an explanation instead of a translation. */
 interface TappedWord {
   word: string;
   pos: SentenceWord['pos'] | null;
   translation: string | null;
   explanation: string | null;
+  usageInSentence: string | null;
+  usageInGeneral: string | null;
 }
 
 // LayoutAnimation needs an explicit opt-in on Android.
@@ -749,8 +752,15 @@ function ChunkedTranslation({
     const entry = contentLookup.get(clean);
     LayoutAnimation.configureNext(SMOOTH);
     setSelectedWord(entry
-      ? { word: entry.word, pos: entry.pos, translation: entry.translation, explanation: entry.explanation }
-      : { word: rawWord, pos: null, translation: null, explanation: null });
+      ? {
+          word: entry.word,
+          pos: entry.pos,
+          translation: entry.translation,
+          explanation: entry.explanation,
+          usageInSentence: entry.usageInSentence,
+          usageInGeneral: entry.usageInGeneral,
+        }
+      : { word: rawWord, pos: null, translation: null, explanation: null, usageInSentence: null, usageInGeneral: null });
     playAudio(entry ? entry.word : rawWord, 'word');
   }
 
@@ -780,6 +790,7 @@ function ChunkedTranslation({
                       return <Text key={i} style={styles.nonContent}>{tok}</Text>;
                     }
                     const entry = contentLookup.get(clean);
+                    const isTranslated = !!entry?.translation;
                     const isActive = selectedWord
                       && cleanWord(selectedWord.word).toLowerCase() === clean;
                     return (
@@ -787,8 +798,8 @@ function ChunkedTranslation({
                         key={i}
                         onPress={() => handleWordTap(tok)}
                         style={[
-                          entry ? styles.contentWord : styles.otherWord,
-                          isActive && (entry ? styles.contentWordActive : styles.otherWordActive),
+                          isTranslated ? styles.contentWord : styles.otherWord,
+                          isActive && (isTranslated ? styles.contentWordActive : styles.otherWordActive),
                         ]}
                       >
                         {tok}
@@ -830,6 +841,18 @@ function ChunkedTranslation({
             ) : null}
             {selectedWord.explanation ? (
               <Text style={styles.wordCardExplanation}>{selectedWord.explanation}</Text>
+            ) : null}
+            {selectedWord.usageInSentence ? (
+              <Text style={styles.wordCardExplanation}>
+                <Text style={styles.wordCardExplanationLabel}>In this sentence: </Text>
+                {selectedWord.usageInSentence}
+              </Text>
+            ) : null}
+            {selectedWord.usageInGeneral ? (
+              <Text style={styles.wordCardExplanation}>
+                <Text style={styles.wordCardExplanationLabel}>In general: </Text>
+                {selectedWord.usageInGeneral}
+              </Text>
             ) : null}
           </View>
         </View>
@@ -978,6 +1001,7 @@ const styles = StyleSheet.create({
   wordCardPos: { fontSize: 12, color: colors.muted, textTransform: 'uppercase' },
   wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
   wordCardExplanation: { fontSize: 13, color: colors.muted, lineHeight: 18 },
+  wordCardExplanationLabel: { fontWeight: '700', color: colors.text },
 
   askFab: {
     position: 'absolute',

@@ -40,9 +40,15 @@ export async function speak(text: string, language = 'de'): Promise<string> {
 
 export interface SentenceWord {
   word: string;
-  pos: 'noun' | 'verb' | 'adjective';
-  translation: string;
+  pos: 'noun' | 'verb' | 'adjective'
+    | 'article' | 'preposition' | 'pronoun' | 'conjunction' | 'adverb' | 'particle' | 'number';
+  /** Contextual English gloss — nouns/verbs/adjectives only, null otherwise. */
+  translation: string | null;
   explanation: string | null;
+  /** Why this word/form appears here — populated for non-translated words only. */
+  usageInSentence: string | null;
+  /** The word's general meaning/use, independent of this sentence — non-translated words only. */
+  usageInGeneral: string | null;
 }
 
 export interface SentenceChunk {
