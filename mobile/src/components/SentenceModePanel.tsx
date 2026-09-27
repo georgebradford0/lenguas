@@ -821,43 +821,77 @@ function ChunkedTranslation({
       )}
 
       {selectedWord && (
-        <View style={styles.wordCard}>
-          <TouchableOpacity
-            style={styles.wordPlayBtn}
-            onPress={() => playAudio(selectedWord.word, 'word')}
-            disabled={playingId === 'word'}
-          >
-            <Text style={styles.chunkPlayBtnText}>{playingId === 'word' ? '⌛' : '🔊'}</Text>
-          </TouchableOpacity>
-          <View style={styles.wordCardContent}>
-            <View style={styles.wordCardHeader}>
-              <Text style={styles.wordCardWord}>{selectedWord.word}</Text>
-              {selectedWord.pos ? (
-                <Text style={styles.wordCardPos}>{selectedWord.pos}</Text>
-              ) : null}
-            </View>
-            {selectedWord.translation ? (
-              <Text style={styles.wordCardTranslation}>{selectedWord.translation}</Text>
-            ) : null}
-            {selectedWord.explanation ? (
-              <Text style={styles.wordCardExplanation}>{selectedWord.explanation}</Text>
-            ) : null}
-            {selectedWord.usageInSentence ? (
-              <Text style={styles.wordCardExplanation}>
-                <Text style={styles.wordCardExplanationLabel}>In this sentence: </Text>
-                {selectedWord.usageInSentence}
-              </Text>
-            ) : null}
-            {selectedWord.usageInGeneral ? (
-              <Text style={styles.wordCardExplanation}>
-                <Text style={styles.wordCardExplanationLabel}>In general: </Text>
-                {selectedWord.usageInGeneral}
-              </Text>
-            ) : null}
-          </View>
-        </View>
+        <WordInfoModal
+          word={selectedWord}
+          isPlaying={playingId === 'word'}
+          onPlayAudio={() => playAudio(selectedWord.word, 'word')}
+          onClose={() => setSelectedWord(null)}
+        />
       )}
     </>
+  );
+}
+
+// ── Word info modal (Cards + scroll mode) ────────────────────────────────────
+// A bottom sheet that slides up when a word is tapped, showing its translation
+// (nouns/verbs/adjectives) or its in-context/general usage explanation
+// (everything else), plus a replay button for the word's audio.
+
+function WordInfoModal({
+  word, isPlaying, onPlayAudio, onClose,
+}: {
+  word: TappedWord;
+  isPlaying: boolean;
+  onPlayAudio: () => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal visible transparent animationType="slide" onRequestClose={onClose}>
+      <View style={styles.wordModalBackdrop}>
+        {/* Sibling to the sheet, not a parent of it — see AskModal for why. */}
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={styles.wordModalSheet}>
+          <View style={styles.wordModalHeaderRow}>
+            <View style={styles.wordCardHeader}>
+              <Text style={styles.wordCardWord}>{word.word}</Text>
+              {word.pos ? <Text style={styles.wordCardPos}>{word.pos}</Text> : null}
+            </View>
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Text style={styles.askHeaderClose}>×</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.wordCard}>
+            <TouchableOpacity
+              style={styles.wordPlayBtn}
+              onPress={onPlayAudio}
+              disabled={isPlaying}
+            >
+              <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
+            </TouchableOpacity>
+            <View style={styles.wordCardContent}>
+              {word.translation ? (
+                <Text style={styles.wordCardTranslation}>{word.translation}</Text>
+              ) : null}
+              {word.explanation ? (
+                <Text style={styles.wordCardExplanation}>{word.explanation}</Text>
+              ) : null}
+              {word.usageInSentence ? (
+                <Text style={styles.wordCardExplanation}>
+                  <Text style={styles.wordCardExplanationLabel}>In this sentence: </Text>
+                  {word.usageInSentence}
+                </Text>
+              ) : null}
+              {word.usageInGeneral ? (
+                <Text style={styles.wordCardExplanation}>
+                  <Text style={styles.wordCardExplanationLabel}>In general: </Text>
+                  {word.usageInGeneral}
+                </Text>
+              ) : null}
+            </View>
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -984,14 +1018,8 @@ const styles = StyleSheet.create({
   },
 
   wordCard: {
-    marginTop: spacing.xs,
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
+    alignItems: 'flex-start',
     gap: spacing.sm,
   },
   wordCardContent: { flex: 1, gap: 6 },
@@ -1002,6 +1030,28 @@ const styles = StyleSheet.create({
   wordCardTranslation: { fontSize: fontSize.xs, color: colors.text, fontWeight: '500' },
   wordCardExplanation: { fontSize: 13, color: colors.muted, lineHeight: 18 },
   wordCardExplanationLabel: { fontWeight: '700', color: colors.text },
+
+  wordModalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+  },
+  wordModalSheet: {
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
+    backgroundColor: colors.cardBackground,
+    borderTopLeftRadius: borderRadius.lg,
+    borderTopRightRadius: borderRadius.lg,
+    padding: spacing.md,
+    gap: spacing.md,
+  },
+  wordModalHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.sm,
+  },
 
   askFab: {
     position: 'absolute',
