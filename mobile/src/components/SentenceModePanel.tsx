@@ -4,6 +4,7 @@ import {
   FlatList, ListRenderItemInfo, LayoutAnimation, Platform, UIManager,
   ViewToken, NativeSyntheticEvent, NativeScrollEvent, useWindowDimensions,
   Modal, Pressable, TextInput, KeyboardAvoidingView, TextStyle,
+  Animated, BackHandler,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
@@ -29,6 +30,76 @@ interface TappedWord {
   explanation: string | null;
   usageInSentence: string | null;
   usageInGeneral: string | null;
+}
+
+/** The word showing in the info sheet, and which sentence it was tapped in
+ * (so only that sentence highlights it). */
+interface SelectedWord {
+  word: TappedWord;
+  sentenceId: string;
+}
+
+// The word info sheet lives at the ChapterReader level rather than inside each
+// sentence, so it stays open while the reader scrolls/swipes and any word in any
+// sentence can be tapped to swap its contents.
+const WordInfoContext = React.createContext<{
+  selected: SelectedWord | null;
+  selectWord: (sel: SelectedWord) => void;
+}>({ selected: null, selectWord: () => {} });
+
+/** Single-voice audio player: starting a new clip stops the previous one.
+ * `playingId` is the caller-supplied id of the clip currently loading/playing. */
+function useAudioPlayer(language: Language) {
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const soundRef = useRef<Sound | null>(null);
+
+  const stop = useCallback(async () => {
+    if (soundRef.current) {
+      try { await soundRef.current.stopPlayer(); } catch {}
+      try { soundRef.current.dispose(); } catch {}
+      soundRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => { stop(); }, [stop]);
+
+  const play = useCallback(async (text: string, id: string) => {
+    await stop();
+    setPlayingId(id);
+    const key = text.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '_');
+    const path = `${RNFS.CachesDirectoryPath}/audio_${language}_${key}.mp3`;
+    try {
+      if (!(await RNFS.exists(path))) {
+        const base64 = await speak(text, language);
+        await RNFS.writeFile(path, base64, 'base64');
+      }
+
+      const sound = createSound();
+      soundRef.current = sound;
+
+      await new Promise<void>(resolve => {
+        sound.addPlaybackEndListener(() => {
+          sound.removePlaybackEndListener();
+          try { sound.stopPlayer().catch(() => {}); } catch {}
+          try { sound.dispose(); } catch {}
+          soundRef.current = null;
+          resolve();
+        });
+        sound.startPlayer(path).catch(() => {
+          sound.removePlaybackEndListener();
+          try { sound.dispose(); } catch {}
+          soundRef.current = null;
+          resolve();
+        });
+      });
+    } catch {
+      // TTS unavailable for this text — skip silently
+    } finally {
+      setPlayingId(prev => (prev === id ? null : prev));
+    }
+  }, [language, stop]);
+
+  return { playingId, play };
 }
 
 // LayoutAnimation needs an explicit opt-in on Android.
@@ -81,6 +152,19 @@ export function ChapterReader({
   const cacheRef = useRef<Map<string, SentenceTranslation>>(new Map());
   const [mode, setMode] = useState<Mode>(initialMode);
   const [curIdx, setCurIdx] = useState(initialSentenceIdx);
+  const [selectedWord, setSelectedWord] = useState<SelectedWord | null>(null);
+  const wordAudio = useAudioPlayer(language);
+  const playWordAudio = wordAudio.play;
+
+  const selectWord = useCallback((sel: SelectedWord) => {
+    setSelectedWord(sel);
+    playWordAudio(sel.word.word, 'word');
+  }, [playWordAudio]);
+
+  const wordInfoCtx = useMemo(
+    () => ({ selected: selectedWord, selectWord }),
+    [selectedWord, selectWord],
+  );
 
   const sentences = useMemo(() => paragraphs.flatMap(p => p.sentences), [paragraphs]);
 
@@ -95,6 +179,7 @@ export function ChapterReader({
   }, [onModeChange]);
 
   return (
+    <WordInfoContext.Provider value={wordInfoCtx}>
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
@@ -166,7 +251,17 @@ export function ChapterReader({
           cacheRef={cacheRef}
         />
       ) : null}
+
+      {selectedWord && (
+        <WordInfoSheet
+          word={selectedWord.word}
+          isPlaying={wordAudio.playingId === 'word'}
+          onPlayAudio={() => playWordAudio(selectedWord.word.word, 'word')}
+          onClose={() => setSelectedWord(null)}
+        />
+      )}
     </View>
+    </WordInfoContext.Provider>
   );
 }
 
@@ -653,9 +748,9 @@ function ChunkedTranslation({
   const [chunks, setChunks] = useState<SentenceChunk[]>(cached?.chunks ?? []);
   const [contentWords, setContentWords] = useState<SentenceWord[]>(cached?.words ?? []);
   const [translating, setTranslating] = useState(!cached);
-  const [selectedWord, setSelectedWord] = useState<TappedWord | null>(null);
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const soundRef = useRef<Sound | null>(null);
+  const { selected, selectWord } = React.useContext(WordInfoContext);
+  const selectedWord = selected?.sentenceId === sentence.id ? selected.word : null;
+  const { playingId, play: playAudio } = useAudioPlayer(language);
 
   const contentLookup = useMemo(() => {
     const m = new Map<string, SentenceWord>();
@@ -700,58 +795,11 @@ function ChunkedTranslation({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentence.id, language]);
 
-  useEffect(() => () => { stopAudio(); }, []);
-
-  async function stopAudio() {
-    if (soundRef.current) {
-      try { await soundRef.current.stopPlayer(); } catch {}
-      try { soundRef.current.dispose(); } catch {}
-      soundRef.current = null;
-    }
-  }
-
-  async function playAudio(text: string, id: string) {
-    await stopAudio();
-    setPlayingId(id);
-    const key = text.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '_');
-    const path = `${RNFS.CachesDirectoryPath}/audio_${language}_${key}.mp3`;
-    try {
-      if (!(await RNFS.exists(path))) {
-        const base64 = await speak(text, language);
-        await RNFS.writeFile(path, base64, 'base64');
-      }
-
-      const sound = createSound();
-      soundRef.current = sound;
-
-      await new Promise<void>(resolve => {
-        sound.addPlaybackEndListener(() => {
-          sound.removePlaybackEndListener();
-          try { sound.stopPlayer().catch(() => {}); } catch {}
-          try { sound.dispose(); } catch {}
-          soundRef.current = null;
-          resolve();
-        });
-        sound.startPlayer(path).catch(() => {
-          sound.removePlaybackEndListener();
-          try { sound.dispose(); } catch {}
-          soundRef.current = null;
-          resolve();
-        });
-      });
-    } catch {
-      // TTS unavailable for this text — skip silently
-    } finally {
-      setPlayingId(prev => (prev === id ? null : prev));
-    }
-  }
-
   function handleWordTap(rawWord: string) {
     const clean = cleanWord(rawWord).toLowerCase();
     if (!clean) return;
     const entry = contentLookup.get(clean);
-    LayoutAnimation.configureNext(SMOOTH);
-    setSelectedWord(entry
+    const word: TappedWord = entry
       ? {
           word: entry.word,
           pos: entry.pos,
@@ -760,8 +808,8 @@ function ChunkedTranslation({
           usageInSentence: entry.usageInSentence,
           usageInGeneral: entry.usageInGeneral,
         }
-      : { word: rawWord, pos: null, translation: null, explanation: null, usageInSentence: null, usageInGeneral: null });
-    playAudio(entry ? entry.word : rawWord, 'word');
+      : { word: rawWord, pos: null, translation: null, explanation: null, usageInSentence: null, usageInGeneral: null };
+    selectWord({ word, sentenceId: sentence.id });
   }
 
   function tokenizeChunk(text: string): string[] {
@@ -819,25 +867,19 @@ function ChunkedTranslation({
           );
         })
       )}
-
-      {selectedWord && (
-        <WordInfoModal
-          word={selectedWord}
-          isPlaying={playingId === 'word'}
-          onPlayAudio={() => playAudio(selectedWord.word, 'word')}
-          onClose={() => setSelectedWord(null)}
-        />
-      )}
     </>
   );
 }
 
-// ── Word info modal (Cards + scroll mode) ────────────────────────────────────
+// ── Word info sheet (Cards + scroll mode) ────────────────────────────────────
 // A bottom sheet that slides up when a word is tapped, showing its translation
 // (nouns/verbs/adjectives) or its in-context/general usage explanation
-// (everything else), plus a replay button for the word's audio.
+// (everything else), plus a replay button for the word's audio. Deliberately
+// not a Modal and has no backdrop: the page behind stays scrollable and
+// tappable, so tapping another word just swaps the sheet's contents. Closed
+// only via × (or Android back).
 
-function WordInfoModal({
+function WordInfoSheet({
   word, isPlaying, onPlayAudio, onClose,
 }: {
   word: TappedWord;
@@ -845,53 +887,68 @@ function WordInfoModal({
   onPlayAudio: () => void;
   onClose: () => void;
 }) {
+  const slide = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.timing(slide, { toValue: 0, duration: 220, useNativeDriver: true }).start();
+  }, [slide]);
+
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      onClose();
+      return true;
+    });
+    return () => sub.remove();
+  }, [onClose]);
+
   return (
-    <Modal visible transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.wordModalBackdrop}>
-        {/* Sibling to the sheet, not a parent of it — see AskModal for why. */}
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
-        <View style={styles.wordModalSheet}>
-          <View style={styles.wordModalHeaderRow}>
-            <View style={styles.wordCardHeader}>
-              <Text style={styles.wordCardWord}>{word.word}</Text>
-              {word.pos ? <Text style={styles.wordCardPos}>{word.pos}</Text> : null}
-            </View>
-            <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-              <Text style={styles.askHeaderClose}>×</Text>
-            </TouchableOpacity>
+    <View style={styles.wordSheetHost} pointerEvents="box-none">
+      <Animated.View
+        style={[
+          styles.wordModalSheet,
+          { transform: [{ translateY: slide.interpolate({ inputRange: [0, 1], outputRange: [0, 400] }) }] },
+        ]}
+      >
+        <View style={styles.wordModalHeaderRow}>
+          <View style={styles.wordCardHeader}>
+            <Text style={styles.wordCardWord}>{word.word}</Text>
+            {word.pos ? <Text style={styles.wordCardPos}>{word.pos}</Text> : null}
           </View>
-          <View style={styles.wordCard}>
-            <TouchableOpacity
-              style={styles.wordPlayBtn}
-              onPress={onPlayAudio}
-              disabled={isPlaying}
-            >
-              <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
-            </TouchableOpacity>
-            <View style={styles.wordCardContent}>
-              {word.translation ? (
-                <Text style={styles.wordCardTranslation}>{word.translation}</Text>
-              ) : null}
-              {word.explanation ? (
-                <Text style={styles.wordCardExplanation}>{word.explanation}</Text>
-              ) : null}
-              {word.usageInSentence ? (
-                <Text style={styles.wordCardExplanation}>
-                  <Text style={styles.wordCardExplanationLabel}>In this sentence: </Text>
-                  {word.usageInSentence}
-                </Text>
-              ) : null}
-              {word.usageInGeneral ? (
-                <Text style={styles.wordCardExplanation}>
-                  <Text style={styles.wordCardExplanationLabel}>In general: </Text>
-                  {word.usageInGeneral}
-                </Text>
-              ) : null}
-            </View>
+          <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+            <Text style={styles.askHeaderClose}>×</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.wordCard}>
+          <TouchableOpacity
+            style={styles.wordPlayBtn}
+            onPress={onPlayAudio}
+            disabled={isPlaying}
+          >
+            <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
+          </TouchableOpacity>
+          <View style={styles.wordCardContent}>
+            {word.translation ? (
+              <Text style={styles.wordCardTranslation}>{word.translation}</Text>
+            ) : null}
+            {word.explanation ? (
+              <Text style={styles.wordCardExplanation}>{word.explanation}</Text>
+            ) : null}
+            {word.usageInSentence ? (
+              <Text style={styles.wordCardExplanation}>
+                <Text style={styles.wordCardExplanationLabel}>In this sentence: </Text>
+                {word.usageInSentence}
+              </Text>
+            ) : null}
+            {word.usageInGeneral ? (
+              <Text style={styles.wordCardExplanation}>
+                <Text style={styles.wordCardExplanationLabel}>In general: </Text>
+                {word.usageInGeneral}
+              </Text>
+            ) : null}
           </View>
         </View>
-      </View>
-    </Modal>
+      </Animated.View>
+    </View>
   );
 }
 
@@ -1031,9 +1088,8 @@ const styles = StyleSheet.create({
   wordCardExplanation: { fontSize: 13, color: colors.muted, lineHeight: 18 },
   wordCardExplanationLabel: { fontWeight: '700', color: colors.text },
 
-  wordModalBackdrop: {
-    flex: 1,
-    backgroundColor: 'transparent',
+  wordSheetHost: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
   },
   wordModalSheet: {
