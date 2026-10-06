@@ -210,7 +210,7 @@ When committing:
 1. Run `git status` and `git diff` first.
 2. Stage specific files (avoid `git add -A`).
 3. Write a message explaining WHY, not just WHAT.
-4. Include co-author line: `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`.
+4. Include a co-author line naming the Claude model that made the change, e.g. `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 5. Use heredoc format.
 
 **Never** force-push, `--no-verify`, or `--amend` without explicit instruction. Don't push without explicit instruction.
