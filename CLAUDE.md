@@ -212,8 +212,9 @@ When committing:
 3. Write a message explaining WHY, not just WHAT.
 4. Include a co-author line naming the Claude model that made the change, e.g. `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 5. Use heredoc format.
+6. Always push after committing (`git push -u origin <branch>`).
 
-**Never** force-push, `--no-verify`, or `--amend` without explicit instruction. Don't push without explicit instruction.
+**Never** force-push, `--no-verify`, or `--amend` without explicit instruction.
 
 ## Best Practices
 
