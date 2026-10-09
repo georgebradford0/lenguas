@@ -13,6 +13,7 @@ use crate::openai::{
     self, ChapterContent, Client as OpenAI, SerializedBook, TocEntry,
 };
 use crate::store::{LibrarySummary, Store};
+use crate::verify::{self, Report, Verdict};
 
 pub struct Args {
     pub epub: PathBuf,
@@ -193,44 +194,30 @@ pub async fn run(args: Args) -> Result<()> {
 
     // sec index -> (window order -> paragraphs), so sections reassemble in order.
     let mut sec_windows: BTreeMap<usize, BTreeMap<usize, Vec<Vec<String>>>> = BTreeMap::new();
+    let mut summary = VerifySummary::default();
 
     for batch in jobs.chunks(BATCH_SIZE) {
         let mut tasks = FuturesUnordered::new();
         for job in batch {
             let client = openai_client.clone();
             let system = system.clone();
-            let prompt = openai::window_prompt(from_language, &job.text);
+            let text = job.text.clone();
             let sec = job.sec;
             let ord = job.ord;
             tasks.push(async move {
-                let result = client
-                    .chat_json(
-                        MODEL,
-                        &[
-                            json!({ "role": "system", "content": system }),
-                            json!({ "role": "user", "content": prompt }),
-                        ],
-                        0.0,
-                        16_384,
-                    )
-                    .await;
-                (sec, ord, result)
+                let outcome = reproduce_window(&client, &system, from_language, &text).await;
+                (sec, ord, outcome)
             });
         }
-        while let Some((sec, ord, result)) = tasks.next().await {
-            let paragraphs = match result {
-                Ok(json) => extract_paragraphs(&json),
-                Err(err) => {
-                    eprintln!("\n  ! section \"{}\" window {ord} failed: {err}", toc[sec].id);
-                    Vec::new()
-                }
-            };
-            sec_windows.entry(sec).or_default().insert(ord, paragraphs);
+        while let Some((sec, ord, outcome)) = tasks.next().await {
+            summary.record(&format!("{} #{ord}", toc[sec].id), &outcome);
+            sec_windows.entry(sec).or_default().insert(ord, outcome.paragraphs);
             bar.inc(1);
         }
     }
     bar.finish_and_clear();
     println!("  done reproducing {total_windows} windows across {} sections", toc.len());
+    summary.print(total_windows);
 
     // Assemble each section's paragraphs by concatenating its windows in order.
     let mut chapters: BTreeMap<String, ChapterContent> = BTreeMap::new();
@@ -244,6 +231,19 @@ pub async fn run(args: Args) -> Result<()> {
         chapters.insert(
             entry.id.clone(),
             ChapterContent { title: entry.title.clone(), paragraphs },
+        );
+    }
+
+    let empty: Vec<&str> = toc
+        .iter()
+        .filter(|t| chapters.get(&t.id).map_or(true, |c| c.paragraphs.is_empty()))
+        .map(|t| t.id.as_str())
+        .collect();
+    if !empty.is_empty() {
+        eprintln!(
+            "  ! {} section(s) ended up with no text: {} — the reader will show them empty.",
+            empty.len(),
+            empty.join(", ")
         );
     }
 
@@ -294,6 +294,156 @@ pub async fn run(args: Args) -> Result<()> {
 
     println!("✓ added to the {} library ({count} total)", args.language.to_uppercase());
     Ok(())
+}
+
+/// Appended to the window prompt on the second attempt.
+const RETRY_NOTE: &str = "IMPORTANT: your previous answer did not reproduce this excerpt word-for-word. Copy every sentence character-for-character from the excerpt. Do not correct spelling, modernize archaic forms, change quotation marks or punctuation, or add, drop, merge, or reorder any word. Do not invent text.";
+
+struct WindowOutcome {
+    paragraphs: Vec<Vec<String>>,
+    /// Report for the attempt that was used; None when we fell back to raw lines.
+    report: Option<Report>,
+    attempts: u32,
+    /// Why the model's output wasn't used (API error, unusable, too large).
+    fell_back: Option<String>,
+}
+
+/// Reproduce one source window and make sure what comes back is the source's own
+/// text. The model's output is verified against the window (see `verify`), repaired
+/// from the source, retried once if it was noticeably off, and replaced by the raw
+/// source lines if it still can't be trusted.
+async fn reproduce_window(client: &OpenAI, system: &str, from_language: &str, text: &str) -> WindowOutcome {
+    let mut best: Option<verify::Verified> = None;
+    let mut attempts = 0;
+    let mut failure: Option<String> = None;
+
+    for attempt in 0..2 {
+        attempts += 1;
+        let mut prompt = openai::window_prompt(from_language, text);
+        if attempt == 1 {
+            prompt = format!("{RETRY_NOTE}\n\n{prompt}");
+        }
+        let json = match client
+            .chat_json(
+                MODEL,
+                &[
+                    json!({ "role": "system", "content": system }),
+                    json!({ "role": "user", "content": prompt }),
+                ],
+                0.0,
+                16_384,
+            )
+            .await
+        {
+            Ok(json) => json,
+            Err(err) => {
+                failure = Some(format!("model call failed: {err}"));
+                continue;
+            }
+        };
+        let Some(verified) = verify::verify_window(text, &extract_paragraphs(&json)) else {
+            failure = Some("window too large to verify".to_string());
+            break; // a retry can't change the window's size
+        };
+        failure = None;
+        let verdict = verified.report.verdict();
+        if best.as_ref().map_or(true, |b| verified.report.cost() < b.report.cost()) {
+            best = Some(verified);
+        }
+        if verdict == Verdict::Clean {
+            break;
+        }
+    }
+
+    match best {
+        Some(v) if v.report.verdict() != Verdict::Unusable => WindowOutcome {
+            paragraphs: v.paragraphs,
+            report: Some(v.report),
+            attempts,
+            fell_back: None,
+        },
+        other => {
+            let reason = failure.unwrap_or_else(|| {
+                if other.is_some() {
+                    "model output did not resemble the source".to_string()
+                } else {
+                    "no usable output".to_string()
+                }
+            });
+            WindowOutcome {
+                paragraphs: verify::fallback_paragraphs(text),
+                report: None,
+                attempts,
+                fell_back: Some(reason),
+            }
+        }
+    }
+}
+
+/// Everything worth telling the developer about after the windows are done.
+#[derive(Default)]
+struct VerifySummary {
+    clean: usize,
+    repaired: usize,
+    retried: usize,
+    fell_back: usize,
+    word_fixed: usize,
+    invented: usize,
+    recovered: usize,
+    omitted_text: usize,
+    notes: Vec<String>,
+}
+
+impl VerifySummary {
+    fn record(&mut self, label: &str, o: &WindowOutcome) {
+        if o.attempts > 1 {
+            self.retried += 1;
+        }
+        if let Some(reason) = &o.fell_back {
+            self.fell_back += 1;
+            self.notes.push(format!(
+                "{label}: used the raw source lines instead of the model's output ({reason})"
+            ));
+            return;
+        }
+        let Some(r) = &o.report else { return };
+        self.word_fixed += r.word_fixed;
+        self.invented += r.invented;
+        self.recovered += r.recovered;
+        self.omitted_text += r.omitted_text;
+        match r.describe_repairs() {
+            Some(d) => {
+                self.repaired += 1;
+                self.notes.push(format!("{label}: {d}"));
+            }
+            None => self.clean += 1,
+        }
+        if let Some(d) = r.describe_omissions() {
+            self.notes.push(format!("{label}: model left out {d}"));
+        }
+    }
+
+    fn print(&self, total: usize) {
+        println!(
+            "  verified against the source: {} exact, {} repaired, {} retried, {} replaced by raw source lines (of {total} windows)",
+            self.clean, self.repaired, self.retried, self.fell_back
+        );
+        if self.word_fixed + self.invented + self.recovered > 0 {
+            println!(
+                "    restored from source: {} reworded, {} dropped; removed {} invented word(s)",
+                self.word_fixed, self.recovered, self.invented
+            );
+        }
+        if self.omitted_text > 0 {
+            println!(
+                "    {} source word(s) on whole lines the model omitted (front/back matter is expected; check the previews below)",
+                self.omitted_text
+            );
+        }
+        for note in &self.notes {
+            println!("    - {note}");
+        }
+    }
 }
 
 fn trim_string(v: &Value, key: &str) -> Option<String> {

@@ -4,6 +4,7 @@ mod list;
 mod openai;
 mod parse;
 mod store;
+mod verify;
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
