@@ -42,10 +42,14 @@ interface SelectedWord {
 // The word info sheet lives at the ChapterReader level rather than inside each
 // sentence, so it stays open while the reader scrolls/swipes and any word in any
 // sentence can be tapped to swap its contents.
+//
+// `sheetInset` is the open sheet's height (0 when closed): scroll views pad
+// their bottom by it so the content behind the sheet can be scrolled clear.
 const WordInfoContext = React.createContext<{
   selected: SelectedWord | null;
   selectWord: (sel: SelectedWord) => void;
-}>({ selected: null, selectWord: () => {} });
+  sheetInset: number;
+}>({ selected: null, selectWord: () => {}, sheetInset: 0 });
 
 /** Single-voice audio player: starting a new clip stops the previous one.
  * `playingId` is the caller-supplied id of the clip currently loading/playing. */
@@ -161,9 +165,12 @@ export function ChapterReader({
     playWordAudio(sel.word.word, 'word');
   }, [playWordAudio]);
 
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const sheetInset = selectedWord ? sheetHeight : 0;
+
   const wordInfoCtx = useMemo(
-    () => ({ selected: selectedWord, selectWord }),
-    [selectedWord, selectWord],
+    () => ({ selected: selectedWord, selectWord, sheetInset }),
+    [selectedWord, selectWord, sheetInset],
   );
 
   const sentences = useMemo(() => paragraphs.flatMap(p => p.sentences), [paragraphs]);
@@ -258,6 +265,7 @@ export function ChapterReader({
           isPlaying={wordAudio.playingId === 'word'}
           onPlayAudio={() => playWordAudio(selectedWord.word.word, 'word')}
           onClose={() => setSelectedWord(null)}
+          onHeightChange={setSheetHeight}
         />
       )}
     </View>
@@ -496,6 +504,7 @@ function ContinuousReader({
   onSentenceChange: (idx: number) => void;
 }) {
   const listRef = useRef<FlatList<Paragraph>>(null);
+  const { sheetInset } = React.useContext(WordInfoContext);
   const [expandedSentenceId, setExpandedSentenceId] = useState<string | null>(null);
 
   // First sentence index of each paragraph — for resume + position reporting.
@@ -563,7 +572,7 @@ function ContinuousReader({
       keyExtractor={p => p.id}
       renderItem={renderItem}
       extraData={expandedSentenceId}
-      contentContainerStyle={styles.readerBody}
+      contentContainerStyle={[styles.readerBody, { paddingBottom: spacing.xxl + sheetInset }]}
       showsVerticalScrollIndicator={false}
       viewabilityConfig={viewabilityConfig}
       onViewableItemsChanged={onViewableItemsChanged}
@@ -700,10 +709,11 @@ function SentenceSwipePage({
   cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
   width: number;
 }) {
+  const { sheetInset } = React.useContext(WordInfoContext);
   return (
     <ScrollView
       style={{ width }}
-      contentContainerStyle={styles.swipePageBody}
+      contentContainerStyle={[styles.swipePageBody, { paddingBottom: spacing.xxl + sheetInset }]}
       showsVerticalScrollIndicator={false}
     >
       <ChunkedTranslation sentence={sentence} language={language} cacheRef={cacheRef} />
@@ -880,12 +890,13 @@ function ChunkedTranslation({
 // only via × (or Android back).
 
 function WordInfoSheet({
-  word, isPlaying, onPlayAudio, onClose,
+  word, isPlaying, onPlayAudio, onClose, onHeightChange,
 }: {
   word: TappedWord;
   isPlaying: boolean;
   onPlayAudio: () => void;
   onClose: () => void;
+  onHeightChange: (height: number) => void;
 }) {
   const slide = useRef(new Animated.Value(1)).current;
 
@@ -904,6 +915,7 @@ function WordInfoSheet({
   return (
     <View style={styles.wordSheetHost} pointerEvents="box-none">
       <Animated.View
+        onLayout={e => onHeightChange(e.nativeEvent.layout.height)}
         style={[
           styles.wordModalSheet,
           { transform: [{ translateY: slide.interpolate({ inputRange: [0, 1], outputRange: [0, 400] }) }] },
