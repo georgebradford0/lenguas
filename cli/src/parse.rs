@@ -563,9 +563,8 @@ fn extract_paragraphs(v: &Value) -> Vec<Vec<String>> {
         .collect()
 }
 
-/// djb2-style hash matching api/v0/lib/parseEpub.js's computeBookId. The id
-/// only needs to be stable per parse; using Date.now() in the input makes it
-/// monotonic across re-parses, which matches the JS behavior.
+/// djb2-style hash (JS-style 32-bit wrap-around). The id only needs to be
+/// unique per parse; the timestamp in the input makes it differ across re-parses.
 fn compute_book_id(title: &str, toc: &[TocEntry], now_millis: i64) -> String {
     let s = format!(
         "{title}|{}|{}",

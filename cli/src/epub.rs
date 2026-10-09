@@ -1,4 +1,4 @@
-//! EPUB → plain text + OPF metadata. Same behavior as api/v0/lib/parseEpub.js:
+//! EPUB → plain text + OPF metadata. Steps:
 //! - unzip the package
 //! - find the OPF via META-INF/container.xml, pull <dc:title> + <dc:creator>
 //! - walk every .xhtml/.html, render to plain text with newlines at block boundaries
@@ -121,8 +121,7 @@ fn extract_opf_author(opf: &str) -> Option<String> {
 }
 
 /// Walk the DOM, emitting text content with `\n` at block boundaries, then
-/// collapse whitespace inside each line. Mirrors the Node `htmlToText` helper
-/// closely enough that the LLM gets the same input.
+/// collapse whitespace inside each line.
 fn html_to_text(html: &str) -> String {
     let doc = Html::parse_document(html);
 

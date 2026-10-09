@@ -3,7 +3,6 @@
 A `.lenguas` file is the JSON artifact produced by [`lenguas parse`](../cli/) — a fully parsed, ready-to-render book in a single self-contained payload. The same shape is what the mobile app downloads from `GET /books/:hash` and what lives at `s3://lenguas-parsed-books/parsed-books/<sha256>.json`.
 
 Source of truth:
-- Server type: [`api/v0/lib/parseEpub.js`](../api/v0/lib/parseEpub.js) (assembly)
 - CLI type: [`cli/src/openai.rs`](../cli/src/openai.rs) (`SerializedBook` struct)
 - Mobile type: [`mobile/src/utils/epubParser.ts`](../mobile/src/utils/epubParser.ts) (`SerializedBook` interface)
 

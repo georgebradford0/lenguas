@@ -23,7 +23,6 @@ No login. The app launches directly into language select, and all API endpoints 
 - `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes)
 - `routes/translate.js` — `POST /translate/sentence` (sentence → chunks + word translations)
 - `routes/books.js` — `GET /books?language=X` (library list), `GET /books/:hash` (full book). Read-only against S3.
-- `lib/parseEpub.js` — legacy Node port of the parse pipeline. **Not used**: the Rust CLI (`cli/`) is the real parser.
 - `lib/verbatim.js` — keeps `/translate/sentence` output verbatim: chunk and word text is sliced from the request's sentence, never taken from the model.
 - `lib/bookStore.js` — S3 helpers: head/get/put by SHA-256, plus `_index.json` manifest read/write.
 - `config/languages.js` — per-language Polly voice config
