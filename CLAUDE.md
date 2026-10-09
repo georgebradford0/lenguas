@@ -6,7 +6,7 @@ Lenguas is a mobile reading app for language learners. The user opens a book in 
 
 No login. The app launches directly into language select, and all API endpoints are open — there is no per-user state on the server.
 
-**Books are parsed offline** by the developer using a CLI script (`api/v0/bin/parse-epub.js`) that runs the EPUB through gpt-4.1-mini and uploads the parsed `SerializedBook` JSON to S3. The API is read-only against that S3 library; the mobile app fetches the library list and downloads books on demand. Mobile never parses anything.
+**Books are parsed offline** by the developer using the Rust `lenguas` CLI (`cli/`, installed with `cargo install --path cli`) that runs the EPUB through gpt-4.1-mini and uploads the parsed `SerializedBook` JSON to S3. The API is read-only against that S3 library; the mobile app fetches the library list and downloads books on demand. Mobile never parses anything.
 
 **Architecture:**
 - **Frontend**: React Native app (`mobile/`)
@@ -23,9 +23,9 @@ No login. The app launches directly into language select, and all API endpoints 
 - `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes)
 - `routes/translate.js` — `POST /translate/sentence` (sentence → chunks + word translations)
 - `routes/books.js` — `GET /books?language=X` (library list), `GET /books/:hash` (full book). Read-only against S3.
-- `lib/parseEpub.js` — pure parse pipeline: takes EPUB buffer, returns SerializedBook. Used by the CLI; not mounted as a route.
+- `lib/parseEpub.js` — legacy Node port of the parse pipeline. **Not used**: the Rust CLI (`cli/`) is the real parser.
+- `lib/verbatim.js` — keeps `/translate/sentence` output verbatim: chunk and word text is sliced from the request's sentence, never taken from the model.
 - `lib/bookStore.js` — S3 helpers: head/get/put by SHA-256, plus `_index.json` manifest read/write.
-- `bin/parse-epub.js` — **dev CLI**: `node bin/parse-epub.js <file.epub> --language de`. Parses locally and uploads to S3.
 - `config/languages.js` — per-language Polly voice config
 - `Dockerfile` — `node:22-alpine`, `npm ci --production`
 
@@ -52,20 +52,22 @@ No login. The app launches directly into language select, and all API endpoints 
 
 ## Adding Books (Dev Workflow)
 
-Books are added by the developer running the parse CLI locally:
+Books are added by the developer running the `lenguas` CLI locally (source in `cli/`; reinstall after changes with `cargo install --path cli`; `lenguas parse --help`, `lenguas list`, `lenguas delete`):
 
 ```bash
-cd api/v0 && node bin/parse-epub.js ~/Downloads/der-prozess.epub --language de
+lenguas parse ~/Downloads/der-prozess.epub --language de
 ```
 
 What it does:
 1. Reads the EPUB bytes, computes SHA-256.
 2. Skips the parse if `s3://lenguas-parsed-books/parsed-books/<hash>.json` already exists (use `--force` to override).
-3. Runs `lib/parseEpub.js` — extracts text, asks gpt-4.1-mini for TOC + metadata (title, author, description, genre, CEFR difficulty), reproduces each section in parallel batches.
+3. Extracts text, asks gpt-4.1-mini for TOC + metadata (title, author, description, genre, CEFR difficulty), then reproduces each section in parallel windows. Every window is verified against the source (`cli/src/verify.rs`): reworded, dropped or invented words are repaired from the book's own text, off windows are retried once, and unusable ones fall back to the raw source lines. A summary of what was repaired is printed — read it.
 4. Uploads the full `SerializedBook` to S3 under `parsed-books/<hash>.json`.
 5. Upserts a summary entry into `parsed-books/_index.json` so the API library list picks it up.
 
-Requires `OPENAI_API_KEY`, `AWS_S3_BUCKET`, and AWS credentials in the repo-root `.env`. Or `npm run parse-epub -- <args>` from `api/v0/`.
+Requires `OPENAI_API_KEY`, `AWS_S3_BUCKET`, and AWS credentials in the environment.
+
+Tests: `cd api/v0 && npm test` (Node's built-in runner) and `cd cli && cargo test`.
 
 ## API Endpoints
 
@@ -194,7 +196,7 @@ ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.comput
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — Polly (TTS) + S3 (library)
 - `AWS_S3_BUCKET` — the library bucket (`lenguas-parsed-books`)
 
-**Also required for `bin/parse-epub.js` (dev CLI):** all of the above.
+**Also required for the `lenguas` CLI:** all of the above.
 
 **Optional:**
 - `PORT` (default 3000)

@@ -3,7 +3,7 @@
 //   GET /books?language=de   list summaries from s3://bucket/parsed-books/_index.json
 //   GET /books/:hash         full SerializedBook from s3://bucket/parsed-books/<hash>.json
 //
-// Parsing happens offline via bin/parse-epub.js (which is what writes both
+// Parsing happens offline via the `lenguas` CLI (cli/) (which is what writes both
 // the per-book JSON and the index). The API never mutates the bucket.
 
 const express = require('express');

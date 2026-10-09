@@ -112,7 +112,7 @@ import type { SerializedBook, CefrLevel } from '../utils/epubParser';
 
 // ── Library ──────────────────────────────────────────────────────────────────
 // The server library is read-only. Parsing happens offline via the CLI script
-// (api/v0/bin/parse-epub.js), which uploads to S3. Mobile lists summaries and
+// (the `lenguas` CLI in cli/), which uploads to S3. Mobile lists summaries and
 // downloads full books on demand, caching them locally by contentHash.
 
 export interface LibrarySummary {
