@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const OpenAI = require('openai');
+const { alignChunks, canonicalizeWords } = require('../lib/verbatim');
 
 const openai = new OpenAI({
   apiKey: process.env.CEREBRAS_API_KEY,
@@ -43,15 +44,18 @@ router.post('/sentence', async (req, res) => {
 }
 
 Rules for "chunks":
-- Partition the entire sentence into grammatically coherent chunks: clauses, prepositional phrases, noun phrases with their modifiers, verb groups, etc. Each chunk should be a unit that makes sense to translate together.
-- Keep a verb together with the adverb(s) that modify it in the same chunk — never split a verb from its adverb into separate chunks (e.g. "läuft schnell" is one chunk, not "läuft" + "schnell").
+- Partition the entire sentence into CLAUSE-level chunks. Each chunk must be grammatically valid on its own: a clause containing its subject, its verb(s), and the objects, complements, and adverbials that belong to that verb (e.g. "Der große Hund läuft schnell durch den Garten" is ONE chunk: subject + verb + adverb + prepositional phrase).
+- A verb must NEVER stand alone in a chunk, and a clause must never be split apart. Keep the subject, the whole verb group (auxiliary, modal, participle, infinitive, separable prefix), the objects, and every adverb or prepositional phrase that modifies the verb together in the same chunk.
+- Start a new chunk only at a clause boundary: between a main clause and a subordinate or relative clause, between coordinated clauses (und, aber, denn, et, mais, y, pero, ...), or around a standalone vocative, address, heading, or other fragment that has no verb. An infinitive or participial phrase gets its own chunk only if it has its own objects or complements; otherwise keep it with the clause it depends on.
+- A sentence with a single clause is ONE chunk, however long it is. If a clause is interrupted by an embedded clause (e.g. a relative clause in the middle of the main clause), keep the whole thing together as one chunk.
 - Each "original" must be a VERBATIM contiguous span of the source sentence. Concatenating every chunk's "original" in order, with single spaces between them, must reproduce the sentence (modulo whitespace).
+- Copy each "original" character-for-character from the sentence. NEVER correct, modernize, normalize, or substitute any word — keep archaic or unusual spellings exactly as written (e.g. if the sentence says "innigst", write "innigst", not "inniglich"). Do not add, drop, merge, or reorder words.
 - Do NOT split inside a single word, and keep adjacent punctuation attached to its chunk.
 - Each "translation" is a literal-but-readable English rendering of that span on its own — not a full reflowed translation of the whole sentence.
 
 Rules for "words":
 - "words" contains EVERY word in the sentence — every noun, verb, adjective, article, preposition, pronoun, conjunction, adverb, particle, and number. Exclude only punctuation.
-- "word" must match exactly how the word appears in the sentence — preserve case and inflection. Do NOT lemmatize.
+- "word" must match exactly how the word appears in the sentence — preserve case and inflection, and copy it from the sentence without correcting or modernizing its spelling. Do NOT lemmatize.
 - Include each surface occurrence at most once, in the order they appear.
 - For "pos" of noun, verb, or adjective (including auxiliary, modal, participle, and infinitive verb forms, and predicate/attributive adjectives):
   * Fill "translation" with a 1-6 word English gloss in this context.
@@ -62,33 +66,57 @@ Rules for "words":
   * Fill "usageInSentence": one short English sentence on why this specific word/form appears here — case, agreement, word order, idiomatic pairing, what it refers back to, etc.
   * Fill "usageInGeneral": one short English sentence on what this word means and how it's generally used in ${fromLanguage}, independent of this sentence.`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-oss-120b',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: sentence.trim() },
-      ],
-      temperature: 0.1,
-      max_tokens: 16384,
-      response_format: { type: 'json_object' },
-    });
+    const sourceSentence = sentence.trim();
 
-    const parsed = JSON.parse(response.choices[0].message.content || '{}');
-    const translation = typeof parsed.translation === 'string' ? parsed.translation : '';
-    const chunks = Array.isArray(parsed.chunks)
-      ? parsed.chunks
-          .filter(c => c && typeof c.original === 'string' && c.original.trim() && typeof c.translation === 'string')
-          .map(c => ({ original: c.original.trim(), translation: c.translation.trim() }))
-      : [];
-    // Fallback: if the model returns no chunks, treat the whole sentence as one chunk.
-    if (chunks.length === 0) {
-      chunks.push({ original: sentence.trim(), translation });
+    const RETRY_NOTE = `IMPORTANT: your previous answer did not reproduce the sentence word-for-word. Copy every chunk's "original" character-for-character from the sentence. Do not correct spelling, modernize archaic forms, change punctuation, or add, drop, merge, or reorder any word. Taken together, the chunks must contain exactly the words of the sentence, in order.`;
+
+    const ask = async (note) => {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-oss-120b',
+        messages: [
+          { role: 'system', content: note ? `${systemPrompt}\n\n${note}` : systemPrompt },
+          { role: 'user', content: sourceSentence },
+        ],
+        temperature: 0.1,
+        max_tokens: 16384,
+        response_format: { type: 'json_object' },
+      });
+      const parsed = JSON.parse(response.choices[0].message.content || '{}');
+      const modelChunks = Array.isArray(parsed.chunks)
+        ? parsed.chunks
+            .filter(c => c && typeof c.original === 'string' && c.original.trim() && typeof c.translation === 'string')
+            .map(c => ({ original: c.original, translation: c.translation.trim() }))
+        : [];
+      return { parsed, aligned: alignChunks(sourceSentence, modelChunks) };
+    };
+
+    // Whatever the model returns, the source text we send back is sliced from the
+    // sentence itself (see lib/verbatim.js). If its chunks can't be mapped onto the
+    // sentence we retry once, then fall back to one whole-sentence chunk — less
+    // granular, but never wrong.
+    let { parsed, aligned } = await ask();
+    if (!aligned) {
+      console.warn('[translate/sentence] chunks did not reproduce the sentence; retrying once');
+      ({ parsed, aligned } = await ask(RETRY_NOTE));
     }
+
+    const translation = typeof parsed.translation === 'string' ? parsed.translation : '';
+    let chunks;
+    if (aligned) {
+      chunks = aligned.chunks;
+      if (aligned.repaired > 0) {
+        console.warn(`[translate/sentence] repaired ${aligned.repaired} reworded token(s) in chunks`);
+      }
+    } else {
+      console.warn('[translate/sentence] chunks still did not reproduce the sentence; returning one whole-sentence chunk');
+      chunks = [{ original: sourceSentence, translation }];
+    }
+
     const VALID_POS = new Set([
       'noun', 'verb', 'adjective',
       'article', 'preposition', 'pronoun', 'conjunction', 'adverb', 'particle', 'number',
     ]);
-    const words = Array.isArray(parsed.words)
+    const modelWords = Array.isArray(parsed.words)
       ? parsed.words
           .filter(w => w && typeof w.word === 'string' && VALID_POS.has(w.pos))
           .map(w => ({
@@ -100,6 +128,10 @@ Rules for "words":
             usageInGeneral: typeof w.usageInGeneral === 'string' && w.usageInGeneral.trim() ? w.usageInGeneral : null,
           }))
       : [];
+    const { words, repairs, droppedWords } = canonicalizeWords(sourceSentence, modelWords);
+    if (repairs.length > 0 || droppedWords.length > 0) {
+      console.warn(`[translate/sentence] words: repaired ${JSON.stringify(repairs)}, dropped ${JSON.stringify(droppedWords)}`);
+    }
 
     res.json({ translation, chunks, words });
   } catch (err) {
