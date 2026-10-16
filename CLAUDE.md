@@ -130,20 +130,16 @@ curl http://ec2-16-144-226-254.us-west-2.compute.amazonaws.com:3000/health
 
 ## Mobile Deployment (iOS / TestFlight)
 
+**CI (preferred):** GitHub → Actions → "iOS Build" → Run workflow (`.github/workflows/ios.yml`, `workflow_dispatch`; the "Upload to TestFlight" input defaults to on). Or `gh workflow run ios.yml --ref main -f testflight=true`.
+
+The workflow sets the build number itself via `fastlane ios bump_build_number` (one above the highest build in App Store Connect), so **no manual `CURRENT_PROJECT_VERSION` bump or version commit is needed**. Only bump `MARKETING_VERSION` (semver) in `mobile/ios/Lenguas.xcodeproj/project.pbxproj` when shipping a new user-facing version.
+
+**Local:**
 ```bash
 cd mobile/ios && bundle exec fastlane beta
 ```
 
-Builds a release IPA via Xcode and uploads to TestFlight.
-
-**Requirements:**
-- App Store Connect team API key (`AuthKey_7XMT6777TY.p8`) in `mobile/ios/fastlane/`
-- `bundle` (Bundler) available — `gem install bundler` if missing
-
-**Before deploying:**
-1. Bump `CURRENT_PROJECT_VERSION` (integer, +1) and `MARKETING_VERSION` (semver) in `mobile/ios/Lenguas.xcodeproj/project.pbxproj`.
-2. Commit the version bump.
-3. Run `bundle exec fastlane beta` from `mobile/ios/`.
+Builds a release IPA via Xcode and uploads to TestFlight. Requires the App Store Connect team API key (`AuthKey_7XMT6777TY.p8`) in `mobile/ios/fastlane/` and `bundle` (Bundler) — `gem install bundler` if missing. Run `bundle exec fastlane ios bump_build_number` first if the build number hasn't moved since the last upload.
 
 Upload only (skip rebuild): `bundle exec fastlane upload`.
 
