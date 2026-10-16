@@ -51,17 +51,33 @@ const WordInfoContext = React.createContext<{
   sheetInset: number;
 }>({ selected: null, selectWord: () => {}, sheetInset: 0 });
 
+/** Bumped by ChapterReader whenever the reader swipes to a different card, so
+ * every audio player under it (each card's chunk player) stops. */
+const AudioStopContext = React.createContext(0);
+
 /** Single-voice audio player: starting a new clip stops the previous one.
  * `playingId` is the caller-supplied id of the clip currently loading/playing. */
 function useAudioPlayer(language: Language) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const soundRef = useRef<Sound | null>(null);
+  // Bumped on every stop/play so a play() still awaiting TTS or one whose
+  // clip was cut off knows it has been superseded.
+  const genRef = useRef(0);
+  // Resolves the in-flight play()'s wait-for-end promise when it is stopped
+  // early (the playback-end listener doesn't fire on stopPlayer()).
+  const finishRef = useRef<(() => void) | null>(null);
 
   const stop = useCallback(async () => {
+    genRef.current += 1;
+    setPlayingId(null);
+    finishRef.current?.();
+    finishRef.current = null;
     if (soundRef.current) {
-      try { await soundRef.current.stopPlayer(); } catch {}
-      try { soundRef.current.dispose(); } catch {}
+      const sound = soundRef.current;
       soundRef.current = null;
+      try { sound.removePlaybackEndListener(); } catch {}
+      try { await sound.stopPlayer(); } catch {}
+      try { sound.dispose(); } catch {}
     }
   }, []);
 
@@ -69,6 +85,7 @@ function useAudioPlayer(language: Language) {
 
   const play = useCallback(async (text: string, id: string) => {
     await stop();
+    const gen = genRef.current;
     setPlayingId(id);
     const key = text.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '_');
     const path = `${RNFS.CachesDirectoryPath}/audio_${language}_${key}.mp3`;
@@ -77,33 +94,38 @@ function useAudioPlayer(language: Language) {
         const base64 = await speak(text, language);
         await RNFS.writeFile(path, base64, 'base64');
       }
+      if (gen !== genRef.current) return; // stopped while fetching
 
       const sound = createSound();
       soundRef.current = sound;
 
       await new Promise<void>(resolve => {
+        finishRef.current = resolve;
         sound.addPlaybackEndListener(() => {
           sound.removePlaybackEndListener();
           try { sound.stopPlayer().catch(() => {}); } catch {}
           try { sound.dispose(); } catch {}
-          soundRef.current = null;
+          if (soundRef.current === sound) soundRef.current = null;
           resolve();
         });
         sound.startPlayer(path).catch(() => {
           sound.removePlaybackEndListener();
           try { sound.dispose(); } catch {}
-          soundRef.current = null;
+          if (soundRef.current === sound) soundRef.current = null;
           resolve();
         });
       });
     } catch {
       // TTS unavailable for this text — skip silently
     } finally {
-      setPlayingId(prev => (prev === id ? null : prev));
+      if (gen === genRef.current) {
+        finishRef.current = null;
+        setPlayingId(null);
+      }
     }
   }, [language, stop]);
 
-  return { playingId, play };
+  return { playingId, play, stop };
 }
 
 // LayoutAnimation needs an explicit opt-in on Android.
@@ -159,6 +181,14 @@ export function ChapterReader({
   const [selectedWord, setSelectedWord] = useState<SelectedWord | null>(null);
   const wordAudio = useAudioPlayer(language);
   const playWordAudio = wordAudio.play;
+  const stopWordAudio = wordAudio.stop;
+  const [audioStopSignal, setAudioStopSignal] = useState(0);
+
+  // Swiping to another card silences anything still playing from the last one.
+  const handleCardChange = useCallback(() => {
+    stopWordAudio();
+    setAudioStopSignal(n => n + 1);
+  }, [stopWordAudio]);
 
   const selectWord = useCallback((sel: SelectedWord) => {
     setSelectedWord(sel);
@@ -187,6 +217,7 @@ export function ChapterReader({
 
   return (
     <WordInfoContext.Provider value={wordInfoCtx}>
+    <AudioStopContext.Provider value={audioStopSignal}>
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
@@ -247,6 +278,7 @@ export function ChapterReader({
           cacheRef={cacheRef}
           initialSentenceIdx={curIdx}
           onSentenceChange={handlePos}
+          onCardChange={handleCardChange}
         />
       )}
 
@@ -269,6 +301,7 @@ export function ChapterReader({
         />
       )}
     </View>
+    </AudioStopContext.Provider>
     </WordInfoContext.Provider>
   );
 }
@@ -649,13 +682,15 @@ const ParagraphBlock = React.memo(function ParagraphBlock({
 // ── Swipe mode: one sentence per page ────────────────────────────────────────
 
 function SwipeReader({
-  sentences, language, cacheRef, initialSentenceIdx, onSentenceChange,
+  sentences, language, cacheRef, initialSentenceIdx, onSentenceChange, onCardChange,
 }: {
   sentences: Sentence[];
   language: Language;
   cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
   initialSentenceIdx: number;
   onSentenceChange: (idx: number) => void;
+  /** Fired when a swipe lands on a different card than before. */
+  onCardChange: () => void;
 }) {
   const { width } = useWindowDimensions();
   const listRef = useRef<FlatList<Sentence>>(null);
@@ -663,6 +698,7 @@ function SwipeReader({
   const [initialIdx] = useState(() =>
     Math.min(Math.max(0, initialSentenceIdx), Math.max(0, sentences.length - 1)),
   );
+  const lastIdxRef = useRef(initialIdx);
 
   const getItemLayout = useCallback(
     (_d: ArrayLike<Sentence> | null | undefined, index: number) => ({
@@ -673,8 +709,13 @@ function SwipeReader({
 
   const onMomentumEnd = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const idx = Math.round(e.nativeEvent.contentOffset.x / width);
-    if (sentences[idx]) onSentenceChange(idx);
-  }, [width, onSentenceChange, sentences]);
+    if (!sentences[idx]) return;
+    if (idx !== lastIdxRef.current) {
+      lastIdxRef.current = idx;
+      onCardChange();
+    }
+    onSentenceChange(idx);
+  }, [width, onSentenceChange, onCardChange, sentences]);
 
   return (
     <FlatList
@@ -760,7 +801,9 @@ function ChunkedTranslation({
   const [translating, setTranslating] = useState(!cached);
   const { selected, selectWord } = React.useContext(WordInfoContext);
   const selectedWord = selected?.sentenceId === sentence.id ? selected.word : null;
-  const { playingId, play: playAudio } = useAudioPlayer(language);
+  const { playingId, play: playAudio, stop: stopAudio } = useAudioPlayer(language);
+  const audioStopSignal = React.useContext(AudioStopContext);
+  useEffect(() => { if (audioStopSignal) stopAudio(); }, [audioStopSignal, stopAudio]);
 
   const contentLookup = useMemo(() => {
     const m = new Map<string, SentenceWord>();
