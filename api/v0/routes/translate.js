@@ -4,10 +4,11 @@ const OpenAI = require('openai');
 const { alignChunks, canonicalizeWords } = require('../lib/verbatim');
 
 const openai = new OpenAI({
-  apiKey: process.env.CEREBRAS_API_KEY,
-  baseURL: 'https://api.cerebras.ai/v1',
+  apiKey: process.env.OPENAI_API_KEY,
   maxRetries: 5,
 });
+
+const MODEL = 'gpt-6-luna';
 
 const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish' };
 
@@ -73,13 +74,12 @@ Rules for "words":
 
     const ask = async (note) => {
       const response = await openai.chat.completions.create({
-        model: 'gpt-oss-120b',
+        model: MODEL,
         messages: [
           { role: 'system', content: note ? `${systemPrompt}\n\n${note}` : systemPrompt },
           { role: 'user', content: sourceSentence },
         ],
-        temperature: 0.1,
-        max_tokens: 16384,
+        max_completion_tokens: 16384,
         response_format: { type: 'json_object' },
       });
       const parsed = JSON.parse(response.choices[0].message.content || '{}');
@@ -171,14 +171,13 @@ Answer the learner's question about this sentence — grammar, vocabulary, word 
       : [];
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-oss-120b',
+      model: MODEL,
       messages: [
         { role: 'system', content: systemPrompt },
         ...historyMessages,
         { role: 'user', content: question.trim() },
       ],
-      temperature: 0.3,
-      max_tokens: 300,
+      max_completion_tokens: 2000,
     });
 
     const answer = response.choices[0]?.message?.content?.trim() || '';
