@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import { createSound } from 'react-native-nitro-sound';
-import { speak, translateSentence, askAboutSentence } from '../api/client';
+import { speak, translateSentence, askAboutSentence, explainWord } from '../api/client';
+import type { WordUsage } from '../api/client';
 import type { SentenceChunk, SentenceWord, SentenceTranslation, AskChatMessage } from '../api/client';
 import { cleanWord } from '../utils/epubParser';
 import type { Paragraph, Sentence } from '../utils/epubParser';
@@ -22,7 +23,9 @@ type Mode = ReaderMode;
 /** A tapped word's info card. `translation`/`explanation` are set for
  * translated words (noun/verb/adjective); `usageInSentence`/`usageInGeneral`
  * are set for everything else (articles, prepositions, pronouns, etc.) —
- * those get audio playback plus an explanation instead of a translation. */
+ * those get audio playback plus an explanation instead of a translation. The
+ * usage notes are fetched when the word is tapped (see selectWord), so they
+ * arrive a moment after the sheet opens. */
 interface TappedWord {
   word: string;
   pos: SentenceWord['pos'] | null;
@@ -37,6 +40,8 @@ interface TappedWord {
 interface SelectedWord {
   word: TappedWord;
   sentenceId: string;
+  /** The tapped sentence's text, as context for the usage lookup. */
+  sentenceText: string;
 }
 
 // The word info sheet lives at the ChapterReader level rather than inside each
@@ -190,10 +195,41 @@ export function ChapterReader({
     setAudioStopSignal(n => n + 1);
   }, [stopWordAudio]);
 
+  // Usage notes for non-translated words are fetched on tap and cached per
+  // sentence+word. `usageReqRef` drops the result of a lookup the reader has
+  // since tapped past.
+  const usageCacheRef = useRef<Map<string, WordUsage>>(new Map());
+  const usageReqRef = useRef(0);
+  const [usageLoading, setUsageLoading] = useState(false);
+
   const selectWord = useCallback((sel: SelectedWord) => {
-    setSelectedWord(sel);
+    const reqId = ++usageReqRef.current;
     playWordAudio(sel.word.word, 'word');
-  }, [playWordAudio]);
+
+    // Translated words carry everything they need already.
+    if (sel.word.translation) {
+      setSelectedWord(sel);
+      setUsageLoading(false);
+      return;
+    }
+    const key = `${sel.sentenceId}|${cleanWord(sel.word.word).toLowerCase()}`;
+    const hit = usageCacheRef.current.get(key);
+    if (hit) {
+      setSelectedWord({ ...sel, word: { ...sel.word, ...hit } });
+      setUsageLoading(false);
+      return;
+    }
+    setSelectedWord(sel);
+    setUsageLoading(true);
+    explainWord({ word: sel.word.word, sentence: sel.sentenceText, language, pos: sel.word.pos })
+      .then(usage => {
+        usageCacheRef.current.set(key, usage);
+        if (usageReqRef.current !== reqId) return;
+        setSelectedWord(cur => (cur ? { ...cur, word: { ...cur.word, ...usage } } : cur));
+      })
+      .catch(err => console.log('[WordInfo] explainWord error', err?.message))
+      .finally(() => { if (usageReqRef.current === reqId) setUsageLoading(false); });
+  }, [playWordAudio, language]);
 
   const [sheetHeight, setSheetHeight] = useState(0);
   const sheetInset = selectedWord ? sheetHeight : 0;
@@ -295,6 +331,7 @@ export function ChapterReader({
         <WordInfoSheet
           word={selectedWord.word}
           isPlaying={wordAudio.playingId === 'word'}
+          usageLoading={usageLoading}
           onPlayAudio={() => playWordAudio(selectedWord.word.word, 'word')}
           onClose={() => setSelectedWord(null)}
           onHeightChange={setSheetHeight}
@@ -862,7 +899,7 @@ function ChunkedTranslation({
           usageInGeneral: entry.usageInGeneral,
         }
       : { word: rawWord, pos: null, translation: null, explanation: null, usageInSentence: null, usageInGeneral: null };
-    selectWord({ word, sentenceId: sentence.id });
+    selectWord({ word, sentenceId: sentence.id, sentenceText: sentence.raw });
   }
 
   function tokenizeChunk(text: string): string[] {
@@ -933,10 +970,11 @@ function ChunkedTranslation({
 // only via × (or Android back).
 
 function WordInfoSheet({
-  word, isPlaying, onPlayAudio, onClose, onHeightChange,
+  word, isPlaying, usageLoading, onPlayAudio, onClose, onHeightChange,
 }: {
   word: TappedWord;
   isPlaying: boolean;
+  usageLoading: boolean;
   onPlayAudio: () => void;
   onClose: () => void;
   onHeightChange: (height: number) => void;
@@ -987,6 +1025,9 @@ function WordInfoSheet({
             ) : null}
             {word.explanation ? (
               <Text style={styles.wordCardExplanation}>{word.explanation}</Text>
+            ) : null}
+            {usageLoading && !word.usageInSentence && !word.usageInGeneral ? (
+              <ActivityIndicator color={colors.primary} />
             ) : null}
             {word.usageInSentence ? (
               <Text style={styles.wordCardExplanation}>

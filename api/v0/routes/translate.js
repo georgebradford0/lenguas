@@ -13,10 +13,11 @@ const MODEL = 'gpt-6-luna';
 const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish' };
 
 // ── /translate/sentence ────────────────────────────────────────────────────────
-// Translate a full sentence into English and annotate every word in it: nouns,
-// verbs, and adjectives get a contextual translation; every other word (articles,
-// prepositions, pronouns, conjunctions, adverbs, particles, numbers) gets no
-// translation but does get a short explanation of its use here and in general.
+// Translate a full sentence into English and tag every word in it: nouns, verbs,
+// and adjectives get a contextual translation; every other word (articles,
+// prepositions, pronouns, conjunctions, adverbs, particles, numbers) is only
+// tagged with its part of speech. Their usage notes are the bulk of the output
+// tokens, so they are generated on demand by /translate/word when a word is tapped.
 router.post('/sentence', async (req, res) => {
   try {
     const { sentence, language = 'de' } = req.body;
@@ -37,9 +38,7 @@ router.post('/sentence', async (req, res) => {
       "word": "<word as it appears in the sentence>",
       "pos": "noun" | "verb" | "adjective" | "article" | "preposition" | "pronoun" | "conjunction" | "adverb" | "particle" | "number",
       "translation": "<1-6 word English gloss in this context, or null>",
-      "explanation": "<one short English sentence or null>",
-      "usageInSentence": "<one short English sentence or null>",
-      "usageInGeneral": "<one short English sentence or null>"
+      "explanation": "<one short English sentence or null>"
     }
   ]
 }
@@ -62,11 +61,8 @@ Rules for "words":
 - For "pos" of noun, verb, or adjective (including auxiliary, modal, participle, and infinitive verb forms, and predicate/attributive adjectives):
   * Fill "translation" with a 1-6 word English gloss in this context.
   * Fill "explanation" with a short English sentence only when the word's meaning here is non-obvious or context-dependent (e.g. separable-prefix verb, idiomatic noun usage). Otherwise null.
-  * Leave "usageInSentence" and "usageInGeneral" null.
 - For every other "pos" (article, preposition, pronoun, conjunction, adverb, particle, number):
-  * Leave "translation" and "explanation" null.
-  * Fill "usageInSentence": one short English sentence on why this specific word/form appears here — case, agreement, word order, idiomatic pairing, what it refers back to, etc.
-  * Fill "usageInGeneral": one short English sentence on what this word means and how it's generally used in ${fromLanguage}, independent of this sentence.`;
+  * Leave "translation" and "explanation" null. Write nothing else about these words; only "word" and "pos" matter.`;
 
     const sourceSentence = sentence.trim();
 
@@ -126,8 +122,9 @@ Rules for "words":
             pos: w.pos,
             translation: typeof w.translation === 'string' && w.translation.trim() ? w.translation : null,
             explanation: typeof w.explanation === 'string' && w.explanation.trim() ? w.explanation : null,
-            usageInSentence: typeof w.usageInSentence === 'string' && w.usageInSentence.trim() ? w.usageInSentence : null,
-            usageInGeneral: typeof w.usageInGeneral === 'string' && w.usageInGeneral.trim() ? w.usageInGeneral : null,
+            // Filled on demand by /translate/word; kept in the shape for clients.
+            usageInSentence: null,
+            usageInGeneral: null,
           }))
       : [];
     const { words, repairs, droppedWords } = canonicalizeWords(sourceSentence, modelWords);
@@ -136,6 +133,49 @@ Rules for "words":
     }
 
     res.json({ translation, chunks, words });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── /translate/word ───────────────────────────────────────────────────────────
+// Usage notes for one tapped non-content word (article, preposition, pronoun,
+// ...), generated on demand so /translate/sentence doesn't pay for every one.
+router.post('/word', async (req, res) => {
+  try {
+    const { word, sentence, language = 'de', pos } = req.body;
+    if (typeof word !== 'string' || !word.trim()) {
+      return res.status(400).json({ error: 'word is required' });
+    }
+    if (typeof sentence !== 'string' || !sentence.trim()) {
+      return res.status(400).json({ error: 'sentence is required' });
+    }
+    const fromLanguage = LANGUAGE_NAMES[language] || 'German';
+    const posNote = typeof pos === 'string' && pos.trim() ? ` (${pos.trim().slice(0, 20)})` : '';
+
+    const systemPrompt = `You are a ${fromLanguage}-English language expert helping a learner who tapped a word in a ${fromLanguage} sentence. Return ONLY valid JSON with this exact shape:
+
+{
+  "usageInSentence": "<one short English sentence>",
+  "usageInGeneral": "<one short English sentence>"
+}
+
+- "usageInSentence": why this specific word/form appears here — case, agreement, word order, idiomatic pairing, what it refers back to, etc.
+- "usageInGeneral": what this word means and how it's generally used in ${fromLanguage}, independent of this sentence.`;
+
+    const response = await openai.chat.completions.create({
+      model: MODEL,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: `Sentence: ${sentence.trim().slice(0, 2000)}\nWord${posNote}: ${word.trim().slice(0, 100)}` },
+      ],
+      reasoning_effort: 'low',
+      max_completion_tokens: 1000,
+      response_format: { type: 'json_object' },
+    });
+    const parsed = JSON.parse(response.choices[0].message.content || '{}');
+    const text = v => (typeof v === 'string' && v.trim() ? v.trim() : null);
+    res.json({ usageInSentence: text(parsed.usageInSentence), usageInGeneral: text(parsed.usageInGeneral) });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

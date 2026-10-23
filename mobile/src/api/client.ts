@@ -45,10 +45,38 @@ export interface SentenceWord {
   /** Contextual English gloss — nouns/verbs/adjectives only, null otherwise. */
   translation: string | null;
   explanation: string | null;
-  /** Why this word/form appears here — populated for non-translated words only. */
+  /** Always null from /translate/sentence now; fetched on tap via explainWord. */
   usageInSentence: string | null;
-  /** The word's general meaning/use, independent of this sentence — non-translated words only. */
   usageInGeneral: string | null;
+}
+
+export interface WordUsage {
+  /** Why this word/form appears here. */
+  usageInSentence: string | null;
+  /** The word's general meaning/use, independent of this sentence. */
+  usageInGeneral: string | null;
+}
+
+/** Usage notes for one tapped non-content word (article, preposition, ...). */
+export async function explainWord(params: {
+  word: string;
+  sentence: string;
+  language: string;
+  pos?: string | null;
+}): Promise<WordUsage> {
+  const response = await fetch(`${API_BASE}/translate/word`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  if (!response.ok) {
+    throw new Error(`Word explanation failed: ${response.status}`);
+  }
+  const data = await response.json();
+  return {
+    usageInSentence: typeof data.usageInSentence === 'string' ? data.usageInSentence : null,
+    usageInGeneral: typeof data.usageInGeneral === 'string' ? data.usageInGeneral : null,
+  };
 }
 
 export interface SentenceChunk {

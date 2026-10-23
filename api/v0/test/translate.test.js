@@ -93,6 +93,36 @@ test('requests low reasoning effort and the OpenAI token-limit parameter', async
   assert.ok(!('max_tokens' in lastReq) && !('temperature' in lastReq));
 });
 
+test('sentence prompt no longer asks for per-word usage notes; response keeps the null fields', async () => {
+  const out = await run([{ ...good, words: [word('Leben'), { ...word('innigst', 'adverb'), usageInSentence: 'x', usageInGeneral: 'y' }] }]);
+  assert.ok(!lastSystem.includes('usageInSentence') && !lastSystem.includes('usageInGeneral'));
+  assert.deepStrictEqual(out.words.map(w => [w.usageInSentence, w.usageInGeneral]), [[null, null], [null, null]]);
+});
+
+const postWord = async (body) => {
+  const res = await fetch(`http://localhost:${port}/translate/word`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  return { status: res.status, body: await res.json() };
+};
+
+test('/translate/word returns usage notes for one word with one cheap model call', async () => {
+  script = [{ usageInSentence: ' Marks Beifall as nominative. ', usageInGeneral: 'The masculine article.' }];
+  calls = 0;
+  const r = await postWord({ word: 'der', sentence: S, language: 'de', pos: 'article' });
+  assert.strictEqual(r.status, 200);
+  assert.deepStrictEqual(r.body, { usageInSentence: 'Marks Beifall as nominative.', usageInGeneral: 'The masculine article.' });
+  assert.strictEqual(calls, 1);
+  assert.strictEqual(lastReq.reasoning_effort, 'low');
+  assert.ok(lastReq.messages[1].content.includes('Word (article): der'));
+});
+
+test('/translate/word nulls missing/blank fields and validates input', async () => {
+  script = [{ usageInSentence: '  ', usageInGeneral: 5 }];
+  assert.deepStrictEqual((await postWord({ word: 'der', sentence: S })).body, { usageInSentence: null, usageInGeneral: null });
+  assert.strictEqual((await postWord({ sentence: S })).status, 400);
+  assert.strictEqual((await postWord({ word: 'der', sentence: '  ' })).status, 400);
+  assert.strictEqual((await postWord({ word: 42, sentence: S })).status, 400);
+});
+
 test('hallucinated word entry is dropped, real ones kept', async () => {
   const out = await run([{ ...good, words: [word('Leben'), word('Katze'), word('Beifall')] }]);
   assert.deepStrictEqual(out.words.map(w => w.word), ['Leben', 'Beifall']);
