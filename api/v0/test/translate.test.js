@@ -6,9 +6,9 @@ const assert = require('node:assert');
 const Module = require('module');
 
 // Fake model: each call pops the next scripted answer.
-let script = [], calls = 0, lastSystem = '';
+let script = [], calls = 0, lastSystem = '', lastReq = null;
 class FakeOpenAI { constructor() { this.chat = { completions: { create: async (req) => {
-  calls++; lastSystem = req.messages[0].content;
+  calls++; lastSystem = req.messages[0].content; lastReq = req;
   const next = script.shift();
   if (!next) throw new Error('script exhausted');
   return { choices: [{ message: { content: JSON.stringify(next) } }] };
@@ -84,6 +84,13 @@ test('clean answer passes through with one call and unchanged chunks', async () 
   const out = await run([good]);
   assert.strictEqual(calls, 1);
   assert.deepStrictEqual(out.chunks.map(c => c.original), good.chunks.map(c => c.original));
+});
+
+test('requests low reasoning effort and the OpenAI token-limit parameter', async () => {
+  await run([good]);
+  assert.strictEqual(lastReq.reasoning_effort, 'low');
+  assert.ok(lastReq.max_completion_tokens > 0);
+  assert.ok(!('max_tokens' in lastReq) && !('temperature' in lastReq));
 });
 
 test('hallucinated word entry is dropped, real ones kept', async () => {

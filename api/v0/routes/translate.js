@@ -79,6 +79,7 @@ Rules for "words":
           { role: 'system', content: note ? `${systemPrompt}\n\n${note}` : systemPrompt },
           { role: 'user', content: sourceSentence },
         ],
+        reasoning_effort: 'low',
         max_completion_tokens: 16384,
         response_format: { type: 'json_object' },
       });
@@ -177,6 +178,7 @@ Answer the learner's question about this sentence — grammar, vocabulary, word 
         ...historyMessages,
         { role: 'user', content: question.trim() },
       ],
+      reasoning_effort: 'low',
       max_completion_tokens: 2000,
     });
 

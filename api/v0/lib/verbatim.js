@@ -57,7 +57,9 @@ function isSameWord(a, b) {
   if (!a || !b) return false;
   const maxLen = Math.max(a.length, b.length);
   const minLen = Math.min(a.length, b.length);
-  if (levenshtein(a, b) <= Math.max(2, Math.floor(0.4 * maxLen))) return true;
+  // A 1-2 edit change is a different word at this length (n/un, de/la, est/les).
+  if (minLen < 4) return a === b;
+  if (levenshtein(a, b) <= Math.floor(0.4 * maxLen)) return true;
   return commonPrefixLength(a, b) >= Math.max(4, Math.ceil(0.6 * minLen));
 }
 
@@ -113,10 +115,17 @@ function alignChunks(sentence, modelChunks) {
  * entry is matched to a source token (exact first, then closest plausible
  * spelling) and `word` is rewritten to that token's own text. Entries that match
  * nothing in the sentence are dropped; duplicates keep the first occurrence.
+ *
+ * The reader taps whole whitespace tokens, so an elided token like "n'est" or
+ * "l'homme" is one tappable word, but the model lists its parts ("n'" and "est")
+ * separately. Those parts are matched to the token that contains them, and when
+ * several entries land on one token a content word (translated) wins over a
+ * function word, since the reader can only show one.
  */
 function canonicalizeWords(sentence, modelWords) {
   const src = tokenize(sentence);
   const keys = src.map(t => normKey(t.text));
+  const parts = keys.map(k => k.split(/['’‘`\-]/).filter(Boolean));
   const used = new Array(src.length).fill(false);
   const seen = new Set();
   const words = [];
@@ -140,6 +149,21 @@ function canonicalizeWords(sentence, modelWords) {
     let idx = findExact(target, cursor, src.length);
     if (idx === -1) idx = findExact(target, 0, cursor);
 
+    // Part of an elided/hyphenated token. Unused tokens first; a used one is the
+    // second half of a pair whose first half already claimed the token.
+    let isPart = false;
+    if (idx === -1) {
+      const inToken = i => parts[i].length > 1 && parts[i].includes(target);
+      for (const wantUsed of [false, true]) {
+        for (let n = 0; n < src.length && idx === -1; n++) {
+          const i = (cursor + n) % src.length;
+          if (used[i] === wantUsed && inToken(i)) idx = i;
+        }
+        if (idx !== -1) break;
+      }
+      isPart = idx !== -1;
+    }
+
     if (idx === -1) {
       let bestDist = Infinity;
       let bestGap = Infinity;
@@ -161,9 +185,15 @@ function canonicalizeWords(sentence, modelWords) {
     cursor = idx + 1;
     const surface = cleanWord(src[idx].text);
     const key = surface.toLowerCase();
-    if (seen.has(key)) continue;
+    if (seen.has(key)) {
+      const at = words.findIndex(x => x.word.toLowerCase() === key);
+      if (isPart && at !== -1 && !words[at].translation && w.translation) {
+        words[at] = { ...w, word: surface };
+      }
+      continue;
+    }
     seen.add(key);
-    if (key !== target) repairs.push(`${w.word}->${surface}`);
+    if (key !== target && !isPart) repairs.push(`${w.word}->${surface}`);
     words.push({ ...w, word: surface });
   }
 

@@ -92,6 +92,33 @@ ok('model-written fields other than "word" are preserved', () => {
   assert.deepStrictEqual(words[0], { word: 'läuft', pos: 'verb', translation: 'runs', explanation: 'e', usageInSentence: null, usageInGeneral: null });
 });
 
+const FR = "Ce que le schizophrène vit spécifiquement, ce n'est pas du tout un pôle spécifique de la nature.";
+
+ok('elided parts "n\'" + "est" map onto the one token "n\'est" without stealing "un"/"de"/"la"', () => {
+  const { words, repairs, droppedWords } = canonicalizeWords(FR, [
+    mk('Ce', 'pronoun'), mk('schizophrène'), mk('vit', 'verb'),
+    mk("n'", 'particle'), mk('est', 'verb'), mk('pas', 'adverb'),
+    mk('un', 'article'), mk('pôle'), mk('de', 'preposition'), mk('la', 'article'), mk('nature'),
+  ]);
+  assert.deepStrictEqual(words.map(w => w.word), ['Ce', 'schizophrène', 'vit', "n'est", 'pas', 'un', 'pôle', 'de', 'la', 'nature']);
+  assert.deepStrictEqual(repairs, []);
+  assert.deepStrictEqual(droppedWords, []);
+});
+
+ok('when several entries land on one token, the translated content word wins', () => {
+  const fn = { ...mk("l'", 'article'), translation: null };
+  const { words } = canonicalizeWords("Il voit l'homme.", [fn, mk('homme')]);
+  assert.deepStrictEqual(words.map(w => [w.word, w.pos]), [["l'homme", 'noun']]);
+  const rev = canonicalizeWords("Il voit l'homme.", [mk('homme'), fn]);
+  assert.deepStrictEqual(rev.words.map(w => [w.word, w.pos]), [["l'homme", 'noun']]);
+});
+
+ok('short words are never fuzzy-matched onto a different word', () => {
+  const { words, droppedWords } = canonicalizeWords('Il a un chat.', [mk('de', 'preposition'), mk('chat')]);
+  assert.deepStrictEqual(words.map(w => w.word), ['chat']);
+  assert.deepStrictEqual(droppedWords, ['de']);
+});
+
 ok('numbers are skipped silently, not reported as mismatches', () => {
   const { words, droppedWords } = canonicalizeWords('Königsberg den 29sten März 1781 Immanuel Kant', [mk('1781', 'number'), mk('Kant')]);
   assert.deepStrictEqual(words.map(w => w.word), ['Kant']);
