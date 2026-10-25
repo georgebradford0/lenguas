@@ -14,7 +14,7 @@ No login. The app launches directly into language select, and all API endpoints 
 - **Library storage**: S3 bucket `lenguas-parsed-books` (us-west-2)
 - **Image registry**: `ghcr.io/georgebradford0/lenguas-api`
 - **Deployment**: Docker container on AWS EC2 (`ec2-16-144-226-254.us-west-2.compute.amazonaws.com`)
-- **External services**: OpenAI (translation + EPUB parse), AWS Polly (TTS), AWS S3 (library)
+- **External services**: Cerebras (`gpt-oss-120b`, sentence translation + word/ask explanations), OpenAI (EPUB parse in the CLI), AWS Polly (TTS), AWS S3 (library)
 
 ## Key Files & Locations
 
@@ -111,7 +111,7 @@ The image is currently **private**; toggling public is a one-time UI flip at htt
 ```
 
 What it does:
-1. Reads local `.env` (or environment) for `OPENAI_API_KEY` and `AWS_*`.
+1. Reads local `.env` (or environment) for `OPENAI_API_KEY`, `CEREBRAS_API_KEY` and `AWS_*`.
 2. SCPs `docker-compose.prod.yml` to the EC2 box.
 3. Writes a fresh `.env` on the host.
 4. `docker compose pull && docker compose up -d --force-recreate api` — always replaces the running api container with the freshly-pulled image, even when only the `:latest` digest moved.
@@ -189,7 +189,7 @@ ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.comput
 ## Environment Variables
 
 **Required for the API:**
-- `OPENAI_API_KEY` — `/translate/sentence`
+- `CEREBRAS_API_KEY` — `/translate/*` (sentence, word, ask). Check the account's rate limits: the free tier allows only 5 requests/minute.
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` — Polly (TTS) + S3 (library)
 - `AWS_S3_BUCKET` — the library bucket (`lenguas-parsed-books`)
 
@@ -199,7 +199,7 @@ ssh -i ~/Documents/lenovo-ideapad.pem ubuntu@ec2-16-144-226-254.us-west-2.comput
 - `PORT` (default 3000)
 
 **Used by `deploy.sh` from your shell / local `.env`:**
-- `OPENAI_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET`.
+- `OPENAI_API_KEY`, `CEREBRAS_API_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET`.
 
 ## Git Workflow
 

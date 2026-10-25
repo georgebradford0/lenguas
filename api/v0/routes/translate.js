@@ -4,11 +4,12 @@ const OpenAI = require('openai');
 const { alignChunks, canonicalizeWords } = require('../lib/verbatim');
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.CEREBRAS_API_KEY,
+  baseURL: 'https://api.cerebras.ai/v1',
   maxRetries: 5,
 });
 
-const MODEL = 'gpt-6-luna';
+const MODEL = 'gpt-oss-120b';
 
 const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish', la: 'Latin' };
 

@@ -24,6 +24,12 @@ if [ -z "$OPENAI_API_KEY" ]; then
     exit 1
 fi
 
+if [ -z "$CEREBRAS_API_KEY" ]; then
+    echo "❌ Error: CEREBRAS_API_KEY environment variable is not set"
+    echo "Please set it with: export CEREBRAS_API_KEY='your-key-here'"
+    exit 1
+fi
+
 echo "📦 Step 1: Ensuring remote directory exists..."
 $SSH_CMD $EC2_HOST "mkdir -p $REMOTE_DIR"
 
@@ -34,6 +40,7 @@ echo "🔧 Step 3: Writing .env file on remote server..."
 $SSH_CMD $EC2_HOST "
   cat > $REMOTE_DIR/.env << EOF
 OPENAI_API_KEY=$OPENAI_API_KEY
+CEREBRAS_API_KEY=$CEREBRAS_API_KEY
 AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
 AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
 AWS_REGION=${AWS_REGION:-us-east-1}
