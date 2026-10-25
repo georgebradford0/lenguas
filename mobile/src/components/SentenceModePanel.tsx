@@ -794,7 +794,7 @@ function SentenceSwipePage({
       contentContainerStyle={[styles.swipePageBody, { paddingBottom: spacing.xxl + sheetInset }]}
       showsVerticalScrollIndicator={false}
     >
-      <ChunkedTranslation sentence={sentence} language={language} cacheRef={cacheRef} />
+      <ChunkedTranslation sentence={sentence} language={language} cacheRef={cacheRef} layout="card" />
     </ScrollView>
   );
 }
@@ -826,12 +826,16 @@ function TranslationBox({
 // ── Shared: fetch + render chunked translation with word taps and audio ──────
 
 function ChunkedTranslation({
-  sentence, language, cacheRef,
+  sentence, language, cacheRef, layout = 'inline',
 }: {
   sentence: Sentence;
   language: Language;
   cacheRef: React.MutableRefObject<Map<string, SentenceTranslation>>;
+  /** `inline` (Read mode's box): small English over the original.
+   * `card` (Cards mode): large original over small English. */
+  layout?: 'inline' | 'card';
 }) {
+  const isCard = layout === 'card';
   const cached = cacheRef.current.get(sentence.id);
   const [chunks, setChunks] = useState<SentenceChunk[]>(cached?.chunks ?? []);
   const [contentWords, setContentWords] = useState<SentenceWord[]>(cached?.words ?? []);
@@ -913,11 +917,16 @@ function ChunkedTranslation({
       ) : (
         chunks.map((chunk, idx) => {
           const isPlaying = playingId === `chunk-${idx}`;
+          const translationText = (
+            <Text style={isCard ? styles.cardChunkTranslation : styles.chunkTranslation}>
+              {chunk.translation || '—'}
+            </Text>
+          );
           return (
-            <View key={idx} style={styles.chunk}>
-              <Text style={styles.chunkTranslation}>{chunk.translation || '—'}</Text>
+            <View key={idx} style={isCard ? styles.cardChunk : styles.chunk}>
+              {isCard ? null : translationText}
               <View style={styles.chunkRow}>
-                <Text style={styles.chunkOriginal}>
+                <Text style={isCard ? styles.cardChunkOriginal : styles.chunkOriginal}>
                   {tokenizeChunk(chunk.original).map((tok, i) => {
                     if (/^\s+$/.test(tok)) {
                       return <Text key={i} style={styles.nonContent}>{tok}</Text>;
@@ -953,6 +962,7 @@ function ChunkedTranslation({
                   <Text style={styles.chunkPlayBtnText}>{isPlaying ? '⌛' : '🔊'}</Text>
                 </TouchableOpacity>
               </View>
+              {isCard ? translationText : null}
             </View>
           );
         })
@@ -1145,6 +1155,21 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   chunkPlayBtnText: { fontSize: fontSize.sm },
+
+  // Cards mode: the original is the focus, the English a small gloss under it.
+  cardChunk: { marginBottom: spacing.lg },
+  cardChunkOriginal: {
+    flex: 1,
+    fontSize: fontSize.xl,
+    color: colors.text,
+    lineHeight: fontSize.xl * 1.4,
+  },
+  cardChunkTranslation: {
+    fontSize: fontSize.xs,
+    color: colors.muted,
+    lineHeight: fontSize.xs * 1.4,
+    marginTop: 4,
+  },
 
   nonContent: { color: colors.muted },
   // Translatable words (noun/verb/adjective) — highlighted in the primary color.
