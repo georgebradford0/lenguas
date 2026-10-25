@@ -31,7 +31,7 @@ enum Command {
         /// Path to the .epub file.
         epub: PathBuf,
 
-        /// Target language code (de, nl, fr, es).
+        /// Target language code (de, nl, fr, es, la).
         #[arg(short, long)]
         language: String,
 
@@ -46,7 +46,7 @@ enum Command {
 
     /// List every book in the S3 library, grouped by language.
     List {
-        /// Only show books for one language code (de, nl, fr, es).
+        /// Only show books for one language code (de, nl, fr, es, la).
         #[arg(short, long)]
         language: Option<String>,
 

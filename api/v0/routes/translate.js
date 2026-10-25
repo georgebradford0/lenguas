@@ -10,7 +10,7 @@ const openai = new OpenAI({
 
 const MODEL = 'gpt-6-luna';
 
-const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish' };
+const LANGUAGE_NAMES = { de: 'German', nl: 'Dutch', fr: 'French', es: 'Spanish', la: 'Latin' };
 
 // ── /translate/sentence ────────────────────────────────────────────────────────
 // Translate a full sentence into English and tag every word in it: nouns, verbs,

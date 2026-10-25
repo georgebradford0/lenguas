@@ -15,6 +15,7 @@ const FLAGS: Record<string, string> = {
   nl: '🇳🇱',
   fr: '🇫🇷',
   es: '🇪🇸',
+  la: '🏛️',
 };
 
 export function LibraryScreen({ onSelect }: { onSelect: (book: LibrarySummary) => void }) {

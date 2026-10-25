@@ -86,6 +86,13 @@ test('clean answer passes through with one call and unchanged chunks', async () 
   assert.deepStrictEqual(out.chunks.map(c => c.original), good.chunks.map(c => c.original));
 });
 
+test('language "la" is prompted as Latin, not silently as German', async () => {
+  script = [good];
+  await (await fetch(`http://localhost:${port}/translate/sentence`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentence: S, language: 'la' }) })).json();
+  assert.ok(lastSystem.startsWith('You are a Latin-English language expert'));
+  assert.ok(!lastSystem.includes('German'));
+});
+
 test('requests low reasoning effort and the OpenAI token-limit parameter', async () => {
   await run([good]);
   assert.strictEqual(lastReq.reasoning_effort, 'low');

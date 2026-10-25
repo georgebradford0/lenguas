@@ -35,13 +35,14 @@ fn language_name(code: &str) -> Option<&'static str> {
         "nl" => Some("Dutch"),
         "fr" => Some("French"),
         "es" => Some("Spanish"),
+        "la" => Some("Latin"),
         _ => None,
     }
 }
 
 pub async fn run(args: Args) -> Result<()> {
     let from_language = language_name(&args.language)
-        .ok_or_else(|| anyhow!("--language must be one of: de, nl, fr, es"))?;
+        .ok_or_else(|| anyhow!("--language must be one of: de, nl, fr, es, la"))?;
 
     let openai_key = std::env::var("OPENAI_API_KEY")
         .map_err(|_| anyhow!("OPENAI_API_KEY is not set — `export OPENAI_API_KEY=…` in your shell"))?;
