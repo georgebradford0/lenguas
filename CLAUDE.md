@@ -20,12 +20,13 @@ No login. The app launches directly into language select, and all API endpoints 
 
 ### Backend (`api/v0/`)
 - `index.js` — Express app, mounts `/speak`, `/translate`, and `/books`
-- `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes)
+- `routes/speak.js` — `GET /speak/:text?language=` (Polly TTS, returns mp3 bytes). Latin (`la`) has no Polly voice, so it is proxied to the `tts` sidecar.
 - `routes/translate.js` — `POST /translate/sentence` (sentence → chunks + word translations)
 - `routes/books.js` — `GET /books?language=X` (library list), `GET /books/:hash` (full book). Read-only against S3.
 - `lib/verbatim.js` — keeps `/translate/sentence` output verbatim: chunk and word text is sliced from the request's sentence, never taken from the model.
 - `lib/bookStore.js` — S3 helpers: head/get/put by SHA-256, plus `_index.json` manifest read/write.
 - `config/languages.js` — per-language Polly voice config
+- `tts/` — Python sidecar (FastAPI + Meta MMS-TTS VITS model, CPU) for languages Polly lacks. `POST /synthesize {text, language}` → mp3, deterministic (fixed seed) and cached on disk by text hash. Internal only (`http://tts:8000`); the model is CC-BY-NC 4.0. Tests: `uv run --no-project --with fastapi --with httpx --with pytest --with numpy --with soundfile --with pydantic pytest tts`.
 - `Dockerfile` — `node:22-alpine`, `npm ci --production`
 
 ### Frontend (`mobile/src/`)
@@ -41,6 +42,7 @@ No login. The app launches directly into language select, and all API endpoints 
 - `docker-compose.yml` — local dev compose (builds from `./api/v0`)
 - `deploy.sh` — ships compose file + writes `.env` on the remote host, then `docker compose pull && up -d --force-recreate api`
 - `.github/workflows/api-docker.yml` — `workflow_dispatch` job that builds the API Dockerfile for `linux/amd64 + linux/arm64` and pushes to GHCR
+- `.github/workflows/tts-docker.yml` — same for the `tts/` sidecar (`ghcr.io/georgebradford0/lenguas-tts`, `linux/amd64` only). Run it before `./deploy.sh`, which pulls both images.
 
 ## Reading Flow
 

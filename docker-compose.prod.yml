@@ -9,8 +9,23 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
+      - TTS_URL=http://tts:8000
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+
+  # Text-to-speech for languages Polly has no voice for (Latin). Internal only:
+  # the api reaches it at http://tts:8000. Capped so it can't starve the api on
+  # the small host.
+  tts:
+    image: ghcr.io/georgebradford0/lenguas-tts:latest
+    container_name: language-app-tts
+    restart: unless-stopped
+    mem_limit: 1200m
+    volumes:
+      - tts-cache:/cache
+
+volumes:
+  tts-cache:

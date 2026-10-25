@@ -40,11 +40,11 @@ AWS_REGION=${AWS_REGION:-us-east-1}
 AWS_S3_BUCKET=${AWS_S3_BUCKET:-lenguas-parsed-books}
 EOF"
 
-echo "🐳 Step 4: Pulling latest image and recreating api..."
+echo "🐳 Step 4: Pulling latest images and recreating api + tts..."
 # --force-recreate api ensures we always run the freshly-pulled image, even when
 # compose thinks the running container's config is unchanged (which happens
 # when only the underlying :latest digest moved). mongo is unaffected.
-$SSH_CMD $EC2_HOST "cd $REMOTE_DIR && docker compose pull && docker compose up -d --force-recreate api"
+$SSH_CMD $EC2_HOST "cd $REMOTE_DIR && docker compose pull && docker compose up -d --force-recreate api tts"
 
 echo "⏳ Step 5: Waiting for services to start..."
 sleep 5

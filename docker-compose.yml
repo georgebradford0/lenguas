@@ -9,5 +9,16 @@ services:
       - .env
     environment:
       - PORT=3000
+      - TTS_URL=http://tts:8000
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+
+  # Opt-in (large image): docker compose --profile tts up
+  tts:
+    build: ./tts
+    profiles: ["tts"]
+    volumes:
+      - tts-cache:/cache
+
+volumes:
+  tts-cache:
